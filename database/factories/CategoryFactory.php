@@ -15,7 +15,7 @@ class CategoryFactory extends Factory
     {
         return [
             'title' => $this->faker->sentence(),
-            'meta_title' => $this->faker->sentence(),
+            'title_meta' => $this->faker->sentence(),
             'slug' => $this->faker->slug(),
             'description' => $this->faker->sentence(),
         ];

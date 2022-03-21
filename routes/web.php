@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BlogController;
+use App\Http\Controllers\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,4 +14,5 @@ use App\Http\Controllers\BlogController;
 |
 */
 
-Route::post('/blogs', [BlogController::class, 'store']);
+Route::post('/posts', [PostController::class, 'store']);
+Route::patch('/posts', [PostController::class, 'update']);
