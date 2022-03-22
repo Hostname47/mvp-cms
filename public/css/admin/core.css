@@ -1,0 +1,30 @@
+body {
+    background-color: #d1dadf1f;
+    margin-left: 250px;
+}
+
+#admin-left-panel {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 250px;
+    background-color: #141617;
+}
+
+#admin-left-panel-logo {
+    margin: 12px 0;
+    width: 208px;
+    flex-direction: column;
+    fill: white;
+    stroke: white;
+}
+
+.admin-top-page-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px;
+    border-bottom: 1px solid #d0dae1;
+}
+

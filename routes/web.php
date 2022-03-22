@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PostController;
+use App\Http\Controllers\{IndexController, AdminController, PostController};
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +14,11 @@ use App\Http\Controllers\PostController;
 |
 */
 
+Route::get('/', [IndexController::class, 'index']);
+Route::get('/home', [IndexController::class, 'index']);
+
+Route::get('/admin/dashboard', [AdminController::class, 'index']);
+
 Route::post('/posts', [PostController::class, 'store']);
 Route::patch('/posts', [PostController::class, 'update']);
+
