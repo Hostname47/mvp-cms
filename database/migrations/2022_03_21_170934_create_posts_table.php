@@ -19,15 +19,12 @@ class CreatePostsTable extends Migration
             $table->text('title_meta')->nullable();
             $table->text('slug');
             $table->text('summary');
-            $table->string('status')->default('draft');
+            $table->string('status')->default('published');
+            $table->string('visibility')->default('public');
             $table->UnsignedBigInteger('user_id')->nullable();
-            $table->UnsignedBigInteger('category_id')->nullable();
-            
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null');
             $table->timestamps();
             $table->timestamp('published_at')->default(\DB::raw('CURRENT_TIMESTAMP'));
-
             $table->longText('content');
         });
     }
