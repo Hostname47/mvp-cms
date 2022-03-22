@@ -20,11 +20,32 @@ body {
     stroke: white;
 }
 
+
+.admin-first-side-bar-button {
+    border-top: 1px solid #212324;
+}
+
+.admin-side-bar-button {
+    width: 100%;
+    display: flex;
+    padding: 8px 12px;
+    box-sizing: border-box;
+    color: #f9f9f9;
+    text-decoration: none;
+    background-color: #111;
+    border-bottom: 1px solid #212324;
+    font-size: 12px;
+}
+
 .admin-top-page-box {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 14px;
     border-bottom: 1px solid #d0dae1;
+}
+
+.admin-page-content-box {
+    padding: 14px;
 }
 

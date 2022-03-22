@@ -8,6 +8,10 @@ use App\Models\Post;
 
 class PostController extends Controller
 {
+    public function create() {
+        return view('admin.posts.create');
+    }
+
     public function store(Request $request) {
         $data = $request->validate([
             'title'=>'required|min:2|max:1200',
