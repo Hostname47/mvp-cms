@@ -1,8 +1,20 @@
-#post-creation-panel {
+#post-management-panel {
     position: fixed;
+    top: 0;
     right: 0;
     height: 100%;
     width: 260px;
     background-color: white;
     border-left: 1px solid #d0dae1;
+}
+
+.post-management-panel-section-header {
+    padding: 10px;
+    background-color: #F9FAFB;
+    border-bottom: 1px solid #d0dae1;
+}
+
+.post-management-panel-section-content {
+    padding: 12px;
+    border-bottom: 1px solid #d0dae1;
 }

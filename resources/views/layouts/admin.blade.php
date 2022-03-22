@@ -19,9 +19,7 @@
     @stack('scripts')
 </head>
 <body>
-    <main class="relative">
-        @yield('left-panel')
-        @yield('content')
-    </main>
+    @yield('left-panel')
+    @yield('content')
 </body>
 </html>
