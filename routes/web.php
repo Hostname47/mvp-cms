@@ -17,10 +17,14 @@ use App\Http\Controllers\{IndexController, AdminController, PostController, Cate
 Route::get('/', [IndexController::class, 'index']);
 Route::get('/home', [IndexController::class, 'index']);
 
-Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');;
-Route::get('/admin/posts/create', [PostController::class, 'create'])->name('create.new.post');
-Route::post('/posts', [PostController::class, 'store']);
-Route::patch('/posts', [PostController::class, 'update']);
+Route::prefix('admin')->group(function () {
+    Route::get('/categories/create', [CategoryController::class, 'create'])->name('create.new.category');
+    Route::post('/categories', [CategoryController::class, 'store']);
 
-Route::post('/categories', [CategoryController::class, 'store']);
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');;
+    Route::get('/posts/create', [PostController::class, 'create'])->name('create.new.post');
+    Route::post('/posts', [PostController::class, 'store']);
+    Route::patch('/posts', [PostController::class, 'update']);
+});
+
 

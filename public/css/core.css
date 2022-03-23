@@ -9,7 +9,7 @@ body {
 }
 
 .none {
-    display: none;
+    display: none !important;
 }
 
 .block {
@@ -245,6 +245,10 @@ body {
     cursor: pointer;
 }
 
+.cursor-not-allowed {
+    cursor: not-allowed !important;
+}
+
 .my8 {
     margin: 8px 0;
 }
@@ -356,6 +360,10 @@ a, input, textarea {
     box-sizing: border-box;
 }
 
+.width-max-content {
+    width: max-content;
+}
+
 .full-width {
     width: 100%;
     box-sizing: border-box;
@@ -367,7 +375,7 @@ a, input, textarea {
 }
 
 .typical-button-style {
-    padding: 6px 12px;
+    padding: 7px 12px;
     cursor: pointer;
     text-decoration: none;
     border: none;

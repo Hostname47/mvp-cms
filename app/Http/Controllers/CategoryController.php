@@ -8,6 +8,10 @@ use App\Models\Category;
 
 class CategoryController extends Controller
 {
+    public function create(Request $request) {
+        return view('admin.categories.create');
+    }
+
     public function store(Request $request) {
         $data = $request->validate([
             'title'=>'required|unique:categories|min:2|max:600',
