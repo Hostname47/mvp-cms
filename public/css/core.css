@@ -12,6 +12,10 @@ body {
     display: none;
 }
 
+.block {
+    display: block;
+}
+
 .relative {
     position: relative;
 }
@@ -233,6 +237,10 @@ body {
     resize: none;
 }
 
+.no-underline {
+    text-decoration: none;
+}
+
 .pointer {
     cursor: pointer;
 }
@@ -314,6 +322,10 @@ body {
 
 .move-to-right {
     margin-left: auto;
+}
+
+.move-to-bottom {
+    margin-top: auto !important;
 }
 
 .styled-input {
