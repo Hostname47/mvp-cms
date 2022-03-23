@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Models\Category;
+use App\View\Components\Admin\Category\Viewers\CategoryParentSelection;
 
 class CategoryController extends Controller
 {
@@ -24,5 +25,11 @@ class CategoryController extends Controller
         Category::create($data);
 
         Session::flash('message', 'Category created successfully');
+    }
+
+    public function get_category_parent_selection_viewer() {
+        $viewer = (new CategoryParentSelection());
+        $viewer = $viewer->render(get_object_vars($viewer))->render();
+        return $viewer;
     }
 }

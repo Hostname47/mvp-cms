@@ -36,3 +36,22 @@ function handle_toggling(component) {
         });
     });
 }
+
+function disable_page_scroll() {
+    $('body').attr('style', 'overflow-y: hidden;');
+}
+function enable_page_scroll() {
+    $('body').attr('style', '');
+}
+
+$('.close-global-viewer').each(function() { handle_global_viewer_close_button($(this)); })
+function handle_global_viewer_close_button(button) {
+    button.on('click', function() {
+        let globalviewer = $(this);
+        while(!globalviewer.hasClass('global-viewer')) globalviewer = globalviewer.parent();
+    
+        if($('.global-viewer').not('.none').length == 1)
+            enable_page_scroll();
+        globalviewer.addClass('none');
+    });
+}

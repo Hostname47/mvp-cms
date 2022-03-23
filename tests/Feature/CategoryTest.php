@@ -14,7 +14,7 @@ class CategoryTest extends TestCase
     /** @test */
     public function category_creation() {
         $this->assertCount(0, Category::all());
-        $this->post('/categories', [
+        $this->post('/admin/categories', [
             'title'=>'cool category',
             'title_meta'=>'cool category',
             'slug'=>'cool-category',
@@ -33,7 +33,7 @@ class CategoryTest extends TestCase
             'description'=>'cool description'
         ]);
 
-        $this->post('/categories', [
+        $this->post('/admin/categories', [
             'title'=>'awesome category',
             'title_meta'=>'awesome category',
             'slug'=>'awesome-category',
@@ -60,7 +60,7 @@ class CategoryTest extends TestCase
             'description'=>'nice description',
             'parent_category_id'=>$grandparent->id
         ]);
-        $this->post('/categories', [
+        $this->post('/admin/categories', [
             'title'=>'awesome category',
             'title_meta'=>'awesome category',
             'slug'=>'awesome-category',
@@ -75,14 +75,14 @@ class CategoryTest extends TestCase
 
     /** @test */
     public function category_inputs_validation() {
-        $response = $this->post('/categories', [
+        $response = $this->post('/admin/categories', [
             'title'=>'cool category',
             'slug'=>'cool-category',
             'description'=>'cool description'
         ]);
         $response->assertStatus(302);
         $response->assertSessionHasErrors(['title_meta']);
-        $response = $this->post('/categories', ['parent_category_id'=>8475]);
+        $response = $this->post('/admin/categories', ['parent_category_id'=>8475]);
         $response->assertSessionHasErrors(['title','title_meta','slug','description','parent_category_id']);
     }
 
@@ -95,7 +95,7 @@ class CategoryTest extends TestCase
             'description'=>'cool description'
         ]);
         $response = 
-            $this->post('/categories', ['title'=>'cool category', 'title_meta'=>'cool category','slug'=>'cool-category'])
+            $this->post('/admin/categories', ['title'=>'cool category', 'title_meta'=>'cool category','slug'=>'cool-category'])
             ->assertStatus(302)
             ->assertSessionHasErrors(['title','title_meta','slug']);
     }

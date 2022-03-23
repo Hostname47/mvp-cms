@@ -22,12 +22,13 @@ class PostTest extends TestCase
 
     /** @test */
     public function creating_a_post() {
+        $this->withoutExceptionHandling();
         $user = User::factory()->create();
         $this->actingAs($user);
         $category = Category::factory()->create();
 
         $this->assertCount(0, Post::all());
-        $this->post('/posts', [
+        $this->post('/admin/posts', [
             'title' => 'cool title',
             'title_meta' => 'cool-title',
             'slug' => 'cool title',
@@ -47,14 +48,14 @@ class PostTest extends TestCase
         $this->actingAs($user);
         $category = Category::factory()->create();
 
-        $response = $this->post('/posts');
+        $response = $this->post('/admin/posts');
         $response->assertStatus(302);
         $response->assertSessionHasErrors(['title', 'title_meta', 'slug', 'summary', 'content']);
-        $response = $this->post('/posts', ['title'=>'awesome title']);
+        $response = $this->post('/admin/posts', ['title'=>'awesome title']);
         $response->assertSessionHasErrors(['title_meta', 'slug', 'summary', 'content']);
-        $response = $this->post('/posts', ['title'=>'awesome title']);
+        $response = $this->post('/admin/posts', ['title'=>'awesome title']);
         $response->assertSessionHasErrors(['title_meta', 'slug', 'summary', 'content']);
-        $response = $this->post('/posts', [
+        $response = $this->post('/admin/posts', [
             'title' => 'cool title', 'title_meta' => 'cool-title', 'slug' => 'cool title', 'summary' => 'hello world', 'content' => 'hello world', 'user_id' => $user->id, 'categories'=>[$category->id],
             'status'=> 'invalid-status', 'visibility'=>'invalid-visibility'
         ]);
@@ -68,7 +69,7 @@ class PostTest extends TestCase
         $category1 = Category::factory()->create();
         $category2 = Category::factory()->create();
 
-        $this->post('/posts', [
+        $this->post('/admin/posts', [
             'title' => 'cool title',
             'title_meta' => 'cool-title',
             'slug' => 'cool title',
