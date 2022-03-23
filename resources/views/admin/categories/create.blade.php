@@ -61,30 +61,37 @@
         </div>
     </div>
     <div class="admin-page-content-box">
+        <div class="flex">
+            <div class="informative-message-container flex align-center relative my8">
+                <div class="informative-message-container-left-stripe imcls-green"></div>
+                <p class="no-margin fs13 bold">Category has been created successfully</p>
+                <div class="close-parent close-informative-message-style">✖</div>
+            </div>
+        </div>
         <div id="category-error-container" class="error-container-style flex my8 none">
             <svg class="size13 mr8" style="min-width: 14px; margin-top: 3px" fill="rgb(228, 48, 48)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M501.61,384.6,320.54,51.26a75.09,75.09,0,0,0-129.12,0c-.1.18-.19.36-.29.53L10.66,384.08a75.06,75.06,0,0,0,64.55,113.4H435.75c27.35,0,52.74-14.18,66.27-38S515.26,407.57,501.61,384.6ZM226,167.15a30,30,0,0,1,60.06,0V287.27a30,30,0,0,1-60.06,0V167.15Zm30,270.27a45,45,0,1,1,45-45A45.1,45.1,0,0,1,256,437.42Z"/></svg>
             <p class="error-message bold no-margin fs13" style="margin-top: 1px">Category title is required</p>
         </div>
         <div>
-            <label class="input-label dark fs14" for="title">Category Title</label>
+            <label class="input-label dark fs14" for="category-title">Category Title<span class="error-asterisk ml4">*</span></label>
             <p class="fs12 my2 light-gray">Category meta title and slug will be cloned to match the exact title by default. (you can edit them)</p>
-            <input type="text" id="title" class="styled-input" maxlength="400" autocomplete="off" placeholder='{{ __("Enter post title here") }}'>
+            <input type="text" id="category-title" class="styled-input" maxlength="400" autocomplete="off" placeholder='{{ __("Enter post title here") }}'>
         </div>
         <div class="typical-section-style mt4">
-            <p class="fs12 mb2 light-gray no-margin">Meta title and slug are useful to <strong>improve SEO</strong> of blog post and ranking</p>
+            <p class="fs12 mb2 light-gray no-margin">Meta title and slug are useful to <strong>improve SEO</strong> of blog post and ranking. Please note that meta title and slug should be set in the last step, because once you update your title, the values will be applied automatically to meta title and slug.</p>
             <div>
-                <label class="input-label dark fs13 my2" for="meta-title">Meta title</label>
-                <input type="text" id="meta-title" class="styled-input" maxlength="400" autocomplete="off" placeholder='{{ __("Enter meta title here (displayed by search engines and browser tab title)") }}'>
+                <label class="input-label dark fs13 my2" for="category-meta-title">Meta title<span class="error-asterisk ml4">*</span></label>
+                <input type="text" id="category-meta-title" class="styled-input" maxlength="400" autocomplete="off" placeholder='{{ __("Enter meta title here (displayed by search engines and browser tab title)") }}'>
             </div>
             <div class="mt8">
-                <label class="input-label dark fs13 my2" for="slug">Slug</label>
-                <input type="text" id="slug" class="styled-input" maxlength="400" autocomplete="off" placeholder='{{ __("Enter slug here (e.g. xyz-category-and-more)") }}'>
+                <label class="input-label dark fs13 my2" for="category-slug">Slug<span class="error-asterisk ml4">*</span></label>
+                <input type="text" id="category-slug" class="styled-input" maxlength="400" autocomplete="off" placeholder='{{ __("Enter slug here (e.g. xyz-category-and-more)") }}'>
             </div>
         </div>
         <div class="flex flex-column" style="margin-top: 10px">
-            <label class="input-label dark fs14" for="description">Description</label>
-            <p class="fs12 my2 light-gray">Category description should include all related topics and keyswords</p>
-            <textarea id="description" class="styled-input no-textarea-resize" style="height: 126px;" autocomplete="off" placeholder='Category description'></textarea>
+            <label class="input-label dark fs14" for="category-description">Description<span class="error-asterisk ml4">*</span></label>
+            <p class="fs12 my2 light-gray">Category description should include all related topics and keywords</p>
+            <textarea id="category-description" class="styled-input no-textarea-resize" style="height: 126px;" autocomplete="off" placeholder='Category description'></textarea>
         </div>
         <div class="flex flex-column" style="margin-top: 10px">
             <label class="input-label dark fs14" for="content">Is subcategory ?</label>

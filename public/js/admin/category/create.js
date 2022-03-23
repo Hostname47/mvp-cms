@@ -47,10 +47,11 @@ $('#open-categories-to-chose-parent').on('click', function() {
 
 let create_category_lock = true;
 $('#create-category').on('click', function() {
-    if(!create_category_lock) return;
-    create_category_lock = false;
     // verify category inputs (in category.js file)
     if(!verify_category_inputs()) return;
+    
+    if(!create_category_lock) return;
+    create_category_lock = false;
 
     let button = $(this);
     let spinner = button.find('.spinner');
@@ -60,4 +61,34 @@ $('#create-category').on('click', function() {
     buttonicon.addClass('none');
     spinner.removeClass('opacity0');
     spinner.addClass('inf-rotate');
+
+    $.ajax({
+        type: 'post',
+        url: '/admin/categories',
+        data: {
+            title: $('#category-title').val(),
+            title_meta: $('#category-meta-title').val(),
+            slug: $('#category-slug').val(),
+            description: $('#category-description').val()
+        },
+        success: function(response) {
+            window.location.href = response;
+        },
+        error: function(response) {
+            button.removeClass('dark-bs-disabled');
+            buttonicon.removeClass('none');
+            spinner.addClass('opacity0');
+            spinner.removeClass('inf-rotate');
+
+            let errorObject = JSON.parse(response.responseText);
+			let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+			if(errorObject.errors) {
+				let errors = errorObject.errors;
+				error = errors[Object.keys(errors)[0]][0];
+			}
+
+			display_category_error(false, error);
+            create_category_lock = true;
+        }
+    })
 });

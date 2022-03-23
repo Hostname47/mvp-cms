@@ -1,3 +1,9 @@
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
 $('.toggle-box').each(function() { handle_toggling($(this)); });
 function handle_toggling(component) {
     component.find('.toggle-button').each(function() {
@@ -55,3 +61,22 @@ function handle_global_viewer_close_button(button) {
         globalviewer.addClass('none');
     });
 }
+
+function scroll_to_element(id, top=-60, scrollable=null) {
+    $('#'+id)[0].scrollIntoView(true);
+    if(scrollable == null)
+        $(window).scrollTop($(window).scrollTop() + top);
+    else
+        scrollable.scrollTop(scrollable.scrollTop() + top);
+}
+
+function convertToSlug(text) {
+    return text.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+}
+
+$('.remove-parent').on('click', function() {
+    $(this).parent().remove();
+});
+$('.close-parent').on('click', function() {
+    $(this).parent().addClass('none');
+});

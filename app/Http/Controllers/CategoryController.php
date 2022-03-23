@@ -24,7 +24,7 @@ class CategoryController extends Controller
 
         Category::create($data);
 
-        Session::flash('message', 'Category created successfully');
+        Session::flash('message', 'Category created successfully.');
     }
 
     public function get_category_parent_selection_viewer() {
