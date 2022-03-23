@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{IndexController, AdminController, PostController};
+use App\Http\Controllers\{IndexController, AdminController, PostController, CategoryController};
 
 /*
 |--------------------------------------------------------------------------
@@ -21,4 +21,6 @@ Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.d
 Route::get('/admin/posts/create', [PostController::class, 'create'])->name('create.new.post');
 Route::post('/posts', [PostController::class, 'store']);
 Route::patch('/posts', [PostController::class, 'update']);
+
+Route::post('/categories', [CategoryController::class, 'store']);
 

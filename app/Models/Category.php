@@ -9,5 +9,10 @@ class Category extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
     public $timestamps = false;
+
+    public function parent() {
+        return $this->belongsTo(Category::class, 'parent_category_id');
+    }
 }

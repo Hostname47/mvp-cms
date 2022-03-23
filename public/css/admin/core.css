@@ -5,6 +5,9 @@ body {
 
 #admin-left-panel {
     position: fixed;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
     left: 0;
     top: 0;
     height: 100%;
@@ -18,6 +21,13 @@ body {
     flex-direction: column;
     fill: white;
     stroke: white;
+}
+
+#admin-left-panel-scrollable-box {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    height: 100%;
 }
 
 .admin-first-side-bar-button {
