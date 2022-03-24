@@ -8,6 +8,7 @@ Route::get('/home', [IndexController::class, 'index']);
 
 Route::get('/admin/categories/create', [CategoryController::class, 'create'])->name('create.new.category');
 Route::get('/admin/categories/viewers/category-parent-selection-viewer', [CategoryController::class, 'get_category_parent_selection_viewer']);
+Route::get('/admin/categories/get_subcategories_level', [CategoryController::class, 'get_subcategories_level']);
 Route::post('/admin/categories', [CategoryController::class, 'store']);
 
 Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');

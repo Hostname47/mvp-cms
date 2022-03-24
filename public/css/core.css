@@ -24,6 +24,14 @@ body {
     position: absolute;
 }
 
+.y-auto-overflow {
+    overflow-y: auto;
+}
+
+.x-auto-overflow {
+    overflow-x: auto;
+}
+
 .opacity0 {
     opacity: 0;
 }
@@ -285,6 +293,10 @@ body {
     margin-left: 8px !important;
 }
 
+.ml16 {
+    margin-left: 16px !important;
+}
+
 .mt4 {
     margin-top: 4px !important;
 }
@@ -491,7 +503,6 @@ a, input, textarea {
 }
 /* viewer box styles */
 .viewer-box-style-1 {
-    width: 600px;
     border-radius: 4px;
     background-color: white;
     box-shadow: 0 3px 10px 0px #3c3c3c;

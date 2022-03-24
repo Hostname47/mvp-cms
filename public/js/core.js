@@ -10,14 +10,15 @@ function handle_toggling(component) {
         $(this).on('click', function() {
             let box = $(this);
             while(!box.hasClass('toggle-box')) box = box.parent();
-            let container = box.find('.toggle-container');
+            let container = box.find('.toggle-container').first();
+            let arrow = box.find('.toggle-arrow').first();
 
-            if(container.css('display') == 'none') {
+            if(container.hasClass('none')) {
                 container.removeClass('none');
                 container.addClass('block');
 
-                if(box.find('.toggle-arrow').length) {
-                    box.find('.toggle-arrow').css({
+                if(arrow.length) {
+                    arrow.css({
                         transform:'rotate(90deg)',
                         '-ms-transform':'rotate(90deg)',
                         '-moz-transform':'rotate(90deg)',
@@ -29,8 +30,8 @@ function handle_toggling(component) {
                 container.removeClass('block');
                 container.addClass('none');
 
-                if(box.find('.toggle-arrow').length) {
-                    box.find('.toggle-arrow').css({
+                if(arrow.length) {
+                    arrow.css({
                         transform:'rotate(0deg)',
                         '-ms-transform':'rotate(0deg)',
                         '-moz-transform':'rotate(0deg)',

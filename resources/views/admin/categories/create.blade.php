@@ -20,21 +20,21 @@
 @section('content')
 <main class="flex flex-column">
     <!-- select category parent viewer -->
-    <div id="select-category-parent-viewer" class="global-viewer full-center none">
+    <div id="select-category-parent-viewer" class="global-viewer full-center">
         <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
-        <div class="viewer-box-style-1" style="width: 600px;">
+        <div class="viewer-box-style-1" style="width: 680px;">
             <div class="flex align-center space-between light-gray-border-bottom" style="padding: 10px 14px;">
                 <div class="flex align-center">
                     <svg class="size16 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M167.69,256.92c-4.4-51.22,37.26-92.87,89-89,0,28.5-.05,57,.09,85.51,0,3-.6,3.55-3.55,3.54C224.71,256.86,196.2,256.92,167.69,256.92ZM19.86,3.86c-16.27,0-16.31.05-16.31,16.07q0,94.91,0,189.79c0,7.15,2.26,9.84,8.61,9.85,38.23.05,76.47,0,114.7.08,2.56,0,3.43-.63,3.3-3.27a77.64,77.64,0,0,1,1.45-19.65c8.29-39.74,41.06-66.4,81.87-66.2,5.11,0,6-1.32,6-6.12-.22-36.58-.11-73.15-.12-109.73,0-8.73-2.06-10.81-10.65-10.81H19.86Zm49.8,76.56c-4.07-4.07-4-4.72.84-9.54s5.56-5,9.55-1C90.24,80,100.39,90.26,111.43,101.34c0-5.58,0-10,0-14.31,0-3.5,1.63-5.17,5.14-5,1.64,0,3.29,0,4.94,0,3.26-.07,4.84,1.45,4.82,4.76,0,10.7.07,21.4-.06,32.1-.05,5-2.7,7.64-7.66,7.71-10.7.15-21.41,0-32.11.07-3.27,0-4.87-1.54-4.8-4.82,0-1.48.07-3,0-4.44-.24-3.94,1.48-5.8,5.52-5.66,4.21.14,8.44,0,13.87,0C89.94,100.65,79.78,90.55,69.66,80.42Z"/></svg>
-                    <span class="fs20 bold dark">Select parent category</span>
+                    <span class="fs20 bold dark">Set parent category</span>
                 </div>
                 <div class="pointer fs20 close-global-viewer unselectable">✖</div>
             </div>
             <div class="full-center relative">
                 <div class="global-viewer-content-box full-dimensions y-auto-overflow" style="padding: 14px; min-height: 200px; max-height: 450px">
-                    
+                    <x-admin.category.viewers.category-parent-selection />
                 </div>
-                <div class="loading-box full-center absolute" style="margin-top: -20px">
+                <div class="loading-box full-center absolute none" style="margin-top: -20px">
                     <svg class="loading-spinner size24 black" fill="none" viewBox="0 0 16 16">
                         <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
                         <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
@@ -61,13 +61,15 @@
         </div>
     </div>
     <div class="admin-page-content-box">
+        @if(Session::has('message'))
         <div class="flex">
             <div class="informative-message-container flex align-center relative my8">
                 <div class="informative-message-container-left-stripe imcls-green"></div>
-                <p class="no-margin fs13 bold">Category has been created successfully</p>
+                <p class="no-margin fs13 bold">{{ Session::get('message') }}</p>
                 <div class="close-parent close-informative-message-style">✖</div>
             </div>
         </div>
+        @endif
         <div id="category-error-container" class="error-container-style flex my8 none">
             <svg class="size13 mr8" style="min-width: 14px; margin-top: 3px" fill="rgb(228, 48, 48)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M501.61,384.6,320.54,51.26a75.09,75.09,0,0,0-129.12,0c-.1.18-.19.36-.29.53L10.66,384.08a75.06,75.06,0,0,0,64.55,113.4H435.75c27.35,0,52.74-14.18,66.27-38S515.26,407.57,501.61,384.6ZM226,167.15a30,30,0,0,1,60.06,0V287.27a30,30,0,0,1-60.06,0V167.15Zm30,270.27a45,45,0,1,1,45-45A45.1,45.1,0,0,1,256,437.42Z"/></svg>
             <p class="error-message bold no-margin fs13" style="margin-top: 1px">Category title is required</p>

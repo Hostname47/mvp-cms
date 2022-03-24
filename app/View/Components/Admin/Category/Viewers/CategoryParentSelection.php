@@ -3,17 +3,15 @@
 namespace App\View\Components\Admin\Category\Viewers;
 
 use Illuminate\View\Component;
+use App\Models\Category;
 
 class CategoryParentSelection extends Component
 {
-    /**
-     * Create a new component instance.
-     *
-     * @return void
-     */
+    public $categories;
+
     public function __construct()
     {
-        //
+        $this->categories = Category::whereNull('parent_category_id')->with('subcategories')->get();
     }
 
     /**
@@ -21,8 +19,8 @@ class CategoryParentSelection extends Component
      *
      * @return \Illuminate\Contracts\View\View|\Closure|string
      */
-    public function render()
+    public function render($data=[])
     {
-        return view('components.admin.category.viewers.category-parent-selection');
+        return view('components.admin.category.viewers.category-parent-selection', $data);
     }
 }

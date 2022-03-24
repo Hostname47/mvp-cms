@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Models\Category;
 use App\View\Components\Admin\Category\Viewers\CategoryParentSelection;
+use App\View\Components\Admin\Category\SubcategoriesLevel;
 
 class CategoryController extends Controller
 {
@@ -31,5 +32,15 @@ class CategoryController extends Controller
         $viewer = (new CategoryParentSelection());
         $viewer = $viewer->render(get_object_vars($viewer))->render();
         return $viewer;
+    }
+    
+    public function get_subcategories_level(Request $request) {
+        $cid = $request->validate(['category_id'=>'required|exists:categories,id'])['category_id'];
+        $category = Category::find($cid);
+        $subcategories = $category->subcategories;
+
+        $level = (new SubcategoriesLevel($subcategories));
+        $level = $level->render(get_object_vars($level))->render();
+        return $level;
     }
 }
