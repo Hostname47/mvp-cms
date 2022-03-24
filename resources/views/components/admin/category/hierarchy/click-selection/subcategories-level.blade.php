@@ -2,10 +2,9 @@
     @foreach($categories as $category)
     <div class="toggle-box category-box">
         <div class="align-center pointer hierarchy-category-wrapper">
-            <input type="radio" name="select-category-as-parent" id="category-{{ $category->id }}" class="category-to-be-set-as-parent size14 no-margin mr4" value="{{ $category->id }}">
-            <label for="category-{{ $category->id }}" class="bold dark no-margin unselectable pointer" title="{{ $category->title }}">{{ $category->mintitle }}</label>
+            <a href="" class="bold blue no-underline unselectable" title="{{ $category->title }}">{{ $category->mintitle }}</a>
             @if($category->has_subcategories)
-            <div class="relative toggle-button get-category-subcategories expand-subcategories-button">
+            <div class="relative toggle-button get-clickable-select-category-hierarchy-level expand-subcategories-button">
                 <svg class="toggle-arrow size8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02"><path d="M13.4,1.43l9.35,11a4,4,0,0,1,0,5.18l-9.35,11a4,4,0,1,1-6.1-5.18L14.46,15,7.3,6.61a4,4,0,0,1,6.1-5.18Z"/></svg>
                 <svg class="spinner size10 opacity0 absolute white" fill="none" viewBox="0 0 16 16">
                     <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>

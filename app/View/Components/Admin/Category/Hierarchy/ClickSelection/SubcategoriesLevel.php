@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components\Admin\Category\Hierarchy\SelectParent;
+namespace App\View\Components\Admin\Category\Hierarchy\ClickSelection;
 
 use Illuminate\View\Component;
 
@@ -20,6 +20,6 @@ class SubcategoriesLevel extends Component
      */
     public function render($data=[])
     {
-        return view('components.admin.category.hierarchy.select-parent.subcategories-level', $data);
+        return view('components.admin.category.hierarchy.click-selection.subcategories-level', $data);
     }
 }

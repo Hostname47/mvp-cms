@@ -73,7 +73,7 @@ body {
 }
 
 .light-gray {
-    color: rgb(77, 77, 77);
+    color: rgb(57, 57, 57);
 }
 
 .dark {
@@ -443,7 +443,7 @@ a, input, textarea {
 }
 
 .typical-section-style {
-    padding: 6px;
+    padding: 8px;
     background-color: rgb(247, 247, 247);
     border: 1px solid rgb(209, 209, 209);
     border-radius: 3px;

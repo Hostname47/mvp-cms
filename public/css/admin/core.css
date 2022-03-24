@@ -17,7 +17,7 @@ body {
 
 #admin-left-panel-logo {
     margin: 12px 0;
-    width: 208px;
+    width: 196px;
     flex-direction: column;
     fill: white;
     stroke: white;
@@ -30,11 +30,11 @@ body {
     height: 100%;
 }
 
-.admin-first-side-bar-button {
+.admin-first-sidebar-button {
     border-top: 1px solid #212324;
 }
 
-.admin-side-bar-button {
+.admin-sidebar-button {
     width: 100%;
     padding: 10px 14px;
     box-sizing: border-box;
@@ -47,17 +47,40 @@ body {
     user-select: none;
 }
 
-.admin-side-bar-button:hover {
+.admin-sidebar-button-with-nestedbuttons-box {
+    width: 100%;
+    box-sizing: border-box;
+    color: #ccc;
+    text-decoration: none;
+    background-color: #111;
+    border-bottom: 1px solid #212324;
+    font-size: 12px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.admin-sidebar-button-with-nestedbuttons {
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+}
+
+.admin-sidebar-button-nestedbuttons-box {
+    margin-left: 24px;
+    padding: 0 10px 10px 0;
+}
+
+.admin-sidebar-button:hover {
     color: white;
     background-color: rgb(14, 14, 14);
 }
 
-.admin-side-bar-sub-buttons-box {
+.admin-sidebar-sub-buttons-box {
     margin-top: 10px;
     margin-left: 20px;
 }
 
-.admin-side-bar-sub-button {
+.admin-sidebar-sub-button {
     width: 100%;
     display: flex;
     padding: 6px;
@@ -69,7 +92,7 @@ body {
     user-select: none;
 }
 
-.admin-side-bar-sub-button:hover {
+.admin-sidebar-sub-button:hover {
     color: white;
 }
 

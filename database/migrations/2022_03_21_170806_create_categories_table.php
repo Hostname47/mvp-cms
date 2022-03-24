@@ -19,6 +19,8 @@ class CreateCategoriesTable extends Migration
             $table->string('title_meta'); // SEO
             $table->string('slug');
             $table->text('description');
+            $table->string('status')->default('under-review');
+            $table->integer('priority')->default(100); // Used to arrange categories
             
             $table->unsignedBigInteger('parent_category_id')->nullable();
             $table->foreign('parent_category_id')->references('id')->on('categories')->onDelete('set null');

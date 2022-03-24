@@ -1,17 +1,17 @@
 <?php
 
-namespace App\View\Components\Admin\Category\Hierarchy\SelectParent;
+namespace App\View\Components\Admin\Category\Hierarchy\ClickSelection;
 
 use Illuminate\View\Component;
 use App\Models\Category;
 
-class CategoryParentSelection extends Component
+class SelectViewer extends Component
 {
     public $categories;
-
+    
     public function __construct()
     {
-        $this->categories = Category::whereNull('parent_category_id')->with('subcategories')->get();
+        $this->categories = Category::whereNull('parent_category_id')->get();
     }
 
     /**
@@ -21,6 +21,6 @@ class CategoryParentSelection extends Component
      */
     public function render($data=[])
     {
-        return view('components.admin.category.hierarchy.select-parent.category-parent-selection', $data);
+        return view('components.admin.category.hierarchy.click-selection.select-viewer', $data);
     }
 }
