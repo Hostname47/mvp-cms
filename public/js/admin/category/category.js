@@ -68,7 +68,7 @@ $('#category-title').on('input', function() {
 $('#is-sub-category-toggle-button').on('click', function() {
     let button = $(this);
     let state = $('#is-sub-category');
-    let target_button = $('#open-select-one-category-hierarchy');
+    let target_button = $('#open-select-one-category-viewer');
 
     if(state.val() == 'no') {
         button.find('.off-icon').addClass('none');
@@ -85,10 +85,10 @@ $('#is-sub-category-toggle-button').on('click', function() {
 
 let open_category_parent_lock = true;
 let category_parent_selection_opened = false;
-$('#open-select-one-category-hierarchy').on('click', function() {
+$('#open-select-one-category-viewer').on('click', function() {
     if($(this).hasClass('action-denied')) return;
 
-    let viewer = $('#select-category-parent-viewer');
+    let viewer = $('#select-one-category-viewer');
     viewer.removeClass('none');
 	disable_page_scroll();
 
@@ -100,11 +100,11 @@ $('#open-select-one-category-hierarchy').on('click', function() {
         spinner.addClass('inf-rotate');
 
         $.ajax({
-            url: '/admin/categories/hierarchy/selection/select-one-category',
+            url: '/admin/categories/hierarchy/select-one-category-viewer',
             success: function(response) {
                 viewer.find('.loading-box').remove();
                 viewer.find('.global-viewer-content-box').html(response);
-                handle_select_one_category_subcategories_level_fetch_button(viewer);
+                handle_one_level_subcategories_fetch(viewer);
                 handle_toggling(viewer);
             },
             complete: function() {
@@ -114,9 +114,14 @@ $('#open-select-one-category-hierarchy').on('click', function() {
 	}
 });
 
-$('.get-select-one-category-hierarchy-level').each(function() { handle_select_one_category_subcategories_level_fetch_button($(this).parent()); });
-function handle_select_one_category_subcategories_level_fetch_button(component) {
-    component.find('.get-select-one-category-hierarchy-level').each(function() {
+/**
+ * Handle fetching one level subcategories of a category
+ */
+$('.fetch-one-level-subcategories').each(function() {
+    handle_one_level_subcategories_fetch($(this).parent()); 
+});
+function handle_one_level_subcategories_fetch(component) {
+    component.find('.fetch-one-level-subcategories').each(function() {
         $(this).on('click', function(event) {
             let button = $(this);
             let spinner = button.find('.spinner');
@@ -135,13 +140,16 @@ function handle_select_one_category_subcategories_level_fetch_button(component) 
         
                     let category_id = button.find('.category-id').val();
                     $.ajax({
-                        url: `/admin/categories/hierarchy/selection/select-one-category-level`,
-                        data: { category_id: category_id },
+                        url: `/admin/categories/hierarchy/subcategories/one-level-subcategories`,
+                        data: {
+                            category_id: category_id,
+                            type: button.find('.type').val()
+                        },
                         success: function(response) {
                             box.find('.subcategories-box').html(response);
                             box.find('.subcategories-box').removeClass('none');
                             box.find('.angle-before-subcategories-box').first().removeClass('none'); // first() important here
-                            handle_select_one_category_subcategories_level_fetch_button(box.find('.subcategories-box'));
+                            handle_one_level_subcategories_fetch(box.find('.subcategories-box'));
                             handle_toggling(box.find('.subcategories-box'));
                             state.val('fetched');
                             arrow.removeClass('none');

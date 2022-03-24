@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Models\Category;
+use Illuminate\Validation\Rule;
 use App\View\Components\Admin\Category\Hierarchy\Selection\SelectOneCategory\{SelectOneCategoryViewer, SubcategoriesLevel};
+use App\View\Components\Admin\Category\Hierarchy\ClickSelection\{SubcategoriesLevel as ClickableSubcategoriesLevel};
 
 class CategoryController extends Controller
 {
@@ -43,19 +45,31 @@ class CategoryController extends Controller
             ->with(compact('category'));
     }
 
-    public function get_select_one_category_hierarchy() {
+    public function get_select_one_category_viewer(Request $request) {
         $viewer = (new SelectOneCategoryViewer());
         $viewer = $viewer->render(get_object_vars($viewer))->render();
         return $viewer;
     }
     
-    public function get_select_one_category_hierarchy_level(Request $request) {
-        $cid = $request->validate(['category_id'=>'required|exists:categories,id'])['category_id'];
-        $category = Category::find($cid);
+    public function get_one_level_hierarchy_subcategories(Request $request) {
+        $data = $request->validate([
+            'category_id'=>'required|exists:categories,id',
+            'type'=>['required', Rule::in(['select-one', 'select-many', 'select-by-click'])]
+        ]);
+        $category = Category::find($data['category_id']);
         $subcategories = $category->subcategories;
 
-        $level = (new SubcategoriesLevel($subcategories));
-        $level = $level->render(get_object_vars($level))->render();
-        return $level;
+        switch($data['type']) {
+            case 'select-one':
+                $level = (new SubcategoriesLevel($subcategories));
+                $level = $level->render(get_object_vars($level))->render();
+                return $level;
+            case 'select-many':
+                break;
+            case 'select-by-click':
+                $level = (new ClickableSubcategoriesLevel($subcategories));
+                $level = $level->render(get_object_vars($level))->render();
+                return $level;
+        }
     }
 }

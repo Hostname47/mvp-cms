@@ -3,7 +3,7 @@
     <p class="no-margin fs13 dark">The following hierarchy represents the categories and their subcategories. Select a category to set it as the parent of the current category</p>
     <style>
         .hierarchy-category-wrapper {
-            padding: 8px 4px;
+            padding: 6px;
         }
 
         .categories-hierarchy-level {
@@ -30,7 +30,7 @@
             height: 12px;
             width: 12px;
             position: absolute;
-            left: -18px;
+            left: -16px;
             top: -5px;
         }
     </style>

@@ -7,10 +7,12 @@ use Illuminate\View\Component;
 class SubcategoriesLevel extends Component
 {
     public $categories;
+    public $route = '';
     
-    public function __construct($categories)
+    public function __construct($categories, $route=false)
     {
         $this->categories = $categories;
+        if($route) $this->route = $route;
     }
 
     /**

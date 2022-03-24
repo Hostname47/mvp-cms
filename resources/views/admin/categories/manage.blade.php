@@ -45,41 +45,52 @@
         @endif
 
         @if(is_null($category))
-        <style>
-            .hierarchy-category-wrapper {
-                padding: 8px 4px;
-            }
+            <style>
+                .hierarchy-category-wrapper {
+                    padding: 6px 4px;
+                }
 
-            .expand-subcategories-button {
-                height: 16px;
-                width: 16px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background-color: #1f2324;
-                fill: white;
-                border-radius: 50%;
-                margin-left: 4px;
-                padding: 1px;
-            }
+                .categories-hierarchy-level {
+                    padding: 6px;
+                    background-color: #f4f5f782;
+                    border: 1px solid #dde0e6;
+                    border-radius: 3px;
+                }
 
-            .angle-before-subcategories-box {
-                height: 12px;
-                width: 12px;
-                position: absolute;
-                left: -18px;
-                top: 5px;
-            }
+                .expand-subcategories-button {
+                    height: 16px;
+                    width: 16px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background-color: #1f2324;
+                    fill: white;
+                    border-radius: 4px;
+                    margin-left: 8px;
+                    padding: 1px;
+                }
 
-            .categories-hierarchy-first-box {
-                padding: 8px;
-                background-color: #f2f4f7;
-                border: 1px solid #d8dee6;
-            }
-        </style>
-        <h1 class="dark fs19 no-margin mb4">Manage a category</h1>
-        <p class="dark no-margin mb4">Choose a category from the following hierarchy to configure.</p>
-        <x-admin.category.hierarchy.click-selection.select-viewer />
+                .angle-before-subcategories-box {
+                    height: 12px;
+                    width: 12px;
+                    position: absolute;
+                    left: -24px;
+                    top: 0px;
+                }
+            </style>
+            <h1 class="dark fs19 no-margin mb4">Manage a category</h1>
+            <p class="dark no-margin fs13 mb4">Choose a category from the following hierarchy to configure.</p>
+            <p class="dark no-margin fs13 mb4">The number before every category is the priority order of categories. You can update it to change the order of categories or subcategories by clicking on arrage first and then update.</p>
+            <h2 class="dark fs14 no-margin mb4">Categories hierarchy :</h2>
+            @if($categories->count())
+            <!-- initialize viewer with one deep level and then admin click to expend subcategories -->
+            <x-admin.category.hierarchy.click-selection.subcategories-level :categories="$categories" :route="route('category.manage')"/>
+            @else
+            <div class="typical-section-style flex align-center mt8">
+                <svg class="size14 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                <p class="fs12 dark no-margin">This blog website has no categories for the moment. Please create a new one in create category page.</p>
+            </div>
+            @endif
         @else
         @endif
     </div>

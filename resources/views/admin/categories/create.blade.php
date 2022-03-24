@@ -15,7 +15,7 @@
 @section('content')
 <main class="flex flex-column">
     <!-- select category parent viewer -->
-    <div id="select-category-parent-viewer" class="global-viewer full-center none">
+    <div id="select-one-category-viewer" class="global-viewer full-center none">
         <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
         <div class="viewer-box-style-1" style="width: 680px;">
             <div class="flex align-center space-between light-gray-border-bottom" style="padding: 10px 14px;">
@@ -107,7 +107,7 @@
                     <svg class="on-icon size40 flex none" fill="#4ac4ff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M98,46.07c0-.14,0-.28,0-.41,0-.37-.1-.74-.12-1.13v-.14a12.33,12.33,0,0,1-.32-1.49c-.08-.29-.15-.58-.21-.88h0c-6.25-15.42-18.23-21.32-34.9-20.33-10.24.61-20.54,0-30.8.14C14.31,22.09,1.87,34,1.9,50S14.37,77.85,31.76,78.19c10.26.2,20.56-.41,30.8.15,17.09.92,29.19-5.44,35.27-21.69,0-.32.1-.64.16-.95a13.65,13.65,0,0,1,.11-1.57V46.84C98.07,46.59,98,46.33,98,46.07ZM69.85,66a16,16,0,0,1,.41-32.09A16,16,0,0,1,69.85,66Z"/></svg>
                 </div>
                 <span class="fs8 bold light-gray unselectable mx8">●</span>
-                <div id="open-select-one-category-hierarchy" class="typical-button-style white-bs white-bs-disabled action-denied align-center">
+                <div id="open-select-one-category-viewer" class="typical-button-style white-bs white-bs-disabled action-denied align-center">
                     <input type="hidden" id="parent-category" autocomplete="off">
                     <svg class="size13 mr4" fill="#363942" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M156.49,146.2q-32.57,0-65.12,0c-7.57,0-10.44-2.8-10.46-10.22q-.06-23.25,0-46.51c0-7.21,2.85-10,10.12-10q65.1,0,130.22,0c7.16,0,10,2.85,10,10.17q.1,23.27,0,46.51c0,7.21-3,10.07-10.13,10.08Q188.8,146.24,156.49,146.2Zm64.63,83.56c7.26,0,10.09-2.83,10.12-10.07q.1-23.25,0-46.5c0-7.23-3-10.26-10-10.27q-65.1-.06-130.21,0c-7.11,0-10.09,3-10.11,10.16,0,15,0,30,0,45,0,9.24,2.36,11.65,11.48,11.66q31.82,0,63.64,0C177.71,229.78,199.41,229.82,221.12,229.76ZM30.64,200c0,3.73.86,5.17,4.86,5,6.67-.33,13.38-.09,20.07-.09,13.45,0,13.37,0,12.78-13.5-.12-2.65-1-3.33-3.45-3.25-4.41.14-8.83-.11-13.22.08-3,.14-4.32-.63-4.29-4q.21-29.62,0-59.26c0-3.11,1.16-3.91,4-3.81,4.57.17,9.14.06,13.71,0,1.42,0,3.19.27,3.12-2-.14-4.7,1.63-10.14-.75-13.87-1.65-2.59-7-.58-10.72-.85a17.62,17.62,0,0,0-3.91,0c-4.17.61-5.58-.77-5.52-5.25.27-19.58.12-39.17.12-58.76,0-11.19,0-10.92-11.31-11.26-4.75-.15-5.55,1.58-5.52,5.81.16,27.26.08,54.52.08,81.79C30.71,144.46,30.78,172.21,30.64,200Z"/></svg>
                     <span class="bold fs11 unselectable" style="margin-top: 1px;">Chose parent category</span>
