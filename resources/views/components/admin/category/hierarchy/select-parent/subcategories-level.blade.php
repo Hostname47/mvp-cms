@@ -1,8 +1,8 @@
 <div class="categories-hierarchy-level mt4">
     @foreach($categories as $category)
-    <div class="toggle-box">
+    <div class="toggle-box category-box">
         <div class="align-center pointer hierarchy-category-wrapper">
-            <input type="radio" name="select-category-as-parent" id="category-{{ $category->id }}" class="size14 no-margin mr4">
+            <input type="radio" name="select-category-as-parent" id="category-{{ $category->id }}" class="category-to-be-set-as-parent size14 no-margin mr4" value="{{ $category->id }}">
             <label for="category-{{ $category->id }}" class="bold dark no-margin unselectable pointer" title="{{ $category->title }}">{{ $category->mintitle }}</label>
             @if($category->has_subcategories)
             <div class="relative toggle-button get-category-subcategories expand-subcategories-button">

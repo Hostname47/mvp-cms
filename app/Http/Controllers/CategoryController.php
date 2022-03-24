@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Models\Category;
-use App\View\Components\Admin\Category\Viewers\CategoryParentSelection;
-use App\View\Components\Admin\Category\SubcategoriesLevel;
+use App\View\Components\Admin\Category\Hierarchy\SelectParent\{CategoryParentSelection, SubcategoriesLevel};
 
 class CategoryController extends Controller
 {

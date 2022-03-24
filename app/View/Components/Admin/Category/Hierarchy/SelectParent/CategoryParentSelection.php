@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components\Admin\Category\Viewers;
+namespace App\View\Components\Admin\Category\Hierarchy\SelectParent;
 
 use Illuminate\View\Component;
 use App\Models\Category;
@@ -21,6 +21,6 @@ class CategoryParentSelection extends Component
      */
     public function render($data=[])
     {
-        return view('components.admin.category.viewers.category-parent-selection', $data);
+        return view('components.admin.category.hierarchy.select-parent.category-parent-selection', $data);
     }
 }

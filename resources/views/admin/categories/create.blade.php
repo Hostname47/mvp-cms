@@ -20,7 +20,7 @@
 @section('content')
 <main class="flex flex-column">
     <!-- select category parent viewer -->
-    <div id="select-category-parent-viewer" class="global-viewer full-center">
+    <div id="select-category-parent-viewer" class="global-viewer full-center none">
         <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
         <div class="viewer-box-style-1" style="width: 680px;">
             <div class="flex align-center space-between light-gray-border-bottom" style="padding: 10px 14px;">
@@ -32,9 +32,9 @@
             </div>
             <div class="full-center relative">
                 <div class="global-viewer-content-box full-dimensions y-auto-overflow" style="padding: 14px; min-height: 200px; max-height: 450px">
-                    <x-admin.category.viewers.category-parent-selection />
+                    
                 </div>
-                <div class="loading-box full-center absolute none" style="margin-top: -20px">
+                <div class="loading-box full-center absolute" style="margin-top: -20px">
                     <svg class="loading-spinner size24 black" fill="none" viewBox="0 0 16 16">
                         <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
                         <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
@@ -70,38 +70,44 @@
             </div>
         </div>
         @endif
+        <!-- error container -->
         <div id="category-error-container" class="error-container-style flex my8 none">
             <svg class="size13 mr8" style="min-width: 14px; margin-top: 3px" fill="rgb(228, 48, 48)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M501.61,384.6,320.54,51.26a75.09,75.09,0,0,0-129.12,0c-.1.18-.19.36-.29.53L10.66,384.08a75.06,75.06,0,0,0,64.55,113.4H435.75c27.35,0,52.74-14.18,66.27-38S515.26,407.57,501.61,384.6ZM226,167.15a30,30,0,0,1,60.06,0V287.27a30,30,0,0,1-60.06,0V167.15Zm30,270.27a45,45,0,1,1,45-45A45.1,45.1,0,0,1,256,437.42Z"/></svg>
             <p class="error-message bold no-margin fs13" style="margin-top: 1px">Category title is required</p>
         </div>
-        <div>
+        <!-- title -->
+        <div class="input-container">
             <label class="input-label dark fs14" for="category-title">Category Title<span class="error-asterisk ml4">*</span></label>
             <p class="fs12 my2 light-gray">Category meta title and slug will be cloned to match the exact title by default. (you can edit them)</p>
             <input type="text" id="category-title" class="styled-input" maxlength="400" autocomplete="off" placeholder='{{ __("Enter post title here") }}'>
         </div>
         <div class="typical-section-style mt4">
             <p class="fs12 mb2 light-gray no-margin">Meta title and slug are useful to <strong>improve SEO</strong> of blog post and ranking. Please note that meta title and slug should be set in the last step, because once you update your title, the values will be applied automatically to meta title and slug.</p>
-            <div>
+            <!-- meta title -->
+            <div class="input-container">
                 <label class="input-label dark fs13 my2" for="category-meta-title">Meta title<span class="error-asterisk ml4">*</span></label>
                 <input type="text" id="category-meta-title" class="styled-input" maxlength="400" autocomplete="off" placeholder='{{ __("Enter meta title here (displayed by search engines and browser tab title)") }}'>
             </div>
-            <div class="mt8">
+            <!-- slug -->
+            <div class="input-container mt8">
                 <label class="input-label dark fs13 my2" for="category-slug">Slug<span class="error-asterisk ml4">*</span></label>
                 <input type="text" id="category-slug" class="styled-input" maxlength="400" autocomplete="off" placeholder='{{ __("Enter slug here (e.g. xyz-category-and-more)") }}'>
             </div>
         </div>
-        <div class="flex flex-column" style="margin-top: 10px">
+        <!-- description -->
+        <div class="input-container flex flex-column" style="margin-top: 10px">
             <label class="input-label dark fs14" for="category-description">Description<span class="error-asterisk ml4">*</span></label>
             <p class="fs12 my2 light-gray">Category description should include all related topics and keywords</p>
             <textarea id="category-description" class="styled-input no-textarea-resize" style="height: 126px;" autocomplete="off" placeholder='Category description'></textarea>
         </div>
-        <div class="flex flex-column" style="margin-top: 10px">
-            <label class="input-label dark fs14" for="content">Is subcategory ?</label>
+        <!-- parent category selector -->
+        <div class="input-container flex flex-column" style="margin-top: 10px">
+            <label class="input-label dark fs14">Is subcategory ?<span class="error-asterisk ml4">*</span></label>
             <p class="fs12 my2 light-gray">If this category is a subcategory, then check the following toggle button and choose its parent</p>
             <div class="align-center">
                 <!-- is sub category toggle button -->
-                <div id="sub-category-toggle-button" class="pointer">
-                    <input type="hidden" class="is-sub-category" value="no" autocomplete="off">
+                <div id="is-sub-category-toggle-button" class="pointer">
+                    <input type="hidden" id="is-sub-category" value="no" autocomplete="off">
                     <svg class="off-icon size40 flex" fill="#575757" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M2,46.07c0-.14,0-.28,0-.41,0-.37.1-.74.12-1.13v-.14a12.33,12.33,0,0,0,.32-1.49c.08-.29.15-.58.21-.88h0c6.25-15.42,18.23-21.32,34.9-20.33,10.24.61,20.54,0,30.8.14C85.69,22.09,98.13,34,98.1,50S85.63,77.85,68.24,78.19c-10.26.2-20.56-.41-30.8.15C20.35,79.26,8.25,72.9,2.17,56.65c0-.32-.1-.64-.16-.95a13.65,13.65,0,0,0-.11-1.57V46.84C1.93,46.59,2,46.33,2,46.07ZM30.15,66a16,16,0,0,0-.41-32.09A16,16,0,0,0,30.15,66Z"/></svg>
                     <svg class="on-icon size40 flex none" fill="#4ac4ff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M98,46.07c0-.14,0-.28,0-.41,0-.37-.1-.74-.12-1.13v-.14a12.33,12.33,0,0,1-.32-1.49c-.08-.29-.15-.58-.21-.88h0c-6.25-15.42-18.23-21.32-34.9-20.33-10.24.61-20.54,0-30.8.14C14.31,22.09,1.87,34,1.9,50S14.37,77.85,31.76,78.19c10.26.2,20.56-.41,30.8.15,17.09.92,29.19-5.44,35.27-21.69,0-.32.1-.64.16-.95a13.65,13.65,0,0,1,.11-1.57V46.84C98.07,46.59,98,46.33,98,46.07ZM69.85,66a16,16,0,0,1,.41-32.09A16,16,0,0,1,69.85,66Z"/></svg>
                 </div>
@@ -113,8 +119,10 @@
                 </div>
             </div>
         </div>
+        <div class="typical-section-style mt8 mb4">
+            <p class="fs13 no-margin light-gray">The category will be created with <strong>under review status</strong> until an admin add some blog posts and review its informations, then he can publish it.</p>
+        </div>
         <div style="margin-top: 12px">
-            <p class="fs12 mb4 light-gray">The category will be created with under review status until an admin fill some content and review its informations.</p>
             <div id="create-category" class="typical-button-style dark-bs width-max-content align-center">
                 <div class="relative size13 mr4">
                     <svg class="size13 icon-above-spinner" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M254.64,117.68a33.42,33.42,0,0,1-.55-3.63c-1.72-6-2.06-12.41-3.89-18.48-11.73-38.92-36.07-67-73.74-81.8C132.08-3.66,89.66,2.4,52.48,32.3,15.83,61.78.35,101.19,7.37,147.93c6.71,44.7,32.1,76.16,72.82,95.35,10.6,5,21.91,7.82,33.51,9.51.79.11,1.79-.17,2.44.42.77.14,1.54.3,2.28.49s1.31.12,2,.2h19.09a25.1,25.1,0,0,1,2.74-.23c.43-.08.87-.14,1.3-.2,6.7-1.84,13.67-2.28,20.37-4.27,34.55-10.22,60.17-31.29,77.1-63a121.4,121.4,0,0,0,12.82-40.47c.1-.7-.11-1.57.25-2.21a24.86,24.86,0,0,1,.5-3.46,25.46,25.46,0,0,1,.36-4V119.31C254.8,118.77,254.71,118.23,254.64,117.68Zm-124.93,112c-55.47-.46-100.05-45.34-99.9-100.59C30,73.54,75.14,28.55,130.52,28.81c55.57.25,100.51,45.5,100.15,100.83C230.3,185.25,185,230.13,129.71,229.66ZM96.14,141.21c-6.33,0-12.66-.09-19,0-2.46.05-3.45-.57-3.36-3.23.19-5.67.23-11.36,0-17-.13-3,.79-3.85,3.79-3.81,12,.16,24-.12,36,.17,4,.1,4.8-1.26,4.74-4.94-.22-11.84,0-23.69-.15-35.53,0-3.11.66-4.29,4-4.11,5.51.29,11,.22,16.55,0,2.77-.1,3.59.76,3.55,3.53-.14,12,.14,24-.16,36-.11,4.21,1.26,5.08,5.18,5,11.84-.26,23.7,0,35.54-.16,2.9,0,4,.62,3.86,3.74-.27,5.5-.25,11,0,16.54.14,3-.79,3.85-3.78,3.81-12-.16-24,.12-36-.17-4-.1-4.8,1.26-4.74,4.94.22,11.84,0,23.69.15,35.54.05,3.1-.66,4.28-4,4.1-5.5-.29-11-.22-16.55,0-2.77.1-3.59-.75-3.55-3.53.14-12-.14-24,.16-36,.11-4.21-1.25-5.22-5.19-5C107.51,141.46,101.82,141.21,96.14,141.21Z"/></svg>

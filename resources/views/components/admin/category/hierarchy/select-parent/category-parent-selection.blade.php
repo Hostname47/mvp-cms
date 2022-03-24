@@ -1,6 +1,6 @@
 <div>
     <h2 class="fs16 dark no-margin mb4">Categories hierarchy</h2>
-    <p class="no-margin fs13 dark">The following hierarchy represents the categories and their subcategories. check one of them to be the parent of the current category</p>
+    <p class="no-margin fs13 dark">The following hierarchy represents the categories and their subcategories. Select a category to set it as the parent of the current category</p>
     <style>
         .hierarchy-category-wrapper {
             padding: 8px 4px;
@@ -34,5 +34,5 @@
             top: -5px;
         }
     </style>
-    <x-admin.category.subcategories-level :categories="$categories"/>
+    <x-admin.category.hierarchy.select-parent.subcategories-level :categories="$categories"/>
 </div>
