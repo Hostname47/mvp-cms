@@ -33,16 +33,29 @@ class CategoryController extends Controller
 
     public function manage(Request $request) {
         $category = null;
+        $category_hierarchy = [];
         $categories = [];
         $data = $request->validate(['category'=>'sometimes|exists:categories,slug']);
-        if(isset($data['category']))
+        if(isset($data['category'])) {
             $category = Category::where('slug', $data['category'])->first();
-        else
+            if($category) {
+                // category ancestors
+                $temp = $category;
+                while(!is_null($temp->parent_category_id)) {
+                    array_unshift($category_hierarchy, $temp->ancestor);
+                    $temp = $temp->ancestor;
+                }
+                array_push($category_hierarchy, $category);
+            }
+        }
+        
+        if(is_null($category))
             $categories = Category::whereNull('parent_category_id')->orderBy('priority', 'asc')->get();
 
         return view('admin.categories.manage')
             ->with(compact('categories'))
-            ->with(compact('category'));
+            ->with(compact('category'))
+            ->with(compact('category_hierarchy'));
     }
 
     public function update(Request $request) {

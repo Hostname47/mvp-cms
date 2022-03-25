@@ -19,7 +19,7 @@ class CreateCategoriesTable extends Migration
             $table->string('title_meta'); // SEO
             $table->string('slug');
             $table->text('description');
-            $table->string('status')->default('under-review');
+            $table->string('status')->default('awaiting review');
             $table->integer('priority')->default(100); // Used to arrange categories
             
             $table->unsignedBigInteger('parent_category_id')->nullable();

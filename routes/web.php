@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{IndexController, AdminController, PostController, CategoryController};
 
 Route::get('/test', function() {
-    dd(route('create.new.post', ['test1', 'test2']));
+    dd(\App\Models\Category::find(16)->ancestor()->with('ancestor')->get());
 });
 
 Route::get('/', [IndexController::class, 'index']);

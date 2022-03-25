@@ -12,7 +12,7 @@ class Category extends Model
     protected $guarded = [];
     public $timestamps = false;
 
-    public function parent() {
+    public function ancestor() {
         return $this->belongsTo(Category::class, 'parent_category_id');
     }
 
