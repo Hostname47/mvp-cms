@@ -84,6 +84,10 @@ body {
     font-weight: bold;
 }
 
+.default-weight {
+    font-weight: 400;
+}
+
 .fs24 {
     font-size: 24px !important;
 }
@@ -424,6 +428,7 @@ a, input, textarea {
 .dark-bs {
     color: white;
     background-color: #363942;
+    border: 1px solid #2d3038;
 }
 .dark-bs:hover {
     background-color: #27292f;
@@ -550,4 +555,33 @@ a, input, textarea {
 .imcls-green {
     background-color: #57b55d;
     border: 1px solid #57b55d;
+}
+
+#top-message-box {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    left: 0;
+    top: 20px;
+    width: 100%;
+}
+#top-error-message-container {
+    padding: 10px 30px 10px 10px;
+    background-color: #ffefef;
+    border: 1px solid #f2d6d6;
+    border-radius: 4px;
+    max-width: 680px;
+}
+#remove-top-message-container-button {
+    cursor: pointer;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+}
+#remove-top-message-container-button .x-icon {
+    padding: 4px;
+    border-radius: 2px;
+}
+#remove-top-message-container-button .x-icon:hover {
+    background-color: #eed0d0;
 }

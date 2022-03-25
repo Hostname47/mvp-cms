@@ -21,5 +21,6 @@
 <body>
     @yield('left-panel')
     @yield('content')
+    @include('partials.shared-things')
 </body>
 </html>

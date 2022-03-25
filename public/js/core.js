@@ -81,3 +81,47 @@ $('.remove-parent').on('click', function() {
 $('.close-parent').on('click', function() {
     $(this).parent().addClass('none');
 });
+
+let top_message_timeout;
+function print_top_message(message, type) {
+    clearTimeout(top_message_timeout);
+
+    let top_message_box = $('#top-message-box');
+    top_message_box.removeClass('none');
+
+    switch(type) {
+        case 'normal':
+            break;
+        case 'warning':
+            break;
+        case 'error':
+            $('.top-message-container').addClass('none'); // First close all message containers types
+            let top_error_message_container = $('#top-error-message-container');
+            top_error_message_container.find('.message-text').text(message);
+            top_error_message_container.removeClass('none')
+            break;
+    }
+    
+    // This timeout will wait for 6 sec before close the message
+    top_message_timeout = setTimeout(function() {
+        top_message_box.addClass('none');
+        top_message_box.find('.message-text').text('');
+    }, 6000);
+}
+$('#top-message-box').on({
+    mouseenter: function() {
+        clearTimeout(top_message_timeout);
+    },
+    mouseleave: function() {
+        let top_message_box = $(this);
+        top_message_timeout = setTimeout(function() {
+            top_message_box.addClass('none');
+            top_message_box.find('.message-text').text('');
+        }, 6000);
+    }
+});
+
+$('#remove-top-message-container-button').on('click', function() {
+    clearTimeout(top_message_timeout);
+    $('#top-message-box').addClass('none');
+});

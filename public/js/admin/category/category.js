@@ -31,7 +31,7 @@ function verify_category_inputs() {
     }
     
     let category_selected = false;
-    $('.category-to-be-set-as-parent').each(function() {
+    $('.hierarchy-category-id').each(function() {
         if($(this).is(':checked')) {
             category_selected = true;
             return false;

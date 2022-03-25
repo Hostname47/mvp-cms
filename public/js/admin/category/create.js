@@ -24,7 +24,7 @@ $('#create-category').on('click', function() {
     };
     let issubcategory = $('#is-sub-category').val() == 'yes';
     if(issubcategory) {
-        $('.category-to-be-set-as-parent').each(function() {
+        $('.hierarchy-category-id').each(function() {
             if($(this).is(':checked')) {
                 data.parent_category_id = $(this).val();
                 return false;

@@ -9,6 +9,7 @@
 @push('scripts')
 <script type="module" src="{{ asset('js/simplemde.js') }}" defer></script>
 <script src="{{ asset('js/admin/category/category.js') }}" defer></script>
+<script src="{{ asset('js/admin/category/manage.js') }}" defer></script>
 @endpush
 
 @push('styles')
@@ -79,9 +80,29 @@
                 }
             </style>
             <h1 class="dark fs19 no-margin mb4">Manage a category</h1>
-            <p class="dark no-margin fs13 mb4">Choose a category from the following hierarchy to configure.</p>
-            <p class="dark no-margin fs13 mb4">The number before every category is the priority order of categories. You can update it to change the order of categories or subcategories by clicking on arrage first and then update.</p>
-            <h2 class="dark fs14 no-margin mb4">Categories hierarchy :</h2>
+            <p class="dark no-margin fs13 mb4">Click on a category from the following hierarchy to configure.</p>
+            <div class="typical-section-style my4">
+                <p class="dark no-margin fs13 mb4">The number before every category is the priority order of categories that is used to order categories in the client side. You can update it to change the order of categories or subcategories by clicking on arrage first and then update.</p>
+            </div>
+            <div class="flex align-center">
+                <h2 class="dark fs14 no-margin mb4 mr8">Categories hierarchy :</h2>
+                <div class="flex align-center">
+                    <div id="sort-categories-components-by-priority" class="typical-button-style white-bs flex align-center" style="padding: 4px 8px;">
+                        <svg class="size12 mr4" style="min-width: 12px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><path d="M158.72,140.8c4.15-4.28,8.25-8.63,12.48-12.85,5.68-5.67,12.6-6.18,17.5-1.41s4.6,11.89-1,17.52q-16.15,16.31-32.48,32.46c-5.85,5.79-12.26,5.71-18.15-.13q-16.45-16.33-32.78-32.8c-5.26-5.31-5.52-12-.84-16.81s11.83-4.65,17.18.61c4.38,4.3,8.63,8.74,13.16,13.34,1.25-1.69.76-3.35.77-4.84,0-19.06,0-38.12,0-57.18,0-8,4.33-12.94,11.1-13.18,6.95-.23,12,4.74,12,12.21.07,19.36,0,38.72,0,58.08v4.41ZM114.88,42.33c10.51,0,21,.12,31.53-.07a11.33,11.33,0,0,0,11.32-11.12c.19-6-4-10.81-10.21-11.72a31.93,31.93,0,0,0-4.49-.23q-60.36,0-120.74,0a27.88,27.88,0,0,0-4.92.34A11.32,11.32,0,0,0,8.16,33.59c1.22,5.37,5.95,8.72,12.56,8.73q31.08,0,62.17,0Q98.88,42.33,114.88,42.33ZM98.71,88.4c7.69,0,12.88-4.66,12.93-11.39s-5.13-11.5-12.79-11.52q-39.19-.1-78.38,0c-7.79,0-12.67,4.68-12.59,11.61s5.06,11.27,12.9,11.3c13.06,0,26.13,0,39.19,0C72.88,88.41,85.8,88.45,98.71,88.4ZM20.34,111.64c-7.45.07-12.36,4.56-12.46,11.24s4.65,11.58,12,11.64q22.48.19,45,0c7.38-.07,12.13-4.89,12-11.68-.12-6.54-4.93-11.1-12-11.2-7.49-.09-15,0-22.47,0C35,111.62,27.68,111.57,20.34,111.64Z"/></svg>
+                        <span class="fs12 bold dark unselectable">{{ __('order by priority') }}</span>
+                    </div>
+                    <div id="update-categories-priorities" class="typical-button-style dark-bs flex align-center ml8" style="padding: 4px 8px;">
+                        <div class="relative size12 mr4">
+                            <svg class="size12 icon-above-spinner" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M3.53,137.79a8.46,8.46,0,0,1,8.7-4c2.1.23,4.28-.18,6.37.09,3.6.47,4.61-.68,4.57-4.46-.28-24.91,7.59-47.12,23-66.65C82.8,16.35,151.92,9.31,197.09,47.21c3,2.53,3.53,4,.63,7.08-5.71,6.06-11,12.5-16.28,19-2.13,2.63-3.37,3.21-6.4.73-42.11-34.47-103.77-13.24-116,39.81a72.6,72.6,0,0,0-1.61,17c0,2.36.76,3.09,3.09,3,4.25-.17,8.51-.19,12.75,0,5.46.25,8.39,5.55,4.94,9.66-12,14.24-24.29,28.18-36.62,42.39L4.91,143.69c-.37-.43-.5-1.24-1.38-1Z"/><path d="M216.78,81.86l35.71,41c1.93,2.21,3.13,4.58,1.66,7.58s-3.91,3.54-6.9,3.58c-3.89.06-8.91-1.65-11.33.71-2.1,2-1.29,7-1.8,10.73-6.35,45.41-45.13,83.19-90.81,88.73-28.18,3.41-53.76-3-76.88-19.47-2.81-2-3.61-3.23-.85-6.18,6-6.45,11.66-13.26,17.26-20.09,1.79-2.19,2.87-2.46,5.39-.74,42.83,29.26,99.8,6.7,111.17-43.93,2.2-9.8,2.2-9.8-7.9-9.8-1.63,0-3.27-.08-4.9,0-3.2.18-5.94-.6-7.29-3.75s.13-5.61,2.21-8c7.15-8.08,14.21-16.24,21.31-24.37C207.43,92.59,212,87.31,216.78,81.86Z"/></svg>
+                            <svg class="spinner size12 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
+                                <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                            </svg>
+                        </div>
+                        <div class="fs12 bold white unselectable">{{ __('update priority') }}</div>
+                    </div>
+                </div>
+            </div>
             @if($categories->count())
             <!-- initialize viewer with one deep level and then admin click to expend subcategories -->
             <x-admin.category.hierarchy.click-selection.subcategories-level :categories="$categories" :route="route('category.manage')"/>
