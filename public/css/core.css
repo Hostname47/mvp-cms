@@ -592,3 +592,17 @@ a, input, textarea {
 #remove-top-message-container-button .x-icon:hover {
     background-color: #eed0d0;
 }
+
+.suboptions-container {
+    display: none;
+}
+
+.typical-suboptions-container {
+    position: absolute;
+    top: calc(100% + 2px);
+    padding: 6px;
+    background-color: white;
+    border: 1px solid #d9d9d9;
+    box-shadow: 0 0 4px 0px #62626233;
+    border-radius: 3px;
+}

@@ -121,8 +121,8 @@ $('#update-category-informations').on('click', function() {
             slug: $('#category-slug').val(),
             description: $('#category-description').val(),
         },
-        success: function() {
-            location.reload();
+        success: function(response) {
+            window.location.href = response;
         },
         error: function(response) {
             spinner.removeClass('inf-rotate');
@@ -140,4 +140,18 @@ $('#update-category-informations').on('click', function() {
             update_category_informations_lock = true;
         }
     });
+});
+
+let update_category_status_lock = true;
+$('.update-category-status').on('click', function() {
+    if(!update_category_status_lock || $(this).hasClass('category-status-button-selected')) return;
+    update_category_status_lock = false;
+
+    let button = $(this);
+    let spinner = button.find('.spinner');
+    let status = button.find('.status').val();
+
+    spinner.removeClass('opacity0');
+    spinner.addClass('inf-rotate');
+    button.addClass('category-status-button-selected');
 });

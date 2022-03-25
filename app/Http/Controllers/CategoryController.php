@@ -66,12 +66,15 @@ class CategoryController extends Controller
             'slug'=>"sometimes|min:2|unique:categories,slug,$category_id|max:1000",
             'description'=>'sometimes|min:2|max:4000',
             'priority'=>'sometimes|numeric',
-            'parent_category_id'=>'sometimes|exists:categories,id'
+            'parent_category_id'=>'sometimes|exists:categories,id',
+            'status'=>['sometimes', Rule::in(['awaiting review', 'archived', 'live'])]
         ]);
 
         $category = Category::find($category_id);
         $category->update($data);
         Session::flash('message', 'Category informations have been updated successfully.');
+
+        return route('category.manage', ['category'=>$category->refresh()->slug]);
     }
 
     public function update_categories_priorities(Request $request) {

@@ -207,6 +207,28 @@
                 <div class="category-manage-section category-manage-operations-section">
                     <h2 class="fs16 no-margin dark">Category Settings</h2>
                     <!-- category status -->
+                    <style>
+                        .category-change-box {
+                            padding: 12px;
+                            width: 350px;
+                            right: 0;
+                        }
+                        .category-status-button {
+                            cursor: pointer;
+                            padding: 8px;
+                            border-radius: 3px;
+                            border: 1px solid white;
+                        }
+                        .category-status-button:hover {
+                            background-color: #f9f9f9;
+                            border-color: #e3e6e8;
+                        }
+                        .category-status-button-selected {
+                            cursor: default !important;
+                            background-color: #f9f9f9 !important;
+                            border-color: #e3e6e8 !important;
+                        }
+                    </style>
                     <div class="align-center mt8 mb4">
                         <svg class="size12 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M149.78,24c-1.59-11.62,9.08-21.73,20.46-18.55,15.86,4.42,30,12.39,42.71,22.8A127,127,0,0,1,253.15,86c.53,1.53,1,3.09,1.41,4.66a9.31,9.31,0,0,1,.21,1.79c.11,8.12-5.09,15-12.24,17-7.65,2.05-16.12-1.28-19.6-8.13-2.5-4.92-4.19-10.23-6.67-15.15-11.35-22.5-28.86-38.21-52.52-46.94C156.42,36.46,150.94,32.45,149.78,24ZM248,148.15c-5.4-4.34-11.48-4.85-17.87-1.91-5.92,2.72-8,8.16-10.21,13.63-15,36.7-42.39,57.53-81.85,60.65-40.68,3.21-78.94-22.13-93.12-60A93.32,93.32,0,0,1,75.22,53.15c9-7,19.25-11.31,29.53-15.84a16.9,16.9,0,0,0,9.17-22c-3.4-8.5-12.58-12.77-21.8-9.4C47,22.42,18.44,53.84,7.24,100.79c-.75,3.13-.76,6.43-1.63,9.53A25.14,25.14,0,0,1,5.15,114,25.78,25.78,0,0,1,4.76,118a25.93,25.93,0,0,1-.34,4.68v15.2c.06.39.13.77.18,1.16a32.61,32.61,0,0,1,.67,4.11C7.12,149,7.35,155.3,9.1,161.28q15.65,53.25,64.46,79.36a117.93,117.93,0,0,0,37.87,12.64c.36,0,.71,0,1.07,0a28.75,28.75,0,0,1,7.33.94,29,29,0,0,1,5.65.56h.15c.78,0,1.55,0,2.31.1s1.33-.1,2-.1a29.69,29.69,0,0,1,4.76.39h3.77a27,27,0,0,1,5.53-.58l.6,0a1.88,1.88,0,0,1,1.14-.38c30-3,55.54-15.52,76.82-36.63,14.91-14.79,25.81-32.2,31.52-52.55C256,158.17,253.28,152.42,248,148.15Z"/></svg>
                         <p class="no-margin fs14 dark"><span class="bold">Status</span> : {{ $category->status }}</p>
@@ -215,6 +237,39 @@
                             <div class="button-with-suboptions typical-button-style white-bs width-max-content align-center">
                                 <svg class="size13 icon-above-spinner mr4" fill="#202224" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M3.53,137.79a8.46,8.46,0,0,1,8.7-4c2.1.23,4.28-.18,6.37.09,3.6.47,4.61-.68,4.57-4.46-.28-24.91,7.59-47.12,23-66.65C82.8,16.35,151.92,9.31,197.09,47.21c3,2.53,3.53,4,.63,7.08-5.71,6.06-11,12.5-16.28,19-2.13,2.63-3.37,3.21-6.4.73-42.11-34.47-103.77-13.24-116,39.81a72.6,72.6,0,0,0-1.61,17c0,2.36.76,3.09,3.09,3,4.25-.17,8.51-.19,12.75,0,5.46.25,8.39,5.55,4.94,9.66-12,14.24-24.29,28.18-36.62,42.39L4.91,143.69c-.37-.43-.5-1.24-1.38-1Z"/><path d="M216.78,81.86l35.71,41c1.93,2.21,3.13,4.58,1.66,7.58s-3.91,3.54-6.9,3.58c-3.89.06-8.91-1.65-11.33.71-2.1,2-1.29,7-1.8,10.73-6.35,45.41-45.13,83.19-90.81,88.73-28.18,3.41-53.76-3-76.88-19.47-2.81-2-3.61-3.23-.85-6.18,6-6.45,11.66-13.26,17.26-20.09,1.79-2.19,2.87-2.46,5.39-.74,42.83,29.26,99.8,6.7,111.17-43.93,2.2-9.8,2.2-9.8-7.9-9.8-1.63,0-3.27-.08-4.9,0-3.2.18-5.94-.6-7.29-3.75s.13-5.61,2.21-8c7.15-8.08,14.21-16.24,21.31-24.37C207.43,92.59,212,87.31,216.78,81.86Z"/></svg>
                                 <span class="bold fs11 unselectable">Change status</span>
+                            </div>
+                            <div class="suboptions-container typical-suboptions-container category-change-box">
+                                <h4 class="fs14 bold dark no-margin">Update category status</h4>
+                                <p class="fs13 dark no-margin mt2">The <span class="blue">"{{ $category->title }}"</span> category is currently {{ $category->status }}.</p>
+                                <p class="fs13 dark no-margin mt2">Once the status is updated, <strong>all its sub-categories will be updated</strong> as well.</p>
+                                @if($category->status == 'awaiting review')
+                                <div class="my4 typical-section-style">
+                                    <p class="fs13 dark no-margin">Please review its informations and fill it with some content before publish it.</p>
+                                </div>
+                                @endif
+                                <div calss=""></div>
+                                <div class="update-category-status category-status-button @if($category->status == 'live') category-status-button-selected @endif mt8">
+                                    <input type="hidden" class="status" value="live" autocomplete="off">
+                                    <div class="align-center">
+                                        <p class="no-margin bold dark">Live</p>
+                                        <svg class="spinner size12 opacity0 ml4" fill="none" viewBox="0 0 16 16">
+                                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                            <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                        </svg>
+                                    </div>    
+                                    <p class="fs12 dark no-margin mt2">The category is accessible to the public If It is live.</p>
+                                </div>
+                                <div class="update-category-status category-status-button @if($category->status == 'hidden') category-status-button-selected @endif mt4">
+                                    <input type="hidden" class="status" value="hidden" autocomplete="off">
+                                    <div class="align-center">
+                                        <p class="no-margin bold dark">Hidden</p>
+                                        <svg class="spinner size12 opacity0 ml4" fill="none" viewBox="0 0 16 16">
+                                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                            <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                        </svg>
+                                    </div>
+                                    <p class="fs12 dark no-margin mt2">If category is hidden, all the content within it as well as all its sub-categories will not be accessible to public.</p>
+                                </div>
                             </div>
                         </div>
                     </div>

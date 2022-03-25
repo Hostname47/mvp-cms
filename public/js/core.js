@@ -127,3 +127,39 @@ $('#remove-top-message-container-button').on('click', function() {
     clearTimeout(top_message_timeout);
     $('#top-message-box').addClass('none');
 });
+
+/**
+ * When user click on any place on document we have to close all suboptions containers;
+ * There's a special case where user click on suboptions container which is explained in handle_suboptions_container()
+ */
+document.addEventListener("click", function(event) {
+    $(".suboptions-container").css("display", "none");
+}, false);
+$(".button-with-suboptions").each(function() {
+    handle_suboptions_container($(this).parent());
+});
+
+function handle_suboptions_container(section) {
+    section.find('.button-with-suboptions').each(function() {
+        $(this).on('click', function(event) {
+            let container = $(this).parent().find(".suboptions-container").first();
+            /**
+             * Prevent propagating event to reach the body which close all subotpions 
+             * containers in case the user click on suboptions container area
+             */
+            container.on('click', function(e) { e.stopPropagation(); })
+
+            /**
+             * First we close all previously opened containers, then we open the target one.
+             */
+            if(container.css("display") == "none") {
+                $(".suboptions-container").css("display", "none");
+                container.css("display", "block");
+            }
+            else
+                container.css("display", "none");
+            
+            event.stopPropagation();
+        });
+    })
+}

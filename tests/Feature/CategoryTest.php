@@ -42,7 +42,7 @@ class CategoryTest extends TestCase
         ]);
         $this->assertCount(2, Category::all());
         $category = Category::where('title', 'awesome category')->get()->first();
-        $this->assertEquals('cool category', $category->parent->title);
+        $this->assertEquals('cool category', $category->ancestor->title);
     }
 
     /** @test */
@@ -69,8 +69,8 @@ class CategoryTest extends TestCase
         ]);
         $this->assertCount(3, Category::all());
         $category = Category::where('title', 'awesome category')->get()->first();
-        $this->assertEquals('nice category', $category->parent->title);
-        $this->assertEquals('cool category', $category->parent->parent->title);
+        $this->assertEquals('nice category', $category->ancestor->title);
+        $this->assertEquals('cool category', $category->ancestor->ancestor->title);
     }
 
     /** @test */
