@@ -434,6 +434,7 @@ a, input, textarea {
     background-color: #27292f;
 }
 .dark-bs-disabled {
+    border-color: #7e8088 !important;
     background-color: #7e8088 !important;
     cursor: default !important;
 }
@@ -571,6 +572,7 @@ a, input, textarea {
     border: 1px solid #f2d6d6;
     border-radius: 4px;
     max-width: 680px;
+    min-width: 140px;
 }
 #remove-top-message-container-button {
     cursor: pointer;

@@ -34,3 +34,65 @@ $('#sort-categories-components-by-priority').on('click', function() {
         }
     });
 });
+
+let update_categories_priorities_lock = true;
+$('#update-categories-priorities').on('click', function() {
+    let categories = $('.category-box');
+    let invalid_priority = false;
+    categories.each(function() {
+        if(!parseInt($(this).find('.category-priority').first().val())) {
+            invalid_priority = true;
+            return false;
+        }
+    });
+    if(invalid_priority) {
+        print_top_message('A priority value of one of categories is invalid. (priority should be a number)', 'error');
+        return;
+    }
+
+    if(!update_categories_priorities_lock) return;
+    update_categories_priorities_lock = false;
+
+    let button = $(this);
+	let spinner = button.find('.spinner');
+	let buttonicon = button.find('.icon-above-spinner');
+
+	let categories_ids=[];
+	let categories_priorities=[];
+	categories.each(function() {
+		categories_ids.push($(this).find('.category-id').first().val());
+		categories_priorities.push($(this).find('.category-priority').first().val());
+	});
+
+	spinner.addClass('inf-rotate');
+	spinner.removeClass('opacity0');
+	buttonicon.addClass('none');
+	button.addClass('dark-bs-disabled');
+
+    $.ajax({
+        type: 'patch',
+        url: '/categories/priorities',
+        data: {
+            categories_ids: categories_ids,
+            categories_priorities: categories_priorities
+        },
+        success: function(response) {
+            // location.reload();
+        },
+        error: function(response) {
+            spinner.removeClass('inf-rotate');
+            spinner.addClass('opacity0');
+            buttonicon.removeClass('none');
+            button.removeClass('dark-bs-disabled');
+
+            let errorObject = JSON.parse(response.responseText);
+			let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+			if(errorObject.errors) {
+				let errors = errorObject.errors;
+				error = errors[Object.keys(errors)[0]][0];
+			}
+			print_top_message(error, 'error');
+            update_categories_priorities_lock = true;
+        }
+    })
+});

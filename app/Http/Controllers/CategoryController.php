@@ -38,11 +38,28 @@ class CategoryController extends Controller
         if(isset($data['category']))
             $category = Category::where('slug', $data['category'])->first();
         else
-            $categories = Category::whereNull('parent_category_id')->get();
+            $categories = Category::whereNull('parent_category_id')->orderBy('priority', 'asc')->get();
 
         return view('admin.categories.manage')
             ->with(compact('categories'))
             ->with(compact('category'));
+    }
+
+    public function update_categories_priorities(Request $request) {
+        $data = $request->validate([
+            'categories_ids'=>'required',
+            'categories_ids.*'=>'exists:categories,id',
+            'categories_priorities'=>'required',
+            'categories_priorities.*'=>'numeric',
+        ]);
+
+        $i = 0;
+        foreach($data['categories_ids'] as $cid) {
+            Category::find($cid)->update(['priority'=>$data['categories_priorities'][$i]]);
+            $i++;
+        }
+
+        Session::flash('message', 'Categories priorities have been updated successfully.');
     }
 
     public function get_select_one_category_viewer(Request $request) {

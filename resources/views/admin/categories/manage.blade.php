@@ -99,7 +99,7 @@
                                 <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
                             </svg>
                         </div>
-                        <div class="fs12 bold white unselectable">{{ __('update priority') }}</div>
+                        <div class="fs12 bold white unselectable">{{ __('update priorities') }}</div>
                     </div>
                 </div>
             </div>

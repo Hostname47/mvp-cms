@@ -99,4 +99,35 @@ class CategoryTest extends TestCase
             ->assertStatus(302)
             ->assertSessionHasErrors(['title','title_meta','slug']);
     }
+
+    /** @test */
+    public function changing_categories_priorities() {
+        $category1 = Category::create(['title'=>'category 1','title_meta'=>'category 1','slug'=>'category 1','description'=>'category 1 description','priority'=>1]);
+        $category2 = Category::create(['title'=>'category 2','title_meta'=>'category 2','slug'=>'category 2','description'=>'category 2 description','priority'=>2]);
+        $this->assertEquals(1, $category1->priority);
+        $this->assertEquals(2, $category2->priority);
+        $this->patch('/categories/priorities', [
+            'categories_ids'=>[$category1->id, $category2->id],
+            'categories_priorities'=>[2, 3]
+        ]);
+        $this->assertEquals(2, $category1->refresh()->priority);
+        $this->assertEquals(3, $category2->refresh()->priority);
+    }
+
+    /** @test */
+    public function categories_priorities_update_validation() {
+        $response = $this->patch('/categories/priorities', [
+            'categories_ids'=>[485, 548],
+            'categories_priorities'=>['invalid-priority-value', 3]
+        ]);
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors(['categories_ids.*','categories_priorities.*']);
+
+        $category1 = Category::create(['title'=>'category 1','title_meta'=>'category 1','slug'=>'category 1','description'=>'category 1 description','priority'=>1]);
+        $response = $this->patch('/categories/priorities', [
+            'categories_ids'=>[$category1->id],
+            'categories_priorities'=>[3]
+        ]);
+        $this->assertEquals(3, $category1->refresh()->priority);
+    }
 }

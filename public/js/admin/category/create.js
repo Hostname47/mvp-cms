@@ -51,8 +51,7 @@ $('#create-category').on('click', function() {
 				let errors = errorObject.errors;
 				error = errors[Object.keys(errors)[0]][0];
 			}
-
-			display_category_error(false, error);
+			print_top_message(error, 'error');
             create_category_lock = true;
         }
     })

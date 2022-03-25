@@ -2,7 +2,7 @@
     @foreach($categories as $category)
     <div class="toggle-box category-box">
         <div class="align-center pointer hierarchy-category-wrapper">
-            <input type="text" class="category-priority fs11 mr8" style="padding: 2px; border: 1px solid #c4c4c4; border-radius: 3px; width: 20px;" autocomplete="off" value="{{ $category->priority }}">
+            <input type="numeric" class="category-priority fs11 mr8" style="padding: 2px; border: 1px solid #c4c4c4; border-radius: 3px; width: 20px;" autocomplete="off" value="{{ $category->priority }}">
             <input type="hidden" class="category-id" value="{{ $category->id }}" autocomplete="off">
             <a href="{{ $route . '?category=' . $category->slug }}" class="bold dark no-underline unselectable" title="{{ $category->title }}">
                 • {{ $category->mintitle }}<span class="fs11 gray default-weight ml4">({{ $category->status }})</span>
