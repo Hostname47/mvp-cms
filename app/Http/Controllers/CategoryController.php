@@ -45,6 +45,22 @@ class CategoryController extends Controller
             ->with(compact('category'));
     }
 
+    public function update(Request $request) {
+        $category_id = $request->validate(['category_id'=>'required|exists:categories,id'])['category_id'];
+        $data = $request->validate([
+            'title'=>"sometimes|unique:categories,title,$category_id|min:2|max:600",
+            'title_meta'=>"sometimes|unique:categories,title_meta,$category_id|min:2|max:600",
+            'slug'=>"sometimes|min:2|unique:categories,slug,$category_id|max:1000",
+            'description'=>'sometimes|min:2|max:4000',
+            'priority'=>'sometimes|numeric',
+            'parent_category_id'=>'sometimes|exists:categories,id'
+        ]);
+
+        $category = Category::find($category_id);
+        $category->update($data);
+        Session::flash('message', 'Category informations have been updated successfully.');
+    }
+
     public function update_categories_priorities(Request $request) {
         $data = $request->validate([
             'categories_ids'=>'required',

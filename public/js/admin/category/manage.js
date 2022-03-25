@@ -77,7 +77,7 @@ $('#update-categories-priorities').on('click', function() {
             categories_priorities: categories_priorities
         },
         success: function(response) {
-            // location.reload();
+            location.reload();
         },
         error: function(response) {
             spinner.removeClass('inf-rotate');
@@ -95,4 +95,49 @@ $('#update-categories-priorities').on('click', function() {
             update_categories_priorities_lock = true;
         }
     })
+});
+
+let update_category_informations_lock = true;
+$('#update-category-informations').on('click', function() {
+    if(!verify_category_inputs() || !update_category_informations_lock) return;
+    update_category_informations_lock = false;
+
+    let button = $(this);
+    let spinner = button.find('.spinner');
+    let buttonicon = button.find('.icon-above-spinner');
+
+    spinner.removeClass('opacity0');
+    spinner.addClass('inf-rotate');
+    buttonicon.addClass('none');
+    button.addClass('dark-bs-disabled');
+
+    $.ajax({
+        type: 'patch',
+        url: '/admin/category',
+        data: {
+            category_id: $('#category-id').val(),
+            title: $('#category-title').val(),
+            title_meta: $('#category-meta-title').val(),
+            slug: $('#category-slug').val(),
+            description: $('#category-description').val(),
+        },
+        success: function() {
+            location.reload();
+        },
+        error: function(response) {
+            spinner.removeClass('inf-rotate');
+            spinner.addClass('opacity0');
+            buttonicon.removeClass('none');
+            button.removeClass('dark-bs-disabled');
+
+            let errorObject = JSON.parse(response.responseText);
+			let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+			if(errorObject.errors) {
+				let errors = errorObject.errors;
+				error = errors[Object.keys(errors)[0]][0];
+			}
+			print_top_message(error, 'error');
+            update_category_informations_lock = true;
+        }
+    });
 });

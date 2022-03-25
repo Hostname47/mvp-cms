@@ -3,6 +3,7 @@ let create_category_lock = true;
 $('#create-category').on('click', function() {
     // verify category inputs (in category.js file)
     if(!verify_category_inputs()) return;
+    if(!verify_category_parent()) return;
     
     if(!create_category_lock) return;
     create_category_lock = false;

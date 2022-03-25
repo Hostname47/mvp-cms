@@ -130,4 +130,46 @@ class CategoryTest extends TestCase
         ]);
         $this->assertEquals(3, $category1->refresh()->priority);
     }
+
+    /** @test */
+    public function updating_category() {
+        $c1 = Category::create(['title'=>'cool category-a','title_meta'=>'cool category-a','slug'=>'cool-category-a','description'=>'cool description-a', 'priority'=>4]);
+        $c2 = Category::create(['title'=>'cool category-b','title_meta'=>'cool category-b','slug'=>'cool-category-b','description'=>'cool description-b', 'priority'=>5]);
+        $category = Category::create(['title'=>'cool category','title_meta'=>'cool category','slug'=>'cool-category','description'=>'cool description', 'priority'=>6, 'parent_category_id'=>$c1->id]);
+        $response = $this->patch('/admin/category', [
+            'category_id'=>$category->id,
+            'title'=>'new category',
+            'title_meta'=>'new category',
+            'slug'=>'new-category',
+            'description'=>'new description',
+            'priority'=>9,
+            'parent_category_id'=>$c2->id
+        ]);
+        $response->assertOk();
+        $category->refresh();
+        $this->assertEquals('new category', $category->title);
+        $this->assertEquals('new category', $category->title_meta);
+        $this->assertEquals('new-category', $category->slug);
+        $this->assertEquals('new description', $category->description);
+        $this->assertEquals(9, $category->priority);
+        $this->assertEquals($c2->id, $category->parent_category_id);
+    }
+
+    /** @test */
+    public function updating_category_validation() {
+        $category = Category::create(['title'=>'cool category','title_meta'=>'cool category','slug'=>'cool-category','description'=>'cool description', 'priority'=>6]);
+        $this->patch('/admin/category', [
+            'category_id'=>$category->id,
+            'parent_category_id'=>54845 // Invalid parent category
+        ])->assertStatus(302)->assertSessionHasErrors(['parent_category_id']);
+        $parent = Category::create(['title'=>'parent category','title_meta'=>'parent category','slug'=>'parent-category','description'=>'parent category description', 'priority'=>5]);
+        $this->patch('/admin/category', [
+            'category_id'=>$category->id,
+            'parent_category_id'=>$parent->id // Invalid parent category
+        ])->assertOk();
+        $this->patch('/admin/category', [
+            'category_id'=>$category->id,
+            'title'=>\Illuminate\Support\Str::random(601) // Invalid title length category
+        ])->assertStatus(302)->assertSessionHasErrors(['title']);
+    }
 }

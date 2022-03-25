@@ -12,10 +12,6 @@
 <script src="{{ asset('js/admin/category/manage.js') }}" defer></script>
 @endpush
 
-@push('styles')
-<link href="{{ asset('css/simplemde.css') }}" rel="stylesheet">
-@endpush
-
 @section('content')
 <main class="flex flex-column">
     <div class="admin-top-page-box">
@@ -113,6 +109,105 @@
             </div>
             @endif
         @else
+            <input type="hidden" id="category-id" value="{{ $category->id }}" autocomplete="off">
+            <style>
+                .category-manage-section {
+                    padding: 10px;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                }
+
+                .category-manage-informations-section {
+                    flex: 1;
+                }
+
+                .category-manage-operations-section {
+                    width: 320px;
+                    margin-left: 12px;
+                }
+            </style>
+            <div class="align-center">
+                <h1 class="dark fs19 no-margin mb4">• Manage <span class="blue">"{{ $category->title }}"</span> category</h1>
+                <span class="fs10 unselectable gray mx8">•</span>
+                <a href="{{ route('category.manage') }}" class="blue bold no-underline fs12">Manage other category</a>
+            </div>
+            <p class="no-margin fs13 dark">Here, you can edit category informations, change its status and perform other actions.</p>
+
+            <!-- select category parent viewer -->
+            <div id="select-one-category-viewer" class="global-viewer full-center none">
+                <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
+                <div class="viewer-box-style-1" style="width: 680px;">
+                    <div class="flex align-center space-between light-gray-border-bottom" style="padding: 10px 14px;">
+                        <div class="flex align-center">
+                            <svg class="size16 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M167.69,256.92c-4.4-51.22,37.26-92.87,89-89,0,28.5-.05,57,.09,85.51,0,3-.6,3.55-3.55,3.54C224.71,256.86,196.2,256.92,167.69,256.92ZM19.86,3.86c-16.27,0-16.31.05-16.31,16.07q0,94.91,0,189.79c0,7.15,2.26,9.84,8.61,9.85,38.23.05,76.47,0,114.7.08,2.56,0,3.43-.63,3.3-3.27a77.64,77.64,0,0,1,1.45-19.65c8.29-39.74,41.06-66.4,81.87-66.2,5.11,0,6-1.32,6-6.12-.22-36.58-.11-73.15-.12-109.73,0-8.73-2.06-10.81-10.65-10.81H19.86Zm49.8,76.56c-4.07-4.07-4-4.72.84-9.54s5.56-5,9.55-1C90.24,80,100.39,90.26,111.43,101.34c0-5.58,0-10,0-14.31,0-3.5,1.63-5.17,5.14-5,1.64,0,3.29,0,4.94,0,3.26-.07,4.84,1.45,4.82,4.76,0,10.7.07,21.4-.06,32.1-.05,5-2.7,7.64-7.66,7.71-10.7.15-21.41,0-32.11.07-3.27,0-4.87-1.54-4.8-4.82,0-1.48.07-3,0-4.44-.24-3.94,1.48-5.8,5.52-5.66,4.21.14,8.44,0,13.87,0C89.94,100.65,79.78,90.55,69.66,80.42Z"/></svg>
+                            <span class="fs20 bold dark">Set parent category</span>
+                        </div>
+                        <div class="pointer fs20 close-global-viewer unselectable">✖</div>
+                    </div>
+                    <div class="full-center relative">
+                        <div class="global-viewer-content-box full-dimensions y-auto-overflow" style="padding: 14px; min-height: 200px; max-height: 450px">
+                            
+                        </div>
+                        <div class="loading-box full-center absolute" style="margin-top: -20px">
+                            <svg class="loading-spinner size24 black" fill="none" viewBox="0 0 16 16">
+                                <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- error container -->
+            <div id="category-error-container" class="error-container-style flex my8 none">
+                <svg class="size13 mr8" style="min-width: 14px; margin-top: 3px" fill="rgb(228, 48, 48)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M501.61,384.6,320.54,51.26a75.09,75.09,0,0,0-129.12,0c-.1.18-.19.36-.29.53L10.66,384.08a75.06,75.06,0,0,0,64.55,113.4H435.75c27.35,0,52.74-14.18,66.27-38S515.26,407.57,501.61,384.6ZM226,167.15a30,30,0,0,1,60.06,0V287.27a30,30,0,0,1-60.06,0V167.15Zm30,270.27a45,45,0,1,1,45-45A45.1,45.1,0,0,1,256,437.42Z"/></svg>
+                <p class="error-message bold no-margin fs13" style="margin-top: 1px">Category title is required</p>
+            </div>
+
+            <div class="flex mt8">
+                <div class="category-manage-section category-manage-informations-section">
+                    <h2 class="fs16 no-margin dark">Edit category informations :</h2>
+                    <p class="no-margin mb8 fs13 dark">If the category is live, then the changes will be immediately available to client-side. Please review the changes before update. Updating parent category and subcategories is done separately in the right sidebar.</p>
+                    <!-- title -->
+                    <div class="input-container">
+                        <label class="input-label dark fs13 mb4" for="category-title">Category Title<span class="error-asterisk ml4">*</span></label>
+                        <input type="text" id="category-title" class="styled-input" maxlength="400" autocomplete="off" placeholder='{{ __("Enter post title here") }}' value="{{ $category->title }}">
+                    </div>
+                    <div class="typical-section-style mt4">
+                        <!-- meta title -->
+                        <div class="input-container">
+                            <label class="input-label dark fs12 mb4" for="category-meta-title">Meta title<span class="error-asterisk ml4">*</span></label>
+                            <input type="text" id="category-meta-title" class="styled-input" maxlength="400" autocomplete="off" placeholder='{{ __("Enter meta title here (displayed by search engines and browser tab title)") }}' value="{{ $category->title_meta }}">
+                        </div>
+                        <!-- slug -->
+                        <div class="input-container mt8">
+                            <label class="input-label dark fs12 mb4" for="category-slug">Slug<span class="error-asterisk ml4">*</span></label>
+                            <input type="text" id="category-slug" class="styled-input" maxlength="400" autocomplete="off" placeholder='{{ __("Enter slug here (e.g. xyz-category-and-more)") }}' value="{{ $category->slug }}">
+                        </div>
+                    </div>
+                    <!-- description -->
+                    <div class="input-container flex flex-column" style="margin-top: 10px">
+                        <label class="input-label dark fs13 mb4" for="category-description">Description<span class="error-asterisk ml4">*</span></label>
+                        <textarea id="category-description" class="styled-input no-textarea-resize" style="height: 126px;" autocomplete="off" placeholder='Category description'>{{ $category->description }}</textarea>
+                    </div>
+                    
+                    <div style="margin-top: 12px">
+                        <div id="update-category-informations" class="typical-button-style dark-bs width-max-content align-center">
+                            <div class="relative size13 mr4">
+                                <svg class="size13 icon-above-spinner" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M254.64,117.68a33.42,33.42,0,0,1-.55-3.63c-1.72-6-2.06-12.41-3.89-18.48-11.73-38.92-36.07-67-73.74-81.8C132.08-3.66,89.66,2.4,52.48,32.3,15.83,61.78.35,101.19,7.37,147.93c6.71,44.7,32.1,76.16,72.82,95.35,10.6,5,21.91,7.82,33.51,9.51.79.11,1.79-.17,2.44.42.77.14,1.54.3,2.28.49s1.31.12,2,.2h19.09a25.1,25.1,0,0,1,2.74-.23c.43-.08.87-.14,1.3-.2,6.7-1.84,13.67-2.28,20.37-4.27,34.55-10.22,60.17-31.29,77.1-63a121.4,121.4,0,0,0,12.82-40.47c.1-.7-.11-1.57.25-2.21a24.86,24.86,0,0,1,.5-3.46,25.46,25.46,0,0,1,.36-4V119.31C254.8,118.77,254.71,118.23,254.64,117.68Zm-124.93,112c-55.47-.46-100.05-45.34-99.9-100.59C30,73.54,75.14,28.55,130.52,28.81c55.57.25,100.51,45.5,100.15,100.83C230.3,185.25,185,230.13,129.71,229.66ZM96.14,141.21c-6.33,0-12.66-.09-19,0-2.46.05-3.45-.57-3.36-3.23.19-5.67.23-11.36,0-17-.13-3,.79-3.85,3.79-3.81,12,.16,24-.12,36,.17,4,.1,4.8-1.26,4.74-4.94-.22-11.84,0-23.69-.15-35.53,0-3.11.66-4.29,4-4.11,5.51.29,11,.22,16.55,0,2.77-.1,3.59.76,3.55,3.53-.14,12,.14,24-.16,36-.11,4.21,1.26,5.08,5.18,5,11.84-.26,23.7,0,35.54-.16,2.9,0,4,.62,3.86,3.74-.27,5.5-.25,11,0,16.54.14,3-.79,3.85-3.78,3.81-12-.16-24,.12-36-.17-4-.1-4.8,1.26-4.74,4.94.22,11.84,0,23.69.15,35.54.05,3.1-.66,4.28-4,4.1-5.5-.29-11-.22-16.55,0-2.77.1-3.59-.75-3.55-3.53.14-12-.14-24,.16-36,.11-4.21-1.25-5.22-5.19-5C107.51,141.46,101.82,141.21,96.14,141.21Z"/></svg>
+                                <svg class="spinner size13 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
+                                    <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                    <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                </svg>
+                            </div>
+                            <span class="bold fs11 unselectable">Update category informations</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="category-manage-section category-manage-operations-section">
+
+                </div>
+            </div>
         @endif
     </div>
 </main>

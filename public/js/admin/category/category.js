@@ -3,7 +3,6 @@ function verify_category_inputs() {
     let title_meta = $('#category-meta-title');
     let slug = $('#category-slug');
     let description = $('#category-description');
-    let is_subcategory = $('#is-sub-category').val() == 'yes';
 
     /**
      * Before we verify category inputs, we hide the message and all error asterisks and then we 
@@ -29,7 +28,11 @@ function verify_category_inputs() {
         display_category_error(description, 'category description field is required');
         return false;
     }
-    
+
+    return true;
+}
+function verify_category_parent() {
+    let is_subcategory = $('#is-sub-category').val() == 'yes';
     let category_selected = false;
     $('.hierarchy-category-id').each(function() {
         if($(this).is(':checked')) {

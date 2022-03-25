@@ -375,17 +375,22 @@ a, input, textarea {
     outline: none;
 }
 
+.width-max-content {
+    width: max-content;
+}
+
 .full-height {
     height: 100%;
     box-sizing: border-box;
 }
 
-.width-max-content {
-    width: max-content;
-}
-
 .full-width {
     width: 100%;
+    box-sizing: border-box;
+}
+
+.half-width {
+    width: 50%;
     box-sizing: border-box;
 }
 
