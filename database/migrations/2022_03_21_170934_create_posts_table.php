@@ -19,8 +19,7 @@ class CreatePostsTable extends Migration
             $table->text('title_meta')->nullable();
             $table->text('slug');
             $table->text('summary');
-            $table->string('status')->default('published');
-            $table->string('visibility')->default('public');
+            $table->string('status')->default('draft');
             $table->UnsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
             $table->timestamps();

@@ -163,3 +163,39 @@ function handle_suboptions_container(section) {
         });
     })
 }
+
+document.addEventListener("click", function(event) { 
+    $(".custom-dropdown-box .arrow").css({transform:'rotate(0deg)','-ms-transform':'rotate(0deg)','-moz-transform':'rotate(0deg)','-webkit-transform':'rotate(0deg)','-o-transform':'rotate(0deg)'});
+    $(".custom-dropdown-items-container").css("display", "none");
+}, false);
+$('.custom-dropdown-button').on('click', function(event) {
+    let button = $(this);
+    let container = $(this).parent().find(".custom-dropdown-items-container").first();
+    container.on('click', function(e) { e.stopPropagation(); })
+    if(container.css("display") == "none") {
+        $(".custom-dropdown-items-container").css("display", "none");
+        $(".custom-dropdown-box .arrow").css({transform:'rotate(0deg)','-ms-transform':'rotate(0deg)','-moz-transform':'rotate(0deg)','-webkit-transform':'rotate(0deg)','-o-transform':'rotate(0deg)'});
+        container.css("display", "block");
+        button.find('.arrow').css({transform:'rotate(90deg)','-ms-transform':'rotate(90deg)','-moz-transform':'rotate(90deg)','-webkit-transform':'rotate(90deg)','-o-transform':'rotate(90deg)'});
+    }
+    else {
+        container.css("display", "none");
+        button.find('.arrow').css({transform:'rotate(0deg)','-ms-transform':'rotate(0deg)','-moz-transform':'rotate(0deg)','-webkit-transform':'rotate(0deg)','-o-transform':'rotate(0deg)'});
+    }
+
+    event.stopPropagation();
+});
+$('.custom-dropdown-item').on('click', function() {
+    let button = $(this);
+    let box = button;
+    while(!box.hasClass('custom-dropdown-box')) box = box.parent();
+
+    box.find('.custom-dropdown-button-text').text(button.find('.custom-dropdown-item-text').text());
+    box.find('.selected-value').val(button.find('.custom-dropdown-item-value').val());
+    button.addClass('custom-dropdown-item-selected');
+    // Set selected to button
+    box.find('.custom-dropdown-item').removeClass('custom-dropdown-item-selected custom-dropdown-item-selected-style')
+    button.addClass('custom-dropdown-item-selected custom-dropdown-item-selected-style');
+
+    box.find('.custom-dropdown-items-container').css('display', 'none');
+});

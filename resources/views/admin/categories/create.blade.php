@@ -3,7 +3,7 @@
 @section('title', 'Admin - create category')
 
 @section('left-panel')
-    @include('partials.admin.left-panel', ['page'=>'admin.categories', 'subpage'=>'admin.categories.manage'])
+    @include('partials.admin.left-panel', ['page'=>'admin.categories', 'subpage'=>'admin.categories.create'])
 @endsection
 
 @push('scripts')

@@ -237,7 +237,6 @@ class CategoryTest extends TestCase
 
     /** @test */
     public function set_a_category_as_root_category() {
-        $this->withoutExceptionHandling();
         $parent = Category::create(['title'=>'p1','title_meta'=>'p1','slug'=>'p1','description'=>'p1', 'priority'=>6]);
         $category = Category::create(['title'=>'cool category','title_meta'=>'cool category','slug'=>'cool-category','description'=>'cool description', 'priority'=>6, 'parent_category_id'=>$parent->id]);
         $this->assertEquals($parent->id, $category->parent_category_id);
@@ -246,5 +245,11 @@ class CategoryTest extends TestCase
         ]);
         $category->refresh();
         $this->assertEquals($category->parent_category_id, null);
+    }
+
+    /** @test */
+    public function delete_a_category() {
+        /** We will handle this case finishing all remaining resources like posts and comments.. etc */
+        $this->assertTrue(true);
     }
 }

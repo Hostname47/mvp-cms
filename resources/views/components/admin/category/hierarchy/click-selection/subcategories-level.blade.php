@@ -5,7 +5,7 @@
             <input type="numeric" class="category-priority fs11 mr8" style="padding: 2px; border: 1px solid #c4c4c4; border-radius: 3px; width: 20px;" autocomplete="off" value="{{ $category->priority }}">
             <input type="hidden" class="category-id" value="{{ $category->id }}" autocomplete="off">
             <a href="{{ $route . '?category=' . $category->slug }}" class="bold dark no-underline unselectable" title="{{ $category->title }}">
-                • {{ $category->mintitle }}<span class="fs11 gray default-weight ml4">({{ $category->status }})</span>
+                • {{ $category->mintitle }}<span class="fs11 default-weight ml4">(<span class="@if($category->status == 'live') green @else gray @endif">{{ $category->status }}</span>)</span>
             </a>
             @if($category->has_subcategories)
             <div class="relative toggle-button fetch-one-level-subcategories expand-subcategories-button">
