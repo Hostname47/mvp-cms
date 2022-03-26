@@ -16,6 +16,7 @@ Route::get('/admin/categories/hierarchy/subcategories/one-level-subcategories', 
 Route::post('/admin/categories', [CategoryController::class, 'store']);
 Route::patch('/categories/priorities', [CategoryController::class, 'update_categories_priorities']);
 Route::patch('/admin/category', [CategoryController::class, 'update']);
+Route::patch('/admin/category/status', [CategoryController::class, 'update_status']);
 
 Route::get('/admin/categories/manage', [CategoryController::class, 'manage'])->name('category.manage');
 

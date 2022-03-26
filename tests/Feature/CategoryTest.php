@@ -172,4 +172,44 @@ class CategoryTest extends TestCase
             'title'=>\Illuminate\Support\Str::random(601) // Invalid title length category
         ])->assertStatus(302)->assertSessionHasErrors(['title']);
     }
+
+    /** @test */
+    public function updating_category_status() {
+        $this->withoutExceptionHandling();
+        $category = Category::create(['title'=>'cool category','title_meta'=>'cool category','slug'=>'cool-category','description'=>'cool description', 'status'=>'awaiting review', 'priority'=>6]);
+        $this->assertEquals('awaiting review', $category->status);
+        $this->patch('/admin/category/status', [
+            'category_id'=>$category->id,
+            'status'=>'live'
+        ]);
+        $this->assertEquals('live', $category->refresh()->status);
+    }
+
+    /** @test */
+    public function updating_category_status_will_update_all_its_subcategories_of_all_levels() {
+        $c0 = Category::create(['title'=>'c0','title_meta'=>'c0','slug'=>'c0','description'=>'c0', 'status'=>'awaiting review', 'priority'=>0]);
+        $c1 = Category::create(['title'=>'c1','title_meta'=>'c1','slug'=>'c1','description'=>'c1', 'status'=>'awaiting review', 'priority'=>1, 'parent_category_id'=>$c0->id]);
+        $c2 = Category::create(['title'=>'c2','title_meta'=>'c2','slug'=>'c2','description'=>'c2', 'status'=>'awaiting review', 'priority'=>2, 'parent_category_id'=>$c1->id]);
+        $c3 = Category::create(['title'=>'c3','title_meta'=>'c3','slug'=>'c3','description'=>'c3', 'status'=>'awaiting review', 'priority'=>3, 'parent_category_id'=>$c2->id]);
+        
+        $this->patch('/admin/category/status', [
+            'category_id'=>$c0->id,
+            'status'=>'live'
+        ]);
+
+        $c0->refresh(); $c1->refresh(); $c2->refresh(); $c3->refresh();
+        $this->assertEquals('live', $c0->status);
+        $this->assertEquals('live', $c1->status);
+        $this->assertEquals('live', $c2->status);
+        $this->assertEquals('live', $c3->status);
+    }
+
+    /** @test */
+    public function update_category_status_validation() {
+        $c0 = Category::create(['title'=>'c0','title_meta'=>'c0','slug'=>'c0','description'=>'c0', 'status'=>'awaiting review', 'priority'=>0]);
+        $this->patch('/admin/category/status', ['category_id'=>$c0->id, 'status'=>'invalide status'])
+            ->assertStatus(302)->assertSessionHasErrors(['status']);
+        $this->patch('/admin/category/status', ['category_id'=>985478, 'status'=>'invalide status'])
+            ->assertStatus(302)->assertSessionHasErrors(['category_id','status']);
+    }
 }

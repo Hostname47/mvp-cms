@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
 use App\Models\Category;
 use Illuminate\Validation\Rule;
 use App\View\Components\Admin\Category\Hierarchy\Selection\SelectOneCategory\{SelectOneCategoryViewer, SubcategoriesLevel};
@@ -67,7 +68,6 @@ class CategoryController extends Controller
             'description'=>'sometimes|min:2|max:4000',
             'priority'=>'sometimes|numeric',
             'parent_category_id'=>'sometimes|exists:categories,id',
-            'status'=>['sometimes', Rule::in(['awaiting review', 'archived', 'live'])]
         ]);
 
         $category = Category::find($category_id);
@@ -75,6 +75,37 @@ class CategoryController extends Controller
         Session::flash('message', 'Category informations have been updated successfully.');
 
         return route('category.manage', ['category'=>$category->refresh()->slug]);
+    }
+
+    public function update_status(Request $request) {
+        $data = $request->validate([
+            'category_id'=>'required|exists:categories,id',
+            'status'=>['sometimes', Rule::in(['awaiting review', 'hidden', 'live'])]
+        ]);
+        
+        $category = Category::find($data['category_id']);
+        // First update category status
+        $category->update(['status'=>$data['status']]);
+        // Then we fetch all its subcategories in all levels to update them as well
+        $subcategories = DB::select("
+            with recursive subcategories (id, parent_category_id) as (
+                select id, parent_category_id
+                from categories
+                where parent_category_id = " . $category->id . "
+                union all
+                select c.id, c.parent_category_id
+                from categories c
+                inner join subcategories
+                        on c.parent_category_id = subcategories.id
+            )
+            select * from subcategories;
+        ");
+
+        collect($subcategories)->each(function($subcategory) use ($data) {
+            Category::find($subcategory->id)->update(['status'=>$data['status']]);
+        });
+
+        Session::flash('message', 'The category "'.$category->title.'" status has been updated successfully. (all its subcategories\' status are updated as well)');
     }
 
     public function update_categories_priorities(Request $request) {
