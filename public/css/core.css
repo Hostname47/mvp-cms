@@ -330,7 +330,8 @@ body {
 }
 
 .mx8 {
-    margin: 0 8px;
+    margin-left: 8px !important;
+    margin-right: 8px !important;
 }
 
 .unselectable {
@@ -609,4 +610,10 @@ a, input, textarea {
     border: 1px solid #d9d9d9;
     box-shadow: 0 0 4px 0px #62626233;
     border-radius: 3px;
+}
+
+.simple-line-separator {
+    height: 1px;
+    width: 100%;
+    background-color: #f0f0f0;
 }

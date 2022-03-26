@@ -71,7 +71,7 @@ $('#category-title').on('input', function() {
 $('#is-sub-category-toggle-button').on('click', function() {
     let button = $(this);
     let state = $('#is-sub-category');
-    let target_button = $('#open-select-one-category-viewer');
+    let target_button = $('.open-select-one-category-viewer');
 
     if(state.val() == 'no') {
         button.find('.off-icon').addClass('none');
@@ -88,7 +88,7 @@ $('#is-sub-category-toggle-button').on('click', function() {
 
 let open_category_parent_lock = true;
 let category_parent_selection_opened = false;
-$('#open-select-one-category-viewer').on('click', function() {
+$('.open-select-one-category-viewer').on('click', function() {
     if($(this).hasClass('action-denied')) return;
 
     let viewer = $('#select-one-category-viewer');
@@ -109,9 +109,19 @@ $('#open-select-one-category-viewer').on('click', function() {
                 viewer.find('.global-viewer-content-box').html(response);
                 handle_one_level_subcategories_fetch(viewer);
                 handle_toggling(viewer);
+                category_parent_selection_opened = true;
+            },
+            error: function(response) {
+                let errorObject = JSON.parse(response.responseText);
+                let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+                if(errorObject.errors) {
+                    let errors = errorObject.errors;
+                    error = errors[Object.keys(errors)[0]][0];
+                }
+                print_top_message(error, 'error');
             },
             complete: function() {
-				category_parent_selection_opened = true;
+				open_category_parent_lock = true;
             }
         });
 	}

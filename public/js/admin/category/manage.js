@@ -182,3 +182,26 @@ $('.update-category-status').on('click', function() {
         }
     })
 });
+
+$('#open-category-parent-confirmation-dialog').on('click', function() {
+    if(!category_parent_selection_opened) {
+        print_top_message('Please open selection viewer and select the new parent category first', 'error');
+        return;
+    }
+    if($('.hierarchy-category-id:checked').length == 0) {
+        print_top_message('Please chose a parent category from selection viewer before confirming the change', 'error');
+        return;
+    }
+    
+    let selected_category_id = $('.hierarchy-category-id:checked').parent().find('.category-id').val();
+    let selected_category_title = $('.hierarchy-category-id:checked').parent().find('.category-title-text').text();
+    if($('#category-id').val() == selected_category_id) {
+        print_top_message('A category could not be parent to itself. Please choose another parent category', 'error');
+        return;
+    }
+
+    let viewer = $('#update-category-parent-viewer');
+    viewer.find('.new-selected-category-parent').text(selected_category_title);
+    viewer.find('.new-parent-category-id').val(selected_category_id);
+    viewer.removeClass('none');
+});

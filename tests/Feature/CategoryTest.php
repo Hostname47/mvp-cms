@@ -212,4 +212,13 @@ class CategoryTest extends TestCase
         $this->patch('/admin/category/status', ['category_id'=>985478, 'status'=>'invalide status'])
             ->assertStatus(302)->assertSessionHasErrors(['category_id','status']);
     }
+
+    /** @test */
+    public function a_category_coul_not_be_a_parent_to_itself() {
+        $category = Category::create(['title'=>'cool category','title_meta'=>'cool category','slug'=>'cool-category','description'=>'cool description', 'priority'=>6]);
+        $this->patch('/admin/category', [
+            'category_id'=>$category->id,
+            'parent_category_id'=>$category->id
+        ])->assertStatus(422);
+    }
 }

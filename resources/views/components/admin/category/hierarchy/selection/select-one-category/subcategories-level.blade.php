@@ -2,8 +2,9 @@
     @foreach($categories as $category)
     <div class="toggle-box category-box">
         <div class="align-center pointer hierarchy-category-wrapper">
+            <input type="hidden" class="category-id" value="{{ $category->id }}" autocomplete="off">
             <input type="radio" name="hierarchy-category-id" id="category-{{ $category->id }}" class="hierarchy-category-id size14 no-margin mr4" value="{{ $category->id }}">
-            <label for="category-{{ $category->id }}" class="bold dark no-margin unselectable pointer" title="{{ $category->title }}">{{ $category->mintitle }}</label>
+            <label for="category-{{ $category->id }}" class="bold dark category-title-text no-margin unselectable pointer" title="{{ $category->title }}">{{ $category->mintitle }}</label>
             @if($category->has_subcategories)
             <div class="relative toggle-button fetch-one-level-subcategories expand-subcategories-button">
                 <svg class="toggle-arrow size8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02"><path d="M13.4,1.43l9.35,11a4,4,0,0,1,0,5.18l-9.35,11a4,4,0,1,1-6.1-5.18L14.46,15,7.3,6.61a4,4,0,0,1,6.1-5.18Z"/></svg>

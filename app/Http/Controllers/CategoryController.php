@@ -70,6 +70,8 @@ class CategoryController extends Controller
             'parent_category_id'=>'sometimes|exists:categories,id',
         ]);
 
+        if($category_id == $data['parent_category_id']) abort(422, 'A category could not be a parent to itself');
+
         $category = Category::find($category_id);
         $category->update($data);
         Session::flash('message', 'Category informations have been updated successfully.');
