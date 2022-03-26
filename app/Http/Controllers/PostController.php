@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Session;
-use App\Models\Post;
+use App\Models\{Post,Category};
 
 class PostController extends Controller
 {
     public function create() {
-        return view('admin.posts.create');
+        $root_categories = Category::whereNull('parent_category_id')->orderBy('priority', 'asc')->get();
+        return view('admin.posts.create')
+            ->with(compact('root_categories'));
     }
 
     public function store(Request $request) {

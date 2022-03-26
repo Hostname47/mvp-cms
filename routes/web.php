@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{IndexController, AdminController, PostController, CategoryController};
 
 Route::get('/test', function() {
-    dd(\App\Models\Category::find(16)->ancestor()->with('ancestor')->get());
+    dd(\App\Models\Category::find(8)->descendants()->count());
 });
 
 Route::get('/', [IndexController::class, 'index']);

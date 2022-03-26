@@ -18,3 +18,8 @@
     padding: 9px;
     border-bottom: 1px solid #d0dae1;
 }
+
+.post-management-cateories-box {
+    overflow-y: auto;
+    max-height: 214px;
+}

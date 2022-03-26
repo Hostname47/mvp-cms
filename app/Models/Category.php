@@ -8,9 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     use HasFactory;
-
+    use \Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
+    
     protected $guarded = [];
     public $timestamps = false;
+    
+    public function getParentKeyName() {
+        return 'parent_category_id';
+    }
 
     public function ancestor() {
         return $this->belongsTo(Category::class, 'parent_category_id');
