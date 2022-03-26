@@ -110,6 +110,13 @@ class CategoryController extends Controller
         Session::flash('message', 'The category "'.$category->title.'" status has been updated successfully. (all its subcategories\' status are updated as well)');
     }
 
+    public function set_as_root(Request $request) {
+        $category_id = $request->validate(['category_id'=>'required|exists:categories,id'])['category_id'];
+        $category = Category::find($category_id);
+        $category->update(['parent_category_id'=>null]);
+        Session::flash('message', '"'.$category->title.'" category is now a root category.');
+    }
+
     public function update_categories_priorities(Request $request) {
         $data = $request->validate([
             'categories_ids'=>'required',

@@ -233,6 +233,11 @@ $('#update-category-parent').on('click', function() {
             location.reload();
         },
         error: function(response) {
+            spinner.removeClass('inf-rotate');
+            spinner.addClass('opacity0');
+            buttonicon.removeClass('none');
+            button.removeClass('dark-bs-disabled');
+
             let errorObject = JSON.parse(response.responseText);
 			let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
 			if(errorObject.errors) {
@@ -240,6 +245,48 @@ $('#update-category-parent').on('click', function() {
 				error = errors[Object.keys(errors)[0]][0];
 			}
 			print_top_message(error, 'error');
+            update_category_parent_lock = true;
+        }
+    });
+});
+
+let set_category_as_root_lock = true;
+$('#set-category-as-root').on('click', function() {
+    if(!set_category_as_root_lock) return;
+    set_category_as_root_lock = false;
+
+    let button = $(this);
+    let spinner = button.find('.spinner');
+	let buttonicon = button.find('.icon-above-spinner');
+
+    spinner.addClass('inf-rotate');
+	spinner.removeClass('opacity0');
+	buttonicon.addClass('none');
+	button.addClass('dark-bs-disabled');
+
+    $.ajax({
+        type: 'patch',
+        url: '/admin/category/set-as-root',
+        data: {
+            category_id: button.find('.category-id').val(),
+        },
+        success: function(response) {
+            location.reload();
+        },
+        error: function(response) {
+            spinner.removeClass('inf-rotate');
+            spinner.addClass('opacity0');
+            buttonicon.removeClass('none');
+            button.removeClass('dark-bs-disabled');
+
+            let errorObject = JSON.parse(response.responseText);
+			let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+			if(errorObject.errors) {
+				let errors = errorObject.errors;
+				error = errors[Object.keys(errors)[0]][0];
+			}
+			print_top_message(error, 'error');
+            set_category_as_root_lock = true;
         }
     });
 });

@@ -104,6 +104,10 @@ body {
     font-size: 19px !important;
 }
 
+.fs18 {
+    font-size: 18px;
+}
+
 .fs17 {
     font-size: 17px;
 }
@@ -570,6 +574,7 @@ a, input, textarea {
 
 #top-message-box {
     position: fixed;
+    z-index: 55555;
     display: flex;
     justify-content: center;
     left: 0;
