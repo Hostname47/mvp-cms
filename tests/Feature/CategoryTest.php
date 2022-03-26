@@ -214,7 +214,20 @@ class CategoryTest extends TestCase
     }
 
     /** @test */
-    public function a_category_coul_not_be_a_parent_to_itself() {
+    public function update_category_parent() {
+        $parent1 = Category::create(['title'=>'p1','title_meta'=>'p1','slug'=>'p1','description'=>'p1', 'priority'=>6]);
+        $parent2 = Category::create(['title'=>'p1','title_meta'=>'p1','slug'=>'p1','description'=>'p1', 'priority'=>6]);
+        $category = Category::create(['title'=>'cool category','title_meta'=>'cool category','slug'=>'cool-category','description'=>'cool description', 'priority'=>6, 'parent_category_id'=>$parent1->id]);
+        $this->patch('/admin/category', [
+            'category_id'=>$category->id,
+            'parent_category_id'=>$parent2->id
+        ]);
+        $category->refresh();
+        $this->assertEquals($parent2->id, $category->parent_category_id);
+    }
+
+    /** @test */
+    public function a_category_could_not_be_a_parent_to_itself() {
         $category = Category::create(['title'=>'cool category','title_meta'=>'cool category','slug'=>'cool-category','description'=>'cool description', 'priority'=>6]);
         $this->patch('/admin/category', [
             'category_id'=>$category->id,

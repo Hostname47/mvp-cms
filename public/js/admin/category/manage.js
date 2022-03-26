@@ -205,3 +205,41 @@ $('#open-category-parent-confirmation-dialog').on('click', function() {
     viewer.find('.new-parent-category-id').val(selected_category_id);
     viewer.removeClass('none');
 });
+
+let update_category_parent_lock = true;
+$('#update-category-parent').on('click', function() {
+    if(!update_category_parent_lock) return;
+    update_category_parent_lock = false;
+
+    let button = $(this);
+    let spinner = button.find('.spinner');
+	let buttonicon = button.find('.icon-above-spinner');
+    let category_id = button.find('.category-id').val();
+    let new_parent_category_id = button.find('.new-parent-category-id').val();
+
+    spinner.addClass('inf-rotate');
+	spinner.removeClass('opacity0');
+	buttonicon.addClass('none');
+	button.addClass('dark-bs-disabled');
+
+    $.ajax({
+        type: 'patch',
+        url: '/admin/category',
+        data: {
+            category_id: category_id,
+            parent_category_id: new_parent_category_id
+        },
+        success: function(response) {
+            location.reload();
+        },
+        error: function(response) {
+            let errorObject = JSON.parse(response.responseText);
+			let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+			if(errorObject.errors) {
+				let errors = errorObject.errors;
+				error = errors[Object.keys(errors)[0]][0];
+			}
+			print_top_message(error, 'error');
+        }
+    });
+});

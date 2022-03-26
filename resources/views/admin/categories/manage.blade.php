@@ -147,9 +147,17 @@
                     <div class="full-center relative">
                         <div class="global-viewer-content-box full-dimensions y-auto-overflow" style="padding: 14px; min-height: 200px; max-height: 450px">
                             <h2 class="fs16 dark no-margin">Change parent category</h2>
-                            <p class="fs13 no-margin mt4 dark">The following section concerns changing the parent category of the current category.</p>
+                            <p class="fs13 no-margin mt4 dark">The following section concerns setting and changing the parent category of the current category.</p>
                             <p class="fs14 dark mt8 mb4 bold">• Category : <span class="blue">{{ $category->title }}</span></p>
+                            @if(is_null($category->parent_category_id))
+                            <div class="typical-section-style align-center mt8 mb4">
+                                <svg class="size14 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                                <p class="fs14 dark no-margin"><em>This category is a <strong>root category</strong> with no ancestors categories</em>.</p>
+                            </div>
+                            @endif
+                            @if(!is_null($category->parent_category_id))
                             <p class="fs14 dark mt8 mb4 bold">• Current parent category : <span class="blue">{{ $category->ancestor->title }}</span></p>
+                            @endif
                             <div class="simple-line-separator mx8 my8"></div>
                             <p class="fs13 dark mt8 mb4">Not the right parent category ? Click on selection viewer to change the selected parent category.</p>
                             <div class="flex">
@@ -158,7 +166,7 @@
                             </div>
 
                             <div class="flex" style="margin-top: 24px">
-                                <div id="update-categories-priorities" class="typical-button-style dark-bs align-center move-to-right" style="padding: 5px 8px;">
+                                <div id="update-category-parent" class="typical-button-style dark-bs align-center move-to-right" style="padding: 5px 8px;">
                                     <div class="relative size12 mr4">
                                         <svg class="size12 flex icon-above-spinner" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M3.53,137.79a8.46,8.46,0,0,1,8.7-4c2.1.23,4.28-.18,6.37.09,3.6.47,4.61-.68,4.57-4.46-.28-24.91,7.59-47.12,23-66.65C82.8,16.35,151.92,9.31,197.09,47.21c3,2.53,3.53,4,.63,7.08-5.71,6.06-11,12.5-16.28,19-2.13,2.63-3.37,3.21-6.4.73-42.11-34.47-103.77-13.24-116,39.81a72.6,72.6,0,0,0-1.61,17c0,2.36.76,3.09,3.09,3,4.25-.17,8.51-.19,12.75,0,5.46.25,8.39,5.55,4.94,9.66-12,14.24-24.29,28.18-36.62,42.39L4.91,143.69c-.37-.43-.5-1.24-1.38-1Z"/><path d="M216.78,81.86l35.71,41c1.93,2.21,3.13,4.58,1.66,7.58s-3.91,3.54-6.9,3.58c-3.89.06-8.91-1.65-11.33.71-2.1,2-1.29,7-1.8,10.73-6.35,45.41-45.13,83.19-90.81,88.73-28.18,3.41-53.76-3-76.88-19.47-2.81-2-3.61-3.23-.85-6.18,6-6.45,11.66-13.26,17.26-20.09,1.79-2.19,2.87-2.46,5.39-.74,42.83,29.26,99.8,6.7,111.17-43.93,2.2-9.8,2.2-9.8-7.9-9.8-1.63,0-3.27-.08-4.9,0-3.2.18-5.94-.6-7.29-3.75s.13-5.61,2.21-8c7.15-8.08,14.21-16.24,21.31-24.37C207.43,92.59,212,87.31,216.78,81.86Z"/></svg>
                                         <svg class="spinner size12 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
@@ -395,7 +403,21 @@
                                 <svg class="size12 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M172,60.41c-14,6.48-27.8,12.84-41.56,19.26a3.38,3.38,0,0,1-3.18-.24c-13.52-6.27-27-12.5-41-18.93,1.11-1.59,2-3,3-4.32Q107.64,31.61,126,7a21.11,21.11,0,0,0,1.79-2.07l.45-.5.32-.27.72,0h.05l.81.72c.49,1,1.56,1.66,2.18,2.49C145.38,25,158.55,42.53,172,60.41Zm78.65,118c-8.19-10.93-16.48-21.77-24.48-32.83-2.05-2.84-3.5-3.14-6.62-1.55-28.73,14.67-57.6,29.08-86.34,43.75-3.12,1.59-5.41,1.47-8.47-.09C96,173.07,67.1,158.63,38.35,144c-2.82-1.43-4.31-1.31-6.27,1.39Q20.08,162,7.55,178.16c-2.07,2.68-2.16,3.76,1,5.56q58.73,33.57,117.28,67.47c2.47,1.43,4.19,1.3,6.52-.1,8.5-5.07,17.13-9.91,25.71-14.85Q203.4,210.13,248.74,184c1.37-.79,3-1.25,3.87-2.82C251.94,180.27,251.28,179.35,250.6,178.45ZM75.43,81.2c-9.88,13.11-19.59,26.33-29.6,39.34-2.16,2.81-2.07,3.83,1.15,5.44q39.6,19.77,79.05,39.84a5.76,5.76,0,0,0,5.84.08q39.67-20.15,79.48-40.05c3.28-1.63,2.74-2.76.91-5.17-9.95-13.06-19.82-26.17-29.47-39.44-2-2.75-3.43-2.69-6.23-1.36-14.49,6.89-29.14,13.44-43.64,20.31a8,8,0,0,1-7.69.07C110.74,93.38,96.13,86.74,81.56,80c-1-.47-2-1-3.23-1.52C76.61,78.43,76.22,80.14,75.43,81.2Z"/></svg>
                                 <h3 class="fs14 dark no-margin">Set this category as subcategory</h3>
                             </div>
+                            <div class="flex hierarchy-item">
+                                <p class="bold fs12 my4 blue">• {{ $category->mintitle }}</p>
+                            </div>
                             <p class="fs13 dark no-margin my4">Right now, this category <strong>is a root category</strong> (does not have a parent). You could make it as sub-category to other category.</p>
+                            <div class="align-center space-between mt8">
+                                <div class="align-center open-select-one-category-viewer">
+                                    <svg class="size13 mr4" fill="#2ca0ff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M95.74,74.64c-28,0-56-.07-84,.08-4,0-5.75-.65-5.43-5.15a167.92,167.92,0,0,0,0-18.09c-.11-3.15.52-4.43,4.14-4.42q85.62.18,171.24,0c3.48,0,4.42,1.11,4.28,4.43a131.8,131.8,0,0,0,0,17.44c.48,5.32-1.89,5.82-6.31,5.79-26.92-.18-53.85-.09-80.77-.09Zm84.68,138.23c4.61,0,5.92-1.26,5.61-5.74a163.63,163.63,0,0,1,0-17.44c.13-3.3-.82-4.49-4.3-4.49q-85.62.13-171.24,0c-3.68,0-4.21,1.39-4.1,4.49a133.7,133.7,0,0,1-.05,16.14c-.46,5.35.73,7.22,6.75,7.13,27.56-.41,55.14-.18,82.71-.18C124,212.76,152.2,212.65,180.42,212.87Zm57.83-16.74c4.43-4.4,8.66-9,13.34-13.16,3.08-2.71,2.58-4.26-.12-6.92-14-13.75-27.55-27.91-41.68-41.5-4.06-3.91-3.48-5.78.21-9.36,14.07-13.66,27.72-27.75,41.66-41.53,2.44-2.41,3.1-3.88.2-6.46A169,169,0,0,1,238.59,64c-2.6-2.89-4.07-2.3-6.54.19q-31.17,31.46-62.61,62.64c-2.18,2.17-2.94,3.45-.29,6.07,21.3,21.06,42.42,42.29,63.61,63.47.74.74,1.53,1.43,2.62,2.44C236.43,197.81,237.37,197,238.25,196.13ZM139.15,144c4.13,0,5.78-.92,5.51-5.34-.38-6-.23-12.07,0-18.1.1-3.17-.63-4.6-4.24-4.59q-65,.15-130,0c-3.09,0-4.14.89-4,4,.21,6.25.36,12.53,0,18.75C6,143.14,7.64,144,11.73,144c21.13-.19,42.26-.09,63.39-.09C96.46,143.89,117.8,143.79,139.15,144Z"/></svg>
+                                    <span class="blue bold pointer fs13">Selection viewer</span>
+                                </div>
+                                <div id="open-category-parent-confirmation-dialog" class="typical-button-style dark-bs width-max-content flex align-center" style="padding: 5px 8px;">
+                                    <input type="hidden" class="current-category-title" value="{{ $category->title }}" autocomplete="off">
+                                    <svg class="size12 flex mr4" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M3.53,137.79a8.46,8.46,0,0,1,8.7-4c2.1.23,4.28-.18,6.37.09,3.6.47,4.61-.68,4.57-4.46-.28-24.91,7.59-47.12,23-66.65C82.8,16.35,151.92,9.31,197.09,47.21c3,2.53,3.53,4,.63,7.08-5.71,6.06-11,12.5-16.28,19-2.13,2.63-3.37,3.21-6.4.73-42.11-34.47-103.77-13.24-116,39.81a72.6,72.6,0,0,0-1.61,17c0,2.36.76,3.09,3.09,3,4.25-.17,8.51-.19,12.75,0,5.46.25,8.39,5.55,4.94,9.66-12,14.24-24.29,28.18-36.62,42.39L4.91,143.69c-.37-.43-.5-1.24-1.38-1Z"/><path d="M216.78,81.86l35.71,41c1.93,2.21,3.13,4.58,1.66,7.58s-3.91,3.54-6.9,3.58c-3.89.06-8.91-1.65-11.33.71-2.1,2-1.29,7-1.8,10.73-6.35,45.41-45.13,83.19-90.81,88.73-28.18,3.41-53.76-3-76.88-19.47-2.81-2-3.61-3.23-.85-6.18,6-6.45,11.66-13.26,17.26-20.09,1.79-2.19,2.87-2.46,5.39-.74,42.83,29.26,99.8,6.7,111.17-43.93,2.2-9.8,2.2-9.8-7.9-9.8-1.63,0-3.27-.08-4.9,0-3.2.18-5.94-.6-7.29-3.75s.13-5.61,2.21-8c7.15-8.08,14.21-16.24,21.31-24.37C207.43,92.59,212,87.31,216.78,81.86Z"/></svg>
+                                    <div class="fs12 bold white unselectable">{{ __('Confirm parent') }}</div>
+                                </div>
+                            </div>
                         </div>
                         @else
                         <div>
