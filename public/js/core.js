@@ -198,4 +198,5 @@ $('.custom-dropdown-item').on('click', function() {
     button.addClass('custom-dropdown-item-selected custom-dropdown-item-selected-style');
 
     box.find('.custom-dropdown-items-container').css('display', 'none');
+    $('.custom-dropdown-button .arrow').css({transform:'rotate(0deg)','-ms-transform':'rotate(0deg)','-moz-transform':'rotate(0deg)','-webkit-transform':'rotate(0deg)','-o-transform':'rotate(0deg)'});
 });

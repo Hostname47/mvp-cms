@@ -1,5 +1,6 @@
 #post-management-panel {
     position: fixed;
+    overflow-y: auto;
     top: 0;
     right: 0;
     height: 100%;
@@ -22,4 +23,50 @@
 .post-management-cateories-box {
     overflow-y: auto;
     max-height: 214px;
+}
+
+.post-tags-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid #bbb;
+    border-radius: 3px;
+    padding: 4px;
+    cursor: text;
+    gap: 4px;
+}
+
+.post-tags-input {
+    flex: 1; /* take remaining of tags space */
+    background: unset;
+    border: unset;
+    padding: 4px;
+    margin-left: 2px;
+    box-sizing: border-box;
+    min-width: 50px;
+}
+
+.post-tag-item {
+    padding: 3px 8px;
+    background-color: #dee7ec;
+    border-radius: 2px;
+}
+
+.tag-text {
+    display: inline-block;
+    white-space: nowrap;
+    max-width: 170px;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+}
+
+.post-tag-remove {
+    font-size: 11px;
+    font-weight: bold;
+    margin-left: 3px;
+    width: 12px;
+    height: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
 }
