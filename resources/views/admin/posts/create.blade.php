@@ -18,6 +18,61 @@
 @endpush
 
 @section('content')
+<!-- media feature -->
+<div id="set-featured-image-viewer" class="global-viewer full-center">
+    <div class="featured-image-viewer-box">
+        <div class="flex align-center space-between light-gray-border-bottom" style="padding: 10px 14px;">
+            <div class="flex align-center">
+                <svg class="size16 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M255.79,53.73V205.58c-.3.36-.74.67-.87,1.07C247.5,230.37,232,241.8,207.16,241.8H126.38c-25.62,0-51.24.19-76.86-.07C25.24,241.49,5.21,222,5.07,198.05q-.39-68,0-136.1C5.24,38.67,25,18.77,48.29,18.64c55.16-.32,110.32-.16,165.48,0,9.39,0,17.8,3.42,25.32,9.08C247.9,34.3,252.73,43.43,255.79,53.73ZM130.48,217.38h78.86c13.59,0,20.89-7.18,20.9-20.72q0-65.88,0-131.77c0-12.57-8.28-20.82-20.87-20.83q-79.11,0-158.21,0c-12.65,0-20.78,8.16-20.79,20.81q0,65.88,0,131.76c0,12.75,8,20.73,20.76,20.74Q90.81,217.4,130.48,217.38ZM186.8,196c12,.49,18.25-10.89,13.66-21.05-8.78-19.41-16.89-39.13-25.19-58.75-2.18-5.16-5.34-9-11.24-9.59-6.35-.68-10.86,2.12-14.3,7.4q-7.17,11.09-14.86,21.83c-5.45,7.62-14.89,7.95-20.86.94-1.59-1.86-3-3.84-4.57-5.74-7.45-9.27-17-8.85-23.5,1.18C77,146.08,68.33,160,59.44,173.89c-3.15,4.91-4.09,10-1.36,15.25,2.83,5.41,7.86,6.76,13.64,6.72,19.27-.1,38.53,0,57.79,0C148.61,195.82,167.73,195.26,186.8,196ZM208.66,81c0-10-9.18-19.16-19.11-19.12a19,19,0,0,0-.08,38C199.6,100,208.63,91.07,208.66,81Z"/></svg>
+                <span class="fs20 bold dark">Featured image</span>
+            </div>
+            <div class="pointer size24 full-center fs20 close-global-viewer unselectable">✖</div>
+        </div>
+        <div id="featured-image-viewer-content-box" class="flex flex-column">
+            <!-- top meny to choose upload or galery medias selection -->
+            <div class="menu-buttons-style-1-wrapper px8 mt8">
+                <div class="menu-toggle-button menu-button-style-1 menu-button-style-1-selected">
+                    <span>Upload medias</span>
+                    <div class="selection-strip menu-button-style-1-selected-strip"></div>
+                </div>
+                <div class="menu-toggle-button menu-button-style-1">
+                    <span>Medias library</span>
+                    <div class="selection-strip menu-button-style-1-selected-strip none"></div>
+                </div>
+            </div>
+            <div class="full-dimensions flex flex-column">
+                <!-- upload files -->
+                <div class="full-height full-center flex-column">
+                    <label for="upload-post-featured-image" class="fs18 dark flex">Upload files</label>
+                    <div class="relative button-style-1 overflow-hidden" style="margin: 12px 0;">
+                        <input type="file" title="" id="upload-post-featured-image" class="post-featured-image hide-file-input-style">
+                        <span class="fs14 dark">Select Files</span>
+                    </div>
+                    <p class="fs13 no-margin light-gray">Maximum upload file size is : 5 MB</p>
+                </div>
+                <!-- medias library section -->
+                <div>
+
+                </div>
+
+                <!-- bottom strip -->
+                <div class="media-viewer-bottom-section">
+                    <div class="typical-button-style dark-bs align-center move-to-right set-featured-image" style="padding: 6px 12px;">
+                        <div class="relative size14 mr4">
+                            <svg class="size14 icon-above-spinner" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M58.55,251.39c-9.94,0-15.72-5.59-14.54-14.83,2.77-21.61,6-43.16,9.09-64.73.47-3.3,2.39-5.94,4.78-8.32q40.7-40.6,81.26-81.35c2.57-2.58,3.89-2.93,6.66-.13q33.54,33.93,67.46,67.48c2.68,2.66,2.69,4,0,6.66q-40.81,40.49-81.33,81.27c-3.74,3.76-8.24,4.81-13.18,5.5-18.75,2.6-37.48,5.38-56.22,8.08C61.12,251.22,59.69,251.29,58.55,251.39ZM246.34,89.65c-7.19-36.3-51.11-53.73-81.14-32.19-2,1.43-4.84,2.3-1.42,5.68q34.36,34,68.35,68.34c2.69,2.72,3.75,1.61,5.39-.68,6.47-9.06,9.79-19.13,10.1-32.08C247.74,96.86,247.05,93.25,246.34,89.65ZM142.6,34.57c8.12-.06,13.3-5.32,13.34-12.81s-5.25-13-13.16-13.07c-38.95-.12-77.9-.07-116.84-.06a12.77,12.77,0,0,0-12,7.09C9.22,24.6,15.6,34.48,26.37,34.58c19.37.18,38.74.05,58.11.05S123.23,34.74,142.6,34.57ZM102.41,87c8.81-.07,14.4-5.3,14.35-13.17-.06-7.69-5.36-12.76-14-12.79q-37.92-.16-75.83,0c-8.84,0-14.56,5.36-14.48,13.06s6,12.86,14.73,12.91c12.64.07,25.28,0,37.92,0C77.54,87,90,87.05,102.41,87ZM51.69,139.25c7.56-.53,12.85-5.92,13-12.81.18-7.06-5.31-13-13.09-13.33-8.73-.36-17.5-.36-26.23,0-7.64.32-12.8,5.78-12.94,12.77-.15,7.24,5.11,12.81,13,13.36,4.25.31,8.53.06,12.81.06C42.75,139.31,47.24,139.57,51.69,139.25Z"/></svg>
+                            <svg class="spinner size14 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
+                                <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                            </svg>
+                        </div>
+                        <span class="bold fs12 unselectable">Set featured image</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 <main class="flex flex-column">
     <div class="admin-top-page-box">
         <div class="align-center">
@@ -39,7 +94,7 @@
         <div>
             <div>
                 <div class="align-center">
-                    <label class="input-label dark fs14" for="title">Post Title</label>
+                    <label class="input-label dark fs14" for="post-title">Post Title</label>
                     <span class="fs8 bold light-gray unselectable mx8">●</span>
                     <div id="toggle-meta-and-slug" class="align-center pointer">
                         <span class="blue fs12 bold unselectable">meta & slug</span>
@@ -55,11 +110,11 @@
         <div id="meta-and-slug-section" class="typical-section-style mt4 none">
             <p class="fs12 mb2 light-gray no-margin">Meta title and slug are useful to <strong>improve SEO</strong> of blog post and ranking. By default, meta title and slug match the title, but you can edit them.</p>
             <div class="mb8">
-                <label class="input-label dark fs13 my2" for="meta-title">Meta title</label>
+                <label class="input-label dark fs13 my2" for="post-meta-title">Meta title</label>
                 <input type="text" id="post-meta-title" class="styled-input" maxlength="400" autocomplete="off" placeholder='{{ __("Enter meta title here (displayed by search engines and browser tab title)") }}'>
             </div>
             <div>
-                <label class="input-label dark fs13 my2" for="slug">Slug</label>
+                <label class="input-label dark fs13 my2" for="post-slug">Slug</label>
                 <input type="text" id="post-slug" class="styled-input" maxlength="400" autocomplete="off" placeholder='{{ __("Enter slug here (e.g. 3-reasons-why-mouad-is-so-special)") }}'>
             </div>
         </div>
@@ -76,7 +131,7 @@
                     </div>
                 </div>
                 <div id="content-summary-section" class="typical-section-style my4 none">
-                    <label class="input-label dark fs13 mb4" for="content-summary">Summary</label>
+                    <label class="input-label dark fs13 mb4" for="post-content-summary">Summary</label>
                     <textarea id="post-content-summary" class="styled-input no-textarea-resize" autocomplete="off" placeholder='short summary that displayed in blog posts cards (with read more button)'></textarea>
                 </div>
                 <p class="fs12 my2 light-gray no-margin">Summary will be taken from the first 50 words of the first paragraph by default. (you can update it) </p>
@@ -211,20 +266,40 @@
                 @endforeach
             </div>
         </div>
-        <div class="post-management-panel-section">
-            <div class="align-center post-management-panel-section-header">
+        <div class="post-management-panel-section toggle-box">
+            <div class="align-center post-management-panel-section-header pointer toggle-button">
                 <svg class="size12 ml4 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M155.32,3.3h78.12c11.19,3.13,18.39,10.25,21.48,21.49v79.09c-1.28.34-1,1.52-1.23,2.38-2.34,9.41-7.32,17.21-14.14,24Q183.26,186.47,127,242.73C112.72,257,95,256.88,80.58,242.52Q48.47,210.45,16.4,178.35C.91,162.85,1,145.73,16.51,130.17Q67,79.62,117.55,29C128.53,18,139.19,6.68,155.32,3.3ZM197.4,86.52a26,26,0,1,0-25.7-26.18A25.94,25.94,0,0,0,197.4,86.52Z"/></svg>
                 <h2 class="dark fs12 no-margin">Tags</h2>
+                <svg class="toggle-arrow size7 mr4 move-to-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02">
+                    <path d="M13.4,1.43l9.35,11a4,4,0,0,1,0,5.18l-9.35,11a4,4,0,1,1-6.1-5.18L14.46,15,7.3,6.61a4,4,0,0,1,6.1-5.18Z"/>
+                </svg>
             </div>
-            <div class="post-management-panel-section-content">
-                <p class="no-margin fs13 dark bold">Enter post tags</p>
+            <div class="post-management-panel-section-content toggle-container none">
+                <label class="fs13 dark bold" for="post-tags-input">Enter post tags</label>
                 <p class="no-margin fs12 light-gray mt2">(separate tags by pressing enter)</p>
                 <div class="post-tags-wrapper mt4">
-                    <input type="text" class="post-tags-input" autocomplete="off">
+                    <input type="text" id="post-tags-input" class="post-tags-input" autocomplete="off">
                 </div>
                 <div class="post-tag-item-skeleton post-tag-item align-center none">
                     <span class="fs13 tag-text">post tag</span>
                     <span class="unselectable post-tag-remove remove-parent">✖</span>
+                </div>
+            </div>
+        </div>
+        <div class="post-management-panel-section">
+            <div class="align-center post-management-panel-section-header pointer">
+                <svg class="size12 ml4 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M255.79,53.73V205.58c-.3.36-.74.67-.87,1.07C247.5,230.37,232,241.8,207.16,241.8H126.38c-25.62,0-51.24.19-76.86-.07C25.24,241.49,5.21,222,5.07,198.05q-.39-68,0-136.1C5.24,38.67,25,18.77,48.29,18.64c55.16-.32,110.32-.16,165.48,0,9.39,0,17.8,3.42,25.32,9.08C247.9,34.3,252.73,43.43,255.79,53.73ZM130.48,217.38h78.86c13.59,0,20.89-7.18,20.9-20.72q0-65.88,0-131.77c0-12.57-8.28-20.82-20.87-20.83q-79.11,0-158.21,0c-12.65,0-20.78,8.16-20.79,20.81q0,65.88,0,131.76c0,12.75,8,20.73,20.76,20.74Q90.81,217.4,130.48,217.38ZM186.8,196c12,.49,18.25-10.89,13.66-21.05-8.78-19.41-16.89-39.13-25.19-58.75-2.18-5.16-5.34-9-11.24-9.59-6.35-.68-10.86,2.12-14.3,7.4q-7.17,11.09-14.86,21.83c-5.45,7.62-14.89,7.95-20.86.94-1.59-1.86-3-3.84-4.57-5.74-7.45-9.27-17-8.85-23.5,1.18C77,146.08,68.33,160,59.44,173.89c-3.15,4.91-4.09,10-1.36,15.25,2.83,5.41,7.86,6.76,13.64,6.72,19.27-.1,38.53,0,57.79,0C148.61,195.82,167.73,195.26,186.8,196ZM208.66,81c0-10-9.18-19.16-19.11-19.12a19,19,0,0,0-.08,38C199.6,100,208.63,91.07,208.66,81Z"/></svg>
+                <h2 class="dark fs12 no-margin">Featured image</h2>
+                <svg class="toggle-arrow size7 mr4 move-to-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02">
+                    <path d="M13.4,1.43l9.35,11a4,4,0,0,1,0,5.18l-9.35,11a4,4,0,1,1-6.1-5.18L14.46,15,7.3,6.61a4,4,0,0,1,6.1-5.18Z"/>
+                </svg>
+            </div>
+            <div class="post-management-panel-section-content">
+                <div class="featured-image-upload-box open-feature-image-viewer">
+                    <span class="bold dark">Upload featured image</span>
+                </div>
+                <div class="uploaded-featured-image-box">
+
                 </div>
             </div>
         </div>

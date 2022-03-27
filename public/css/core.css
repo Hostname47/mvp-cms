@@ -24,6 +24,10 @@ body {
     position: absolute;
 }
 
+.overflow-hidden {
+    overflow: hidden;
+}
+
 .y-auto-overflow {
     overflow-y: auto;
 }
@@ -94,6 +98,10 @@ body {
 
 .bold {
     font-weight: bold;
+}
+
+.border-box {
+    box-sizing: border-box;
 }
 
 .default-weight {
@@ -333,6 +341,11 @@ body {
     padding-left: 8px !important;
 }
 
+.px8 {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+}
+
 .m4 {
     margin: 4px;
 }
@@ -359,6 +372,14 @@ body {
 .blue-link {
     color: #2ca0ff;
     text-decoration: none;
+}
+
+.hide-file-input-style {
+    position: absolute;
+    height: 220%;
+    bottom: 0;
+    left: 0;
+    cursor: pointer;
 }
 
 .move-to-right {
@@ -684,4 +705,49 @@ a, input, textarea {
 }
 .custom-dropdown-item-selected-style {
     background-color: rgb(238, 238, 238) !important;
+}
+
+.menu-buttons-style-1-wrapper {
+    position: relative;
+    display: flex;
+    border-bottom: 1px solid #c8c8c8;
+}
+
+.menu-button-style-1 {
+    position: relative;
+    cursor: pointer;
+    padding: 8px 12px;
+    font-size: 13px;
+    color: #202224;
+    border: 1px solid white;
+    border-bottom: unset;
+}
+.menu-button-style-1:hover {
+    color: #2ca0ff;
+}
+.menu-button-style-1-selected {
+    color: #202224 !important;
+    border-radius: 3px 3px 0 0;
+    border-color: #c8c8c8;
+}
+
+.menu-button-style-1-selected-strip {
+    position: absolute;
+    height: 1px;
+    width: 100%;
+    background-color: white;
+    left: 0;
+    bottom: -1px;
+}
+
+.button-style-1 {
+    cursor: pointer;
+    background-color: #f6f9fb;
+    display: flex;
+    padding: 12px 21px;
+    border: 1px solid #d7dbdf;
+    border-radius: 3px;
+}
+.button-style-1:hover {
+    background-color: #ecf2f7;
 }

@@ -200,3 +200,13 @@ $('.custom-dropdown-item').on('click', function() {
     box.find('.custom-dropdown-items-container').css('display', 'none');
     $('.custom-dropdown-button .arrow').css({transform:'rotate(0deg)','-ms-transform':'rotate(0deg)','-moz-transform':'rotate(0deg)','-webkit-transform':'rotate(0deg)','-o-transform':'rotate(0deg)'});
 });
+
+$('.menu-toggle-button').on('click', function() {
+    let button = $(this);
+    let menu = button.parent();
+
+    menu.find('.menu-toggle-button').removeClass('menu-button-style-1-selected');
+    menu.find('.menu-button-style-1-selected-strip').addClass('none');
+    button.addClass('menu-button-style-1-selected');
+    button.find('.menu-button-style-1-selected-strip').removeClass('none');
+});
