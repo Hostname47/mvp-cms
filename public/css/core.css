@@ -613,6 +613,11 @@ a, input, textarea {
     border: 1px solid #57b55d;
 }
 
+.imcls-red {
+    background-color: #df5050;
+    border: 1px solid #df5050;
+}
+
 #top-message-box {
     position: fixed;
     z-index: 55555;
@@ -744,7 +749,7 @@ a, input, textarea {
     cursor: pointer;
     background-color: #f6f9fb;
     display: flex;
-    padding: 12px 21px;
+    padding: 10px 21px;
     border: 1px solid #d7dbdf;
     border-radius: 3px;
 }

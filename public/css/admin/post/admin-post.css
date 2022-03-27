@@ -110,6 +110,7 @@
     display: flex;
     padding: 10px;
     width: 100%;
+    margin-top: auto;
     box-sizing: border-box;
     background-color: #f9f9f9;
     border-top: 1px solid #d0d7db;

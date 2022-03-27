@@ -58,11 +58,18 @@ body {
     cursor: pointer;
     user-select: none;
 }
+.admin-sidebar-button-with-nestedbuttons-box:hover {
+    background-color: rgb(14, 14, 14);
+}
 
 .admin-sidebar-button-with-nestedbuttons {
     display: flex;
     align-items: center;
     padding: 10px 14px;
+}
+.admin-sidebar-button-with-nestedbuttons:hover {
+    color: white;
+    background-color: rgb(14, 14, 14);
 }
 
 .admin-sidebar-button-nestedbuttons-box {

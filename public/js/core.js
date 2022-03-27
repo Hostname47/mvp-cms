@@ -210,3 +210,20 @@ $('.menu-toggle-button').on('click', function() {
     button.addClass('menu-button-style-1-selected');
     button.find('.menu-button-style-1-selected-strip').removeClass('none');
 });
+
+function validate_image(file, callback) {
+    var url = window.URL || window.webkitURL;
+    var image = new Image();
+    
+    image.onload = function() { callback(true); };
+    image.onerror = function() { callback(false); };
+
+    image.src = url.createObjectURL(file);
+}
+
+function get_file_type(file) {
+    if(file.type.match('image.*')) return 'image';
+    if(file.type.match('video.*')) return 'video';
+    
+    return 'other';
+}
