@@ -11,21 +11,23 @@ class MediaController extends Controller
         $allowed_mimes = 'jpeg,png,jpg,gif,svg,jfif,bmp,tiff'; // images
         $allowed_mimes .= ',mp4,x-flv,x-mpegURL,MP2T,3gpp,quicktime,x-msvideo,x-ms-wmv'; // videos
         $files = $request->validate([
-            'uploads'=>"required|max:16",
-            'uploads.*'=>"mimes:$allowed_mimes|max:8000"
-        ])['uploads'];
+            'files'=>"required|max:16",
+            'files.*'=>"mimes:$allowed_mimes|max:8000"
+        ])['files'];
 
+        throw new \Exception('error error');
         foreach($files as $file) {
-            if(Storage::has('media-library/'.$file->name)) {
-                $filename = pathinfo($file->name, PATHINFO_FILENAME);
-                $extension = pathinfo($file->name, PATHINFO_EXTENSION);
+            $filename = $file->getClientOriginalName();
+            if(Storage::has('media-library/'.$filename)) {
+                $name = pathinfo($filename, PATHINFO_FILENAME);
+                $extension = pathinfo($filename, PATHINFO_EXTENSION);
                 
                 $i=1;
-                while(Storage::has('media-library/'."$filename-$i.$extension")) $i++;
-                $file->storeAs('media-library', "$filename-$i.$extension");
+                while(Storage::has('media-library/'."$name-$i.$extension")) $i++;
+                $file->storeAs('media-library', "$name-$i.$extension");
             }
             else
-                $file->storeAs('media-library', $file->name);
+                $file->storeAs('media-library', $filename);
         }
     }
 }

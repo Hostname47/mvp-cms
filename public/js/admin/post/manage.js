@@ -14,11 +14,14 @@ $('#upload-media').on('change', function() {
      * First we hide the error container if it was already opened
      */
     $('.media-upload-error-container').addClass('none');
-    let input = $(this)[0];
-    let files = input.files;
+    let input = $(this);
+    let files = input[0].files;
     let maximum_number_of_uploads = 16;
     let validated_medias = [];
-    
+
+    /** disable the input during processing */
+    input.attr('disabled', 'disabled');
+
     /**
      * For each file upload, we have to check :
      *  1. Check number of uploaded files at the time
@@ -53,14 +56,43 @@ $('#upload-media').on('change', function() {
 
         validated_medias.push(files[i]);
     }
-    input.value = ''; // Empty the input after validation
+    input.val(''); // Empty the input after validation
 
     if(validated_medias.length > 0) {
-        input = $(input);
-        input.attr('disabled', 'disabled');
         let spinner = input.parent().find('.spinner');
         spinner.addClass('inf-rotate');
         spinner.removeClass('none');
+
+        let media = new FormData();
+        for(let i = 0; i < validated_medias.length; i++) {
+            media.append('files[]', validated_medias[i]);
+        }
+
+        $.ajax({
+            type: 'post',
+            url: '/admin/media-library/upload',
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            data: media,
+            success: function(response) {
+                
+            },
+            complete: function(response) {
+                input.attr('disabled', false);
+                spinner.removeClass('inf-rotate');
+                spinner.addClass('none');
+            },
+            error: function(response) {
+                let errorObject = JSON.parse(response.responseText);
+                let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+                if(errorObject.errors) {
+                    let errors = errorObject.errors;
+                    error = errors[Object.keys(errors)[0]][0];
+                }
+                show_upload_media_error(error);
+            },
+        })
     }
 });
 
@@ -68,5 +100,6 @@ function show_upload_media_error(message) {
     let container = $('.media-upload-error-container');
     container.find('.message-text').html(message);
     container.removeClass('none');
+    $('#upload-media').attr('disabled', false);
     $('#upload-media').val('');
 }

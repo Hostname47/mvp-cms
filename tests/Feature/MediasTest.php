@@ -21,7 +21,7 @@ class MediasTest extends TestCase
     }
 
     public function tearDown():void {
-        // (new Filesystem)->cleanDirectory(storage_path('app/testing'));
+        (new Filesystem)->cleanDirectory(storage_path('app/testing'));
     }
 
     /** @test */
@@ -30,7 +30,7 @@ class MediasTest extends TestCase
         $image = UploadedFile::fake()->image('nassri.png', 30, 30)->size(200);
         $video = UploadedFile::fake()->create('forum-demo.mp4');
         $this->post('/admin/media-library/upload', [
-            'uploads'=>[$image, $video]
+            'files'=>[$image, $video]
         ]);
         $this->assertEquals(2, count(Storage::allFiles('media-library')));
     }
@@ -40,27 +40,27 @@ class MediasTest extends TestCase
         $exe = UploadedFile::fake()->create('nassri.exe');
         $ai = UploadedFile::fake()->create('nassri.ai');
         $response = $this->post('/admin/media-library/upload', [
-            'uploads'=>[$exe]
-        ])->assertRedirect()->assertSessionHasErrors(['uploads.*']);
+            'files'=>[$exe]
+        ])->assertRedirect()->assertSessionHasErrors(['files.*']);
         $response = $this->post('/admin/media-library/upload', [
-            'uploads'=>[$ai]
-        ])->assertRedirect()->assertSessionHasErrors(['uploads.*']);
+            'files'=>[$ai]
+        ])->assertRedirect()->assertSessionHasErrors(['files.*']);
         // Testing file size
         $largemedia = UploadedFile::fake()->create('large-image.png')->size(8001);
         $this->post('/admin/media-library/upload', [
-            'uploads'=>[$largemedia]
-        ])->assertRedirect()->assertSessionHasErrors(['uploads.*']);
+            'files'=>[$largemedia]
+        ])->assertRedirect()->assertSessionHasErrors(['files.*']);
 
         // Testing number of uploaded files at the time
         $files = [];
         for($i=0;$i<19;$i++) { $files[] = UploadedFile::fake()->create(Str::random(10).'.png')->size(20); }
 
         $this->post('/admin/media-library/upload', [
-            'uploads'=>$files
-        ])->assertRedirect()->assertSessionHasErrors(['uploads']);
+            'files'=>$files
+        ])->assertRedirect()->assertSessionHasErrors(['files']);
         $files = array_slice($files, 0, 16);
         $this->post('/admin/media-library/upload', [
-            'uploads'=>$files
+            'files'=>$files
         ])->assertOk();
     }
 
@@ -72,7 +72,7 @@ class MediasTest extends TestCase
         $file2 = UploadedFile::fake()->create('mouad.png');
         $file3 = UploadedFile::fake()->create('mouad.png');
         $this->post('/admin/media-library/upload', [
-            'uploads'=>[$file1, $file2, $file3]
+            'files'=>[$file1, $file2, $file3]
         ]);
         $this->assertEquals(3, count(Storage::allFiles('media-library')));
         $this->assertTrue(Storage::has('media-library/mouad-1.png'));
