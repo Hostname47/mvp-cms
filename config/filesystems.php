@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DRIVER', 'local'),
+    'default' => env('DISK_TESTING', 'local'),
 
     /*
     |--------------------------------------------------------------------------
@@ -42,6 +42,11 @@ return [
             'visibility' => 'public',
         ],
 
+        'public-test' => [
+            'driver' => 'local',
+            'root' => storage_path('app/testing'),
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
@@ -67,7 +72,7 @@ return [
     */
 
     'links' => [
-        public_path('storage') => storage_path('app/public'),
+        public_path('testing') => storage_path('app/testing'),
     ],
 
 ];

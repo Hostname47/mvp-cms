@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{IndexController, AdminController, PostController, CategoryController};
+use App\Http\Controllers\{IndexController, AdminController, PostController, CategoryController, MediaController};
 
 Route::get('/test', function() {
     dd(\App\Models\Category::find(8)->descendants()->count());
@@ -18,8 +18,9 @@ Route::patch('/categories/priorities', [CategoryController::class, 'update_categ
 Route::patch('/admin/category', [CategoryController::class, 'update']);
 Route::patch('/admin/category/status', [CategoryController::class, 'update_status']);
 Route::patch('/admin/category/set-as-root', [CategoryController::class, 'set_as_root']);
-
 Route::get('/admin/categories/manage', [CategoryController::class, 'manage'])->name('category.manage');
+
+Route::post('/admin/media-library/upload', [MediaController::class, 'upload']);
 
 Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
 Route::get('/admin/posts/create', [PostController::class, 'create'])->name('create.new.post');

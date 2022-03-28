@@ -146,7 +146,7 @@
                     <label class="input-label dark fs13 mb4" for="post-content-summary">Summary</label>
                     <textarea id="post-content-summary" class="styled-input no-textarea-resize" autocomplete="off" placeholder='short summary that displayed in blog posts cards (with read more button)'></textarea>
                 </div>
-                <p class="fs12 my2 light-gray no-margin">Summary will be taken from the first 50 words of the first paragraph by default. (you can update it) </p>
+                <p class="fs12 my2 light-gray no-margin">Summary will be taken from the first 55 words of the first paragraph by default. (you can update it in the right sidebar) </p>
             </div>
             <textarea id="post-content" class="styled-input" autocomplete="off" placeholder='Post content'></textarea>
         </div>
