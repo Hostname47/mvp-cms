@@ -36,6 +36,10 @@ body {
     overflow-x: auto;
 }
 
+.break-word {
+    word-break: break-all;
+}
+
 .opacity0 {
     opacity: 0;
 }
@@ -160,6 +164,10 @@ body {
     font-size: 8px !important;
 }
 
+.fs7 {
+    font-size: 7px !important;
+}
+
 .size32 {
     height: 32px;
     width: 32px;
@@ -271,6 +279,10 @@ body {
 
 .no-textarea-resize {
     resize: none;
+}
+
+.no-textarea-x-resize {
+    resize: vertical;
 }
 
 .no-underline {

@@ -96,6 +96,54 @@ $('.upload-media-to-library').on('change', function() {
     }
 });
 
+$('.media-library-media-selectbox').on({
+    mouseenter: function() {
+        $(this).find('.selected-icon').addClass('none');
+        $(this).find('.unselect-icon').removeClass('none');
+    },
+    mouseleave: function() {
+        $(this).find('.selected-icon').removeClass('none');
+        $(this).find('.unselect-icon').addClass('none');
+    }
+})
+
+$('.media-library-item-container').each(function() { handle_library_media_selection($(this)); });
+function handle_library_media_selection(media_container) {
+    media_container.on('click', function() {
+        let selection_type = $(this).parent().find('.selection-type').val();
+        let selected = $(this).find('.selected').val();
+        let medias_box = $(this);
+        while(!medias_box.hasClass('media-library-items-container')) medias_box = medias_box.parent();
+
+        if(selection_type == 'single') {
+            /**
+             * If selection type is single, we need to unselect previous medias if exists 
+             */
+            medias_box.find('.media-library-item-container').each(function() {
+                library_media_item_selection($(this), 'unselect');
+            });
+        }
+
+        if(selected == 0) {
+            library_media_item_selection($(this), 'select');
+        } else {
+            library_media_item_selection($(this), 'unselect');
+        }
+    });
+}
+
+function library_media_item_selection(item, selection='select') {
+    if(selection == 'select') {
+        item.find('.selected').val('1');
+        item.find('.media-library-media-selectbox').removeClass('none');
+        item.addClass('media-library-item-selected');
+    } else {
+        item.find('.selected').val('0');
+        item.find('.media-library-media-selectbox').addClass('none');
+        item.removeClass('media-library-item-selected');
+    }
+}
+
 function show_upload_media_error(message) {
     let container = $('.media-upload-error-container');
     container.find('.message-text').html(message);

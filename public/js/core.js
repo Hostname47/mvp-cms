@@ -245,3 +245,31 @@ function load_image(src, callback) {
     image.onload = callback;
     image.src = src;
 }
+
+$('.copy-text').each(function() { handle_copy($(this)); })
+function handle_copy(button) {
+    button.on('click', function() {
+        let copybox = $(this);
+        while(!copybox.hasClass('copy-box'))  copybox = copybox.parent();
+        
+        let textelement = copybox.find('.text-to-copy');
+        if(textelement.is('input')) {
+            textelement.trigger('select');
+            navigator.clipboard.writeText(textelement.val());
+        }
+        else if(textelement.is('p'))
+            navigator.clipboard.writeText(textelement.text());
+        
+        copybox.find('.copy-icon').addClass('none');
+        copybox.find('.copied-icon').removeClass('none');
+        copybox.find('.copy-label').addClass('none');
+        copybox.find('.copied-label').removeClass('none');
+
+        setTimeout(function() {
+            copybox.find('.copy-icon').removeClass('none');
+            copybox.find('.copied-icon').addClass('none');
+            copybox.find('.copy-label').removeClass('none');
+            copybox.find('.copied-label').addClass('none');
+        }, 1600);
+    });
+}
