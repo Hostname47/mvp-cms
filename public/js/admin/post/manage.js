@@ -132,15 +132,15 @@ function handle_library_media_selection(media_container) {
     });
 }
 
-function library_media_item_selection(item, selection='select') {
+function library_media_item_selection(media, selection='select') {
     if(selection == 'select') {
-        item.find('.selected').val('1');
-        item.find('.media-library-media-selectbox').removeClass('none');
-        item.addClass('media-library-item-selected');
+        media.find('.selected').val('1');
+        media.find('.media-library-media-selectbox').removeClass('none');
+        media.addClass('media-library-item-selected');
     } else {
-        item.find('.selected').val('0');
-        item.find('.media-library-media-selectbox').addClass('none');
-        item.removeClass('media-library-item-selected');
+        media.find('.selected').val('0');
+        media.find('.media-library-media-selectbox').addClass('none');
+        media.removeClass('media-library-item-selected');
     }
 }
 

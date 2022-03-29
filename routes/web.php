@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{IndexController, AdminController, PostController, CategoryController, MediaController};
 
 Route::get('/test', function() {
-    dd(\App\Models\Category::find(8)->descendants()->count());
+    dd(\Illuminate\Support\Facades\Storage::path('/media-library'));
 });
 
 Route::get('/', [IndexController::class, 'index']);

@@ -160,8 +160,8 @@
     background-color: #ecf0f2;
     border: 1px solid #bfc6ca;
     border-radius: 2px;
-    width: 140px;
-    height: 140px;
+    width: 130px;
+    height: 130px;
 }
 .media-library-item-container:hover, .media-library-media-selectbox:hover {
     border: 1px solid #939a9c;
@@ -172,13 +172,13 @@
 }
 .media-library-media-selectbox {
     position: absolute;
-    top: -8px;
-    right: -8px;
+    top: -9px;
+    right: -9px;
     background-color: #ecf0f2;
     border: 1px solid #8ba1ad;
     border-radius: 2px;
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
 }
 .library-media-image-attachment-container {
     height: 150px;

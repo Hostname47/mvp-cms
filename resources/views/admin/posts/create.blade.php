@@ -88,8 +88,8 @@
                                         <img src="{{ asset($file) }}" class="media-library-item-image center-image-based-on-higher-dimension" alt="">
                                     </div>
                                     <div class="media-library-media-selectbox full-center none">
-                                        <svg class="selected-icon size16" fill="#232a35" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M433.73,49.92,178.23,305.37,78.91,206.08.82,284.17,178.23,461.56,511.82,128Z"/></svg>
-                                        <svg class="unselect-icon size16 none" fill="#232a35" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M245.66,99.54H123.13c.18,9.79-.28,26.54-.28,28.46,0,2.18-.4,24.28-.41,32.47h124.2c6.92,0,9-2.1,9-9.12q0-20.85,0-41.7C255.63,101.31,253.89,99.54,245.66,99.54Z"/><path d="M14.82,99.53H137.35c-.17,9.79.28,26.54.28,28.46,0,2.18.41,24.28.42,32.47H13.84c-6.92,0-9-2.1-9-9.12q0-20.85,0-41.7C4.86,101.29,6.6,99.53,14.82,99.53Z"/></svg>
+                                        <svg class="selected-icon size14" fill="#232a35" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M433.73,49.92,178.23,305.37,78.91,206.08.82,284.17,178.23,461.56,511.82,128Z"/></svg>
+                                        <svg class="unselect-icon size14 none" fill="#232a35" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M245.66,99.54H123.13c.18,9.79-.28,26.54-.28,28.46,0,2.18-.4,24.28-.41,32.47h124.2c6.92,0,9-2.1,9-9.12q0-20.85,0-41.7C255.63,101.31,253.89,99.54,245.66,99.54Z"/><path d="M14.82,99.53H137.35c-.17,9.79.28,26.54.28,28.46,0,2.18.41,24.28.42,32.47H13.84c-6.92,0-9-2.1-9-9.12q0-20.85,0-41.7C4.86,101.29,6.6,99.53,14.82,99.53Z"/></svg>
                                     </div>
                                     <input type="hidden" class="selected" value="0" autocomplete="off">
                                 </div>
@@ -118,7 +118,10 @@
                     </div>
                     <div class="media-library-settings-part">
                         <!-- from a minimum viable product perspective, we'll work on just images attachments -->
-                        <h4 class="fs15 blue dark no-margin mb8">Attachment details</h4>
+                        <div class="align-center mb8">
+                            <svg class="size14 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M231.2,104.27c-.18,17.23-8.07,37.61-24.37,54.25C183,182.81,159.08,207,134.71,230.65,116.88,248,95.34,253.45,71.59,245.6c-23.93-7.91-38.21-25.16-42-50-3.22-21,3.74-39.1,18.8-54.11q33.95-33.84,67.79-67.79c1.18-1.18,2.39-2.34,3.65-3.43a36.91,36.91,0,0,1,50.87,2.08c13.66,14.18,14.23,36.68.39,50.86-23.48,24.07-47.42,47.69-71.25,71.42-5.47,5.44-12.36,5.47-17.33.52-4.8-4.8-4.69-12,.65-17.37q34.2-34.36,68.57-68.58c4.06-4,6.71-8.48,5.14-14.39-2.72-10.2-14.57-13.2-22.54-5.48-10.67,10.34-21,21-31.56,31.5-13.12,13.14-26.51,26-39.3,39.51-20.58,21.67-10.69,56,18.22,63.47,13.13,3.39,25.38.55,35.07-9,24.92-24.47,50-48.83,74-74.21,23.76-25.15,22.14-64.15-2.3-87.83a63.07,63.07,0,0,0-88.39,0c-14.59,14-28.71,28.57-43,42.89-2.38,2.38-4.79,4.66-8.32,5.2A12,12,0,0,1,36,94.7c-2.59-4.91-1.73-10,2.92-14.65Q61.72,57.12,84.69,34.37a79,79,0,0,1,20.48-14.23C163.16-8.85,231.3,33.32,231.2,104.27Z"/></svg>
+                            <h4 class="fs15 blue dark no-margin">Attachment details</h4>
+                        </div>
                         <div> <!-- image attachement section -->
                             <div class="library-media-image-attachment-container">
                                 <img src="" class="block library-media-image" alt=""/>
@@ -201,7 +204,12 @@
             </div>
             <!-- bottom strip -->
             <div class="media-viewer-bottom-section">
-                <div class="typical-button-style dark-bs dark-bs-disabled align-center move-to-right set-featured-image" style="padding: 6px 12px;">
+                <div class="selected-media-count-container align-center none">
+                    <p class="bold dark no-margin">3 items selected</p>
+                    <span class="fs7 bold light-gray unselectable mx8">●</span>
+                    <span class="red no-underline fs13 pointer">Clear</span>
+                </div>
+                <div class="typical-button-style dark-bs dark-bs-disabled align-center move-to-right media-viewer-taget-action-button set-featured-image" style="padding: 6px 12px;">
                     <div class="relative size14 mr4">
                         <svg class="size14 icon-above-spinner" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M58.55,251.39c-9.94,0-15.72-5.59-14.54-14.83,2.77-21.61,6-43.16,9.09-64.73.47-3.3,2.39-5.94,4.78-8.32q40.7-40.6,81.26-81.35c2.57-2.58,3.89-2.93,6.66-.13q33.54,33.93,67.46,67.48c2.68,2.66,2.69,4,0,6.66q-40.81,40.49-81.33,81.27c-3.74,3.76-8.24,4.81-13.18,5.5-18.75,2.6-37.48,5.38-56.22,8.08C61.12,251.22,59.69,251.29,58.55,251.39ZM246.34,89.65c-7.19-36.3-51.11-53.73-81.14-32.19-2,1.43-4.84,2.3-1.42,5.68q34.36,34,68.35,68.34c2.69,2.72,3.75,1.61,5.39-.68,6.47-9.06,9.79-19.13,10.1-32.08C247.74,96.86,247.05,93.25,246.34,89.65ZM142.6,34.57c8.12-.06,13.3-5.32,13.34-12.81s-5.25-13-13.16-13.07c-38.95-.12-77.9-.07-116.84-.06a12.77,12.77,0,0,0-12,7.09C9.22,24.6,15.6,34.48,26.37,34.58c19.37.18,38.74.05,58.11.05S123.23,34.74,142.6,34.57ZM102.41,87c8.81-.07,14.4-5.3,14.35-13.17-.06-7.69-5.36-12.76-14-12.79q-37.92-.16-75.83,0c-8.84,0-14.56,5.36-14.48,13.06s6,12.86,14.73,12.91c12.64.07,25.28,0,37.92,0C77.54,87,90,87.05,102.41,87ZM51.69,139.25c7.56-.53,12.85-5.92,13-12.81.18-7.06-5.31-13-13.09-13.33-8.73-.36-17.5-.36-26.23,0-7.64.32-12.8,5.78-12.94,12.77-.15,7.24,5.11,12.81,13,13.36,4.25.31,8.53.06,12.81.06C42.75,139.31,47.24,139.57,51.69,139.25Z"/></svg>
                         <svg class="spinner size14 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
@@ -323,7 +331,7 @@
                                         <path d="M13.4,1.43l9.35,11a4,4,0,0,1,0,5.18l-9.35,11a4,4,0,1,1-6.1-5.18L14.46,15,7.3,6.61a4,4,0,0,1,6.1-5.18Z"/>
                                     </svg>
                                 </div>
-                                <div class="custom-dropdown-items-container custom-dropdown-items-container-style" style="max-width: 176px;">
+                                <div class="custom-dropdown-items-container custom-dropdown-items-container-style" style="max-width: 166px;">
                                     <div class="custom-dropdown-item custom-dropdown-item-style">
                                         <span class="custom-dropdown-item-text fs14 dark bold block">Live</span>
                                         <span class="fs12 block">post will be accessible to public after publish.</span>
@@ -349,7 +357,7 @@
                                         <path d="M13.4,1.43l9.35,11a4,4,0,0,1,0,5.18l-9.35,11a4,4,0,1,1-6.1-5.18L14.46,15,7.3,6.61a4,4,0,0,1,6.1-5.18Z"/>
                                     </svg>
                                 </div>
-                                <div class="custom-dropdown-items-container custom-dropdown-items-container-style" style="max-width: 180px;">
+                                <div class="custom-dropdown-items-container custom-dropdown-items-container-style" style="max-width: 166px;">
                                     <div class="custom-dropdown-item custom-dropdown-item-style custom-dropdown-item-selected custom-dropdown-item-selected-style">
                                         <span class="custom-dropdown-item-text fs14 dark bold block">Public</span>
                                         <span class="fs11 block">Post will be public.</span>

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Metadata;
+use App\Helpers\ImageHelper;
 use Illuminate\Support\Facades\Storage;
 
 class MediaController extends Controller
@@ -20,13 +22,36 @@ class MediaController extends Controller
             if(Storage::has('media-library/'.$filename)) {
                 $name = pathinfo($filename, PATHINFO_FILENAME);
                 $extension = pathinfo($filename, PATHINFO_EXTENSION);
-                
                 $i=1;
                 while(Storage::has('media-library/'."$name-$i.$extension")) $i++;
-                $file->storeAs('media-library', "$name-$i.$extension");
-            }
-            else
+                $filename = "$name-$i.$extension";
                 $file->storeAs('media-library', $filename);
+            }
+            else {
+                $file->storeAs('media-library', $filename);
+            }
+
+            // file metadata
+            $metadata = new Metadata;
+            $metadata->key = 'attached-file';
+            $mime = $file->getMimeType();
+            $data = [
+                'name'=>$filename,
+                'mime'=>$mime,
+                'size'=>$file->getSize()
+            ];
+            if(ImageHelper::is_image($mime)) { // If the file is an image, we add width and height dimensions to metadata
+                try {
+                    $dimensions = getimagesize(Storage::path('media-library/'.$filename));
+                    $data['width'] = $dimensions[0];
+                    $data['height'] = $dimensions[1];
+                } catch(\Exception $ex) {
+                    $data['width'] = -1;
+                    $data['height'] = -1;
+                }
+            }
+            $metadata->data = json_encode($data);
+            $metadata->save();
         }
     }
 }
