@@ -9,7 +9,7 @@ $('.open-medias-library-section').on('click', function() {
     $('.media-library-section').removeClass('none');
 });
 
-$('#upload-media').on('change', function() {
+$('.upload-media-to-library').on('change', function() {
     /**
      * First we hide the error container if it was already opened
      */
@@ -76,7 +76,7 @@ $('#upload-media').on('change', function() {
             contentType: false,
             data: media,
             success: function(response) {
-                
+
             },
             complete: function(response) {
                 input.attr('disabled', false);

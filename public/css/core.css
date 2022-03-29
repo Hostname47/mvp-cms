@@ -309,6 +309,10 @@ body {
     margin-bottom: 4px !important;
 }
 
+.mb2 {
+    margin-bottom: 2px !important;
+}
+
 .mb8 {
     margin-bottom: 8px !important;
 }
@@ -716,6 +720,7 @@ a, input, textarea {
     position: relative;
     display: flex;
     border-bottom: 1px solid #c8c8c8;
+    user-select: none;
 }
 
 .menu-button-style-1 {

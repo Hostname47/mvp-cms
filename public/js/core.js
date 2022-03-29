@@ -227,3 +227,21 @@ function get_file_type(file) {
     
     return 'other';
 }
+
+$('.center-image-based-on-higher-dimension').each(function() { handle_image_center_based_on_higher_dim($(this)); })
+function handle_image_center_based_on_higher_dim(image) {
+    load_image(image.attr('src'), function() {
+        let width = image.width();
+        let height = image.height();
+
+        if(width > height)
+            image.width('100%');
+        else
+            image.height('100%');
+    })
+}
+function load_image(src, callback) {
+    let image = new Image();
+    image.onload = callback;
+    image.src = src;
+}

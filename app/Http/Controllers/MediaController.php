@@ -15,7 +15,6 @@ class MediaController extends Controller
             'files.*'=>"mimes:$allowed_mimes|max:8000"
         ])['files'];
 
-        throw new \Exception('error error');
         foreach($files as $file) {
             $filename = $file->getClientOriginalName();
             if(Storage::has('media-library/'.$filename)) {
