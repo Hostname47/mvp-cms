@@ -121,4 +121,14 @@ class MediaController extends Controller
 
         $metadata->update(['data'=>$metadata_data]);
     }
+
+    public function delete_media(Request $request) {
+        $metadata_id = $request->validate([
+            'metadata_id'=>'required|exists:metadata,id'
+        ])['metadata_id'];
+        $metadata = Metadata::find($metadata_id);
+
+        Storage::delete('media-library/'.$metadata->data['file']); // First delete the file
+        $metadata->delete(); // Then delete metadata
+    }
 }

@@ -318,10 +318,12 @@ $('.save-media-metadata').on('click', function() {
         }
     })
 });
-
 /**
  * Element parameter here is used to get the global viewer container by going backward to parents; It must be 
  * included within the global media viewer.
+ * 
+ * After we fetch the global viewer, we start searching for the media container in media items box;
+ * Once we get it, we need to make its metadata in sync with the saved settings metadata
  */
 function sync_media_metadata_to_new_settings_change(metadata_id, element, setting_box) {
     let global_media_viewer = element;
@@ -339,6 +341,64 @@ function sync_media_metadata_to_new_settings_change(metadata_id, element, settin
         media.find('.'+$(this).attr('name')).val($(this).val());
     });
 }
+$('.open-media-delete-viewer').on('click', function() {
+    $('#delete-media-viewer').find('.metadata-id').val($(this).find('.metadata-id').val());
+    $('#delete-media-viewer').removeClass('none');
+});
+let delete_media_item_lock = true;
+$('.delete-media-item').on('click', function() {
+    if(!delete_media_item_lock) return;
+    delete_media_item_lock = false;
+
+    let button = $(this);
+    let spinner = button.find('.spinner');
+    let buttonicon = button.find('.icon-above-spinner');
+    let metadata_id = button.find('.metadata-id').val();
+
+    button.addClass('red-bs-disabled');
+    buttonicon.addClass('none');
+    spinner.removeClass('opacity0');
+    spinner.addClass('inf-rotate');
+
+    $.ajax({
+        type: 'delete',
+        url: '/admin/media',
+        data: { metadata_id: metadata_id },
+        success: function(response) {
+            $('#delete-media-viewer').find('.close-global-viewer').trigger('click');
+            $('.media-library-settings-container').addClass('none');
+            $('.media-library-item-container').each(function() {
+                if($(this).find('.metadata-id').val() == metadata_id) {
+                    $(this).remove();
+                    return false;
+                }
+            });
+            $('.media-library-media-part').each(function() {
+                if(!$(this).find('.media-library-items-container .media-library-item-container').length) {
+                    $(this).find('.media-library-items-container').addClass('none');
+                    $(this).find('.media-library-no-media-found-container').removeClass('none');
+                }
+            })
+        },
+        error: function(response) {
+            let errorObject = JSON.parse(response.responseText);
+            let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+            if(errorObject.errors) {
+                let errors = errorObject.errors;
+                error = errors[Object.keys(errors)[0]][0];
+            }
+            print_top_message(error, 'error');
+        },
+        complete: function(response) {
+            delete_media_item_lock = true;
+
+            button.removeClass('red-bs-disabled');
+            buttonicon.removeClass('none');
+            spinner.addClass('opacity0');
+            spinner.removeClass('inf-rotate');
+        }
+    });
+});
 
 function show_upload_media_error(message) {
     let container = $('.media-upload-error-container');

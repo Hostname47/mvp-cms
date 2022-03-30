@@ -25,6 +25,7 @@ Route::get('/admin/categories/manage', [CategoryController::class, 'manage'])->n
 Route::get('/admin/media/fetch', [MediaController::class, 'fetch_media']);
 Route::post('/admin/media-library/upload', [MediaController::class, 'upload']);
 Route::patch('/admin/media/metadata', [MediaController::class, 'update_file_metadata']);
+Route::delete('/admin/media', [MediaController::class, 'delete_media']);
 
 Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
 Route::get('/admin/posts/create', [PostController::class, 'create'])->name('create.new.post');

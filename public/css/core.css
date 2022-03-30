@@ -506,6 +506,7 @@ a, input, textarea {
     background-color: #c83636;
 }
 .red-bs-disabled {
+    background-color: #ec8282 !important;
     border-color: #ec8282 !important;
     cursor: default !important;
 }
@@ -580,6 +581,7 @@ a, input, textarea {
 }
 /* viewer box styles */
 .viewer-box-style-1 {
+    width: 560px;
     border-radius: 4px;
     background-color: white;
     box-shadow: 0 3px 10px 0px #3c3c3c;

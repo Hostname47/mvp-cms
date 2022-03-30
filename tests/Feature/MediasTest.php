@@ -82,7 +82,6 @@ class MediasTest extends TestCase
 
     /** @test */
     public function update_file_metadata() {
-        $this->withoutExceptionHandling();
         $image = UploadedFile::fake()->image('nassri.png', 30, 30)->size(200);
         $this->post('/admin/media-library/upload', [
             'files'=>[$image]
@@ -103,5 +102,46 @@ class MediasTest extends TestCase
         $this->assertTrue(array_key_exists('alt', $data));
         $this->assertTrue(array_key_exists('caption', $data));
         $this->assertTrue(array_key_exists('description', $data));
+    }
+
+    /** @test */
+    public function update_file_metadata_validation() {
+        $image = UploadedFile::fake()->image('nassri.png', 30, 30)->size(200);
+        $this->post('/admin/media-library/upload', [
+            'files'=>[$image]
+        ]);
+        
+        $metadata = Metadata::first();
+        $data = $metadata->data;
+        $this->patch('/admin/media/metadata', [
+            'metadata_id'=>$metadata->id,
+            'keys'=>['invalid-meta-key'],
+            'values'=>['Invalid meta value']
+        ])->assertRedirect()->assertSessionHasErrors(['keys.*']);
+
+        $this->patch('/admin/media/metadata', [
+            'metadata_id'=>$metadata->id,
+            'keys'=>['alt'],
+            'values'=>['alt value', 'invalid value']
+        ])->assertStatus(422);
+    }
+
+    /** @test */
+    public function delete_file_from_media_library() {
+        $this->withoutExceptionHandling();
+
+        $image = UploadedFile::fake()->image('nassri.png', 30, 30)->size(200);
+        $this->post('/admin/media-library/upload', [
+            'files'=>[$image]
+        ]);
+        $metadata = Metadata::first();
+
+        $this->assertEquals(1, count(Storage::allFiles('media-library')));
+        $this->assertCount(1, Metadata::all());
+        $this->delete('/admin/media', [
+            'metadata_id'=>$metadata->id
+        ]);
+        $this->assertEquals(0, count(Storage::allFiles('media-library')));
+        $this->assertCount(0, Metadata::all());
     }
 }
