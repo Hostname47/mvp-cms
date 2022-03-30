@@ -273,3 +273,32 @@ function handle_copy(button) {
         }, 1600);
     });
 }
+
+let left_bottom_notification_timeout;
+function left_bottom_notification(message, icon='green-tick') {
+    clearInterval(left_bottom_notification_timeout);
+    let container = $('#basic-bottom-left-notification-container');
+    container.find('.icon').addClass('none');
+    container.find('.'+icon).removeClass('none');
+    container.find('.content').html(message);
+    container.removeClass('none');
+
+    left_bottom_notification_timeout = setTimeout(function() {
+        $('#basic-bottom-left-notification-container').addClass('none');
+        $('#basic-bottom-left-notification-container').find('.content').html('');
+   }, 5000);
+}
+
+$('#basic-bottom-left-notification-container').on({
+    mouseenter: function() {
+        // Stop animation to keep the notification displayed
+        clearTimeout(left_bottom_notification_timeout);
+    },
+    mouseleave: function() {
+        // Start animation to hide the notification after 5 seconds
+        left_bottom_notification_timeout = setTimeout(function() {
+            $('#basic-bottom-left-notification-container').addClass('none');
+            $('#basic-bottom-left-notification-container').find('.content').html('');
+       }, 3000);
+    }
+});

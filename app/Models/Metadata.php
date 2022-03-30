@@ -24,7 +24,7 @@ class Metadata extends Model
     }
 
     public function getHumanUploadDateAttribute() {
-        return (new Carbon($this->created_at))->isoFormat("dddd D MMM YYYY - H:mm A");
+        return (new Carbon($this->created_at))->isoFormat("dddd D MMM YYYY - H:mm");
     }
 
 }

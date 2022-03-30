@@ -197,7 +197,7 @@ function library_media_item_selection(media, selection='select') {
 }
 
 /**
- * Handle opening image media settings
+ * Handle library media - image management
  */
 function handle_open_media_image_settings(media) {
     media.on('click', function() {
@@ -221,7 +221,6 @@ function handle_open_media_image_settings(media) {
         }
     });
 }
-
 function set_media_image_details_into_settings_section(viewer, media) {
     let setting_container = viewer.find('.media-library-image-settings-container');
     
@@ -245,6 +244,23 @@ function set_media_image_details_into_settings_section(viewer, media) {
     
     viewer.find('.media-library-image-settings-container').removeClass('none');
 }
+$('.restore-media-image-settings').on('click', function() {
+    let mid = $(this).find('.metadata-id').val();
+    let global_media_viewer = $(this);
+    while(!global_media_viewer.hasClass('media-viewer')) global_media_viewer = global_media_viewer.parent();
+
+    let media;
+    global_media_viewer.find('.media-library-items-container .media-library-item-container').each(function() {
+        if($(this).find('.metadata-id').val() == mid) {
+            media = $(this);
+            return false;
+        }
+    });
+    if(media) {
+        set_media_image_details_into_settings_section(global_media_viewer, media);
+        left_bottom_notification('Image settings get restored');
+    }
+});
 
 function show_upload_media_error(message) {
     let container = $('.media-upload-error-container');

@@ -773,3 +773,17 @@ a, input, textarea {
 .button-style-1:hover {
     background-color: #ecf2f7;
 }
+
+#basic-bottom-left-notification-container {
+    position: fixed;
+    display: flex;
+    z-index: 99555;
+    bottom: 26px;
+    left: 26px;
+    padding: 16px;
+    max-width: 340px;
+    box-sizing: border-box;
+    color: white;
+    background-color: #0e0e0ef2;
+    border-radius: 8px;
+}

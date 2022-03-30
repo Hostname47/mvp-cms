@@ -178,6 +178,7 @@
                                             </svg>
                                         </div>
                                         <div class="fs12 bold dark unselectable">{{ __('restore settings') }}</div>
+                                        <input type="hidden" class="metadata-id" autocomplete="off">
                                     </div>
                                 </div>
 
