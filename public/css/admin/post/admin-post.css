@@ -186,4 +186,5 @@
     background-color: #ecf0f2;
     border: 1px solid #8ba1ad;
     border-radius: 2px;
+    overflow: hidden;
 }
