@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Metadata;
 use App\Helpers\ImageHelper;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
+use App\View\Components\MediaLibrary\Image;
 
 class MediaController extends Controller
 {
@@ -25,15 +27,12 @@ class MediaController extends Controller
                 $i=1;
                 while(Storage::has('media-library/'."$name-$i.$extension")) $i++;
                 $filename = "$name-$i.$extension";
-                $file->storeAs('media-library', $filename);
             }
-            else {
-                $file->storeAs('media-library', $filename);
-            }
+            $file->storeAs('media-library', $filename);
 
             // file metadata
             $metadata = new Metadata;
-            $metadata->key = 'attached-file';
+            $metadata->key = 'attached_file';
             $mime = $file->getMimeType();
             $data = [
                 'name'=>$filename,
@@ -53,5 +52,44 @@ class MediaController extends Controller
             $metadata->data = json_encode($data);
             $metadata->save();
         }
+    }
+
+    public function fetch_media(Request $request) {
+        $data = $request->validate([
+            'skip'=>'required|numeric',
+            'take'=>'required|numeric',
+            'form'=>['required', Rule::in(['raw', 'component'])]
+        ]);
+
+        $media = Metadata::where('key', 'attached_file')
+            ->orderBy('created_at', 'desc')->skip($data['skip'])->take($data['take']+1)->get();
+        $hasmore = $media->count() > $data['take'];
+        $media = $media->take($data['take']);
+
+        $payload="";
+        switch($data['form']) {
+            case 'raw':
+                $payload = $media;
+                break;
+            case 'component':
+                foreach($media as $media_item) {
+                    /**
+                     * Here we need to check the type of media (mime in value column); If the media
+                     * is an image, then we have to use image component to represent the media
+                     * 
+                     * For MVP sake, we will asume that the app only support images
+                     */
+                    $imagecomponent = (new Image($media_item));
+                    $imagecomponent = $imagecomponent->render(get_object_vars($imagecomponent))->render();
+                    $payload .= $imagecomponent;
+                }
+                break;
+        }
+
+        return [
+            'count'=>$media->count(),
+            'hasmore'=>$hasmore,
+            'payload'=>$payload,
+        ];
     }
 }

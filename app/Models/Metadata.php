@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Metadata extends Model
 {
     use HasFactory;
+
+    protected $casts = [
+        'data'=>'array'
+    ];
+
+    public function getFilepathAttribute() {
+        return 'media-library/' . $this->data['name'];
+    }
 }

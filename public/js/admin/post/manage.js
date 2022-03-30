@@ -4,9 +4,55 @@ $('.open-medias-upload-files-section').on('click', function() {
     $('.media-library-section').addClass('none');
 });
 
+let medias_library_opened = false;
+let medias_library_opening_lock = true;
 $('.open-medias-library-section').on('click', function() {
     $('.medias-upload-files-section').addClass('none');
     $('.media-library-section').removeClass('none');
+
+    let global_media_viewer = $(this);
+    while(!global_media_viewer.hasClass('media-viewer')) global_media_viewer = global_media_viewer.parent();
+
+    if(!medias_library_opened) {
+        global_media_viewer.find('.media-library-media-loading-container .spinner').addClass('inf-rotate');
+        if(!medias_library_opening_lock) return;
+        medias_library_opening_lock = false;
+
+        $.ajax({
+            url: '/admin/media/fetch?skip=0&take=20&form=component',
+            success: function(response) {
+                global_media_viewer.find('.media-library-media-loading-container').remove();
+                if(response.count == 0) {
+                    global_media_viewer.find('.media-library-no-media-found-container').removeClass('none');
+                } else {
+                    let media_container = global_media_viewer.find('.media-library-media-container');
+                    let media_items_container = global_media_viewer.find('.media-library-items-container');
+                    media_container.removeClass('none');
+                    media_items_container.html(response.payload);
+
+                    // Handling events
+                    media_container.find('.media-library-item-container').each(function() {
+                        handle_image_center_based_on_higher_dim($(this).find('.center-image-based-on-higher-dimension'));
+                        handle_library_media_selection($(this));
+                        media_selection_tick_effect($(this));
+                    });
+                }
+
+            },
+            error: function(response) {
+                let errorObject = JSON.parse(response.responseText);
+                let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+                if(errorObject.errors) {
+                    let errors = errorObject.errors;
+                    error = errors[Object.keys(errors)[0]][0];
+                }
+                show_upload_media_error(error);
+            },
+            complete: function() {
+
+            }
+        })
+    }
 });
 
 $('.upload-media-to-library').on('change', function() {
@@ -96,30 +142,31 @@ $('.upload-media-to-library').on('change', function() {
     }
 });
 
-$('.media-library-media-selectbox').on({
-    mouseenter: function() {
-        $(this).find('.selected-icon').addClass('none');
-        $(this).find('.unselect-icon').removeClass('none');
-    },
-    mouseleave: function() {
-        $(this).find('.selected-icon').removeClass('none');
-        $(this).find('.unselect-icon').addClass('none');
-    }
-})
 
-$('.media-library-item-container').each(function() { handle_library_media_selection($(this)); });
-function handle_library_media_selection(media_container) {
-    media_container.on('click', function() {
-        let selection_type = $(this).parent().find('.selection-type').val();
+function media_selection_tick_effect(media) {
+    media.find('.media-library-media-selectbox').on({
+        mouseenter: function() {
+            $(this).find('.selected-icon').addClass('none');
+            $(this).find('.unselect-icon').removeClass('none');
+        },
+        mouseleave: function() {
+            $(this).find('.selected-icon').removeClass('none');
+            $(this).find('.unselect-icon').addClass('none');
+        }
+    });
+}
+function handle_library_media_selection(media) {
+    media.on('click', function() {
+        let global_media_viewer = $(this);
+        while(!global_media_viewer.hasClass('media-viewer')) global_media_viewer = global_media_viewer.parent();
+        let selection_type = global_media_viewer.find('.selection-type').val();
         let selected = $(this).find('.selected').val();
-        let medias_box = $(this);
-        while(!medias_box.hasClass('media-library-items-container')) medias_box = medias_box.parent();
 
         if(selection_type == 'single') {
             /**
              * If selection type is single, we need to unselect previous medias if exists 
              */
-            medias_box.find('.media-library-item-container').each(function() {
+             global_media_viewer.find('.media-library-item-container').each(function() {
                 library_media_item_selection($(this), 'unselect');
             });
         }
@@ -131,7 +178,6 @@ function handle_library_media_selection(media_container) {
         }
     });
 }
-
 function library_media_item_selection(media, selection='select') {
     if(selection == 'select') {
         media.find('.selected').val('1');
@@ -151,3 +197,8 @@ function show_upload_media_error(message) {
     $('#upload-media').attr('disabled', false);
     $('#upload-media').val('');
 }
+
+
+$('.media-library-open-image-settings').on('click', function() {
+    
+});

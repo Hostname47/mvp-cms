@@ -20,6 +20,7 @@ Route::patch('/admin/category/status', [CategoryController::class, 'update_statu
 Route::patch('/admin/category/set-as-root', [CategoryController::class, 'set_as_root']);
 Route::get('/admin/categories/manage', [CategoryController::class, 'manage'])->name('category.manage');
 
+Route::get('/admin/media/fetch', [MediaController::class, 'fetch_media']);
 Route::post('/admin/media-library/upload', [MediaController::class, 'upload']);
 
 Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
