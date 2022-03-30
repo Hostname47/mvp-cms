@@ -229,18 +229,18 @@ function set_media_image_details_into_settings_section(viewer, media) {
     setting_container.find('.library-media-image').attr('style', '');
     handle_image_center_based_on_higher_dim(setting_container.find('.library-media-image'));
     // Set informations
-    setting_container.find('.image-name').text(media.find('.image-name').val()); // Image name text
-    setting_container.find('.image-upload-date').text(media.find('.image-upload-date').val());
-    setting_container.find('.image-size').text(media.find('.image-size').val());
-    setting_container.find('.image-width').text(media.find('.image-width').val());
-    setting_container.find('.image-height').text(media.find('.image-height').val());
+    setting_container.find('.name').text(media.find('.name').val());
+    setting_container.find('.upload-date').text(media.find('.upload-date').val());
+    setting_container.find('.size').text(media.find('.size').val());
+    setting_container.find('.width').text(media.find('.width').val());
+    setting_container.find('.height').text(media.find('.height').val());
     
     setting_container.find('.metadata-id').val(media.find('.metadata-id').val());
-    setting_container.find('.image-alt').val(media.find('.image-alt').val());
-    setting_container.find('.image-title').val(media.find('.image-name').val());
-    setting_container.find('.image-caption').val(media.find('.image-caption').val());
-    setting_container.find('.image-description').val(media.find('.image-description').val());
-    setting_container.find('.image-link').val(media.find('.image-link').val());
+    setting_container.find('.alt').val(media.find('.alt').val());
+    setting_container.find('.title').val(media.find('.title').val());
+    setting_container.find('.caption').val(media.find('.caption').val());
+    setting_container.find('.description').val(media.find('.description').val());
+    setting_container.find('.link').val(media.find('.link').val());
     
     viewer.find('.media-library-image-settings-container').removeClass('none');
 }
@@ -261,6 +261,84 @@ $('.restore-media-image-settings').on('click', function() {
         left_bottom_notification('Image settings get restored');
     }
 });
+
+let save_media_metadata = true;
+$('.save-media-metadata').on('click', function() {
+    if(!save_media_metadata) return;
+    save_media_metadata = false;
+
+    let button = $(this);
+    let spinner = button.find('.spinner');
+    let buttonicon = button.find('.icon-above-spinner');
+
+    let setting_box = $(this);
+    while(!setting_box.hasClass('media-library-settings-container')) setting_box = setting_box.parent();
+
+    let metadata_id = setting_box.find('.metadata-id').val();
+    let keys = [];
+    let values = [];
+    setting_box.find('.metadata').each(function() {
+        keys.push($(this).attr('name'));
+        values.push($(this).val());
+    });
+
+    button.addClass('dark-bs-disabled');
+    buttonicon.addClass('none');
+    spinner.removeClass('opacity0');
+    spinner.addClass('inf-rotate');
+
+    $.ajax({
+        type: 'patch',
+        url: '/admin/media/metadata',
+        data: {
+            metadata_id: metadata_id,
+            keys: keys,
+            values, values
+        },
+        success: function(response) {
+            print_top_message('File metadata has been updated successfully', 'green');
+            sync_media_metadata_to_new_settings_change(metadata_id, setting_box, setting_box); // Read function prototype
+        },
+        error: function(response) {
+            let errorObject = JSON.parse(response.responseText);
+            let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+            if(errorObject.errors) {
+                let errors = errorObject.errors;
+                error = errors[Object.keys(errors)[0]][0];
+            }
+            print_top_message(error, 'error');
+        },
+        complete: function() {
+            button.removeClass('dark-bs-disabled');
+            buttonicon.removeClass('none');
+            spinner.addClass('opacity0');
+            spinner.removeClass('inf-rotate');
+
+            save_media_metadata = true;
+        }
+    })
+});
+
+/**
+ * Element parameter here is used to get the global viewer container by going backward to parents; It must be 
+ * included within the global media viewer.
+ */
+function sync_media_metadata_to_new_settings_change(metadata_id, element, setting_box) {
+    let global_media_viewer = element;
+    while(!global_media_viewer.hasClass('media-viewer')) global_media_viewer = global_media_viewer.parent();
+
+    let media;
+    global_media_viewer.find('.media-library-item-container').each(function() {
+        if($(this).find('.metadata-id').val() == metadata_id) {
+            media = $(this);
+            return false;
+        }
+    });
+
+    setting_box.find('.metadata').each(function() {
+        media.find('.'+$(this).attr('name')).val($(this).val());
+    });
+}
 
 function show_upload_media_error(message) {
     let container = $('.media-upload-error-container');

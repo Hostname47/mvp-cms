@@ -644,9 +644,17 @@ a, input, textarea {
     width: 100%;
 }
 #top-error-message-container {
-    padding: 10px 30px 10px 10px;
+    padding: 12px 32px 12px 12px;
     background-color: #ffefef;
     border: 1px solid #f2d6d6;
+    border-radius: 4px;
+    max-width: 680px;
+    min-width: 140px;
+}
+#top-green-message-container {
+    padding: 12px 32px 12px 12px;
+    background-color: #effff0;
+    border: 1px solid #dbf2d6;
     border-radius: 4px;
     max-width: 680px;
     min-width: 140px;

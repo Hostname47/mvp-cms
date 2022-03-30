@@ -125,10 +125,10 @@
                                 <div class="library-media-image-attachment-container full-center">
                                     <img src="" class="block library-media-image" alt=""/>
                                 </div>
-                                <p class="fs12 light-gray my4 bold break-word image-name">117652699_589804308366235_1003493633955251766_n.jpg</p>
-                                <p class="fs13 dark my4"><strong>uploaded</strong> : <span class="image-upload-date">March 28, 2022</span></p>
-                                <p class="fs13 dark my4"><strong>size</strong> : <span class="image-size">255 KB</span></p>
-                                <p class="fs13 dark my4"><strong>dimensions</strong> : <span class="image-width">755</span> x <span class="image-height">369</span></p>
+                                <p class="fs12 light-gray my4 bold break-word name">mouad.nassri</p>
+                                <p class="fs13 dark my4"><strong>uploaded</strong> : <span class="upload-date">March 28, 2022</span></p>
+                                <p class="fs13 dark my4"><strong>size</strong> : <span class="size">255 KB</span></p>
+                                <p class="fs13 dark my4"><strong>dimensions</strong> : <span class="width">755</span> x <span class="height">369</span></p>
                                 <!-- delete image attachment button -->
                                 <div class="typical-button-style red-bs width-max-content align-center mt8 delete-attachement" style="padding: 5px 10px;">
                                     <div class="relative size13 mr4">
@@ -144,22 +144,22 @@
                                 <div class="simple-line-separator my8" style="background-color: #dde0e6;"></div>
                                 <div style="margin-top: 12px;">
                                     <label class="bold fs13 dark mb4 block" for="attachment-image-alt-text">Alt text</label>
-                                    <input type="text" name="alt" class="styled-input image-alt" id="attachment-image-alt-text">
+                                    <input type="text" name="alt" class="styled-input alt metadata" id="attachment-image-alt-text">
                                 </div>
                                 <div style="margin-top: 12px;">
                                     <label class="bold fs13 dark mb4 block" for="attachment-image-title">Image title</label>
-                                    <input type="text" name="title" class="styled-input image-title" id="attachment-image-title">
+                                    <input type="text" name="title" class="styled-input title metadata" id="attachment-image-title">
                                 </div>
                                 <div style="margin-top: 12px;">
                                     <label class="bold fs13 dark mb4 block" for="attachment-image-caption">Caption</label>
-                                    <textarea type="text" name="caption" class="styled-input no-textarea-x-resize image-caption" id="attachment-image-caption" style="max-height: 200px;"></textarea>
+                                    <textarea type="text" name="caption" class="styled-input no-textarea-x-resize caption metadata" id="attachment-image-caption" style="max-height: 200px;"></textarea>
                                 </div>
                                 <div style="margin-top: 12px;">
                                     <label class="bold fs13 dark mb4 block" for="attachment-image-description">Description</label>
-                                    <textarea type="text" name="caption" class="styled-input no-textarea-x-resize image-description" id="attachment-image-description" style="max-height: 200px;"></textarea>
+                                    <textarea type="text" name="description" class="styled-input no-textarea-x-resize description metadata" id="attachment-image-description" style="max-height: 200px;"></textarea>
                                 </div>
                                 <div class="align-center space-between" style="margin-top: 12px;">
-                                    <div class="typical-button-style dark-bs flex align-center save-media-image-settings" style="padding: 5px 8px;">
+                                    <div class="typical-button-style dark-bs flex align-center save-media-metadata" style="padding: 5px 8px;">
                                         <div class="relative size12 mr4">
                                             <svg class="size12 icon-above-spinner flex" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M256.26,58.1V233.76c-2,2.05-2.07,5-3.36,7.35-4.44,8.28-11.79,12.56-20.32,15.35H26.32c-.6-1.55-2.21-1.23-3.33-1.66C11,250.24,3.67,240.05,3.66,227.25Q3.57,130.14,3.66,33c0-16.47,12.58-29.12,29-29.15q81.1-.15,162.2,0c10,0,19.47,2.82,26.63,9.82C235,26.9,251.24,38.17,256.26,58.1ZM129.61,214.25a47.35,47.35,0,1,0,.67-94.69c-25.81-.36-47.55,21.09-47.7,47.07A47.3,47.3,0,0,0,129.61,214.25ZM108.72,35.4c-17.93,0-35.85,0-53.77,0-6.23,0-9,2.8-9.12,9-.09,7.9-.07,15.79,0,23.68.06,6.73,2.81,9.47,9.72,9.48q53.27.06,106.55,0c7.08,0,9.94-2.85,10-9.84.08-7.39.06-14.79,0-22.19S169.35,35.42,162,35.41Q135.35,35.38,108.72,35.4Z"/><path d="M232.58,256.46c8.53-2.79,15.88-7.07,20.32-15.35,1.29-2.4,1.38-5.3,3.36-7.35,0,6.74-.11,13.49.07,20.23.05,2.13-.41,2.58-2.53,2.53C246.73,256.35,239.65,256.46,232.58,256.46Z"/></svg>
                                             <svg class="spinner size12 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
@@ -195,7 +195,7 @@
                                             <span class="green fs12 bold copied-label none">{{ __('copied') }}</span>
                                         </div>
                                     </div>
-                                    <input type="text" class="styled-input image-link text-to-copy" id="attachment-url" name="url" value="http://127.0.0.1:8000/admin/posts/create">
+                                    <input type="text" class="styled-input link text-to-copy" id="attachment-url" name="url" value="http://127.0.0.1:8000/admin/posts/create">
                                 </div>
                             </div>
                         </div>

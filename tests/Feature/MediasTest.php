@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Filesystem\Filesystem;
+use App\Models\Metadata;
 
 class MediasTest extends TestCase
 {
@@ -77,5 +78,30 @@ class MediasTest extends TestCase
         $this->assertEquals(3, count(Storage::allFiles('media-library')));
         $this->assertTrue(Storage::has('media-library/mouad-1.png'));
         $this->assertTrue(Storage::has('media-library/mouad-2.png'));
+    }
+
+    /** @test */
+    public function update_file_metadata() {
+        $this->withoutExceptionHandling();
+        $image = UploadedFile::fake()->image('nassri.png', 30, 30)->size(200);
+        $this->post('/admin/media-library/upload', [
+            'files'=>[$image]
+        ]);
+        
+        $metadata = Metadata::first();
+        $data = $metadata->data;
+        $this->assertFalse(array_key_exists('alt', $data));
+        $this->assertFalse(array_key_exists('caption', $data));
+        $this->assertFalse(array_key_exists('description', $data));
+        $this->patch('/admin/media/metadata', [
+            'metadata_id'=>$metadata->id,
+            'keys'=>['alt','title','caption','description'],
+            'values'=>['A new alt', 'The best title', 'A cool caption', 'Awesome description']
+        ]);
+        $metadata->refresh();
+        $data = $metadata->data;
+        $this->assertTrue(array_key_exists('alt', $data));
+        $this->assertTrue(array_key_exists('caption', $data));
+        $this->assertTrue(array_key_exists('description', $data));
     }
 }

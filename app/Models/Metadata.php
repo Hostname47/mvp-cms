@@ -11,12 +11,13 @@ class Metadata extends Model
 {
     use HasFactory;
 
+    protected $guarded = [];
     protected $casts = [
         'data'=>'array'
     ];
 
     public function getFilepathAttribute() {
-        return 'media-library/' . $this->data['name'];
+        return 'media-library/' . $this->data['file'];
     }
 
     public function getHumanSizeAttribute() {
@@ -26,5 +27,4 @@ class Metadata extends Model
     public function getHumanUploadDateAttribute() {
         return (new Carbon($this->created_at))->isoFormat("dddd D MMM YYYY - H:mm");
     }
-
 }

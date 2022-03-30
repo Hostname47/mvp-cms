@@ -4,7 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{IndexController, AdminController, PostController, CategoryController, MediaController};
 
 Route::get('/test', function() {
-    dd(\Illuminate\Support\Facades\Storage::path('/media-library'));
+    $data = [];
+    $data['alt'] = 'alt';
+    dd($data);
 });
 
 Route::get('/', [IndexController::class, 'index']);
@@ -22,6 +24,7 @@ Route::get('/admin/categories/manage', [CategoryController::class, 'manage'])->n
 
 Route::get('/admin/media/fetch', [MediaController::class, 'fetch_media']);
 Route::post('/admin/media-library/upload', [MediaController::class, 'upload']);
+Route::patch('/admin/media/metadata', [MediaController::class, 'update_file_metadata']);
 
 Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
 Route::get('/admin/posts/create', [PostController::class, 'create'])->name('create.new.post');

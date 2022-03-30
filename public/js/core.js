@@ -92,7 +92,11 @@ function print_top_message(message, type) {
     top_message_box.removeClass('none');
 
     switch(type) {
-        case 'normal':
+        case 'green':
+            $('.top-message-container').addClass('none'); // First close all message containers types
+            let top_green_message_container = $('#top-green-message-container');
+            top_green_message_container.find('.message-text').text(message);
+            top_green_message_container.removeClass('none')
             break;
         case 'warning':
             break;

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Metadata;
 use App\Helpers\ImageHelper;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
 use App\View\Components\MediaLibrary\Image;
 
@@ -35,9 +36,10 @@ class MediaController extends Controller
             $metadata->key = 'attached_file';
             $mime = $file->getMimeType();
             $data = [
-                'name'=>$filename,
+                'file'=>$filename,
                 'mime'=>$mime,
-                'size'=>$file->getSize()
+                'size'=>$file->getSize(),
+                'title'=> pathinfo($filename, PATHINFO_FILENAME)
             ];
             if(ImageHelper::is_image($mime)) { // If the file is an image, we add width and height dimensions to metadata
                 try {
@@ -49,7 +51,7 @@ class MediaController extends Controller
                     $data['height'] = -1;
                 }
             }
-            $metadata->data = json_encode($data);
+            $metadata->data = $data;
             $metadata->save();
         }
     }
@@ -91,5 +93,32 @@ class MediaController extends Controller
             'hasmore'=>$hasmore,
             'payload'=>$payload,
         ];
+    }
+
+    public function update_file_metadata(Request $request) {
+        $allowed_metadata_keys = ['alt','title','caption','description'];
+        $data = $request->validate([
+            'metadata_id'=>'required|exists:metadata,id',
+            'keys'=>'required|max:20',
+            'keys.*'=>[Rule::in($allowed_metadata_keys)],
+            'values'=>'required|max:20',
+            'values.*'=>'max:2000'
+        ]);
+
+        if(count($data['keys']) != count($data['values']))
+            abort(422, 'Number of keys does not match the number of values');
+
+        $metadata = Metadata::find($data['metadata_id']);
+        $metadata_data = $metadata->data;
+        $keys = $data['keys'];
+        $values = $data['values'];
+        $count = 0;
+        foreach($keys as $key) {
+            $metadata_data[$key] = is_null($values[$count]) ? '' : $values[$count];
+            $count++;
+        }
+
+
+        $metadata->update(['data'=>$metadata_data]);
     }
 }

@@ -9,15 +9,16 @@
     <!-- file details -->
     <input type="hidden" class="selected" value="0" autocomplete="off">
     <input type="hidden" class="metadata-id" value="{{ $metadata->id }}" autocomplete="off">
-    <input type="hidden" class="image-name" value="{{ $metadata->data['name'] }}" autocomplete="off">
-    <input type="hidden" class="image-size" value="{{ $metadata->human_size }}" autocomplete="off">
-    <input type="hidden" class="image-width" value="{{ $metadata->data['width'] }}" autocomplete="off">
-    <input type="hidden" class="image-height" value="{{ $metadata->data['height'] }}" autocomplete="off">
-    <input type="hidden" class="image-upload-date" value="{{ $metadata->human_upload_date }}" autocomplete="off">
+    <input type="hidden" class="name" value="{{ $metadata->data['file'] }}" autocomplete="off">
+    <input type="hidden" class="size" value="{{ $metadata->human_size }}" autocomplete="off">
+    <input type="hidden" class="width" value="{{ $metadata->data['width'] }}" autocomplete="off">
+    <input type="hidden" class="height" value="{{ $metadata->data['height'] }}" autocomplete="off">
+    <input type="hidden" class="upload-date" value="{{ $metadata->human_upload_date }}" autocomplete="off">
 
-    <input type="hidden" class="image-alt" value="{{ isset($metadata->data['alt']) ? $metadata->data['alt'] : '' }}" autocomplete="off">
-    <input type="hidden" class="image-caption" value="{{ isset($metadata->data['caption']) ? $metadata->data['caption'] : '' }}" autocomplete="off">
-    <input type="hidden" class="image-description" value="{{ isset($metadata->data['description']) ? $metadata->data['description'] : '' }}" autocomplete="off">
-    <input type="hidden" class="image-link" value="{{  asset($metadata->filepath) }}" autocomplete="off">
+    <input type="hidden" class="alt" value="{{ isset($metadata->data['alt']) ? $metadata->data['alt'] : '' }}" autocomplete="off">
+    <input type="hidden" class="title" value="{{ isset($metadata->data['title']) ? $metadata->data['title'] : '' }}" autocomplete="off">
+    <input type="hidden" class="caption" value="{{ isset($metadata->data['caption']) ? $metadata->data['caption'] : '' }}" autocomplete="off">
+    <input type="hidden" class="description" value="{{ isset($metadata->data['description']) ? $metadata->data['description'] : '' }}" autocomplete="off">
+    <input type="hidden" class="link" value="{{  asset($metadata->filepath) }}" autocomplete="off">
 
 </div>
