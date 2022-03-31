@@ -97,7 +97,7 @@
                 </div>
                 <!-- medias library section -->
                 <div class="media-library-section none">
-                    <div class="media-library-media-part">
+                    <div class="media-library-media-part relative">
                         <div class="media-library-filter-box">
                             <div>
                                 <h3 class="fs12 bold dark no-margin mb2">Filter media:</h3>
@@ -111,6 +111,7 @@
                                 <input type="text" class="styled-input fs12" style="padding: 5px;">
                             </div>
                         </div>
+                        <!-- the following loading viewer will get deleted right after fetching medias -->
                         <div class="media-library-media-loading-container full-height full-center flex-column">
                             <svg class="spinner size24" fill="none" viewBox="0 0 16 16">
                                 <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
@@ -121,7 +122,7 @@
                         <div class="media-library-media-container none">
                             <input type="hidden" class="selection-type" value="single" autocomplete="off">
                             <div class="media-library-items-container">
-
+                                
                             </div>
                         </div>
                         <div class="media-library-no-media-found-container full-dimensions full-center flex-column none">
@@ -143,6 +144,13 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="media-library-bringing-uploaded-media-container full-dimensions full-center flex-column none">
+                            <svg class="spinner size24" fill="none" viewBox="0 0 16 16">
+                                <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                            </svg>
+                            <p class="fs12 bold fark no-margin mt8">Fetching uploaded data..</p>
+                        </div>
                     </div>
                     <div class="media-library-settings-part">
                         <!-- image settings container -->
@@ -155,7 +163,7 @@
                             </div>
                             <div> <!-- image attachement section -->
                                 <div class="library-media-image-attachment-container full-center">
-                                    <img src="" class="block library-media-image" alt=""/>
+                                    <img src="" class="block library-media-image pointer open-image-on-image-viewer" alt=""/>
                                 </div>
                                 <p class="fs12 light-gray my4 bold break-word name">mouad.nassri</p>
                                 <p class="fs13 dark my4"><strong>uploaded</strong> : <span class="upload-date">March 28, 2022</span></p>

@@ -20,6 +20,7 @@ class MediaController extends Controller
             'files.*'=>"mimes:$allowed_mimes|max:8000"
         ])['files'];
 
+        $metadata_ids = [];
         foreach($files as $file) {
             $filename = $file->getClientOriginalName();
             if(Storage::has('media-library/'.$filename)) {
@@ -53,7 +54,17 @@ class MediaController extends Controller
             }
             $metadata->data = $data;
             $metadata->save();
+
+            $metadata_ids[] = $metadata->refresh()->id;
         }
+
+        /**
+         * After storing files and metadata of each one, we have to return the metadata ids to 
+         * the request in order to build components and put them to media library
+         */
+        return [
+            'metadata_ids'=>$metadata_ids
+        ];
     }
 
     public function fetch_media(Request $request) {
@@ -91,6 +102,25 @@ class MediaController extends Controller
         return [
             'count'=>$media->count(),
             'hasmore'=>$hasmore,
+            'payload'=>$payload,
+        ];
+    }
+    public function fetch_media_set_components(Request $request) {
+        $ids = $request->validate([
+            'metadata_ids'=>'required',
+            'metadata_ids.*'=>'exists:metadata,id',
+        ])['metadata_ids'];
+
+        $payload = "";
+        foreach($ids as $id) {
+            $metadata = Metadata::find($id);
+            $imagecomponent = (new Image($metadata));
+            $imagecomponent = $imagecomponent->render(get_object_vars($imagecomponent))->render();
+            $payload .= $imagecomponent;
+        }
+
+        return [
+            'count'=>count($ids),
             'payload'=>$payload,
         ];
     }

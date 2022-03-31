@@ -127,7 +127,7 @@ $('#top-message-box').on({
     }
 });
 
-$('#remove-top-message-container-button').on('click', function() {
+$('.remove-top-message-container-button').on('click', function() {
     clearTimeout(top_message_timeout);
     $('#top-message-box').addClass('none');
 });
@@ -306,3 +306,47 @@ $('#basic-bottom-left-notification-container').on({
        }, 3000);
     }
 });
+
+$('.open-image-on-image-viewer').each(function() {
+    handle_image_open($(this).parent());
+});
+$('#image-viewer').on('click', function() {
+    $(this).addClass('none');
+});
+$('#image-viewer .image').on('click', function(event) {
+    event.stopPropagation();
+});
+function handle_image_open(component) {
+    component.find('.open-image-on-image-viewer').each(function() {
+        $(this).on('click', function() {
+            let viewer = $('#image-viewer');
+            let vimage = viewer.find('.image');
+
+            vimage.attr('src', $(this).attr('src'));
+            viewer.removeClass('none');
+            handle_viewer_media_logic(vimage);
+        });
+    });
+}
+function handle_viewer_media_logic(image) {
+    image.attr('style', '');
+    let container_height = image.parent().height();
+    let original_width = image.width();
+    let original_height = image.height();
+
+    if(original_width > original_height) {
+        image.css('width', '100%');
+        let new_width = image.width(); // get the new width after setting it to 100%
+        let new_height = image.height(); // get newer height dimension because width is changed and affect the height
+
+        if(new_height > container_height) {
+            image.css('height', '100%');
+            let ratio = container_height * original_width / original_height;
+            image.css('width', ratio + 'px');
+        } else {
+            
+        }
+    } else {
+        image.css('height', '100%');
+    }
+}

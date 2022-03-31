@@ -188,3 +188,10 @@
     border-radius: 2px;
     overflow: hidden;
 }
+
+.media-library-bringing-uploaded-media-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #ffffffe3;
+}

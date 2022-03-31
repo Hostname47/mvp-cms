@@ -661,18 +661,18 @@ a, input, textarea {
     max-width: 680px;
     min-width: 140px;
 }
-#remove-top-message-container-button {
+.remove-top-message-container-button {
     cursor: pointer;
     position: absolute;
-    top: 8px;
+    top: 11px;
     right: 8px;
 }
-#remove-top-message-container-button .x-icon {
+.remove-top-message-container-button .x-icon {
     padding: 4px;
     border-radius: 2px;
 }
-#remove-top-message-container-button .x-icon:hover {
-    background-color: #eed0d0;
+.remove-top-message-container-button .x-icon:hover {
+    background-color: #e0e8eb;
 }
 
 .suboptions-container {

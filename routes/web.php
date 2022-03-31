@@ -23,6 +23,7 @@ Route::patch('/admin/category/set-as-root', [CategoryController::class, 'set_as_
 Route::get('/admin/categories/manage', [CategoryController::class, 'manage'])->name('category.manage');
 
 Route::get('/admin/media/fetch', [MediaController::class, 'fetch_media']);
+Route::get('/admin/media/set/components', [MediaController::class, 'fetch_media_set_components']);
 Route::post('/admin/media-library/upload', [MediaController::class, 'upload']);
 Route::patch('/admin/media/metadata', [MediaController::class, 'update_file_metadata']);
 Route::delete('/admin/media', [MediaController::class, 'delete_media']);
