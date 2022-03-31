@@ -7,7 +7,6 @@
 @endsection
 
 @push('scripts')
-<script type="module" src="{{ asset('js/simplemde.js') }}" defer></script>
 <script src="{{ asset('js/admin/category/category.js') }}" defer></script>
 <script src="{{ asset('js/admin/category/create.js') }}" defer></script>
 @endpush

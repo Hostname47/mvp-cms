@@ -80,9 +80,4 @@ class PostTest extends TestCase
         $post = Post::first();
         $this->assertCount(2, $post->categories);
     }
-
-    /** @test */
-    public function set_post_featured_image() {
-
-    }
 }

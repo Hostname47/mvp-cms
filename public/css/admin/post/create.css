@@ -1,4 +1,6 @@
-html, body, main {
+html,
+body,
+main {
     height: 100%;
 }
 
@@ -11,10 +13,6 @@ body {
     flex-direction: column;
 }
 
-#content-input-box, #content-input-box .CodeMirror {
-    height: 100%;
-}
-
-#content-input-box .CodeMirror {
-    overflow-y: auto;
+.ck-editor__editable_inline {
+    min-height: 360px;
 }

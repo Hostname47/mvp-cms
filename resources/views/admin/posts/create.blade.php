@@ -7,13 +7,12 @@
 @endsection
 
 @push('scripts')
-<script type="module" src="{{ asset('js/simplemde.js') }}" defer></script>
+<script type="module" src="{{ asset('js/ckeditor.js') }}" defer></script>
 <script type="module" src="{{ asset('js/admin/post/create.js') }}" defer></script>
 <script type="module" src="{{ asset('js/admin/post/manage.js') }}" defer></script>
 @endpush
 
 @push('styles')
-<link href="{{ asset('css/simplemde.css') }}" rel="stylesheet">
 <link href="{{ asset('css/admin/post/admin-post.css') }}" rel="stylesheet">
 <link href="{{ asset('css/admin/post/create.css') }}" rel="stylesheet">
 @endpush
@@ -295,7 +294,7 @@
                         </svg>
                     </div>
                 </div>
-                <p class="fs12 my2 light-gray no-margin">Meta title and slug will be cloned to match the exact title. (you can edit them)</p>
+                <p class="fs12 my2 light-gray no-margin">This title is not displayed in blod post; It is title used to identify the blog post in th adin section only</p>
             </div>
             <input type="text" id="post-title" class="styled-input" maxlength="400" autocomplete="off" placeholder='{{ __("Enter post title here") }}'>
         </div>
