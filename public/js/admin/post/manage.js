@@ -485,8 +485,7 @@ $('.set-featured-image').on('click', function() {
     spinner.addClass('opacity0');
     spinner.removeClass('inf-rotate');
     set_featured_image_lock = true;
-})
-
+});
 
 function show_upload_media_error(message) {
     let container = $('.media-upload-error-container');
