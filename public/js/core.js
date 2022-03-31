@@ -244,6 +244,16 @@ function handle_image_center_based_on_higher_dim(image) {
             image.height('100%');
     })
 }
+function handle_image_center_by_filling_parent(image) {
+    load_image(image.attr('src'), function() {
+        image.width('100%');
+        image.height('fill-content');
+        if(image.height() < image.parent().height()) {
+            image.height('100%');
+            image.width('fill-content');
+        }
+    })
+}
 function load_image(src, callback) {
     let image = new Image();
     image.onload = callback;

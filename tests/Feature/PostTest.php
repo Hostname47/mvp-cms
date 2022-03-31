@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\{User, Category, Post};
 
@@ -80,5 +79,10 @@ class PostTest extends TestCase
         ]);
         $post = Post::first();
         $this->assertCount(2, $post->categories);
+    }
+
+    /** @test */
+    public function set_post_featured_image() {
+
     }
 }

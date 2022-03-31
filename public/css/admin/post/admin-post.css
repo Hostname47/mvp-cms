@@ -88,6 +88,12 @@
 .featured-image-upload-box:hover {
     background-color: #eaeef1;
 }
+.selected-featured-image-container {
+    display: flex;
+    border-radius: 3px;
+    width: 100%;
+    height: 112px;
+}
 
 .media-management-viewer-box {
     display: flex;
