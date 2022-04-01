@@ -77,6 +77,15 @@ function convertToSlug(text) {
     return text.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
 }
 
+$('.header-menu-button').on({
+    mouseenter: function() {
+        $(this).find('.header-menu-button-strip').width('100%');
+    },
+    mouseleave: function() {
+        $(this).find('.header-menu-button-strip').width('0%');
+    }
+})
+
 $('.remove-parent').on('click', function() {
     $(this).parent().remove();
 });

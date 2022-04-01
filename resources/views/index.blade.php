@@ -3,5 +3,7 @@
 @section('title', 'Fibonashi')
 
 @section('content')
-    <h1>INDEX PAGE</h1>
+    <div style="height: 800px">
+
+    </div>
 @endsection

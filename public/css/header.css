@@ -1,0 +1,81 @@
+header {
+    display: flex;
+    align-items: center;
+    height: 54px;
+    background-color: rgb(28, 29, 30);
+    padding: 0 10px;
+}
+
+#header-logo {
+    height: 32px;
+    margin-top: 3px;
+    fill: white;
+    stroke: white;
+    transition: fill 0.2s ease;
+}
+#header-logo:hover {
+    fill: #55bfff;
+    stroke: #55bfff;
+}
+
+.logo-menu-separator {
+    color: white;
+    font-size: 8px;
+    user-select: none;
+    margin: 0 16px;
+}
+
+.header-menu-button {
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    color: white;
+    fill: white;
+    padding: 6px 14px;
+    margin: 0 4px;
+    text-decoration: none;
+    cursor: pointer;
+}
+.header-menu-button:hover {
+    color: #55bfff;
+    fill: #55bfff;
+}
+.header-menu-button-strip {
+    position: absolute;
+    top: calc(100% + 2px);
+    border-radius: 2px;
+    width: 0%;
+    height: 2px;
+    background-color: #55bfff;
+    transition: width 0.3s ease;
+}
+
+.header-right-part {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    color: white;
+}
+
+.header-round-button {
+    border-radius: 50%;
+    padding: 10px;
+    transition: all 0.4s ease;
+}
+.header-round-button svg {
+    display: flex;
+    width: 18px;
+    height: 18px;
+}
+.header-round-button:hover {
+    background-color: rgb(17, 18, 19);
+}
+
+.header-square-button {
+    border-radius: 4px;
+    padding: 10px;
+    transition: all 0.4s ease;
+}
+.header-square-button:hover {
+    background-color: rgb(17, 18, 19);
+}
