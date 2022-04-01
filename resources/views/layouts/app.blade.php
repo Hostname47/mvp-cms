@@ -10,6 +10,7 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script type="text/javascript" src="{{ asset('js/core.js') }}" defer></script>
     <!-- Styles -->
+    <link href="{{ asset('css/header.css') }}" rel="stylesheet">
     <link href="{{ asset('css/core.css') }}" rel="stylesheet">
     @stack('styles')
     @stack('scripts')
