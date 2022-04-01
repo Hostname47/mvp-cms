@@ -281,7 +281,7 @@
             </div>
         </div>
     </div>
-    <div class="admin-page-content-box full-height">
+    <div class="admin-page-content-box">
         <div>
             <div>
                 <div class="align-center">
@@ -309,12 +309,12 @@
                 <input type="text" id="post-slug" class="styled-input" maxlength="400" autocomplete="off" placeholder='{{ __("Enter slug here (e.g. 3-reasons-why-mouad-is-so-special)") }}'>
             </div>
         </div>
-        <div id="content-input-box" class="flex flex-column" style="margin-top: 10px">
+        <div id="content-input-box" class="flex flex-column" style="margin: 10px 0">
             <div>
                 <label class="input-label dark fs14" for="content">Content</label>
                 <p class="fs12 my2 light-gray no-margin">Summary will be taken from the first 55 words of the first paragraph by default. (you can update it in the right sidebar) </p>
             </div>
-            <textarea id="post-content" class="styled-input" autocomplete="off" placeholder='Post content'></textarea>
+            <textarea id="post-content" class="styled-input" spellcheck="false" autocomplete="off" placeholder='Post content'></textarea>
         </div>
     </div>
     <div id="post-management-panel">

@@ -1,5 +1,24 @@
+
 CKEditor
-    .create(document.querySelector('#post-content'))
+    .create($('#post-content')[0], {
+        toolbar: {
+            items: [
+                'heading',
+                'fontfamily', 'fontsize', 'fontColor', 'fontBackgroundColor',
+                'bold', 'italic', '|',
+                'link', '|',
+                'outdent', 'indent', '|',
+                'bulletedList', 'numberedList',
+                'insertTable', '|',
+                'blockQuote', 'code', 'codeBlock', '|',
+                'undo', 'redo',
+            ],
+            shouldNotGroupWhenFull: true,
+            pasteFilter: null,
+            scayt_autoStartup: true,
+            disableNativeSpellChecker: false,
+        }
+    })
     .catch(error => {
         console.error(error);
     });
