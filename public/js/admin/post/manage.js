@@ -487,27 +487,6 @@ $('.set-featured-image').on('click', function () {
     set_featured_image_lock = true;
 });
 
-let publish_post_lock = true;
-$('.publish-post').on('click', function () {
-    if (!publish_post_lock) return;
-    publish_post_lock = false;
-
-    let title = $('#post-title').val();
-    let meta_title = $('#post-meta-title').val();
-    let slug = $('#post-slug').val();
-    let content = $('#post-content').val();
-
-    let button = $(this);
-    let spinner = button.find('.spinner');
-    let buttonicon = button.find('.icon-above-spinner');
-
-    button.addClass('dark-bs-disabled');
-    buttonicon.addClass('none');
-    spinner.removeClass('opacity0');
-    spinner.addClass('inf-rotate');
-});
-
-
 function show_upload_media_error(message) {
     let container = $('.media-upload-error-container');
     container.find('.message-text').html(message);

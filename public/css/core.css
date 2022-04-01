@@ -16,6 +16,10 @@ body {
     display: block;
 }
 
+.inline {
+    display: inline;
+}
+
 .relative {
     position: relative;
 }
@@ -45,7 +49,7 @@ body {
 }
 
 .toggle-arrow {
-    transition: all 0.2s ease;   
+    transition: all 0.2s ease;
 }
 
 .align-center {
@@ -425,7 +429,9 @@ body {
     font-weight: bold;
 }
 
-a, input, textarea {
+a,
+input,
+textarea {
     outline: none;
 }
 
@@ -489,9 +495,11 @@ a, input, textarea {
     background-color: #363942;
     border: 1px solid #2d3038;
 }
+
 .dark-bs:hover {
     background-color: #27292f;
 }
+
 .dark-bs-disabled {
     border-color: #7e8088 !important;
     background-color: #7e8088 !important;
@@ -502,9 +510,11 @@ a, input, textarea {
     color: white;
     background-color: #ea4747;
 }
+
 .red-bs:hover {
     background-color: #c83636;
 }
+
 .red-bs-disabled {
     background-color: #ec8282 !important;
     border-color: #ec8282 !important;
@@ -542,16 +552,28 @@ a, input, textarea {
 }
 
 .inf-rotate {
-    animation:spin 1.4s linear infinite;
-    -webkit-animation:spin 1.4s linear infinite;
+    animation: spin 1.4s linear infinite;
+    -webkit-animation: spin 1.4s linear infinite;
 }
+
 @keyframes spin {
-    from {transform:none}
-    to {transform:rotate(360deg)}
+    from {
+        transform: none
+    }
+
+    to {
+        transform: rotate(360deg)
+    }
 }
+
 @-webkit-keyframes spin {
-    from {-webkit-transform:none}
-    to {-webkit-transform:rotate(360deg)}
+    from {
+        -webkit-transform: none
+    }
+
+    to {
+        -webkit-transform: rotate(360deg)
+    }
 }
 
 .global-viewer {
@@ -563,6 +585,7 @@ a, input, textarea {
     background-color: #16171cba;
     z-index: 11111;
 }
+
 .close-button-style-1 {
     position: absolute;
     z-index: 5;
@@ -576,9 +599,11 @@ a, input, textarea {
     cursor: pointer;
     transition: 0.8s ease background-color;
 }
+
 .close-button-style-1:hover {
     background-color: #0000007a;
 }
+
 /* viewer box styles */
 .viewer-box-style-1 {
     width: 560px;
@@ -586,6 +611,7 @@ a, input, textarea {
     background-color: white;
     box-shadow: 0 3px 10px 0px #3c3c3c;
 }
+
 .light-gray-border-bottom {
     border-bottom: 1px solid #e8e8e8;
 }
@@ -645,6 +671,7 @@ a, input, textarea {
     top: 20px;
     width: 100%;
 }
+
 #top-error-message-container {
     padding: 12px 32px 12px 12px;
     background-color: #ffefef;
@@ -653,6 +680,7 @@ a, input, textarea {
     max-width: 680px;
     min-width: 140px;
 }
+
 #top-green-message-container {
     padding: 12px 32px 12px 12px;
     background-color: #effff0;
@@ -661,16 +689,19 @@ a, input, textarea {
     max-width: 680px;
     min-width: 140px;
 }
+
 .remove-top-message-container-button {
     cursor: pointer;
     position: absolute;
     top: 11px;
     right: 8px;
 }
+
 .remove-top-message-container-button .x-icon {
     padding: 4px;
     border-radius: 2px;
 }
+
 .remove-top-message-container-button .x-icon:hover {
     background-color: #e0e8eb;
 }
@@ -731,9 +762,11 @@ a, input, textarea {
     border-radius: 4px;
     cursor: pointer;
 }
+
 .custom-dropdown-item-style:hover {
     background-color: rgb(243, 243, 243);
 }
+
 .custom-dropdown-item-selected-style {
     background-color: rgb(238, 238, 238) !important;
 }
@@ -754,9 +787,11 @@ a, input, textarea {
     border: 1px solid white;
     border-bottom: unset;
 }
+
 .menu-button-style-1:hover {
     color: #2ca0ff;
 }
+
 .menu-button-style-1-selected {
     color: #202224 !important;
     border-radius: 3px 3px 0 0;
@@ -780,6 +815,7 @@ a, input, textarea {
     border: 1px solid #d7dbdf;
     border-radius: 3px;
 }
+
 .button-style-1:hover {
     background-color: #ecf2f7;
 }

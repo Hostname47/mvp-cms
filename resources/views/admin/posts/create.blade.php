@@ -8,8 +8,8 @@
 
 @push('scripts')
 <script type="module" src="{{ asset('js/ckeditor.js') }}" defer></script>
-<script type="module" src="{{ asset('js/admin/post/create.js') }}" defer></script>
 <script type="module" src="{{ asset('js/admin/post/manage.js') }}" defer></script>
+<script type="module" src="{{ asset('js/admin/post/create.js') }}" defer></script>
 @endpush
 
 @push('styles')
@@ -282,10 +282,16 @@
         </div>
     </div>
     <div class="admin-page-content-box">
-        <div>
+        <div class="informative-message-container error-container align-center relative my8 none">
+            <div class="informative-message-container-left-stripe imcls-red"></div>
+            <p class="no-margin fs13 red bold message-text">Title field is required.</p>
+            <div class="close-parent close-informative-message-style">✖</div>
+        </div>
+        <!-- post title -->
+        <div class="input-wrapper">
             <div>
                 <div class="align-center">
-                    <label class="input-label dark fs14" for="post-title">Post Title</label>
+                    <label class="input-label dark fs14" for="post-title">Post Title <span class="error-asterisk red ml4">*</span></label>
                     <span class="fs8 bold light-gray unselectable mx8">●</span>
                     <div id="toggle-meta-and-slug" class="align-center pointer">
                         <span class="blue fs12 bold unselectable">meta & slug</span>
@@ -298,20 +304,21 @@
             </div>
             <input type="text" id="post-title" class="styled-input" maxlength="400" autocomplete="off" placeholder='{{ __("Enter post title here") }}'>
         </div>
+        <!-- post meta title & slug -->
         <div id="meta-and-slug-section" class="typical-section-style mt4 none">
             <p class="fs12 mb2 light-gray no-margin">Meta title and slug are useful to <strong>improve SEO</strong> of blog post and ranking. By default, meta title and slug match the title, but you can edit them.</p>
-            <div class="mb8">
-                <label class="input-label dark fs13 my2" for="post-meta-title">Meta title</label>
+            <div class="input-wrapper mb8">
+                <label class="input-label dark fs13 my2" for="post-meta-title">Meta title<span class="error-asterisk red ml4">*</span></label>
                 <input type="text" id="post-meta-title" class="styled-input" maxlength="400" autocomplete="off" placeholder='{{ __("Enter meta title here (displayed by search engines and browser tab title)") }}'>
             </div>
-            <div>
-                <label class="input-label dark fs13 my2" for="post-slug">Slug</label>
+            <div class="input-wrapper">
+                <label class="input-label dark fs13 my2" for="post-slug">Slug<span class="error-asterisk red ml4">*</span></label>
                 <input type="text" id="post-slug" class="styled-input" maxlength="400" autocomplete="off" placeholder='{{ __("Enter slug here (e.g. 3-reasons-why-mouad-is-so-special)") }}'>
             </div>
         </div>
-        <div id="content-input-box" class="flex flex-column" style="margin: 10px 0">
+        <div id="content-input-box" class="flex flex-column input-wrapper" style="margin: 10px 0">
             <div>
-                <label class="input-label dark fs14" for="content">Content</label>
+                <label class="input-label dark fs14" for="content">Content<span class="error-asterisk red ml4">*</span></label>
                 <p class="fs12 my2 light-gray no-margin">Summary will be taken from the first 55 words of the first paragraph by default. (you can update it in the right sidebar) </p>
             </div>
             <textarea id="post-content" class="styled-input" spellcheck="false" autocomplete="off" placeholder='Post content'></textarea>
@@ -381,15 +388,15 @@
                         </div>
                         <div class="custom-dropdown-items-container custom-dropdown-items-container-style" style="max-width: 166px;">
                             <div class="custom-dropdown-item custom-dropdown-item-style">
-                                <span class="custom-dropdown-item-text fs14 dark bold block">Pending Review</span>
+                                <span class="custom-dropdown-item-text fs14 dark bold block">Awaiting Review</span>
                                 <span class="fs12 block">post will not be available until an admin review it again and publish it.</span>
-                                <input type="hidden" class="custom-dropdown-item-value" value="live" autocomplete="off">
+                                <input type="hidden" class="custom-dropdown-item-value" value="awaiting-review" autocomplete="off">
                             </div>
                             <!-- selected one ->  custom-dropdown-item-selected custom-dropdown-item-selected-style -->
                             <div class="custom-dropdown-item custom-dropdown-item-style mt2">
                                 <span class="custom-dropdown-item-text fs14 dark bold block">Draft</span>
                                 <span class="fs12 block">post will be saved as draft to be updated and published later.</span>
-                                <input type="hidden" class="custom-dropdown-item-value" value="live" autocomplete="off">
+                                <input type="hidden" class="custom-dropdown-item-value" value="draft" autocomplete="off">
                             </div>
                         </div>
                     </div>
@@ -464,7 +471,7 @@
             <div class="post-management-panel-section-content post-management-cateories-box toggle-container none">
                 @foreach($root_categories as $root_category)
                     <div class="flex">
-                        <input type="checkbox" class="size14 mr4" id="category-{{ $root_category->id }}" value="{{ $root_category->id }}" autocomplete="off">
+                        <input type="checkbox" class="size14 mr4 category-input" id="category-{{ $root_category->id }}" value="{{ $root_category->id }}" autocomplete="off">
                         <label for="category-{{ $root_category->id }}" class="fs12 bold dark mt2">{{ $root_category->title }}</label>
                     </div>
                     @foreach($root_category->descendants()->orderBy('path')->get() as $descendant)

@@ -49,11 +49,11 @@ class PostTest extends TestCase
 
         $response = $this->post('/admin/posts');
         $response->assertStatus(302);
-        $response->assertSessionHasErrors(['title', 'title_meta', 'slug', 'summary', 'content']);
+        $response->assertSessionHasErrors(['title', 'title_meta', 'slug', 'content']);
         $response = $this->post('/admin/posts', ['title'=>'awesome title']);
-        $response->assertSessionHasErrors(['title_meta', 'slug', 'summary', 'content']);
+        $response->assertSessionHasErrors(['title_meta', 'slug', 'content']);
         $response = $this->post('/admin/posts', ['title'=>'awesome title']);
-        $response->assertSessionHasErrors(['title_meta', 'slug', 'summary', 'content']);
+        $response->assertSessionHasErrors(['title_meta', 'slug', 'content']);
         $response = $this->post('/admin/posts', [
             'title' => 'cool title', 'title_meta' => 'cool-title', 'slug' => 'cool title', 'summary' => 'hello world', 'content' => 'hello world', 'user_id' => $user->id, 'categories'=>[$category->id],
             'status'=> 'invalid-status', 'visibility'=>'invalid-visibility'

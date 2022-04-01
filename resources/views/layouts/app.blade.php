@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Fibonashi')</title>
     <!-- Scripts -->
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script type="text/javascript" src="{{ asset('js/core.js') }}" defer></script>
     <!-- Styles -->
     <link href="{{ asset('css/core.css') }}" rel="stylesheet">
