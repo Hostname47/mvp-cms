@@ -15,16 +15,22 @@ class CreatePostsTable extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->text('title');
-            $table->text('title_meta')->nullable();
+            $table->text('title'); // Used only to reference the post in admin section (like the name of the post)
+            $table->text('title_meta'); // Used for SEO
             $table->text('slug');
-            $table->text('summary');
-            $table->string('status')->default('draft');
-            $table->UnsignedBigInteger('user_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
-            $table->timestamps();
-            $table->timestamp('published_at')->default(\DB::raw('CURRENT_TIMESTAMP'));
             $table->longText('content');
+            $table->string('status')->default('draft');
+
+            $table->integer('allow_comments')->default(1);
+            $table->integer('allow_reactions')->default(1);
+            $table->integer('comments_count')->default(0);
+            $table->integer('reactions_count')->default(0);
+            $table->text('summary')->nullable();
+
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+            $table->timestamp('published_at')->default(\DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamps();
         });
     }
 
