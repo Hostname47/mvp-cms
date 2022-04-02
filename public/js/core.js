@@ -369,3 +369,15 @@ function handle_viewer_media_logic(image) {
         image.css('height', '100%');
     }
 }
+
+$('.login-required').each(function() { handle_login_required_actions($(this).parent()); });
+function handle_login_required_actions(section) {
+    section.find('.login-required').each(function() {
+        $(this).on('click', function(event) {
+            $('#login-viewer').removeClass('none');
+            disable_page_scroll();
+            
+            event.preventDefault();
+        });
+    });
+}

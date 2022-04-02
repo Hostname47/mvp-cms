@@ -3,10 +3,10 @@
 }
 
 #auth-viewer-box {
-    box-shadow: 0 0 9px 0 #cecece;
+    box-shadow: 0 0 9px 0 #0000002b;
     border: 1px solid #dfdfdf;
     width: 380px;
-    padding: 12px;
+    padding: 15px;
 }
 
 .sm-button {

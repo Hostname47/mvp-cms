@@ -14,10 +14,17 @@
     <link href="{{ asset('css/header.css') }}" rel="stylesheet">
     <link href="{{ asset('css/core.css') }}" rel="stylesheet">
     @stack('styles')
+    @guest
+    <link href="{{ asset('css/auth.css') }}" rel="stylesheet">
+    @endguest
     @stack('scripts')
 </head>
 <body>
     @include('partials.header')
+    @guest
+        <link href="{{ asset('css/auth.css') }}" rel="stylesheet">
+        @include('partials.auth.login-viewer')
+    @endguest
     <main class="relative">
         @yield('content')
     </main>

@@ -89,10 +89,15 @@ header {
 }
 
 .header-auth-user-avatar-container {
-    height: 31px;
-    width: 31px;
+    height: 28px;
+    width: 28px;
     border-radius: 50%;
     background-color: rgb(11, 12, 14);
+}
+.header-auth-user-options-header-avatar {
+    width: 36px;
+    height: 36px;
+    fill: #e7e7e7;
 }
 .header-auth-username {
     font-size: 13px;
@@ -109,7 +114,7 @@ header {
     background-color: rgb(17, 18, 19);
 }
 #header-auth-user-options-header {
-    padding: 10px;
+    padding: 10px 14px;
     border-bottom: 2px solid rgb(27 29 30);
 }
 
