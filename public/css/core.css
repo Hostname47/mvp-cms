@@ -749,6 +749,20 @@ textarea {
     border-radius: 3px;
 }
 
+.suboption-style-1 {
+    cursor: pointer;
+    text-decoration: none;
+    color: white;
+    font-size: 13px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s ease;
+}
+.suboption-style-1:hover {
+    background-color: rgb(10 11 12);
+}
+
 .simple-line-separator {
     height: 1px;
     width: 100%;

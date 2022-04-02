@@ -52,6 +52,7 @@ header {
 .header-right-part {
     display: flex;
     align-items: center;
+    height: 100%;
     margin-left: auto;
     color: white;
 }
@@ -70,11 +71,52 @@ header {
     background-color: rgb(17, 18, 19);
 }
 
-.header-square-button {
-    border-radius: 4px;
-    padding: 10px;
+.header-login-wrapper {
+    position: relative;
+    height: 100%;
+}
+.header-login-button-style {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    height: 100%;
+    color: #efefef;
+    padding: 0 16px;
     transition: all 0.4s ease;
 }
-.header-square-button:hover {
+.header-login-button-style:hover {
+    background-color: rgb(23, 24, 26);   
+}
+
+.header-auth-user-avatar-container {
+    height: 31px;
+    width: 31px;
+    border-radius: 50%;
+    background-color: rgb(11, 12, 14);
+}
+.header-auth-username {
+    font-size: 13px;
+    font-weight: bold;
+    margin-left: 8px;
+}
+#header-auth-user-options-container {
+    position: absolute;
+    z-index: 3;
+    top: 100%;
+    right: 0;
+    width: 240px;
+    height: 340px;
     background-color: rgb(17, 18, 19);
+}
+#header-auth-user-options-header {
+    padding: 10px;
+    border-bottom: 2px solid rgb(27 29 30);
+}
+
+#header-logout-button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
 }
