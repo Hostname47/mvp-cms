@@ -1,9 +1,8 @@
 #auth-section {
-    height: calc(100vh - 54px);
+    min-height: calc(100vh - 54px);
 }
 
 #auth-viewer-box {
-    margin-top: -26px;
     box-shadow: 0 0 9px 0 #cecece;
     border: 1px solid #dfdfdf;
     width: 380px;
@@ -44,4 +43,19 @@
     background-color: rgb(251, 251, 251);
     border-color: #b8e4ff;
     box-shadow: 1px 1px 5px 1px #ccebff;
+}
+
+.register-type-switch {
+    cursor: pointer;
+    padding: 3px 6px;
+    border: 1px solid #b9b9b9;
+    border-radius: 3px;
+}
+
+.register-type-switch-selected {
+    border-color: #2CA0FF;
+    background-color: #2CA0FF;
+    color: white;
+    fill: white;
+    cursor: default;
 }

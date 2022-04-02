@@ -10,7 +10,7 @@ Route::get('/test', function() {
 });
 
 Route::get('/', [IndexController::class, 'index']);
-Route::get('/home', [IndexController::class, 'index']);
+Route::get('/home', [IndexController::class, 'index'])->name('home');
 
 Route::get('/admin/categories/create', [CategoryController::class, 'create'])->name('create.new.category');
 Route::get('/admin/categories/hierarchy/select-one-category-viewer', [CategoryController::class, 'get_select_one_category_viewer']);
