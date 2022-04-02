@@ -1,0 +1,47 @@
+#auth-section {
+    height: calc(100vh - 54px);
+}
+
+#auth-viewer-box {
+    margin-top: -26px;
+    box-shadow: 0 0 9px 0 #cecece;
+    border: 1px solid #dfdfdf;
+    width: 380px;
+    padding: 12px;
+}
+
+.sm-button {
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.google-auth-button {
+    background-color: white;
+    color: rgb(85, 85, 85);
+    border: 1px solid #ddd
+}
+
+.facebook-auth-button {
+    background-color: #4267B2;
+    color: white;
+}
+
+.facebook-auth-button:hover {
+    background-color: #345391;
+}
+
+.twitter-auth-button {
+    background-color: #03A9F4;
+    color: white;
+}
+
+.twitter-auth-button:hover {
+    background-color: #0097dd;
+}
+
+.google-auth-button:hover {
+    background-color: rgb(251, 251, 251);
+    border-color: #b8e4ff;
+    box-shadow: 1px 1px 5px 1px #ccebff;
+}

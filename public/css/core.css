@@ -302,6 +302,12 @@ body {
     cursor: pointer;
 }
 
+.link-style {
+    color: #2ca0ff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
 .cursor-not-allowed {
     cursor: not-allowed !important;
 }
