@@ -17,12 +17,22 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('firstname');
             $table->string('lastname');
-            $table->string('username');
+            $table->string('username')->unique();
+            $table->string('avatar')->nullable();
+            $table->text('about')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->rememberToken();
             $table->timestamps();
+            // Soft delete
+            $table->softDeletes();
+            // User personal informations
+            $table->json('personal_informations')->nullable();
+            // Add oauth columns
+            $table->string('provider')->nullable();
+            $table->string('provider_id')->nullable();
+            $table->string('provider_avatar')->nullable();
         });
     }
 

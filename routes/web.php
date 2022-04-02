@@ -5,9 +5,10 @@ use App\Http\Controllers\{IndexController, AdminController, PostController, Cate
     MediaController, OAuthController};
 
 Route::get('/test', function() {
-    $data = [];
-    $data['alt'] = 'alt';
-    dd($data);
+    $data = ['mouad'];
+    $lastname = isset($data[1]) ? $data[1] : 'foo';
+
+    dd($lastname);
 });
 
 Route::get('/', [IndexController::class, 'index']);
