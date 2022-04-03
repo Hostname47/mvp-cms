@@ -13,29 +13,42 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $guarded = [];
+    private $avatar_dims = [26, 36, 100, 160, 200, 300, 400];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function getHasAvatarAttribute() {
+        if(is_null($this->avatar)) {
+            /**
+             * If user avatar is null we have to check avatar_provider. In case the provider_avatar is null, then
+             * the user has deleted both avatar and provider avatar.
+             */
+            if(!is_null($this->provider_avatar))
+                return true;
+            else
+                return false;
+        }
+
+        return true;
+    }
+    public function avatar($size, $quality="h") {
+        if($this->hasavatar) {
+            if(is_null($this->avatar))
+                return $this->provider_avatar;
+            else
+                return asset("users/$this->id/usermedia/avatars/segments/$size-$quality.png");
+        }
+
+        return asset("storage/app/defaults/medias/avatars/$size-$quality.png");
+    }
+    public function defaultavatar($size, $quality="h") {
+        return asset("storage/app/defaults/medias/avatars/$size-$quality.png");
+    }
+    public function getFullnameAttribute() {
+        return $this->firstname . ' ' . $this->lastname;
+    }
 }

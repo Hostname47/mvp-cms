@@ -3,7 +3,7 @@
 @section('title', 'Admin - create post')
 
 @section('left-panel')
-    @include('partials.admin.left-panel', ['page'=>'admin.create.new.post'])
+    @include('partials.admin.left-panel', ['page'=>'admin.posts', 'subpage'=>'admin.posts.create'])
 @endsection
 
 @push('scripts')
@@ -282,6 +282,13 @@
         </div>
     </div>
     <div class="admin-page-content-box">
+        @if(Session::has('message'))
+        <div class="informative-message-container media-upload-error-container flex align-center relative my8">
+            <div class="informative-message-container-left-stripe imcls-green"></div>
+            <p class="no-margin fs13 message-text">{!! Session::get('message') !!}</p>
+            <div class="close-parent close-informative-message-style">✖</div>
+        </div>
+        @endif
         <div class="informative-message-container error-container align-center relative my8 none">
             <div class="informative-message-container-left-stripe imcls-red"></div>
             <p class="no-margin fs13 red bold message-text">Title field is required.</p>

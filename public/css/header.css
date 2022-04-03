@@ -93,6 +93,11 @@ header {
     width: 28px;
     border-radius: 50%;
     background-color: rgb(11, 12, 14);
+    overflow: hidden;
+}
+.header-auth-user-avatar {
+    height: 100%;
+    width: 100%;
 }
 .header-auth-user-options-header-avatar {
     width: 36px;

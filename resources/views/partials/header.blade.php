@@ -51,8 +51,7 @@
             @auth
             <div class="align-center button-with-suboptions header-login-button-style">
                 <div class="header-auth-user-avatar-container">
-                    <!-- Later : If user has avatar then show it in img tag otherwise we display the avatar in form of svg <img src="" class="header-auth-user-avatar" alt=""> -->
-                    <svg fill="#e7e7e7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M126.22,254.33C56.67,251.16,2.8,193.84,5.67,126.07,8.61,56.79,66.47,2.52,134.05,5.67c69.5,3.25,123.55,61,120.24,128.52C250.9,203.54,193.48,257.4,126.22,254.33Zm103.14-124c.12-55-43.67-99.72-98.69-99.57-41.23.12-72.2,19.27-90,56.19C22.91,123.69,27.83,159.3,52.23,192.09c2.1,2.83,3.41,3.47,6.66.88,43-34.33,99.26-34.38,142.05-.14,3.43,2.74,4.75,2,7.06-1C222,173.66,229.26,153.28,229.36,130.35Zm-49.58-24.73c.48-27-21.92-49.93-49.13-50.21a50,50,0,0,0-50.46,49.48c-.23,27.17,22.06,49.65,49.44,49.84A49.71,49.71,0,0,0,179.78,105.62Z"/></svg>
+                    <img src="{{ auth()->user()->avatar(36, 'h') }}" class="header-auth-user-avatar" alt="">
                 </div>
                 <span class="header-auth-username">{{ auth()->user()->username }}</span>
                 <svg class="size7 ml8" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"/></svg>

@@ -10,14 +10,15 @@ $(document).ready(function() {
                     'bold', 'italic', '|',
                     'link', '|',
                     'outdent', 'indent', '|',
-                    'mediaEmbed',
                     'bulletedList', 'numberedList',
                     'insertTable', '|',
                     'blockQuote', 'code', 'codeBlock', '|',
                     'undo', 'redo',
                 ],
+                extraPlugins: 'youtube',
                 shouldNotGroupWhenFull: true,
                 pasteFilter: null,
+                fullPage: true
             }
         })
         .then(editor => {
@@ -135,7 +136,9 @@ $('.publish-post').on('click', function () {
     let meta_title = $('#post-meta-title');
     let slug = $('#post-slug');
     let content_element = $('#post-content');
-    let content = post_editor.getData("html");
+    
+    post_editor.data.processor = post_editor.data.htmlProcessor;
+    let content = post_editor.getData();
 
     $('.error-container').addClass('none');
     $('.error-asterisk').css('display', 'none');
@@ -153,16 +156,6 @@ $('.publish-post').on('click', function () {
         return;
     };
     if (!post_input_validate(content != '', content_element, 'Content field is required.', publish_post_lock)) return;
-
-    // let tags = [];
-    // $('.post-tags-wrapper .post-tag-item').each(function () {
-    //     tags.push($(this).find('.tag-text').text());
-    // });
-    // let categories = [];
-    // $('.category-input').each(function () {
-    //     categories.push($(this).val());
-    // });
-
 
     let data = {
         title: title.val(),
@@ -184,12 +177,13 @@ $('.publish-post').on('click', function () {
     spinner.removeClass('opacity0');
     spinner.addClass('inf-rotate');
 
+    // right now we just refresh te page after creating the post
     $.ajax({
         type: 'post',
         url: '/admin/posts',
         data: data,
         success: function(response) {
-            
+            location.reload();
         },
         error: function (response) {
             publish_post_lock = true;

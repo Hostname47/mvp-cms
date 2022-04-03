@@ -24,23 +24,24 @@ class PostController extends Controller
             'status'=>['sometimes', Rule::in(['draft', 'published', 'awaiting-review'])],
             'visibility'=>['sometimes', Rule::in(['public', 'private', 'password-locked'])],
             'content'=>'required|max:50000',
-            'allow_reactions'=>['required', Rule::in([0, 1])],
-            'allow_comments'=>['required', Rule::in([0, 1])],
+            'allow_reactions'=>['sometimes', Rule::in([0, 1])],
+            'allow_comments'=>['sometimes', Rule::in([0, 1])],
         ]);
+        $postdata['user_id'] = auth()->user()->id;
 
-        // $categories = $request->validate([
-        //     'categories'=>'sometimes|min:1|max:10',
-        //     'categories.*'=>'exists:categories,id',
-        // ]);
+        $categories = $request->validate([
+            'categories'=>'sometimes|min:1|max:10',
+            'categories.*'=>'exists:categories,id',
+        ]);
 
         // Create the post
         $post = Post::create($postdata);
 
         // Attach categories to the post
-        // foreach($categories as $category) {
-        //     $post->categories()->attach($category);
-        // }
+        foreach($categories as $category) {
+            $post->categories()->attach($category);
+        }
 
-        Session::flash('Post created successfully');
+        Session::flash('message', 'Post has been created successfully. <a href="" class="link-style">click here</a> to see the post');
     }
 }

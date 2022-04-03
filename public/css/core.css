@@ -314,6 +314,10 @@ body {
     line-height: 1.5;
 }
 
+.rounded {
+    border-radius: 50%;
+}
+
 .link-style {
     color: #2ca0ff;
     text-decoration: none;
