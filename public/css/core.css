@@ -96,6 +96,10 @@ body {
     color: #2ca0ff;
 }
 
+.dark-blue {
+    color: #2777b9;
+}
+
 .gray {
     color: rgb(29, 29, 29);
 }
@@ -304,6 +308,9 @@ body {
 
 .text-center {
     text-align: center;
+}
+.text-start {
+    text-align: start;
 }
 
 .pointer {

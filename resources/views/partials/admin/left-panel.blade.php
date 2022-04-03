@@ -33,9 +33,17 @@
                 </svg>
             </div>
             <div class="toggle-container admin-sidebar-button-nestedbuttons-box @if($page != 'admin.posts') none @endif">
+                <a href="{{ route('admin.all.posts') }}" class="admin-sidebar-sub-button align-center @if(isset($subpage) && $subpage == 'admin.posts.all') blue @endif">
+                    <svg class="size10 mr8" fill="@if(isset($subpage) && $subpage == 'admin.posts.all') #2ca0ff @else #fff @endif" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M250.29,9.76V250.24H9.71V9.76ZM116,116.17V36.55H36.37v79.62Zm27.87-.09h79.62V36.48H143.83ZM36.3,223.56h79.76V144.14H36.3Zm107.43-.05h79.75V144.13H143.73Z"/></svg>
+                    <span style="color: @if(isset($subpage) && $subpage == 'admin.posts.all') #2ca0ff @endif">All posts</span>
+                </a>
                 <a href="{{ route('create.new.post') }}" class="admin-sidebar-sub-button align-center @if(isset($subpage) && $subpage == 'admin.posts.create') blue @endif">
                     <svg class="size10 mr8" fill="@if(isset($subpage) && $subpage == 'admin.posts.create') #2ca0ff @else #fff @endif" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M4.41,104.24c2.53-3,5.67-4,9.7-4,26.83.17,53.67,0,80.5.17,3.53,0,4.61-.67,4.58-4.44-.18-27-.1-54-.09-81,0-7.29,2-9.31,9.16-9.32q21.22,0,42.45,0c6.91,0,9,2.09,9,9,0,27,.09,54-.09,81,0,3.82.94,4.79,4.76,4.76,26.83-.17,53.67-.1,80.5-.09,7.58,0,9.5,1.92,9.51,9.47q0,21.23,0,42.45c0,6.55-2.17,8.66-8.83,8.67-27.16,0-54.32.09-81.47-.09-3.77,0-4.47,1-4.45,4.58.15,26.83,0,53.66.17,80.49,0,4-1,7.17-4,9.7H103c-3-2.53-4-5.67-4-9.7.16-26.85,0-53.7.18-80.55,0-3.65-.87-4.54-4.52-4.52-26.85.18-53.7,0-80.55.18-4,0-7.18-1-9.71-4Z"/></svg>
-                    <span style="color: @if(isset($subpage) && $subpage == 'admin.posts.create') #2ca0ff @endif">create a post</span>
+                    <span style="color: @if(isset($subpage) && $subpage == 'admin.posts.create') #2ca0ff @endif">Create a post</span>
+                </a>
+                <a href="{{ route('create.new.post') }}" class="admin-sidebar-sub-button align-center @if(isset($subpage) && $subpage == 'admin.posts.edit') blue @endif">
+                    <svg class="size12" style="margin-right: 6px;" fill="@if(isset($subpage) && $subpage == 'admin.posts.edit') #2ca0ff @else #fff @endif" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M357.51,334.33l28.28-28.27a7.1,7.1,0,0,1,12.11,5V439.58A42.43,42.43,0,0,1,355.48,482H44.42A42.43,42.43,0,0,1,2,439.58V128.52A42.43,42.43,0,0,1,44.42,86.1H286.11a7.12,7.12,0,0,1,5,12.11l-28.28,28.28a7,7,0,0,1-5,2H44.42V439.58H355.48V339.28A7,7,0,0,1,357.51,334.33ZM495.9,156,263.84,388.06,184,396.9a36.5,36.5,0,0,1-40.29-40.3l8.83-79.88L384.55,44.66a51.58,51.58,0,0,1,73.09,0l38.17,38.17A51.76,51.76,0,0,1,495.9,156Zm-87.31,27.31L357.25,132,193.06,296.25,186.6,354l57.71-6.45Zm57.26-70.43L427.68,74.7a9.23,9.23,0,0,0-13.08,0L387.29,102l51.35,51.34,27.3-27.3A9.41,9.41,0,0,0,465.85,112.88Z"/></svg>
+                    <span style="color: @if(isset($subpage) && $subpage == 'admin.posts.edit') #2ca0ff @endif">Edit a post</span>
                 </a>
             </div>
         </div>

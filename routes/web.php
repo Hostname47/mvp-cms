@@ -31,9 +31,12 @@ Route::patch('/admin/media/metadata', [MediaController::class, 'update_file_meta
 Route::delete('/admin/media', [MediaController::class, 'delete_media']);
 
 Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+Route::get('/admin/posts', [PostController::class, 'all'])->name('admin.all.posts');
 Route::get('/admin/posts/create', [PostController::class, 'create'])->name('create.new.post');
 Route::post('/admin/posts', [PostController::class, 'store']);
 Route::patch('/admin/posts', [PostController::class, 'update']);
+
+Route::get('/{category}/{slug}', [PostController::class, 'view']);
 
 Route::get('/login/{provider}', [OAuthController::class, 'redirectToProvider']);
 Route::get('/{provider}/callback', [OAuthController::class, 'handleProviderCallback']);

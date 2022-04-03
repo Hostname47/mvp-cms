@@ -1,0 +1,41 @@
+.posts-table {
+    border-collapse: collapse;
+    border: 1px solid #ced6dd;
+}
+
+.posts-table thead {
+    background-color: #edf1f4;
+}
+
+.posts-table th {
+    padding: 8px 10px;
+    box-sizing: border-box;
+    border-right: 1px solid #ced6dd;
+    border-bottom: 1px solid #ced6dd;
+}
+
+.posts-table-selection-column {
+    display: flex;
+    margin-top: 2px;
+    justify-content: center;
+    width: max-content;
+}
+.posts-table-title-column {
+    flex: 1;
+}
+.posts-table-author-column {
+    width: 10%;
+}
+.posts-table-categories-column {
+    width: 15%;
+}
+.posts-table-tags-column {
+    width: 15%;
+}
+.posts-table-comments-column {
+    width: max-content;
+}
+.posts-table-date-column {
+    width: max-content;
+    min-width: 160px;
+}

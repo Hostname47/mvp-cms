@@ -9,6 +9,18 @@ use App\Models\{Post,Category};
 
 class PostController extends Controller
 {
+    public function all(Request $request) {
+        $status = 'all';
+        if($request->has('status')) {
+            $s = $request->validate(['status'=>Rule::in(['published', 'draft', 'private'])])['status'];
+            $status = $s;
+        }
+        $posts = Post::paginate(10);
+
+        return view('admin.posts.all')
+            ->with(compact('posts'));
+    }
+
     public function create() {
         $root_categories = Category::whereNull('parent_category_id')->orderBy('priority', 'asc')->get();
         return view('admin.posts.create')
