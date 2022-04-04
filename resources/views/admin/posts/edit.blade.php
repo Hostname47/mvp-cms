@@ -94,7 +94,11 @@
         </div>
     </div>
     @else
+        @push('styles')
+        <link href="{{ asset('css/admin/post/post-management-right-panel.css') }}" rel="stylesheet">
+        @endpush
 
+        <x-admin.post.post-management-panel />
     @endif
 </main>
 @endsection
