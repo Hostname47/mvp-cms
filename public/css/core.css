@@ -44,6 +44,10 @@ body {
     word-break: break-all;
 }
 
+.no-wrap {
+    white-space: nowrap;
+}
+
 .opacity0 {
     opacity: 0;
 }

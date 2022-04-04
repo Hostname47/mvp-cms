@@ -1,0 +1,40 @@
+.search-button-style {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    right: 0;
+    top: 0;
+    height: 100%;
+    padding: 10px 12px;
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+    border-radius: 0 3px 3px 0;
+    border: 1px solid #cad2d9;
+    cursor: pointer;
+    user-select: none;
+}
+.search-button-style:hover {
+    background-color: #f5f7f9;
+}
+.search-input-style {
+    padding: 10px 10px 10px 36px;
+    border-radius: 3px;
+    border: 1px solid #cad2d9;
+}
+#posts-search-result-box {
+    padding: 8px;
+    background-color: white;
+    border: 1px solid #cad2d9;
+    border-top: none;
+}
+
+.post-search-entity {
+    display: flex;
+    color: #0f1011;
+    text-decoration: none;
+    background-color: #f9f9f9;
+    padding: 8px;
+    border: 1px solid #dae1e8;
+    border-radius: 2px;
+}

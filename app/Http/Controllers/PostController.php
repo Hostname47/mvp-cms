@@ -62,6 +62,15 @@ class PostController extends Controller
             // In case the user does not select any category then we have to give uncategorized category to the post
             $post->categories()->attach(Category::where('slug', 'uncategorized')->first()->id);
 
-        Session::flash('message', 'Post has been created successfully. <a href="" class="link-style">click here</a> to see the post');
+        Session::flash('message', 'Post has been created successfully. <a href="" class="link-style">click here</a> to view the post');
+    }
+
+    public function edit(Request $request) {
+        $post = null;
+        if($request->has('post'))
+            $post = Post::withoutGlobalScopes()->find($request->post);
+
+        return view('admin.posts.edit')
+            ->with(compact('post'));
     }
 }

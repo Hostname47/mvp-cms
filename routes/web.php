@@ -31,6 +31,7 @@ Route::delete('/admin/media', [MediaController::class, 'delete_media']);
 Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
 Route::get('/admin/posts', [PostController::class, 'all'])->name('admin.all.posts');
 Route::get('/admin/posts/create', [PostController::class, 'create'])->name('create.new.post');
+Route::get('/admin/posts/edit', [PostController::class, 'edit'])->name('edit.post');
 Route::post('/admin/posts', [PostController::class, 'store']);
 Route::patch('/admin/posts', [PostController::class, 'update']);
 
