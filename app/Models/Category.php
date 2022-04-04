@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Post;
 
 class Category extends Model
 {
@@ -23,6 +24,10 @@ class Category extends Model
 
     public function subcategories() {
         return $this->hasMany(Category::class, 'parent_category_id');
+    }
+
+    public function posts() {
+        return $this->belongsToMany(Post::class);
     }
 
     public function getMintitleAttribute() {

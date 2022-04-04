@@ -1,0 +1,15 @@
+#post-box {
+    width: 54%;
+    padding: 60px 0;
+    max-width: 960px;
+}
+
+h1 {
+    color: #2777b9;
+    font-size: 28px;
+}
+
+p {
+    font-size: 16px;
+    color: #1a1a1a;
+}

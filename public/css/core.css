@@ -313,6 +313,10 @@ body {
     text-align: start;
 }
 
+.word-break {
+    word-break: break-all;
+}
+
 .pointer {
     cursor: pointer;
 }

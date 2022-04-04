@@ -1,6 +1,8 @@
 .posts-table {
-    border-collapse: collapse;
     border: 1px solid #ced6dd;
+    border-bottom: unset;
+    border-right: unset;
+    border-collapse: collapse;
 }
 
 .posts-table thead {
@@ -8,23 +10,37 @@
 }
 
 .posts-table th {
+    text-align: start;
+    cursor: pointer;
+    padding: 8px 10px;
+    box-sizing: border-box;
+    border-right: 1px solid #ced6dd;
+    border-bottom: 1px solid #ced6dd;
+}
+.posts-table td {
     padding: 8px 10px;
     box-sizing: border-box;
     border-right: 1px solid #ced6dd;
     border-bottom: 1px solid #ced6dd;
 }
 
+
 .posts-table-selection-column {
     display: flex;
-    margin-top: 2px;
     justify-content: center;
     width: max-content;
 }
+.posts-table-selection-column input {
+    margin-top: 2px;
+}
+
 .posts-table-title-column {
     flex: 1;
 }
 .posts-table-author-column {
     width: 10%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .posts-table-categories-column {
     width: 15%;
@@ -33,9 +49,13 @@
     width: 15%;
 }
 .posts-table-comments-column {
-    width: max-content;
+    width: 56px;
 }
 .posts-table-date-column {
     width: max-content;
     min-width: 160px;
+}
+
+.post-actions-links-container {
+    opacity: 0;
 }

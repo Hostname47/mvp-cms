@@ -5,10 +5,8 @@ use App\Http\Controllers\{IndexController, AdminController, PostController, Cate
     MediaController, OAuthController};
 
 Route::get('/test', function() {
-    $data = ['mouad'];
-    $lastname = isset($data[1]) ? $data[1] : 'foo';
-
-    dd($lastname);
+    $category = \App\Models\Category::first();
+    dd($category->posts);
 });
 
 Route::get('/', [IndexController::class, 'index']);
@@ -36,7 +34,7 @@ Route::get('/admin/posts/create', [PostController::class, 'create'])->name('crea
 Route::post('/admin/posts', [PostController::class, 'store']);
 Route::patch('/admin/posts', [PostController::class, 'update']);
 
-Route::get('/{category}/{slug}', [PostController::class, 'view']);
+Route::get('/{category:slug}/{post:slug}', [PostController::class, 'view'])->name('view.post');
 
 Route::get('/login/{provider}', [OAuthController::class, 'redirectToProvider']);
 Route::get('/{provider}/callback', [OAuthController::class, 'handleProviderCallback']);

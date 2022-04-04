@@ -15,10 +15,15 @@ class PostController extends Controller
             $s = $request->validate(['status'=>Rule::in(['published', 'draft', 'private'])])['status'];
             $status = $s;
         }
-        $posts = Post::paginate(10);
+        $posts = Post::with('author', 'categories')->orderBy('updated_at', 'desc')->paginate(16);
 
         return view('admin.posts.all')
             ->with(compact('posts'));
+    }
+
+    public function view(Request $request, Category $category, Post $post) {
+        return view('view-post')
+            ->with(compact('post'));
     }
 
     public function create() {
@@ -49,10 +54,13 @@ class PostController extends Controller
         // Create the post
         $post = Post::create($postdata);
 
-        // Attach categories to the post
-        foreach($categories as $category) {
-            $post->categories()->attach($category);
-        }
+        // Attach categories to the post if the user select categories
+        if(count($categories)) {
+            foreach($categories as $category)
+                $post->categories()->attach($category);
+        } else
+            // In case the user does not select any category then we have to give uncategorized category to the post
+            $post->categories()->attach(Category::where('slug', 'uncategorized')->first()->id);
 
         Session::flash('message', 'Post has been created successfully. <a href="" class="link-style">click here</a> to see the post');
     }

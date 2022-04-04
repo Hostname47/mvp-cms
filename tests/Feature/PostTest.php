@@ -24,7 +24,11 @@ class PostTest extends TestCase
         $this->withoutExceptionHandling();
         $user = User::factory()->create();
         $this->actingAs($user);
-        $category = Category::factory()->create();
+        // If we don't specify any category, then uncategorized category will be attached to the post
+        $category = Category::factory()->create([
+            'title'=>'Uncategorized',
+            'slug'=>'uncategorized'
+        ]);
 
         $this->assertCount(0, Post::all());
         $this->post('/admin/posts', [

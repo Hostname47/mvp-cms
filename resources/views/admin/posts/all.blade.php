@@ -4,6 +4,7 @@
 
 @push('scripts')
 <script type="module" src="{{ asset('js/admin/post/manage.js') }}" defer></script>
+<script type="module" src="{{ asset('js/admin/post/all-posts.js') }}" defer></script>
 @endpush
 
 @push('styles')
@@ -66,6 +67,10 @@
             <a href="{{ route('admin.all.posts', ['status'=>'published']) }}" class="blue no-underline">
                 Private <span class="dark">(32)</span>
             </a>
+            <span class="fs7 bold light-gray unselectable mx8">●</span>
+            <a href="{{ route('admin.all.posts', ['status'=>'published']) }}" class="blue no-underline">
+                Trash <span class="dark">(5)</span>
+            </a>
         </div>
 
         <table class="full-width posts-table mt8">
@@ -87,7 +92,7 @@
                         <span class="dark">Tags</span>
                     </th>
                     <th class="posts-table-comments-column full-center">
-                        <svg class="size16 flex mr4" xmlns="http://www.w3.org/2000/svg" fill="#1c1c1c" viewBox="0 0 512 512"><path d="M221.09,253a23,23,0,1,1-23.27,23A23.13,23.13,0,0,1,221.09,253Zm93.09,0a23,23,0,1,1-23.27,23A23.12,23.12,0,0,1,314.18,253Zm93.09,0A23,23,0,1,1,384,276,23.13,23.13,0,0,1,407.27,253Zm62.84-137.94h-51.2V42.9c0-23.62-19.38-42.76-43.29-42.76H43.29C19.38.14,0,19.28,0,42.9V302.23C0,325.85,19.38,345,43.29,345h73.07v50.58c.13,22.81,18.81,41.26,41.89,41.39H332.33l16.76,52.18a32.66,32.66,0,0,0,26.07,23H381A32.4,32.4,0,0,0,408.9,496.5L431,437h39.1c23.08-.13,41.76-18.58,41.89-41.39V156.47C511.87,133.67,493.19,115.21,470.11,115.09ZM46.55,299V46.12H372.36v69H158.25c-23.08.12-41.76,18.58-41.89,41.38V299Zm418.9,92H397.5l-15.83,46-15.82-46H162.91V161.07H465.45Z"/></svg>
+                        <svg class="size16 flex" xmlns="http://www.w3.org/2000/svg" fill="#1c1c1c" viewBox="0 0 512 512"><path d="M221.09,253a23,23,0,1,1-23.27,23A23.13,23.13,0,0,1,221.09,253Zm93.09,0a23,23,0,1,1-23.27,23A23.12,23.12,0,0,1,314.18,253Zm93.09,0A23,23,0,1,1,384,276,23.13,23.13,0,0,1,407.27,253Zm62.84-137.94h-51.2V42.9c0-23.62-19.38-42.76-43.29-42.76H43.29C19.38.14,0,19.28,0,42.9V302.23C0,325.85,19.38,345,43.29,345h73.07v50.58c.13,22.81,18.81,41.26,41.89,41.39H332.33l16.76,52.18a32.66,32.66,0,0,0,26.07,23H381A32.4,32.4,0,0,0,408.9,496.5L431,437h39.1c23.08-.13,41.76-18.58,41.89-41.39V156.47C511.87,133.67,493.19,115.21,470.11,115.09ZM46.55,299V46.12H372.36v69H158.25c-23.08.12-41.76,18.58-41.89,41.38V299Zm418.9,92H397.5l-15.83,46-15.82-46H162.91V161.07H465.45Z"/></svg>
                     </th>
                     <th class="posts-table-date-column">
                         <span class="dark">Dates</span>
@@ -97,35 +102,71 @@
             <tbody>
                 @if($posts->count())
                     @foreach($posts as $post)
-                    <tr class="flex">
-                        <th class="posts-table-selection-column">
+                    <tr class="flex post-row">
+                        <td class="posts-table-selection-column">
                             <input type="checkbox" class="no-margin size16">
-                        </th>
-                        <th class="posts-table-title-column text-start">
-                            <a href="" class="dark-blue no-underline">{{ $post->title }}</span>
-                        </th>
-                        <th class="posts-table-author-column">
-                            <span class="dark">Author</span>
-                        </th>
-                        <th class="posts-table-categories-column">
-                            <span class="dark">Categories</span>
-                        </th>
-                        <th class="posts-table-tags-column">
+                        </td>
+                        <td class="posts-table-title-column">
+                            <a href="{{ route('view.post', ['category'=>$post->categories->first()->slug, 'post'=>$post->slug]) }}" class="dark-blue bold no-underline">{{ $post->title }}</span>
+                            <div class="align-center mt4 post-actions-links-container">
+                                <a href="" class="fs12 dark-blue no-underline">
+                                    <span>Edit</span>
+                                </a>
+                                <span class="fs11 mx8 dark">〡</span>
+                                <span class="fs12 red no-underline">
+                                    <span>Trash</span>
+                                </span>
+                                <span class="fs11 mx8 dark">〡</span>
+                                @if($post->status == 'live')
+                                <a href="" class="fs12 dark-blue no-underline">
+                                    <span>View</span>
+                                </a>
+                                @else
+                                <a href="" class="fs12 dark-blue no-underline">
+                                    <span>Preview</span>
+                                </a>
+                                @endif
+                            </div>
+                        </td>
+                        <td class="posts-table-author-column">
+                            @if($post->author)
+                            <a href="" class="dark bold no-underline fs13">{{ $post->author->username }}</a>
+                            @else
+                            <em class="dark">Unknown</em>
+                            @endif
+                        </td>
+                        <td class="posts-table-categories-column">
+                            @foreach($post->categories as $category)
+                            @if($loop->index != 0)<span class="bold light-gray">,</span>@endif
+                            <a href="" class="dark-blue no-underline fs13">{{ $category->title }}</a>
+                            @endforeach
+                        </td>
+                        <td class="posts-table-tags-column">
                             <span class="dark">Tags</span>
-                        </th>
-                        <th class="posts-table-comments-column full-center">
-                            <svg class="size16 flex mr4" xmlns="http://www.w3.org/2000/svg" fill="#1c1c1c" viewBox="0 0 512 512"><path d="M221.09,253a23,23,0,1,1-23.27,23A23.13,23.13,0,0,1,221.09,253Zm93.09,0a23,23,0,1,1-23.27,23A23.12,23.12,0,0,1,314.18,253Zm93.09,0A23,23,0,1,1,384,276,23.13,23.13,0,0,1,407.27,253Zm62.84-137.94h-51.2V42.9c0-23.62-19.38-42.76-43.29-42.76H43.29C19.38.14,0,19.28,0,42.9V302.23C0,325.85,19.38,345,43.29,345h73.07v50.58c.13,22.81,18.81,41.26,41.89,41.39H332.33l16.76,52.18a32.66,32.66,0,0,0,26.07,23H381A32.4,32.4,0,0,0,408.9,496.5L431,437h39.1c23.08-.13,41.76-18.58,41.89-41.39V156.47C511.87,133.67,493.19,115.21,470.11,115.09ZM46.55,299V46.12H372.36v69H158.25c-23.08.12-41.76,18.58-41.89,41.38V299Zm418.9,92H397.5l-15.83,46-15.82-46H162.91V161.07H465.45Z"/></svg>
-                        </th>
-                        <th class="posts-table-date-column">
-                            <span class="dark">Dates</span>
-                        </th>
+                        </td>
+                        <td class="posts-table-comments-column full-center">
+                            <span>{{ $post->comments_count }}</span>
+                        </td>
+                        <td class="posts-table-date-column fs13 dark">
+                            @if($post->status == 'live')
+                            <div>
+                                <span class="block">Published</span>
+                                <span>{{ $post->publish_date_humans }}</span>
+                            </div>
+                            @else
+                            <div>
+                                <span class="block">Last modified</span>
+                                <span>{{ $post->update_date_humans }}</span>
+                            </div>
+                            @endif
+                        </td>
                     </tr>
                     @endforeach
                 @else
                 <tr>
                     <td colspan="7" class="full-center">
                         <svg class="size14 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
-                        <p class="bold lblack fs12">No posts found. <a href="{{ route('create.new.post') }}" class="link-style">Click here</a> to create a new post</p>
+                        <p class="bold dark fs13 my4">No posts found. <a href="{{ route('create.new.post') }}" class="link-style">Click here</a> to create a new post</p>
                     </td>
                 </tr>
                 @endif
