@@ -13,18 +13,18 @@
         </div>
         <p class="fs12 my2 light-gray no-margin">This title is not displayed in blod post; It is title used to identify the blog post in th adin section only</p>
     </div>
-    <input type="text" id="post-title" class="styled-input" maxlength="400" autocomplete="off" placeholder='{{ __("Enter post title here") }}'>
+    <input type="text" id="post-title" class="styled-input" maxlength="400" autocomplete="off" placeholder='{{ __("Enter post title here") }}' value="@if($post){{ $post->title }}@endif">
 </div>
 <!-- post meta title & slug -->
 <div id="meta-and-slug-section" class="typical-section-style mt4 none">
     <p class="fs12 mb2 light-gray no-margin">Meta title and slug are useful to <strong>improve SEO</strong> of blog post and ranking. By default, meta title and slug match the title, but you can edit them.</p>
     <div class="input-wrapper mb8">
         <label class="input-label dark fs13 my2" for="post-meta-title">Meta title<span class="error-asterisk red ml4">*</span></label>
-        <input type="text" id="post-meta-title" class="styled-input" maxlength="400" autocomplete="off" placeholder='{{ __("Enter meta title here (displayed by search engines and browser tab title)") }}'>
+        <input type="text" id="post-meta-title" class="styled-input" maxlength="400" autocomplete="off" placeholder='{{ __("Enter meta title here (displayed by search engines and browser tab title)") }}' value="@if($post){{ $post->title_meta }}@endif">
     </div>
     <div class="input-wrapper">
         <label class="input-label dark fs13 my2" for="post-slug">Slug<span class="error-asterisk red ml4">*</span></label>
-        <input type="text" id="post-slug" class="styled-input" maxlength="400" autocomplete="off" placeholder='{{ __("Enter slug here (e.g. 3-reasons-why-mouad-is-so-special)") }}'>
+        <input type="text" id="post-slug" class="styled-input" maxlength="400" autocomplete="off" placeholder='{{ __("Enter slug here (e.g. 3-reasons-why-mouad-is-so-special)") }}' value="@if($post){{ $post->slug }}@endif">
     </div>
 </div>
 <div id="content-input-box" class="flex flex-column input-wrapper" style="margin: 10px 0">
@@ -32,5 +32,13 @@
         <label class="input-label dark fs14" for="content">Content<span class="error-asterisk red ml4">*</span></label>
         <p class="fs12 my2 light-gray no-margin">Summary will be taken from the first 55 words of the first paragraph by default. (you can update it in the right sidebar) </p>
     </div>
-    <textarea id="post-content" class="styled-input" spellcheck="false" autocomplete="off" placeholder='Post content'></textarea>
+    <div class="relative">
+        <div id="post-content-editor-loading">
+            <svg class="spinner size20 inf-rotate" fill="none" viewBox="0 0 16 16">
+                <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+            </svg>
+        </div>
+        <textarea id="post-content" class="styled-input" spellcheck="false" autocomplete="off" placeholder='Post content'>@if($post) {{ $post->content }} @endif</textarea>
+    </div>
 </div>

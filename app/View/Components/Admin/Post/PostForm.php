@@ -6,10 +6,10 @@ use Illuminate\View\Component;
 
 class PostForm extends Component
 {
-    
-    public function __construct($post=false)
+    public $post;
+    public function __construct($post=null)
     {
-        
+        $this->post = $post;
     }
 
     /**

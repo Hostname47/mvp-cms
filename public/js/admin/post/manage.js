@@ -1,3 +1,65 @@
+var post_editor;
+$(document).ready(function() {
+    if($('#post-content').length) {
+        CKEditor
+            .create($('#post-content')[0], {
+                toolbar: {
+                    items: [
+                        'heading',
+                        'fontfamily', 'fontsize', 'fontColor', 'fontBackgroundColor',
+                        'bold', 'italic', '|',
+                        'link', '|',
+                        'outdent', 'indent', '|',
+                        'bulletedList', 'numberedList',
+                        'insertTable', '|',
+                        'blockQuote', 'code', 'codeBlock', '|',
+                        'undo', 'redo',
+                    ],
+                    shouldNotGroupWhenFull: true,
+                    pasteFilter: null,
+                    fullPage: true
+                }
+            })
+            .then(editor => {
+                post_editor = editor;
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
+});
+
+$('#toggle-meta-and-slug').on('click', function () {
+    let button = $(this);
+    let targetbox = $('#meta-and-slug-section');
+    if (targetbox.hasClass('none')) {
+        button.find('.toggle-arrow').first().css({
+            transform: 'rotate(90deg)',
+            '-ms-transform': 'rotate(90deg)',
+            '-moz-transform': 'rotate(90deg)',
+            '-webkit-transform': 'rotate(90deg)',
+            '-o-transform': 'rotate(90deg)'
+        });
+        targetbox.removeClass('none');
+    } else {
+        button.find('.toggle-arrow').first().css({
+            transform: 'rotate(0deg)',
+            '-ms-transform': 'rotate(0deg)',
+            '-moz-transform': 'rotate(0deg)',
+            '-webkit-transform': 'rotate(0deg)',
+            '-o-transform': 'rotate(0deg)'
+        });
+        targetbox.addClass('none');
+    }
+})
+
+$('#post-title').on('input', function () {
+    let value = $(this).val().trim();
+    let slug = convertToSlug(value);
+
+    $('#post-meta-title').val(value);
+    $('#post-slug').val(slug);
+});
 
 $('.open-featured-image-selection-viewer').on('click', function () {
     $('#set-featured-image-viewer').removeClass('none');

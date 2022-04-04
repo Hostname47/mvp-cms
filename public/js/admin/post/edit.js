@@ -89,12 +89,10 @@ $('#search-for-posts-button').on('click', function(event) {
 		}
 	})
 });
-
 $('#posts-search-input').on('keyup', function(event) {
 	if(event.key === 'Enter' || event.keyCode === 13)
 		$('#search-for-posts-button').trigger('click');
 });
-
 function create_post_search_entity(post) {
 	let post_component = $('#posts-search-result-box .post-search-entity-factory').clone(true, true);
 	post_component.attr('href', post.editlink);
@@ -105,7 +103,6 @@ function create_post_search_entity(post) {
     post_component.removeClass('none post-search-entity-factory');
 	return post_component;
 }
-
 let posts_search_fetch_more = $('#posts-search-fetch-more-results');
 let posts_search_results_box = $('#posts-search-result-box');
 let posts_search_fetch_more_lock = true;

@@ -3,7 +3,3 @@
     display: flex;
     flex-direction: column;
 }
-
-.ck-editor__editable_inline {
-    min-height: 360px;
-}

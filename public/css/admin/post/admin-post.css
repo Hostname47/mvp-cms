@@ -1,3 +1,25 @@
+.ck-editor__editable_inline {
+    min-height: 360px;
+}
+
+#post-content {
+    height: 120px;
+}
+#post-content-editor-loading {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: white;
+    border: 1px solid #b9b9b9;
+    border-radius: 2px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 #post-management-panel {
     position: fixed;
     overflow-y: auto;

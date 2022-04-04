@@ -97,7 +97,10 @@
         @push('styles')
         <link href="{{ asset('css/admin/post/post-management-right-panel.css') }}" rel="stylesheet">
         @endpush
-
+        <input type="hidden" id="post-id" value="{{ $post->id }}" autocomplete="off">
+        <div class="admin-page-content-box">
+            <x-admin.post.post-form :post="$post"/>
+        </div>
         <x-admin.post.post-management-panel />
     @endif
 </main>
