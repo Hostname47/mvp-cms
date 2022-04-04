@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{IndexController, AdminController, PostController, CategoryController,
     MediaController, OAuthController};
+use App\Http\Controllers\Admin\{AdminSearchController};
 
 Route::get('/test', function() {
     $category = \App\Models\Category::first();
@@ -31,9 +32,10 @@ Route::delete('/admin/media', [MediaController::class, 'delete_media']);
 Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
 Route::get('/admin/posts', [PostController::class, 'all'])->name('admin.all.posts');
 Route::get('/admin/posts/create', [PostController::class, 'create'])->name('create.new.post');
-Route::get('/admin/posts/edit', [PostController::class, 'edit'])->name('edit.post');
 Route::post('/admin/posts', [PostController::class, 'store']);
+Route::get('/admin/posts/edit', [PostController::class, 'edit'])->name('edit.post');
 Route::patch('/admin/posts', [PostController::class, 'update']);
+Route::get('/admin/posts/search', [AdminSearchController::class, 'posts_search']);
 
 Route::get('/{category:slug}/{post:slug}', [PostController::class, 'view'])->name('view.post');
 

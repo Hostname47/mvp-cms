@@ -36,20 +36,20 @@
         </div>
     </div>
     @if(!$post) <!-- search for a post -->
-    <div class="full-center flex-column" style='margin-top: 30px'>
+    <div class="full-center flex-column" style='margin: 30px 0 350px 0;'>
         <h2 class="fs20 dark no-margin">Edit a post</h2>
         <p class="dark no-margin mt4">Search for a post by typing its id, title or slug to edit</p>
         <div style="margin-top: 12px; width: 48%;">
             <div class="relative">
                 <svg class="absolute size14" fill="#5b5b5b" style="top: 13px; left: 13px;" enable-background="new 0 0 515.558 515.558" viewBox="0 0 515.558 515.558" xmlns="http://www.w3.org/2000/svg"><path d="m378.344 332.78c25.37-34.645 40.545-77.2 40.545-123.333 0-115.484-93.961-209.445-209.445-209.445s-209.444 93.961-209.444 209.445 93.961 209.445 209.445 209.445c46.133 0 88.692-15.177 123.337-40.547l137.212 137.212 45.564-45.564c0-.001-137.214-137.213-137.214-137.213zm-168.899 21.667c-79.958 0-145-65.042-145-145s65.042-145 145-145 145 65.042 145 145-65.043 145-145 145z"></path></svg>
                 <input type="text" class="search-input-style full-width border-box" id="posts-search-input" autocomplete="off" placeholder="search for posts">
-                <div class="search-button-style" id="search-for-posts">
+                <div class="search-button-style" id="search-for-posts-button">
                     <svg class="size14 mr4" fill="#5b5b5b" enable-background="new 0 0 515.558 515.558" viewBox="0 0 515.558 515.558" xmlns="http://www.w3.org/2000/svg"><path d="m378.344 332.78c25.37-34.645 40.545-77.2 40.545-123.333 0-115.484-93.961-209.445-209.445-209.445s-209.444 93.961-209.444 209.445 93.961 209.445 209.445 209.445c46.133 0 88.692-15.177 123.337-40.547l137.212 137.212 45.564-45.564c0-.001-137.214-137.213-137.214-137.213zm-168.899 21.667c-79.958 0-145-65.042-145-145s65.042-145 145-145 145 65.042 145 145-65.043 145-145 145z"></path></svg>
                     <span class="bold dark fs12">search</span>
                 </div>
             </div>
             <div class="relative">
-                <div id="posts-search-result-box" class="full-width scrolly">
+                <div id="posts-search-result-box" class="full-width scrolly none">
                     <input type="hidden" id="k" autocomplete="off">
                     <div class="results-container none">
                         
@@ -57,32 +57,32 @@
                     <a href="" class="post-search-entity post-search-entity-factory none">
                         <input type="hidden" class="post-id" autocomplete="off">
                         <p class="no-margin no-wrap">Id: <span class="bold dark-blue post-id-text">548</span></p>
-                        <span class="fs11 mx4 dark">〡</span>
+                        <span class="fs11 mx4" style="color: rgb(187, 187, 187)">〡</span>
                         <div class="flex">
                             <span class="mr4">Title:</span>
                             <div>
                                 <span class="bold dark-blue post-title-text">How are you today, mouad ?How are you today, mouad ?How are you today, mouad ?</span>
-                                <div class="fs11 light-gray">
-                                    <span>author: <strong class="dark">hostname47</strong></span>
-                                    <span class="fs11 mx4 dark">〡</span>
-                                    <span>creation date: <strong class="dark">3/12/2022 84:54 AM</strong></span>
+                                <div class="fs11 light-gray mt2">
+                                    <span>author: <strong class="dark post-author-name-text">hostname47</strong></span>
+                                    <span class="fs11 mx4" style="color: rgb(187, 187, 187)">〡</span>
+                                    <span>creation date: <strong class="dark post-creation-date">3/12/2022 84:54 AM</strong></span>
                                 </div>
                             </div>
                         </div>
                     </a>
-                    <div id="rap-users-search-fetch-more-results" class="full-center none" style='height: 32px;'>
+                    <div id="posts-search-fetch-more-results" class="full-center none" style='height: 32px;'>
                         <svg class="spinner size20" fill="none" viewBox="0 0 16 16">
                             <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
                             <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
                         </svg>
                     </div>
                     <!-- loading -->
-                    <div class="search-loading full-center flex-column none" style="height: 100px">
+                    <div class="search-loading full-center flex-column none" style="height: 86px">
                         <svg class="spinner size24 black" fill="none" viewBox="0 0 16 16">
                             <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
                             <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
                         </svg>
-                        <span class="fs12 lblack fs11 bold" style="margin-top: 5px;">searching</span>
+                        <span class="fs12 dark fs11 bold" style="margin-top: 5px;">searching</span>
                     </div>
                     <!-- no results found -->
                     <div class="no-results-found-box full-center none" style="height: 58px">
