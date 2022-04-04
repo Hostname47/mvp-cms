@@ -12,7 +12,7 @@ $('#search-for-posts-button').on('click', function(event) {
 	let no_results_box = resultbox.find('.no-results-found-box')
 	let spinner = loading_block.find('.spinner');
 
-	let query = $('#posts-search-input').val();
+	let query = $('#posts-search-input').val().trim();
 
 	if(query == '') return;
 	if(query == last_post_search_query) {
@@ -62,12 +62,11 @@ $('#search-for-posts-button').on('click', function(event) {
 					// no-fetch prevent the scroll event from proceeding when no more results are there
 					loadmore.addClass('none no-fetch');
 			} else {
-				// Results not founf
+				// Results not found
 				results.addClass('none');
 				no_results_box.removeClass('none');
 			}
 			loading_block.addClass('none');
-
 			results.removeClass('none');
 			resultbox.removeClass('none');
 			last_post_search_query = query;
@@ -105,4 +104,55 @@ function create_post_search_entity(post) {
 	post_component.find('.post-creation-date').text(post.creation_date);
     post_component.removeClass('none post-search-entity-factory');
 	return post_component;
+}
+
+let posts_search_fetch_more = $('#posts-search-fetch-more-results');
+let posts_search_results_box = $('#posts-search-result-box');
+let posts_search_fetch_more_lock = true;
+if(posts_search_results_box.length) {
+    posts_search_results_box.on('DOMContentLoaded scroll', function() {
+        if(posts_search_results_box.scrollTop() + posts_search_results_box.innerHeight() + 50 >= posts_search_results_box[0].scrollHeight) {
+            if(!posts_search_fetch_more_lock || posts_search_fetch_more.hasClass('no-fetch')) return;
+            posts_search_fetch_more_lock=false;
+            
+			let results_container = $('#posts-search-result-box .results-container');
+			let spinner = posts_search_fetch_more.find('.spinner');
+			// Notice we don't count directly role members from scrollable because it will count factory components as well
+            let present_search_members = results_container.find('.post-search-entity').length;
+			spinner.addClass('inf-rotate');
+            $.ajax({
+				url: '/admin/posts/search',
+				data: {
+					skip: present_search_members,
+					take: 10,
+					k: $('#k').val()
+				},
+                success: function(response) {
+					let posts = response.posts;
+					let hasmore = response.hasmore;
+
+					if(posts.length) {
+						for(let i = 0; i < posts.length; i++) {
+							let postcomponent = create_post_search_entity(posts[i]);
+							results_container.append(postcomponent);
+						}
+		
+						// After handling all users components we have to check if search has more results
+						if(hasmore)
+							posts_search_fetch_more.removeClass('none no-fetch');
+						else
+							// no-fetch prevent the scroll event from proceeding when no more results are there
+							posts_search_fetch_more.addClass('none no-fetch');
+					} else {
+						// If scrolling does not find any data for some reason then we hide spinner
+						posts_search_fetch_more.addClass('none no-fetch');
+					}
+                },
+                complete: function() {
+                    posts_search_fetch_more_lock = true;
+					spinner.removeClass('inf-rotate');
+                }
+            });
+        }
+    });
 }

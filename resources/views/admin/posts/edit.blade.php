@@ -36,7 +36,7 @@
         </div>
     </div>
     @if(!$post) <!-- search for a post -->
-    <div class="full-center flex-column" style='margin: 30px 0 350px 0;'>
+    <div class="full-center flex-column" style='margin: 30px 0 300px 0;'>
         <h2 class="fs20 dark no-margin">Edit a post</h2>
         <p class="dark no-margin mt4">Search for a post by typing its id, title or slug to edit</p>
         <div style="margin-top: 12px; width: 48%;">

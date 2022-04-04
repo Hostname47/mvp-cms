@@ -10,17 +10,25 @@ use Carbon\Carbon;
 class AdminSearchController extends Controller
 {
     public function posts_search(Request $request) {
-        $query = $request->validate(['k'=>'required|max:1000'])['k'];
-        $n = 10;
+        $data = $request->validate([
+            'k'=>'required|max:2000',
+            'skip'=>'sometimes|numeric',
+            'take'=>'sometimes|numeric',
+        ]);
+        
+        $query = $data['k'];
+        $skip = isset($data['skip']) ? $data['skip'] : 0;
+        $take = isset($data['take']) ? $data['take'] : 10;
 
         $result = Post::withoutGlobalScopes()
             ->where('id', $query)
             ->orWhere('title', 'LIKE', "%$query%")
             ->orWhere('slug', 'LIKE', "%$query%")
-            ->take($n+1)->get();
+            ->orderBy('created_at', 'desc')
+            ->take($take+1)->skip($skip)->get();
 
-        $hasmore = $result->count() > $n;
-        $result = $result->take($n)->map(function($post) {
+        $hasmore = $result->count() > $take;
+        $result = $result->take($take)->map(function($post) {
             return [
                 'id'=>$post->id,
                 'title'=>$post->title,
@@ -31,8 +39,8 @@ class AdminSearchController extends Controller
         });
 
         return [
-            'posts'=>$result->take(10),
-            'hasmore'=>$result->count() > 10,
+            'posts'=>$result,
+            'hasmore'=>$hasmore,
         ];
     }
 }
