@@ -9,6 +9,7 @@
 @push('scripts')
 <script type="module" src="{{ asset('js/ckeditor.js') }}" defer></script>
 <script src="{{ asset('js/admin/post/manage.js') }}" type="text/javascript" defer></script>
+<script src="{{ asset('js/admin/media.js') }}" type="text/javascript" defer></script>
 <script src="{{ asset('js/admin/post/create.js') }}" type="text/javascript" defer></script>
 @endpush
 
@@ -16,11 +17,12 @@
 <link href="{{ asset('css/admin/post/admin-post.css') }}" rel="stylesheet">
 <link href="{{ asset('css/admin/post/post-management-right-panel.css') }}" rel="stylesheet">
 <link href="{{ asset('css/admin/post/create.css') }}" rel="stylesheet">
+<link href="{{ asset('css/admin/media.css') }}" rel="stylesheet">
 @endpush
 
 @section('content')
 <!-- delete media viewer -->
-<div id="delete-media-viewer" class="media-viewer global-viewer full-center none" style="z-index:11112">
+<div id="delete-media-viewer" class="global-viewer full-center none" style="z-index:11112">
     <div class="viewer-box-style-1">
         <div class="flex align-center space-between light-gray-border-bottom" style="padding: 12px 16px;">
             <div class="flex align-center">
@@ -64,19 +66,18 @@
         <div class="flex flex-column media-management-content-box">
             <!-- top meny to choose upload or galery medias selection -->
             <div class="menu-buttons-style-1-wrapper px8 mt8">
-                <div class="menu-toggle-button menu-button-style-1 open-medias-upload-files-section menu-button-style-1-selected">
+                <div class="menu-toggle-button menu-button-style-1 open-media-upload-files-section menu-button-style-1-selected">
                     <span>Upload medias</span>
                     <div class="selection-strip menu-button-style-1-selected-strip"></div>
                 </div>
-                <div class="menu-toggle-button menu-button-style-1 open-medias-library-section">
+                <div class="menu-toggle-button menu-button-style-1 open-media-library-section">
                     <span>Media library</span>
                     <div class="selection-strip menu-button-style-1-selected-strip none"></div>
                 </div>
             </div>
             <div class="media-viewer-body-section full-dimensions flex flex-column">
-
                 <!-- upload files -->
-                <div class="full-height full-center flex-column medias-upload-files-section">
+                <div class="full-height full-center flex-column media-upload-files-section">
                     <label for="upload-media" class="fs18 dark flex">Upload files</label>
                     <div class="relative button-style-1 overflow-hidden align-center" style="margin: 12px 0;">
                         <input type="file" title="" multiple="multiple" id="upload-media" class="upload-media-to-library hide-file-input-style">

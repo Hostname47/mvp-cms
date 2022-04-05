@@ -12,8 +12,7 @@ class PostTest extends TestCase
 
     protected $user;
 
-    public function setUp(): void
-    {
+    public function setUp(): void {
         parent::setUp();
 
         /**

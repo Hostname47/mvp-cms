@@ -73,6 +73,11 @@ $('.create-post-button').on('click', function () {
             categories.push($(this).val());
     });
 
+    let tags = [];
+    $('.post-tags-wrapper .tag-text').each(function() {
+        tags.push($(this).text());
+    });
+
     let data = {
         title: title.val(),
         title_meta: meta_title.val(),
@@ -82,7 +87,8 @@ $('.create-post-button').on('click', function () {
         allow_reactions: $('#allow-reactions').is(':checked') ? 1 : 0,
         allow_comments: $('#allow-reactions').is(':checked') ? 1 : 0,
         summary: $('#post-summary').val(),
-        categories: categories
+        categories: categories,
+        tags: tags
     };
 
     let button = $(this);

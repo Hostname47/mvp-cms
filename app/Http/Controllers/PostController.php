@@ -55,6 +55,10 @@ class PostController extends Controller
             'tags'=>'sometimes|max:36',
             'tags.*'=>'min:1|max:120'
         ]);
+        // Featured Image
+        $featured_image = $request->validate([
+            'featured_image'=>'sometimes|metadata,id'
+        ]);
 
         // Create the post
         $post = Post::create($postdata);
