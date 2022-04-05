@@ -9,12 +9,12 @@
     <div class="post-management-panel-section-content post-management-cateories-box toggle-container none">
         @foreach($root_categories as $root_category)
             <div class="flex">
-                <input type="checkbox" class="size14 mr4 category-input" id="category-{{ $root_category->id }}" value="{{ $root_category->id }}" autocomplete="off">
+                <input type="checkbox" class="size14 mr4 post-category-id" id="category-{{ $root_category->id }}" value="{{ $root_category->id }}" autocomplete="off">
                 <label for="category-{{ $root_category->id }}" class="fs12 bold dark mt2">{{ $root_category->title }}</label>
             </div>
             @foreach($root_category->descendants()->orderBy('path')->get() as $descendant)
                 <div class="flex" style="margin-left: {{ $descendant->depth * 10 }}px">
-                    <input type="checkbox" class="category-id size14 mr4" id="category-{{ $descendant->id }}" value="{{ $descendant->id }}" autocomplete="off">
+                    <input type="checkbox" class="post-category-id size14 mr4" id="category-{{ $descendant->id }}" value="{{ $descendant->id }}" autocomplete="off">
                     <label for="category-{{ $descendant->id }}" class="fs12 bold dark mt2">{{ $descendant->title }}</label>
                 </div>
             @endforeach

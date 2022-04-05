@@ -67,6 +67,12 @@ $('.create-post-button').on('click', function () {
     };
     if (!post_input_validate(content != '', content_element, 'Content field is required.')) return;
 
+    let categories = [];
+    $('.post-category-id').each(function() {
+        if($(this).is(':checked'))
+            categories.push($(this).val());
+    });
+
     let data = {
         title: title.val(),
         title_meta: meta_title.val(),
@@ -76,6 +82,7 @@ $('.create-post-button').on('click', function () {
         allow_reactions: $('#allow-reactions').is(':checked') ? 1 : 0,
         allow_comments: $('#allow-reactions').is(':checked') ? 1 : 0,
         summary: $('#post-summary').val(),
+        categories: categories
     };
 
     let button = $(this);

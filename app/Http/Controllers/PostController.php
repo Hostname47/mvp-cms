@@ -27,9 +27,7 @@ class PostController extends Controller
     }
 
     public function create() {
-        $root_categories = Category::whereNull('parent_category_id')->orderBy('priority', 'asc')->get();
-        return view('admin.posts.create')
-            ->with(compact('root_categories'));
+        return view('admin.posts.create');
     }
 
     public function store(Request $request) {
@@ -54,15 +52,13 @@ class PostController extends Controller
         // Create the post
         $post = Post::create($postdata);
 
-        // Attach categories to the post if the user select categories
-        if(count($categories)) {
-            foreach($categories as $category)
-                $post->categories()->attach($category);
-        } else
-            // In case the user does not select any category then we have to give uncategorized category to the post
+        // Attach categories to the post if the admin select categories
+        if(isset($categories['categories']))
+            $post->categories()->attach($categories['categories']);
+        else // Uncategorized category will be attached to post in case admin does not specify any category
             $post->categories()->attach(Category::where('slug', 'uncategorized')->first()->id);
 
-        Session::flash('message', 'Post has been created successfully. <a href="" class="link-style">click here</a> to view the post');
+        Session::flash('message', 'Post has been created successfully. <a href="' . route('edit.post', ['post'=>$post->id]) . '" class="link-style">click here</a> to manage the post');
     }
 
     public function edit(Request $request) {

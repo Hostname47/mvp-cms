@@ -255,6 +255,8 @@ $('.restore-post-content').on('click', function() {
 			$('#post-meta-title').val(post.title_meta);
 			$('#post-slug').val(post.slug);
 			post_editor.setData(post.content);
+
+			left_bottom_notification('post data restored successfully.');
 		},
 		error: function(response) {
             let errorObject = JSON.parse(response.responseText);

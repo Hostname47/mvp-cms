@@ -17,6 +17,7 @@ class CreateCategoryPostTable extends Migration
             $table->id();
             $table->unsignedBigInteger('post_id')->onDelete('cascade');
             $table->unsignedBigInteger('category_id')->onDelete('cascade');
+            $table->unique(['post_id','category_id']);
         });
     }
 

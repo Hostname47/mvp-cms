@@ -107,7 +107,12 @@
                             <input type="checkbox" class="no-margin size16">
                         </td>
                         <td class="posts-table-title-column">
-                            <a href="{{ route('view.post', ['category'=>$post->categories->first()->slug, 'post'=>$post->slug]) }}" class="dark-blue bold no-underline">{{ $post->title }}</span>
+                            <div>
+                                <a href="{{ route('view.post', ['category'=>$post->categories->first()->slug, 'post'=>$post->slug]) }}" class="dark-blue bold no-underline">{{ $post->title }}</span>
+                                @if($post->status != 'published')
+                                <span class="light-gray"> - {{ $post->status }}</span>
+                                @endif
+                            </div>
                             <div class="align-center mt4 post-actions-links-container">
                                 <a href="" class="fs12 dark-blue no-underline">
                                     <span>Edit</span>
@@ -117,8 +122,8 @@
                                     <span>Trash</span>
                                 </span>
                                 <span class="fs11 mx8 dark">〡</span>
-                                @if($post->status == 'live')
-                                <a href="" class="fs12 dark-blue no-underline">
+                                @if($post->status == 'published')
+                                <a href="{{ route('view.post', ['category'=>$post->categories->first()->slug, 'post'=>$post->slug]) }}" class="fs12 dark-blue no-underline">
                                     <span>View</span>
                                 </a>
                                 @else
@@ -148,14 +153,14 @@
                             <span>{{ $post->comments_count }}</span>
                         </td>
                         <td class="posts-table-date-column fs13 dark">
-                            @if($post->status == 'live')
+                            @if($post->status == 'published')
                             <div>
-                                <span class="block">Published</span>
+                                <span class="block bold green">Published</span>
                                 <span>{{ $post->publish_date_humans }}</span>
                             </div>
                             @else
                             <div>
-                                <span class="block">Last modified</span>
+                                <span class="block bold">Last modified</span>
                                 <span>{{ $post->update_date_humans }}</span>
                             </div>
                             @endif
