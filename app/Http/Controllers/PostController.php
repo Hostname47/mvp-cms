@@ -96,5 +96,19 @@ class PostController extends Controller
         $post = Post::withoutGlobalScopes()->find($postdata['post_id']);
         unset($postdata['post_id']);
         $post->update($postdata);
+
+        Session::flash('message', 'Post has been <strong>updated</strong> successfully. <a href="" class="link-style">click here</a> to view the post');
+    }
+
+    public function post_data(Request $request) {
+        $post_id = $request->validate(['post_id'=>'required|exists:posts,id'])['post_id'];
+        $post = Post::withoutGlobalScopes()->find($post_id);
+
+        return [
+            'title'=>$post->title,
+            'title_meta'=>$post->title_meta,
+            'slug'=>$post->slug,
+            'content'=>$post->content,
+        ];
     }
 }

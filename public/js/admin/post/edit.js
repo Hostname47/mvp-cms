@@ -181,7 +181,18 @@ $('.update-post').on('click', function() {
     };
     if (!post_input_validate(content != '', content_element, 'Content field is required.')) return;
 
+	
+    let button = $(this);
+    let spinner = button.find('.spinner');
+    let buttonicon = button.find('.icon-above-spinner');
+	
+    button.addClass('dark-bs-disabled');
+    buttonicon.addClass('none');
+    spinner.removeClass('opacity0');
+    spinner.addClass('inf-rotate');
+	
     let data = {
+		post_id: button.find('.post-id').val(),
         title: title.val(),
         title_meta: meta_title.val(),
         slug: slug.val(),
@@ -192,15 +203,76 @@ $('.update-post').on('click', function() {
         summary: $('#post-summary').val(),
     };
 
-    let button = $(this);
+	if (!update_post_lock) return;
+    update_post_lock = false;
+
+	$.ajax({
+		type: 'patch',
+		url: '/admin/posts',
+		data: data,
+		success: function() {
+			location.reload();
+		},
+		error: function() {
+			update_post_lock = true;
+            let errorObject = JSON.parse(response.responseText);
+            let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+            if (errorObject.errors) {
+                let errors = errorObject.errors;
+                error = errors[Object.keys(errors)[0]][0];
+            }
+
+            button.removeClass('dark-bs-disabled');
+            buttonicon.removeClass('none');
+            spinner.addClass('opacity0');
+            spinner.removeClass('inf-rotate');
+
+            print_top_message(error, 'error');
+		}
+	})
+});
+
+let restore_post_content_lock = true;
+$('.restore-post-content').on('click', function() {
+	let button = $(this);
     let spinner = button.find('.spinner');
     let buttonicon = button.find('.icon-above-spinner');
-
-    button.addClass('dark-bs-disabled');
+	let post_id = button.find('.post-id').val();
+	
+    button.addClass('white-bs-disabled');
     buttonicon.addClass('none');
     spinner.removeClass('opacity0');
     spinner.addClass('inf-rotate');
 
-	if (!update_post_lock) return;
-    update_post_lock = false;
+	if (!restore_post_content_lock) return;
+    restore_post_content_lock = false;
+
+	$.ajax({
+		type: 'get',
+		url: '/admin/posts/data?post_id='+post_id,
+		success: function(post) {
+			$('#post-title').val(post.title);
+			$('#post-meta-title').val(post.title_meta);
+			$('#post-slug').val(post.slug);
+			post_editor.setData(post.content);
+		},
+		error: function(response) {
+            let errorObject = JSON.parse(response.responseText);
+            let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+            if (errorObject.errors) {
+                let errors = errorObject.errors;
+                error = errors[Object.keys(errors)[0]][0];
+            }
+
+            print_top_message(error, 'error');
+		},
+		complete: function() {
+			button.removeClass('white-bs-disabled');
+            buttonicon.removeClass('none');
+            spinner.addClass('opacity0');
+            spinner.removeClass('inf-rotate');
+
+			restore_post_content_lock = true;
+		}
+	})
 });

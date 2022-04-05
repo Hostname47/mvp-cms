@@ -36,6 +36,7 @@ Route::post('/admin/posts', [PostController::class, 'store']);
 Route::get('/admin/posts/edit', [PostController::class, 'edit'])->name('edit.post');
 Route::patch('/admin/posts', [PostController::class, 'update']);
 Route::get('/admin/posts/search', [AdminSearchController::class, 'posts_search']);
+Route::get('/admin/posts/data', [PostController::class, 'post_data']); // Used to restore post default content and data in edit page
 
 Route::get('/{category:slug}/{post:slug}', [PostController::class, 'view'])->name('view.post');
 
