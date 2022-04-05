@@ -73,4 +73,28 @@ class PostController extends Controller
         return view('admin.posts.edit')
             ->with(compact('post'));
     }
+
+    public function update(Request $request) {
+        $postdata = $request->validate([
+            'post_id'=>'required|exists:posts,id',
+            'title'=>'required|max:1200',
+            'title_meta'=>'required|max:1200',
+            'slug'=>'required|max:1200',
+            'summary'=>'sometimes|max:2000',
+            'status'=>['sometimes', Rule::in(['draft', 'published', 'awaiting-review'])],
+            'visibility'=>['sometimes', Rule::in(['public', 'private', 'password-locked'])],
+            'content'=>'required|max:50000',
+            'allow_reactions'=>['sometimes', Rule::in([0, 1])],
+            'allow_comments'=>['sometimes', Rule::in([0, 1])],
+        ]);
+
+        $categories = $request->validate([
+            'categories'=>'sometimes|min:1|max:10',
+            'categories.*'=>'exists:categories,id',
+        ]);
+
+        $post = Post::withoutGlobalScopes()->find($postdata['post_id']);
+        unset($postdata['post_id']);
+        $post->update($postdata);
+    }
 }

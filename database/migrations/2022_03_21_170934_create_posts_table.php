@@ -19,7 +19,8 @@ class CreatePostsTable extends Migration
             $table->text('title_meta'); // Used for SEO
             $table->text('slug');
             $table->longText('content');
-            $table->string('status')->default('draft');
+            $table->string('status')->default('awaiting-review');
+            $table->string('visibility')->default('public');
 
             $table->integer('allow_comments')->default(1);
             $table->integer('allow_reactions')->default(1);

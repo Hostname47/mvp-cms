@@ -153,3 +153,54 @@ if(posts_search_results_box.length) {
         }
     });
 }
+
+let update_post_lock = true;
+$('.update-post').on('click', function() {
+    let title = $('#post-title');
+    let meta_title = $('#post-meta-title');
+    let slug = $('#post-slug');
+    let content_element = $('#post-content');
+    
+    post_editor.data.processor = post_editor.data.htmlProcessor;
+    let content = post_editor.getData();
+
+    $('.error-container').addClass('none');
+    $('.error-asterisk').css('display', 'none');
+
+    // Validating neccessary inputs
+    if (!post_input_validate(title.val() != '', title, 'Title field is required.')) return;
+    if (!post_input_validate(meta_title.val() != '', meta_title, 'Meta title field is required.')) {
+        if ($('#meta-and-slug-section').hasClass('none'))
+            $('#toggle-meta-and-slug').trigger('click');
+        return;
+    };
+    if (!post_input_validate(slug.val() != '', slug, 'Slug field is required.')) {
+        if ($('#meta-and-slug-section').hasClass('none'))
+            $('#toggle-meta-and-slug').trigger('click');
+        return;
+    };
+    if (!post_input_validate(content != '', content_element, 'Content field is required.')) return;
+
+    let data = {
+        title: title.val(),
+        title_meta: meta_title.val(),
+        slug: slug.val(),
+        content: content,
+        status: $('#post-status').val(),
+        allow_reactions: $('#allow-reactions').is(':checked') ? 1 : 0,
+        allow_comments: $('#allow-reactions').is(':checked') ? 1 : 0,
+        summary: $('#post-summary').val(),
+    };
+
+    let button = $(this);
+    let spinner = button.find('.spinner');
+    let buttonicon = button.find('.icon-above-spinner');
+
+    button.addClass('dark-bs-disabled');
+    buttonicon.addClass('none');
+    spinner.removeClass('opacity0');
+    spinner.addClass('inf-rotate');
+
+	if (!update_post_lock) return;
+    update_post_lock = false;
+});

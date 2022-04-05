@@ -40,11 +40,8 @@ $('.post-tags-input').on('keyup', function (event) {
     }
 });
 
-let publish_post_lock = true;
-$('.publish-post').on('click', function () {
-    // if (!publish_post_lock) return;
-    // publish_post_lock = false;
-
+let create_post_lock = true;
+$('.create-post-button').on('click', function () {
     let title = $('#post-title');
     let meta_title = $('#post-meta-title');
     let slug = $('#post-slug');
@@ -57,18 +54,18 @@ $('.publish-post').on('click', function () {
     $('.error-asterisk').css('display', 'none');
 
     // Validating neccessary inputs
-    if (!post_input_validate(title.val() != '', title, 'Title field is required.', publish_post_lock)) return;
-    if (!post_input_validate(meta_title.val() != '', meta_title, 'Meta title field is required.', publish_post_lock)) {
+    if (!post_input_validate(title.val() != '', title, 'Title field is required.')) return;
+    if (!post_input_validate(meta_title.val() != '', meta_title, 'Meta title field is required.')) {
         if ($('#meta-and-slug-section').hasClass('none'))
             $('#toggle-meta-and-slug').trigger('click');
         return;
     };
-    if (!post_input_validate(slug.val() != '', slug, 'Slug field is required.', publish_post_lock)) {
+    if (!post_input_validate(slug.val() != '', slug, 'Slug field is required.')) {
         if ($('#meta-and-slug-section').hasClass('none'))
             $('#toggle-meta-and-slug').trigger('click');
         return;
     };
-    if (!post_input_validate(content != '', content_element, 'Content field is required.', publish_post_lock)) return;
+    if (!post_input_validate(content != '', content_element, 'Content field is required.')) return;
 
     let data = {
         title: title.val(),
@@ -89,7 +86,9 @@ $('.publish-post').on('click', function () {
     buttonicon.addClass('none');
     spinner.removeClass('opacity0');
     spinner.addClass('inf-rotate');
-
+    
+    if (!create_post_lock) return;
+    create_post_lock = false;
     // right now we just refresh te page after creating the post
     $.ajax({
         type: 'post',
@@ -99,7 +98,7 @@ $('.publish-post').on('click', function () {
             location.reload();
         },
         error: function (response) {
-            publish_post_lock = true;
+            create_post_lock = true;
             let errorObject = JSON.parse(response.responseText);
             let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
             if (errorObject.errors) {
@@ -113,22 +112,6 @@ $('.publish-post').on('click', function () {
             spinner.removeClass('inf-rotate');
 
             print_top_message(error, 'error');
-        },
+        }
     })
 });
-
-function post_input_validate(condition, input, message, lock = false) {
-    let container = $('.error-container');
-    if (!condition) {
-        $(window).scrollTop(0);
-        container.find('.message-text').text(message);
-        container.removeClass('none');
-        let input_wrapper = input;
-        while (!input_wrapper.hasClass('input-wrapper')) input_wrapper = input_wrapper.parent();
-        input_wrapper.find('.error-asterisk').css('display', 'inline');
-        lock = true; // Release rade condition lock
-
-        return false;
-    }
-    return true;
-}

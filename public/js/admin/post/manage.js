@@ -1,4 +1,4 @@
-var post_editor;
+let post_editor;
 $(document).ready(function() {
     if($('#post-content').length) {
         CKEditor
@@ -61,6 +61,23 @@ $('#post-title').on('input', function () {
     $('#post-slug').val(slug);
 });
 
+function post_input_validate(condition, input, message) {
+    let container = $('.error-container');
+    if (!condition) {
+        $(window).scrollTop(0);
+        container.find('.message-text').text(message);
+        container.removeClass('none');
+        let input_wrapper = input;
+        while (!input_wrapper.hasClass('input-wrapper')) input_wrapper = input_wrapper.parent();
+        input_wrapper.find('.error-asterisk').css('display', 'inline');
+        lock = true; // Release rade condition lock
+
+        return false;
+    }
+    return true;
+}
+
+// MEDIA MANAGEMENT (the following lines should be moved to media management js file)
 $('.open-featured-image-selection-viewer').on('click', function () {
     $('#set-featured-image-viewer').removeClass('none');
 });
@@ -242,7 +259,6 @@ $('.upload-media-to-library').on('change', function () {
         })
     }
 });
-
 
 function media_selection_tick_effect(media) {
     media.find('.media-library-media-selectbox').on({

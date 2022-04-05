@@ -16,19 +16,20 @@ class PostTest extends TestCase
     {
         parent::setUp();
 
-        /** Some common resources between tests */
+        /**
+         * If an admin does not specify a category for the post, then uncategorized category
+         * will be attached to the post as a default category.
+         */
+        Category::factory()->create([
+            'title'=>'Uncategorized',
+            'slug'=>'uncategorized'
+        ]);
     }
 
     /** @test */
     public function creating_a_post() {
-        $this->withoutExceptionHandling();
         $user = User::factory()->create();
         $this->actingAs($user);
-        // If we don't specify any category, then uncategorized category will be attached to the post
-        $category = Category::factory()->create([
-            'title'=>'Uncategorized',
-            'slug'=>'uncategorized'
-        ]);
 
         $this->assertCount(0, Post::all());
         $this->post('/admin/posts', [
@@ -37,12 +38,33 @@ class PostTest extends TestCase
             'slug' => 'cool title',
             'summary' => 'hello world',
             'content' => 'hello world',
-            'user_id' => $user->id,
-            'categories'=>[$category->id]
         ]);
         $this->assertCount(1, Post::all());
         $post = Post::first();
-        $this->assertCount(1, $post->categories);
+        $this->assertCount(1, $post->categories); // Post will take uncategorized category by default
+        $this->assertTrue($post->categories->first()->slug == 'uncategorized');
+    }
+
+    /** @test */
+    public function create_a_post_within_a_category() {
+        $user = User::factory()->create();
+        $category = Category::factory()->create([
+            'title'=>'Technology',
+            'slug'=>'technology'
+        ]);
+        $this->actingAs($user);
+
+        $this->post('/admin/posts', [
+            'title' => 'cool title',
+            'title_meta' => 'cool-title',
+            'slug' => 'cool title',
+            'summary' => 'hello world',
+            'content' => 'hello world',
+            'categories' => [$category->id]
+        ]);
+        $post = Post::first();
+        $this->assertCount(1, $post->categories); // Post will take uncategorized category by default
+        $this->assertTrue($post->categories->first()->slug == 'technology');
     }
 
     /** @test */
@@ -51,18 +73,17 @@ class PostTest extends TestCase
         $this->actingAs($user);
         $category = Category::factory()->create();
 
-        $response = $this->post('/admin/posts');
-        $response->assertStatus(302);
-        $response->assertSessionHasErrors(['title', 'title_meta', 'slug', 'content']);
-        $response = $this->post('/admin/posts', ['title'=>'awesome title']);
-        $response->assertSessionHasErrors(['title_meta', 'slug', 'content']);
-        $response = $this->post('/admin/posts', ['title'=>'awesome title']);
-        $response->assertSessionHasErrors(['title_meta', 'slug', 'content']);
-        $response = $this->post('/admin/posts', [
+        $this->post('/admin/posts')
+            ->assertRedirect()
+            ->assertSessionHasErrors(['title', 'title_meta', 'slug', 'content']);
+        $this->post('/admin/posts', [
             'title' => 'cool title', 'title_meta' => 'cool-title', 'slug' => 'cool title', 'summary' => 'hello world', 'content' => 'hello world', 'user_id' => $user->id, 'categories'=>[$category->id],
             'status'=> 'invalid-status', 'visibility'=>'invalid-visibility'
-        ]);
-        $response->assertSessionHasErrors(['status', 'visibility']);
+        ])->assertRedirect()->assertSessionHasErrors(['status', 'visibility']);
+        $this->post('/admin/posts', [
+            'title' => 'cool title', 'title_meta' => 'cool-title', 'slug' => 'cool title', 'summary' => 'hello world', 'content' => 'hello world', 'user_id' => $user->id, 'categories'=>[$category->id],
+            'status'=> 'published', 'visibility'=>'public'
+        ])->assertOk();
     }
 
     /** @test */
@@ -78,10 +99,60 @@ class PostTest extends TestCase
             'slug' => 'cool title',
             'summary' => 'hello world',
             'content' => 'hello world',
-            'user_id' => $user->id,
             'categories'=>[$category1->id, $category2->id]
         ]);
         $post = Post::first();
         $this->assertCount(2, $post->categories);
+    }
+
+    /** @test */
+    public function update_post_content() {
+        $post = Post::factory()->create([
+            'title' => 'cool title',
+            'title_meta' => 'cool-title',
+            'slug' => 'cool title',
+            'summary' => 'hello world',
+            'content' => 'hello world',
+        ]);
+        
+        $this->assertEquals('cool title', $post->title);
+        $this->assertEquals('cool-title', $post->title_meta);
+        $this->assertEquals('cool title', $post->slug);
+        $this->assertEquals('hello world', $post->summary);
+        $this->assertEquals('hello world', $post->content);
+
+        $this->patch('/admin/posts', [
+            'post_id'=>$post->id,
+            'title' => 'patched title',
+            'title_meta' => 'patched-title',
+            'slug' => 'patched slug',
+            'summary' => 'patched world',
+            'content' => 'patched content',
+        ]);
+        $post->refresh();
+
+        $this->assertEquals('patched title', $post->title);
+        $this->assertEquals('patched-title', $post->title_meta);
+        $this->assertEquals('patched slug', $post->slug);
+        $this->assertEquals('patched world', $post->summary);
+        $this->assertEquals('patched content', $post->content);
+    }
+
+    /** @test */
+    public function update_post_content_validation() {
+        $post = Post::factory()->create([
+            'title' => 'cool title',
+            'title_meta' => 'cool-title',
+            'slug' => 'cool title',
+            'summary' => 'hello world',
+            'content' => 'hello world',
+        ]);
+
+        $this->patch('/admin/posts', ['title' => 'patched title',])
+            ->assertRedirect()
+            ->assertSessionHasErrors(['post_id']); // post_id is required to identify the post to update
+        $this->patch('/admin/posts', ['post_id' => 548751])
+            ->assertRedirect()
+            ->assertSessionHasErrors(['post_id']); // post_id does not exist
     }
 }
