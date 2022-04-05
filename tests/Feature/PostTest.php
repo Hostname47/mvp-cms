@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
-use App\Models\{User, Category, Post};
+use App\Models\{User, Category, Post, Tag};
 
 class PostTest extends TestCase
 {
@@ -103,6 +103,72 @@ class PostTest extends TestCase
         ]);
         $post = Post::first();
         $this->assertCount(2, $post->categories);
+    }
+
+    /** @test */
+    public function create_a_post_with_tags() {
+        $this->withoutExceptionHandling();
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $this->assertCount(0, Tag::all());
+        $this->post('/admin/posts', [
+            'title' => 'a','title_meta' => 'a','slug' => 'a','summary' => 'a','content' => 'a',
+            'tags' => ['mouad','nassri']
+        ]);
+        $this->assertCount(2, Tag::all());
+        $post = Post::first();
+        $this->assertCount(2, $post->tags);
+    }
+
+    /** @test */
+    public function creating_post_with_already_created_tags() {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        Tag::create(['title'=>'mouad', 'slug'=>'mouad']);
+        $this->assertCount(1, Tag::all());
+        $this->post('/admin/posts', [
+            'title' => 'a','title_meta' => 'a','slug' => 'a','summary' => 'a','content' => 'a',
+            'tags' => ['mouad']
+        ]);
+        $this->assertCount(1, Tag::all());
+        $post = Post::first();
+        $this->assertCount(1, $post->tags);
+    }
+
+    /** @test */
+    public function creating_post_with_already_created_tag_but_different_case() {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        Tag::create(['title'=>'mouad', 'slug'=>'mouad']);
+        $this->assertCount(1, Tag::all());
+        $this->post('/admin/posts', [
+            'title' => 'a','title_meta' => 'a','slug' => 'a','summary' => 'a','content' => 'a',
+            'tags' => ['Mouad']
+        ]);
+        $this->assertCount(1, Tag::all());
+        $post = Post::first();
+        $this->assertCount(1, $post->tags);
+    }
+
+    /** @test */
+    public function create_post_with_tags_validation() {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $this->post('/admin/posts', [
+            'title' => 'a','title_meta' => 'a','slug' => 'a','summary' => 'a','content' => 'a',
+            'tags' => ['mouad nassri']
+        ]);
+        $tag = Tag::first();
+        $this->assertEquals('mouad-nassri', $tag->slug);
+
+        $this->post('/admin/posts', [
+            'title' => 'a','title_meta' => 'a','slug' => 'a','summary' => 'a','content' => 'a',
+            'tags' => ['e','a','b','b','b','e','b','b','b', 'b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b']
+        ])->assertRedirect()->assertSessionHasErrors(['tags']); // Exceed the maximum
     }
 
     /** @test */

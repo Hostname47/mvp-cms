@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Category;
+use App\Models\{Category,Tags};
 use Carbon\Carbon;
 
 class Post extends Model
@@ -19,6 +19,10 @@ class Post extends Model
 
     public function author() {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function tags() {
+        return $this->belongsToMany(Tag::class);
     }
 
     public function getCreationDateHumansAttribute() {

@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Session;
-use App\Models\{Post,Category};
+use Illuminate\Support\Str;
+use App\Models\{Post,Category,Tag};
 
 class PostController extends Controller
 {
@@ -44,9 +45,15 @@ class PostController extends Controller
         ]);
         $postdata['user_id'] = auth()->user()->id;
 
+        // Categories
         $categories = $request->validate([
             'categories'=>'sometimes|min:1|max:10',
             'categories.*'=>'exists:categories,id',
+        ]);
+        // Tags
+        $tags = $request->validate([
+            'tags'=>'sometimes|max:36',
+            'tags.*'=>'min:1|max:120'
         ]);
 
         // Create the post
@@ -57,6 +64,17 @@ class PostController extends Controller
             $post->categories()->attach($categories['categories']);
         else // Uncategorized category will be attached to post in case admin does not specify any category
             $post->categories()->attach(Category::where('slug', 'uncategorized')->first()->id);
+
+        // Attach tags to the post
+        if(isset($tags['tags'])) {
+            foreach($tags['tags'] as $tag) {
+                $post->tags()->attach(Tag::firstOrCreate(['title'=>$tag], [
+                    'title' => $tag,
+                    'slug' => Str::slug($tag, '-'),
+                    'description' => '--'
+                ])->id);
+            }
+        }
 
         Session::flash('message', 'Post has been created successfully. <a href="' . route('edit.post', ['post'=>$post->id]) . '" class="link-style">click here</a> to manage the post');
     }
