@@ -32,7 +32,7 @@ let post_editor;
 $('#toggle-meta-and-slug').on('click', function () {
     let button = $(this);
     let targetbox = $('#meta-and-slug-section');
-    if (targetbox.hasClass('none')) {
+    if(targetbox.hasClass('none')) {
         button.find('.toggle-arrow').first().css({
             transform: 'rotate(90deg)',
             '-ms-transform': 'rotate(90deg)',
@@ -63,7 +63,7 @@ $('#post-title').on('input', function () {
 
 function post_input_validate(condition, input, message) {
     let container = $('.error-container');
-    if (!condition) {
+    if(!condition) {
         $(window).scrollTop(0);
         container.find('.message-text').text(message);
         container.removeClass('none');
@@ -83,41 +83,41 @@ $('.open-featured-image-selection-viewer').on('click', function () {
 
 let set_featured_image_lock = true;
 $('.set-featured-image').on('click', function () {
-    // if (!set_featured_image_lock || $(this).hasClass('prevent-action')) return;
-    // set_featured_image_lock = false;
+    if($(this).hasClass('prevent-action')) return;
+    
+    let selected_featured_image_metadata_id = selected_media[0];
+    if(!selected_featured_image_metadata_id) {
+        print_top_message('Please select a featured image first.', 'error');
+        return;
+    }
+    
+    let gmbox = $('#set-featured-image-viewer');
+    let selected_media_item;
+    gmbox.find('.media-library-item-container').each(function () {
+        if($(this).find('.selected').val() == 1) {
+            selected_media_item = $(this);
+            return false;
+        }
+    });
 
-    let button = $(this);
-    let spinner = button.find('.spinner');
-    let buttonicon = button.find('.icon-above-spinner');
-    let gmbox = global_media_box(button);
-
-    button.addClass('dark-bs-disabled');
-    buttonicon.addClass('none');
-    spinner.removeClass('opacity0');
-    spinner.addClass('inf-rotate');
-
-    // $.ajax({
-    //     type:
-    // });
-
-    console.log(selected_media);
-    return;
-
-    $('.selected-featured-image').attr('src', selected_media.find('.media-library-item-image').attr('src'));
-    handle_image_center_by_filling_parent($('.selected-featured-image'));
+    $('#post-featured-image-metadata-id').val(selected_featured_image_metadata_id);
+    $('.selected-featured-image').attr('src', selected_media_item.find('.media-library-item-image').attr('src'));
+    handle_image_center_fill($('.selected-featured-image'));
     $('.featured-image-upload-box').addClass("none");
     $('.uploaded-featured-image-box').removeClass("none");
-    global_media_viewer.find('.close-global-viewer').trigger('click');
-
-    button.removeClass('dark-bs-disabled');
-    buttonicon.removeClass('none');
-    spinner.addClass('opacity0');
-    spinner.removeClass('inf-rotate');
-    set_featured_image_lock = true;
+    gmbox.find('.close-global-viewer').trigger('click');
 });
 
 $('.remove-featured-image').on('click', function () {
-
+    $('#set-featured-image-viewer').find('.media-library-item-container').each(function () {
+        if($(this).find('.selected').val() == 1) {
+            $(this).trigger('click');
+        }
+    });
+    $('#post-featured-image-metadata-id').val('');
+    $('.selected-featured-image').attr('src', '');
+    $('.featured-image-upload-box').removeClass("none");
+    $('.uploaded-featured-image-box').addClass("none");
 });
 
 $('.update-featured-image').on('click', function () {

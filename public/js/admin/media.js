@@ -16,7 +16,7 @@ $('.open-media-library-section').on('click', function () {
      * (demonstrated below)
      */
     if(!media_library_opened) {
-        if (!media_library_opening_lock) return;
+        if(!media_library_opening_lock) return;
         media_library_opening_lock = false;
         /**
          * The media loading section is by default opened in case the user open the library
@@ -41,7 +41,7 @@ $('.open-media-library-section').on('click', function () {
                  * If the library is empty we display no items found with an upload button
                  * in a container : called media-library-no-media-found-container
                  */
-                if (response.count == 0)
+                if(response.count == 0)
                     gmbox.find('.media-library-no-media-found-container').removeClass('none');
                 else {
                     /**
@@ -63,7 +63,7 @@ $('.open-media-library-section').on('click', function () {
             error: function (response) {
                 let errorObject = JSON.parse(response.responseText);
                 let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
-                if (errorObject.errors) {
+                if(errorObject.errors) {
                     let errors = errorObject.errors;
                     error = errors[Object.keys(errors)[0]][0];
                 }
@@ -96,7 +96,7 @@ $('.upload-media-to-library').on('change', function () {
      *  2. Size should be less than 5 MB
      *  3. Uploaded files should be either image or video files
      */
-    if (files.length > maximum_number_of_uploads) {
+    if(files.length > maximum_number_of_uploads) {
         show_upload_media_error(input, 'The maximum number of files upload is ' + maximum_number_of_uploads + ' files at a time.');
         return;
     }
@@ -104,7 +104,7 @@ $('.upload-media-to-library').on('change', function () {
     for (let i = 0; (i < files.length && i < maximum_number_of_uploads); i++) {
         // .2
         let filesize = files[i].size / (1024 * 1024);
-        if (filesize > 5) {
+        if(filesize > 5) {
             show_upload_media_error(input, '<strong>' + files[i].name + '</strong> file size exceeds the maximum size allowed per file (>5 MB max)');
             return;
         }
@@ -284,9 +284,8 @@ function remove_from_selected_media(metadata_id) {
         }
     }
 }
-
 function library_media_item_selection(media, selection = 'select') {
-    if (selection == 'select') {
+    if(selection == 'select') {
         media.find('.selected').val('1');
         media.find('.media-library-media-selectbox').removeClass('none');
         media.addClass('media-library-item-selected');
@@ -302,37 +301,38 @@ function handle_library_media_event(media) {
     /**
      * Case media is an image
      */
-    handle_image_center_based_on_higher_dim(media.find('.media-library-item-image'));
+    handle_image_center_fill(media.find('.media-library-item-image'));
     handle_open_media_image_settings(media);
 }
 
 /**
- * Handle library media - image management
+ * Handle library media - image
  */
 function handle_open_media_image_settings(media) {
     media.on('click', function () {
         let gmbox = global_media_box($(this)); // global media box
-
         let status = media.find('.selected').val();
         let selection_type = gmbox.find('.selection-type').val();
         gmbox.find('.media-library-settings-container').addClass('none');
-        if (status == 1) {
+        /**
+         * If admin select an image, we set its settings to image settings section
+         * In the other hand if the admin unselect it, we need to check if there are other
+         * medias already selected (in case of multiple selection) and set the first selected media
+         */
+        if(status == 1)
             set_media_image_details_into_settings_section(gmbox, media);
-        } else {
-            if (selection_type == 'multiple') {
+        else
+            if(selection_type == 'multiple')
                 gmbox.find('.media-library-item-container').each(function () {
-                    if ($(this).find('.selected').val() == 1) {
+                    if($(this).find('.selected').val() == 1) {
                         set_media_image_details_into_settings_section(gmbox, $(this));
                         return false;
                     }
                 });
-            }
-        }
     });
 }
 function set_media_image_details_into_settings_section(viewer, media) {
     let setting_container = viewer.find('.media-library-image-settings-container');
-
     // Set image
     setting_container.find('.library-media-image').attr('src', media.find('.media-library-item-image').attr('src'));
     setting_container.find('.library-media-image').attr('style', '');
@@ -351,28 +351,32 @@ function set_media_image_details_into_settings_section(viewer, media) {
     setting_container.find('.description').val(media.find('.description').val());
     setting_container.find('.link').val(media.find('.link').val());
 
+    // First close all other media types settings sections
+    viewer.find('.media-library-settings-container').addClass('none');
+    // Then we open image settings section
     viewer.find('.media-library-image-settings-container').removeClass('none');
 }
+
 $('.restore-media-image-settings').on('click', function () {
-    let mid = $(this).find('.metadata-id').val();
+    let metadata_id = $(this).find('.metadata-id').val();
     let gmbox = global_media_box($(this)); // global media box
 
     let media;
     gmbox.find('.media-library-items-container .media-library-item-container').each(function () {
-        if ($(this).find('.metadata-id').val() == mid) {
+        if($(this).find('.metadata-id').val() == metadata_id) {
             media = $(this);
             return false;
         }
     });
-    if (media) {
+    if(media) {
         set_media_image_details_into_settings_section(gmbox, media);
-        left_bottom_notification('Image settings get restored');
+        left_bottom_notification('Image settings get restored with defaults');
     }
 });
 
 let save_media_metadata = true;
 $('.save-media-metadata').on('click', function () {
-    if (!save_media_metadata) return;
+    if(!save_media_metadata) return;
     save_media_metadata = false;
 
     let button = $(this);
@@ -405,12 +409,12 @@ $('.save-media-metadata').on('click', function () {
         },
         success: function (response) {
             print_top_message('File metadata has been updated successfully', 'green');
-            sync_media_metadata_to_new_settings_change(metadata_id, setting_box, setting_box); // Read function prototype
+            sync_media_metadata_to_new_settings_change(metadata_id, setting_box); // Read function prototype
         },
         error: function (response) {
             let errorObject = JSON.parse(response.responseText);
             let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
-            if (errorObject.errors) {
+            if(errorObject.errors) {
                 let errors = errorObject.errors;
                 error = errors[Object.keys(errors)[0]][0];
             }
@@ -427,18 +431,15 @@ $('.save-media-metadata').on('click', function () {
     })
 });
 /**
- * Element parameter here is used to get the global viewer container by going backward to parents; It must be 
- * included within the global media viewer.
- * 
- * After we fetch the global viewer, we start searching for the media container in media items box;
+ * Here, we get the global viewer, aand then we start searching for the media container in media items box;
  * Once we get it, we need to make its metadata in sync with the saved settings metadata
  */
-function sync_media_metadata_to_new_settings_change(metadata_id, element, setting_box) {
-    let gmbox = global_media_box(element); // global media box
+function sync_media_metadata_to_new_settings_change(metadata_id, setting_box) {
+    let gmbox = global_media_box(setting_box); // global media box
 
     let media;
     gmbox.find('.media-library-item-container').each(function () {
-        if ($(this).find('.metadata-id').val() == metadata_id) {
+        if($(this).find('.metadata-id').val() == metadata_id) {
             media = $(this);
             return false;
         }
@@ -448,13 +449,24 @@ function sync_media_metadata_to_new_settings_change(metadata_id, element, settin
         media.find('.' + $(this).attr('name')).val($(this).val());
     });
 }
+
 $('.open-media-delete-viewer').on('click', function () {
     $('#delete-media-viewer').find('.metadata-id').val($(this).find('.metadata-id').val());
     $('#delete-media-viewer').removeClass('none');
+    /**
+     * Important:
+     * Here after we open the delete viewer, we have to specified the source from where we
+     * want to delete the media; We pass get the global vieer from the opening button and past it to
+     * delete_media_from variable so that after deleting the media we go back to it and then delete
+     * the component of media deleted from it. ;)
+     */
+    delete_media_from_viewer = global_media_box($(this));
 });
+
+let delete_media_from_viewer;
 let delete_media_item_lock = true;
 $('.delete-media-item').on('click', function () {
-    if (!delete_media_item_lock) return;
+    if(!delete_media_item_lock) return;
     delete_media_item_lock = false;
 
     let button = $(this);
@@ -473,26 +485,30 @@ $('.delete-media-item').on('click', function () {
         data: { metadata_id: metadata_id },
         success: function (response) {
             $('#delete-media-viewer').find('.close-global-viewer').trigger('click');
-            $('.media-library-settings-container').addClass('none');
-            $('.media-library-item-container').each(function () {
-                if ($(this).find('.metadata-id').val() == metadata_id) {
+            delete_media_from_viewer.find('.media-library-settings-container').addClass('none');
+            delete_media_from_viewer.find('.media-library-item-container').each(function () {
+                if($(this).find('.metadata-id').val() == metadata_id) {
                     $(this).remove();
                     return false;
                 }
             });
-            $('.media-library-media-part').each(function () {
-                if (!$(this).find('.media-library-items-container .media-library-item-container').length) {
+            /**
+             * If the deleted media item is the only media there, then we need to display not media
+             * found with upload button section and hide media items container
+             */
+            delete_media_from_viewer.find('.media-library-media-part').each(function () {
+                if(!$(this).find('.media-library-items-container .media-library-item-container').length) {
                     $(this).find('.media-library-items-container').addClass('none');
                     $(this).find('.media-library-no-media-found-container').removeClass('none');
                 }
             });
 
-            print_top_message('media has been deleted successfully.', 'green');
+            print_top_message('Media has been deleted successfully.', 'green');
         },
         error: function (response) {
             let errorObject = JSON.parse(response.responseText);
             let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
-            if (errorObject.errors) {
+            if(errorObject.errors) {
                 let errors = errorObject.errors;
                 error = errors[Object.keys(errors)[0]][0];
             }
@@ -516,7 +532,6 @@ function show_upload_media_error(input, message) {
     $('#upload-media').attr('disabled', false);
     $('#upload-media').val('');
 }
-
 function global_media_box(element) {
     let box = element;
     while(!box.hasClass('media-viewer')) box = box.parent();

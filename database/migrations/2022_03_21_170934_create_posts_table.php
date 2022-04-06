@@ -21,7 +21,6 @@ class CreatePostsTable extends Migration
             $table->longText('content');
             $table->string('status')->default('awaiting-review');
             $table->string('visibility')->default('public');
-
             $table->integer('allow_comments')->default(1);
             $table->integer('allow_reactions')->default(1);
             $table->integer('comments_count')->default(0);
@@ -30,8 +29,10 @@ class CreatePostsTable extends Migration
 
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
-            $table->timestamp('published_at')->default(\DB::raw('CURRENT_TIMESTAMP'));
+
+            $table->timestamp('published_at')->nullable();
             $table->timestamps();
+            $table->json('metadata')->nullabel();
         });
     }
 
