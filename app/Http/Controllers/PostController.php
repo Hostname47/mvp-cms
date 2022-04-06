@@ -57,7 +57,7 @@ class PostController extends Controller
         ]);
         // Featured Image
         $featured_image = $request->validate([
-            'featured_image'=>'sometimes|metadata,id'
+            'featured_image'=>'sometimes|exists:metadata,id'
         ]);
 
         // Create the post
@@ -79,6 +79,11 @@ class PostController extends Controller
                 ])->id);
             }
         }
+
+        if(isset($featured_image['featured_image']))
+            $post->update([
+                'metadata'=>['featured_image'=>$featured_image['featured_image']]
+            ]);
 
         Session::flash('message', 'Post has been created successfully. <a href="' . route('edit.post', ['post'=>$post->id]) . '" class="link-style">click here</a> to manage the post');
     }

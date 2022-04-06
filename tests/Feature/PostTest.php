@@ -4,7 +4,10 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
-use App\Models\{User, Category, Post, Tag};
+use Illuminate\Http\UploadedFile;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Storage;
+use App\Models\{User, Category, Post, Tag, Metadata};
 
 class PostTest extends TestCase
 {
@@ -23,6 +26,12 @@ class PostTest extends TestCase
             'title'=>'Uncategorized',
             'slug'=>'uncategorized'
         ]);
+
+        (new Filesystem)->cleanDirectory(storage_path('app/testing'));
+    }
+
+    public function tearDown():void {
+        (new Filesystem)->cleanDirectory(storage_path('app/testing'));
     }
 
     /** @test */
@@ -105,8 +114,28 @@ class PostTest extends TestCase
     }
 
     /** @test */
+    public function create_a_post_with_featured_image() {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $featured_image = UploadedFile::fake()->image('thumbnail.png', 30, 80)->size(200);
+        $this->post('/admin/media-library/upload', ['files'=>[$featured_image]]);
+        $featured_image_metdata = Metadata::first();
+        $this->post('/admin/posts', [
+            'title' => 'Foo','title_meta' => 'foo','slug' => 'foo-boo','summary' => 'foo','content' => 'foo',
+            'featured_image' => $featured_image_metdata->id
+        ]);
+        $post = Post::first();
+        $this->assertEquals($featured_image_metdata->id, $post->metadata['featured_image']);
+
+        $this->post('/admin/posts', [
+            'title' => 'Boo','title_meta' => 'boo','slug' => 'boo-foo','summary' => 'boo','content' => 'boo',
+            'featured_image' => 8547875
+        ])->assertRedirect()->assertSessionHasErrors(['featured_image']);
+    }
+
+    /** @test */
     public function create_a_post_with_tags() {
-        $this->withoutExceptionHandling();
         $user = User::factory()->create();
         $this->actingAs($user);
 

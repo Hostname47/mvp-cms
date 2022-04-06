@@ -6,8 +6,8 @@ use App\Http\Controllers\{IndexController, AdminController, PostController, Cate
 use App\Http\Controllers\Admin\{AdminSearchController};
 
 Route::get('/test', function() {
-    $category = \App\Models\Category::first();
-    dd($category->posts);
+    $post = \App\Models\Post::first();
+    dd($post->update(['metadata'=>json_encode(['featured_image'=>55])]));
 });
 
 Route::get('/', [IndexController::class, 'index']);

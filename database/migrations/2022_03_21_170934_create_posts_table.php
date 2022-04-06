@@ -32,7 +32,7 @@ class CreatePostsTable extends Migration
 
             $table->timestamp('published_at')->nullable();
             $table->timestamps();
-            $table->json('metadata')->nullabel();
+            $table->json('metadata')->nullable();
         });
     }
 

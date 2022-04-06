@@ -88,7 +88,8 @@ $('.create-post-button').on('click', function () {
         allow_comments: $('#allow-reactions').is(':checked') ? 1 : 0,
         summary: $('#post-summary').val(),
         categories: categories,
-        tags: tags
+        tags: tags,
+        featured_image: $('#post-featured-image-metadata-id').val()
     };
 
     let button = $(this);
