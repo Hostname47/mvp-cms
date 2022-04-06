@@ -83,20 +83,13 @@ $('.open-featured-image-selection-viewer').on('click', function () {
 
 let set_featured_image_lock = true;
 $('.set-featured-image').on('click', function () {
-    if (!set_featured_image_lock || $(this).hasClass('prevent-action')) return;
-    set_featured_image_lock = false;
+    // if (!set_featured_image_lock || $(this).hasClass('prevent-action')) return;
+    // set_featured_image_lock = false;
 
     let button = $(this);
     let spinner = button.find('.spinner');
     let buttonicon = button.find('.icon-above-spinner');
-    let global_media_viewer = button;
-    while (!global_media_viewer.hasClass('media-viewer')) global_media_viewer = global_media_viewer.parent();
-    let selected_media;
-    global_media_viewer.find('.media-library-item-container').each(function () {
-        if ($(this).find('.selected').val() == 1) {
-            selected_media = $(this);
-        }
-    });
+    let gmbox = global_media_box(button);
 
     button.addClass('dark-bs-disabled');
     buttonicon.addClass('none');
@@ -106,6 +99,9 @@ $('.set-featured-image').on('click', function () {
     // $.ajax({
     //     type:
     // });
+
+    console.log(selected_media);
+    return;
 
     $('.selected-featured-image').attr('src', selected_media.find('.media-library-item-image').attr('src'));
     handle_image_center_by_filling_parent($('.selected-featured-image'));

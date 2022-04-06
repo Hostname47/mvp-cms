@@ -59,7 +59,6 @@ $('.open-media-library-section').on('click', function () {
                         handle_library_media_event($(this));
                     });
                 }
-
             },
             error: function (response) {
                 let errorObject = JSON.parse(response.responseText);
@@ -68,7 +67,7 @@ $('.open-media-library-section').on('click', function () {
                     let errors = errorObject.errors;
                     error = errors[Object.keys(errors)[0]][0];
                 }
-                show_upload_media_error(error);
+                print_top_message(error, 'error');
             },
             complete: function () {
                 media_library_opening_lock = true;
@@ -77,6 +76,7 @@ $('.open-media-library-section').on('click', function () {
     }
 });
 
+let supported_media_format = ['image', 'video']
 $('.upload-media-to-library').on('change', function () {
     /**
      * First we hide the error container if it was already opened
@@ -97,7 +97,7 @@ $('.upload-media-to-library').on('change', function () {
      *  3. Uploaded files should be either image or video files
      */
     if (files.length > maximum_number_of_uploads) {
-        show_upload_media_error('The maximum number of files upload is ' + maximum_number_of_uploads + ' files at a time.');
+        show_upload_media_error(input, 'The maximum number of files upload is ' + maximum_number_of_uploads + ' files at a time.');
         return;
     }
 
@@ -105,7 +105,7 @@ $('.upload-media-to-library').on('change', function () {
         // .2
         let filesize = files[i].size / (1024 * 1024);
         if (filesize > 5) {
-            show_upload_media_error('<strong>' + files[i].name + '</strong> file size exceeds the maximum size allowed per file (>5 MB max)');
+            show_upload_media_error(input, '<strong>' + files[i].name + '</strong> file size exceeds the maximum size allowed per file (>5 MB max)');
             return;
         }
         /**
@@ -113,11 +113,9 @@ $('.upload-media-to-library').on('change', function () {
          *   3.1. validate image
          *   3.2. if it is not image then we validate video
          */
-        if (get_file_type(files[i]) != 'image') {
-            if (get_file_type(files[i]) != 'video') {
-                show_upload_media_error('<strong>' + files[i].name + '</strong> file format is not supported. only images & videos are supported at the moment');
-                return;
-            }
+        if(!supported_media_format.includes(get_file_type(files[i]))) {
+            show_upload_media_error(input, '<strong>' + files[i].name + '</strong> file format is not supported. only images & videos are supported at the moment');
+            return;
         }
 
         validated_medias.push(files[i]);
@@ -142,25 +140,42 @@ $('.upload-media-to-library').on('change', function () {
             contentType: false,
             data: media,
             success: function (response) {
-                let global_media_viewer = input;
-                while (!global_media_viewer.hasClass('media-viewer')) global_media_viewer = global_media_viewer.parent();
+                let gmbox = global_media_box(input); // global media box
 
-                global_media_viewer.find('.open-medias-library-section').trigger('click');
-                global_media_viewer.find('.media-library-no-media-found-container').addClass('none');
-                if (media_library_opened) {
-                    let bring_media_loading_viewer = global_media_viewer.find('.media-library-bringing-uploaded-media-container');
+                /**
+                 * If the media library is not already opened, then the following click event
+                 * trigger will take care of bringing media components and put them into the 
+                 * media container
+                 * If the media library was already opened, then we should take some extra steps (next if statement)
+                 */
+                gmbox.find('.open-media-library-section').trigger('click');
+                // Hide no media found container if it is already there
+                gmbox.find('.media-library-no-media-found-container').addClass('none');
+                // Display media library container if it is hidden
+                gmbox.find('.media-library-media-container').removeClass('none');
+                gmbox.find('.media-library-items-container').removeClass('none');
+
+                if(media_library_opened) {
+                    /**
+                     * Display uploaded media bringing container and rotate its spinner
+                     */
+                    let bring_media_loading_viewer = gmbox.find('.media-library-bringing-uploaded-media-container');
                     bring_media_loading_viewer.find('.spinner').addClass('inf-rotate');
                     bring_media_loading_viewer.removeClass('none');
 
+                    /**
+                     * Then we issue a request to get those uploaded media in form of components and then prepend
+                     * them to the media container
+                     */
                     $.ajax({
                         url: '/admin/media/set/components',
                         data: {
                             metadata_ids: response.metadata_ids,
                         },
                         success: function (response) {
-                            global_media_viewer.find('.media-library-items-container').prepend(response.payload);
+                            gmbox.find('.media-library-items-container').prepend(response.payload);
                             // Handling events
-                            global_media_viewer.find('.media-library-item-container').slice(0, response.count).each(function () {
+                            gmbox.find('.media-library-item-container').slice(0, response.count).each(function () {
                                 handle_library_media_event($(this));
                             });
 
@@ -168,7 +183,13 @@ $('.upload-media-to-library').on('change', function () {
                             bring_media_loading_viewer.addClass('none');
                         },
                         error: function (response) {
-
+                            let errorObject = JSON.parse(response.responseText);
+                            let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+                            if(errorObject.errors) {
+                                let errors = errorObject.errors;
+                                error = errors[Object.keys(errors)[0]][0];
+                            }
+                            print_top_message(error, 'error');
                         }
                     })
                 }
@@ -181,11 +202,11 @@ $('.upload-media-to-library').on('change', function () {
             error: function (response) {
                 let errorObject = JSON.parse(response.responseText);
                 let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
-                if (errorObject.errors) {
+                if(errorObject.errors) {
                     let errors = errorObject.errors;
                     error = errors[Object.keys(errors)[0]][0];
                 }
-                show_upload_media_error(error);
+                print_top_message(error, 'error');
             },
         })
     }
@@ -203,34 +224,67 @@ function media_selection_tick_effect(media) {
         }
     });
 }
+
+/**
+ * Array of metadata ids selected from media library
+ */
+let selected_media = [];
 function handle_library_media_selection(media) {
     media.on('click', function () {
-        let global_media_viewer = $(this);
-        while (!global_media_viewer.hasClass('media-viewer')) global_media_viewer = global_media_viewer.parent();
-        let selection_type = global_media_viewer.find('.selection-type').val();
+        let gmbox = global_media_box($(this)); // global media box
+        let selection_type = gmbox.find('.selection-type').val();
         let selected = $(this).find('.selected').val();
+        let targetbutton = gmbox.find('.media-viewer-target-action-button');
 
-        if (selection_type == 'single') {
+        if(selection_type == 'single') {
             /**
-             * If selection type is single, we need to unselect previous medias if exists 
+             * If selection type is single, we need to unselect previous medias if exists
+             * and remove all selected medias from selected media array
              */
-            global_media_viewer.find('.media-library-item-container').each(function () {
+            gmbox.find('.media-library-item-container').each(function () {
                 library_media_item_selection($(this), 'unselect');
             });
+            selected_media = [];
 
-            if (selected == 1) {
-                global_media_viewer.find('.media-viewer-taget-action-button').addClass('dark-bs-disabled prevent-action');
+            if(selected == 1)
+                targetbutton.addClass('dark-bs-disabled prevent-action');            
+            else {
+                targetbutton.removeClass('dark-bs-disabled prevent-action');
+                library_media_item_selection($(this), 'select');
+                insert_to_selected_media($(this).find('.metadata-id').val());
             }
-        }
-
-        if (selected == 0) {
-            library_media_item_selection($(this), 'select');
-            global_media_viewer.find('.media-viewer-taget-action-button').removeClass('dark-bs-disabled prevent-action');
         } else {
-            library_media_item_selection($(this), 'unselect');
+            let selected_count = 0;
+            gmbox.find('.media-library-item-container').each(function () {
+                if($(this).find('.selected').val() == 1)
+                    selected_count++;
+            });
+
+            if(selected == 1) { // If the media is already selected (means admin is going to unselect it)
+                library_media_item_selection($(this), 'unselect');
+                remove_from_selected_media($(this).find('.metadata-id').val())
+                if(selected_count == 1) // If the unselected one is the only one selected
+                    targetbutton.addClass('dark-bs-disabled prevent-action');
+            } else {
+                library_media_item_selection($(this), 'select');
+                insert_to_selected_media($(this).find('.metadata-id').val());
+                targetbutton.removeClass('dark-bs-disabled prevent-action');
+            }
         }
     });
 }
+function insert_to_selected_media(metadata_id) {
+    selected_media.indexOf(metadata_id) === -1 ? selected_media.push(metadata_id) : '';
+}
+function remove_from_selected_media(metadata_id) {
+    for(let i = 0; i < selected_media.length; i++) {
+        if(selected_media[i] == metadata_id) { 
+            selected_media.splice(i, 1);
+            break;
+        }
+    }
+}
+
 function library_media_item_selection(media, selection = 'select') {
     if (selection == 'select') {
         media.find('.selected').val('1');
@@ -257,19 +311,18 @@ function handle_library_media_event(media) {
  */
 function handle_open_media_image_settings(media) {
     media.on('click', function () {
-        let global_media_viewer = $(this);
-        while (!global_media_viewer.hasClass('media-viewer')) global_media_viewer = global_media_viewer.parent();
+        let gmbox = global_media_box($(this)); // global media box
 
         let status = media.find('.selected').val();
-        let selection_type = global_media_viewer.find('.selection-type').val();
-        global_media_viewer.find('.media-library-settings-container').addClass('none');
+        let selection_type = gmbox.find('.selection-type').val();
+        gmbox.find('.media-library-settings-container').addClass('none');
         if (status == 1) {
-            set_media_image_details_into_settings_section(global_media_viewer, media);
+            set_media_image_details_into_settings_section(gmbox, media);
         } else {
             if (selection_type == 'multiple') {
-                global_media_viewer.find('.media-library-item-container').each(function () {
+                gmbox.find('.media-library-item-container').each(function () {
                     if ($(this).find('.selected').val() == 1) {
-                        set_media_image_details_into_settings_section(global_media_viewer, $(this));
+                        set_media_image_details_into_settings_section(gmbox, $(this));
                         return false;
                     }
                 });
@@ -302,18 +355,17 @@ function set_media_image_details_into_settings_section(viewer, media) {
 }
 $('.restore-media-image-settings').on('click', function () {
     let mid = $(this).find('.metadata-id').val();
-    let global_media_viewer = $(this);
-    while (!global_media_viewer.hasClass('media-viewer')) global_media_viewer = global_media_viewer.parent();
+    let gmbox = global_media_box($(this)); // global media box
 
     let media;
-    global_media_viewer.find('.media-library-items-container .media-library-item-container').each(function () {
+    gmbox.find('.media-library-items-container .media-library-item-container').each(function () {
         if ($(this).find('.metadata-id').val() == mid) {
             media = $(this);
             return false;
         }
     });
     if (media) {
-        set_media_image_details_into_settings_section(global_media_viewer, media);
+        set_media_image_details_into_settings_section(gmbox, media);
         left_bottom_notification('Image settings get restored');
     }
 });
@@ -382,11 +434,10 @@ $('.save-media-metadata').on('click', function () {
  * Once we get it, we need to make its metadata in sync with the saved settings metadata
  */
 function sync_media_metadata_to_new_settings_change(metadata_id, element, setting_box) {
-    let global_media_viewer = element;
-    while (!global_media_viewer.hasClass('media-viewer')) global_media_viewer = global_media_viewer.parent();
+    let gmbox = global_media_box(element); // global media box
 
     let media;
-    global_media_viewer.find('.media-library-item-container').each(function () {
+    gmbox.find('.media-library-item-container').each(function () {
         if ($(this).find('.metadata-id').val() == metadata_id) {
             media = $(this);
             return false;
@@ -458,8 +509,8 @@ $('.delete-media-item').on('click', function () {
     });
 });
 
-function show_upload_media_error(message) {
-    let container = $('.media-upload-error-container');
+function show_upload_media_error(input, message) {
+    let container = upload_media_box(input).find('.media-upload-error-container');
     container.find('.message-text').html(message);
     container.removeClass('none');
     $('#upload-media').attr('disabled', false);
@@ -469,5 +520,11 @@ function show_upload_media_error(message) {
 function global_media_box(element) {
     let box = element;
     while(!box.hasClass('media-viewer')) box = box.parent();
+    return box;
+}
+function upload_media_box(input) {
+    let box = input;
+    while(!box.hasClass('media-upload-files-container')) box = box.parent();
+    console.log(box);
     return box;
 }
