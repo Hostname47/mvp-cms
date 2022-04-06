@@ -77,6 +77,17 @@ function post_input_validate(condition, input, message) {
     return true;
 }
 
+$('.post-visibility-button').on('click', function(event) {
+    let visibility = $(this).find('.visibility').val();
+    if(visibility == 'password-protected') {
+        event.stopPropagation();
+        $(this).parent().css('display', 'block');
+        $('#post-password-container').removeClass('none');
+    }
+    else
+        $('#post-password-container').addClass('none');
+});
+
 $('.open-featured-image-selection-viewer').on('click', function () {
     $('#set-featured-image-viewer').removeClass('none');
 });

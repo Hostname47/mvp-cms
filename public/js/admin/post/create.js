@@ -84,13 +84,21 @@ $('.create-post-button').on('click', function () {
         slug: slug.val(),
         content: content,
         status: $('#post-status').val(),
+        visibility: $('#post-visibility').val(),
         allow_reactions: $('#allow-reactions').is(':checked') ? 1 : 0,
         allow_comments: $('#allow-reactions').is(':checked') ? 1 : 0,
-        summary: $('#post-summary').val(),
         categories: categories,
         tags: tags,
-        featured_image: $('#post-featured-image-metadata-id').val()
     };
+
+    if($('#post-featured-image-metadata-id').val() != '')
+        data.featured_image = $('#post-featured-image-metadata-id').val();
+    
+    if($('#post-summary').val() != '')
+        data.summary = $('#post-summary').val();
+
+    if($('#post-visibility').val() == 'password-protected')
+        data.password = $('#post-password-input').val();
 
     let button = $(this);
     let spinner = button.find('.spinner');

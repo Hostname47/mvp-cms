@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 use App\Models\{Post,Category,Tag};
 
 class PostController extends Controller
@@ -38,7 +39,7 @@ class PostController extends Controller
             'slug'=>'required|max:1200',
             'summary'=>'sometimes|max:2000',
             'status'=>['sometimes', Rule::in(['draft', 'published', 'awaiting-review'])],
-            'visibility'=>['sometimes', Rule::in(['public', 'private', 'password-locked'])],
+            'visibility'=>['sometimes', Rule::in(['public', 'private', 'password-protected'])],
             'content'=>'required|max:50000',
             'allow_reactions'=>['sometimes', Rule::in([0, 1])],
             'allow_comments'=>['sometimes', Rule::in([0, 1])],
@@ -58,6 +59,10 @@ class PostController extends Controller
         // Featured Image
         $featured_image = $request->validate([
             'featured_image'=>'sometimes|exists:metadata,id'
+        ]);
+        // Checking if post is password locked
+        $password = $request->validate([
+            'password'=>'required_if:visibility,password-protected|min:8|max:450',
         ]);
 
         // Create the post
@@ -80,10 +85,19 @@ class PostController extends Controller
             }
         }
 
-        if(isset($featured_image['featured_image']))
-            $post->update([
-                'metadata'=>['featured_image'=>$featured_image['featured_image']]
-            ]);
+        // Attach featured image to the post
+        if(isset($featured_image['featured_image'])) {
+            $metadata = $post->metadata;
+            $metadata['featured_image'] = $featured_image['featured_image'];
+            $post->update(['metadata'=>$metadata]);
+        }
+
+        // Create a password for the post if admin specify password locked visibility
+        if(isset($password['password'])) {
+            $metadata = $post->metadata;
+            $metadata['password'] = Hash::make($password['password']);
+            $post->update(['metadata'=>$metadata]);
+        }
 
         Session::flash('message', 'Post has been created successfully. <a href="' . route('edit.post', ['post'=>$post->id]) . '" class="link-style">click here</a> to manage the post');
     }

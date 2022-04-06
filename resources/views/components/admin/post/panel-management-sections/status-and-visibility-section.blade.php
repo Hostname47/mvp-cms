@@ -35,10 +35,10 @@
         </div>
         <div class="simple-line-separator my4"></div>
         <!-- post visibility -->
-        <div class="align-center my4">
+        <div class="align-center visibility-box my4">
             <p class="fs12 no-margin dark mr4">Visibility :</p>
             <div class="custom-dropdown-box">
-                <input type="hidden" class="selected-value" id="post-visibility" value="draft" autocomplete="off">
+                <input type="hidden" class="selected-value" id="post-visibility" value="public" autocomplete="off">
                 <div class="custom-dropdown-button custom-dropdown-button-style">
                     <span class="fs11 bold dark custom-dropdown-button-text">Public</span>
                     <svg class="arrow size6 ml4 dark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02">
@@ -46,47 +46,27 @@
                     </svg>
                 </div>
                 <div class="custom-dropdown-items-container custom-dropdown-items-container-style" style="max-width: 166px;">
-                    <div class="custom-dropdown-item custom-dropdown-item-style custom-dropdown-item-selected custom-dropdown-item-selected-style">
+                    <div class="custom-dropdown-item custom-dropdown-item-style post-visibility-button custom-dropdown-item-selected custom-dropdown-item-selected-style">
                         <span class="custom-dropdown-item-text fs14 dark bold block">Public</span>
                         <span class="fs11 block">Post will be public.</span>
-                        <input type="hidden" class="custom-dropdown-item-value" value="public" autocomplete="off">
+                        <input type="hidden" class="custom-dropdown-item-value visibility" value="public" autocomplete="off">
                     </div>
-                    <div class="custom-dropdown-item custom-dropdown-item-style mt2">
+                    <div class="custom-dropdown-item custom-dropdown-item-style post-visibility-button mt2">
                         <span class="custom-dropdown-item-text fs14 dark bold block">Private</span>
                         <span class="fs11 block">post will be hidden and private.</span>
-                        <input type="hidden" class="custom-dropdown-item-value" value="private" autocomplete="off">
+                        <input type="hidden" class="custom-dropdown-item-value visibility" value="private" autocomplete="off">
                     </div>
-                    <div class="custom-dropdown-item custom-dropdown-item-style mt2">
+                    <div class="custom-dropdown-item custom-dropdown-item-style post-visibility-button mt2">
                         <span class="custom-dropdown-item-text fs14 dark bold block">Password protected</span>
                         <span class="fs11 block">Protected with a password you choose. Only those with the password can view this post.</span>
-                        <input type="hidden" class="custom-dropdown-item-value" value="private" autocomplete="off">
+                        <input type="hidden" class="custom-dropdown-item-value visibility" value="password-protected" autocomplete="off">
+                        <div id="post-password-container" class="mt4 none">
+                            <span class="block bold mb2 fs12 light-gray">Password</span>
+                            <input type="text" class="styled-input" id="post-password-input" autocomplete="off" placeholder="Use a secure password">
+                        </div>
                     </div>
                 </div>
                 
-            </div>
-        </div>
-        <div class="simple-line-separator my4"></div>
-        <!-- post author -->
-        <div class="mt4 align-center">
-            <p class="fs12 no-margin dark mr4">Author :</p>
-            <div class="custom-dropdown-box">
-                <input type="hidden" class="selected-value" id="post-visibility" value="draft" autocomplete="off">
-                <div class="custom-dropdown-button custom-dropdown-button-style">
-                    <span class="fs11 bold dark custom-dropdown-button-text">Hostname47</span>
-                    <svg class="arrow size6 ml4 dark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02">
-                        <path d="M13.4,1.43l9.35,11a4,4,0,0,1,0,5.18l-9.35,11a4,4,0,1,1-6.1-5.18L14.46,15,7.3,6.61a4,4,0,0,1,6.1-5.18Z"/>
-                    </svg>
-                </div>
-                <div class="custom-dropdown-items-container custom-dropdown-items-container-style" style="max-width: 166px;">
-                    <div class="custom-dropdown-item custom-dropdown-item-style custom-dropdown-item-selected custom-dropdown-item-selected-style">
-                        <span class="custom-dropdown-item-text fs14 dark bold block">Hostname47</span>
-                        <input type="hidden" class="custom-dropdown-item-value" value="Hostname47" autocomplete="off">
-                    </div>
-                    <div class="custom-dropdown-item custom-dropdown-item-style mt2">
-                        <span class="custom-dropdown-item-text fs14 dark bold block">Mazen666</span>
-                        <input type="hidden" class="custom-dropdown-item-value" value="Hostname47" autocomplete="off">
-                    </div>
-                </div>
             </div>
         </div>
     </div>
