@@ -8,6 +8,7 @@ use App\Models\Category;
 class CategoriesSection extends Component
 {
     public $root_categories;
+    public $post;
     
     public function __construct($post=null)
     {
