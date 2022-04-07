@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\{Category,Tags};
+use App\Models\{Category,Tag, Metadata};
 use Carbon\Carbon;
 
 class Post extends Model
@@ -54,5 +54,9 @@ class Post extends Model
 
     public function has_featured_image() {
         return isset($this->metadata['featured_image']);
+    }
+
+    public function getFeaturedImageAttribute() {
+        return asset('media-library/'.Metadata::where('id', $this->metadata['featured_image'])->first()->data['file']);
     }
 }

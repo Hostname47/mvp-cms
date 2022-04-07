@@ -114,7 +114,7 @@
                                 @endif
                             </div>
                             <div class="align-center mt4 post-actions-links-container">
-                                <a href="" class="fs12 dark-blue no-underline">
+                                <a href="{{ route('edit.post', ['post'=>$post->id]) }}" class="fs12 dark-blue no-underline">
                                     <span>Edit</span>
                                 </a>
                                 <span class="fs11 mx8 dark">〡</span>

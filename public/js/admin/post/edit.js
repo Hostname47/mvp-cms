@@ -186,7 +186,7 @@ $('.update-post').on('click', function() {
     let spinner = button.find('.spinner');
     let buttonicon = button.find('.icon-above-spinner');
 	
-    button.addClass('dark-bs-disabled');
+    button.addClass('white-bs-disabled');
     buttonicon.addClass('none');
     spinner.removeClass('opacity0');
     spinner.addClass('inf-rotate');
@@ -222,7 +222,7 @@ $('.update-post').on('click', function() {
                 error = errors[Object.keys(errors)[0]][0];
             }
 
-            button.removeClass('dark-bs-disabled');
+            button.removeClass('white-bs-disabled');
             buttonicon.removeClass('none');
             spinner.addClass('opacity0');
             spinner.removeClass('inf-rotate');

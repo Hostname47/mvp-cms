@@ -249,4 +249,22 @@ class PostTest extends TestCase
             ->assertRedirect()
             ->assertSessionHasErrors(['post_id']); // post_id does not exist
     }
+
+    /** @test */
+    public function update_post_status() {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $this->post('/admin/posts', [
+            'title' => 'foo','title_meta' => 'foo','slug' => 'foo','summary' => 'foo','content' => 'foo',
+        ]);
+        $post = Post::first();
+        $this->assertTrue($post->status == 'awaiting-review');
+        $this->patch('/admin/posts/status', [
+            'post_id'=>$post->id,
+            'status'=>'published'
+        ]);
+        $post->refresh();
+        $this->assertTrue($post->status == 'published');
+    }
 }

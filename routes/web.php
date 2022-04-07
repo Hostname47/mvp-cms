@@ -7,7 +7,7 @@ use App\Http\Controllers\Admin\{AdminSearchController};
 
 Route::get('/test', function() {
     $post = \App\Models\Post::find(39);
-    dd($post->has_featured_image());
+    dd($post->featured_image);
 });
 
 Route::get('/', [IndexController::class, 'index']);
@@ -38,6 +38,7 @@ Route::patch('/admin/posts', [PostController::class, 'update']);
 Route::get('/admin/posts/search', [AdminSearchController::class, 'posts_search']);
 Route::get('/admin/posts/data', [PostController::class, 'post_data']); // Used to restore post default content and data in edit page
 Route::get('/admin/posts/preview', [PostController::class, 'preview'])->name('preview.post');
+Route::patch('/admin/posts/status', [PostController::class, 'update_status']);
 
 Route::get('/{category:slug}/{post:slug}', [PostController::class, 'view'])->name('view.post');
 

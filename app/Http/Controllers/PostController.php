@@ -108,7 +108,7 @@ class PostController extends Controller
             $flash = 'Post has been created successfully. <a href="' . route('edit.post', ['post'=>$post->id]) . '" class="link-style">click here</a> to manage the post';
 
         Session::flash('message', $flash);
-        
+
         return [
             'id'=>$post->id,
             'editlink' => route('edit.post', ['post'=>$post->id]),
@@ -150,6 +150,16 @@ class PostController extends Controller
         $post->update($postdata);
 
         Session::flash('message', 'Post has been <strong>updated</strong> successfully. <a href="" class="link-style">click here</a> to view the post');
+    }
+
+    public function update_status(Request $request) {
+        $data = $request->validate([
+            'post_id'=>'required|exists:posts,id',
+            'status'=>['required', Rule::in(['draft', 'published', 'awaiting-review'])],
+        ]);
+        
+        $post = Post::withoutGlobalScopes()->find($data['post_id']);
+        $post->update(['status'=>$data['status']]);
     }
 
     public function post_data(Request $request) {

@@ -7,14 +7,13 @@
 @endpush
 
 @section('content')
-    @if($post->has_featured_image())
-    <section>
-        <img src="{{ $post->featured_image }}" id="post-featured-image" alt="">
-    </section> <!-- featured image -->
-    @else
-    @endif
-    <div class="full-center">
-        <article id="post-box">
+<div class="full-center">
+    <article id="post-box">
+            @if($post->has_featured_image())
+            <section>
+                <img src="{{ $post->featured_image }}" id="post-featured-image" alt="">
+            </section> <!-- featured image -->
+            @endif
             {!! $post->content !!}
         </article>
     </div>
