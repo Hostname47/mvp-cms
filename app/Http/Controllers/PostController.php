@@ -76,7 +76,7 @@ class PostController extends Controller
         // Attach tags to the post
         if(isset($tags['tags'])) {
             foreach($tags['tags'] as $tag) {
-                $post->tags()->attach(Tag::firstOrCreate(['title'=>$tag], [
+                $post->tags()->syncWithoutDetaching(Tag::firstOrCreate(['title'=>$tag], [
                     'title' => $tag,
                     'slug' => Str::slug($tag, '-'),
                     'description' => '--'

@@ -10,6 +10,14 @@
         <label class="fs13 dark bold" for="post-tags-input">Enter post tags</label>
         <p class="no-margin fs12 light-gray mt2">(separate tags by pressing enter)</p>
         <div class="post-tags-wrapper mt4">
+            @if($post)
+                @foreach($post->tags as $tag)
+                <div class="post-tag-item align-center">
+                    <span class="fs13 tag-text">{{ $tag->title }}</span>
+                    <span class="unselectable post-tag-remove remove-parent">✖</span>
+                </div>
+                @endforeach
+            @endif
             <input type="text" id="post-tags-input" class="post-tags-input" autocomplete="off">
         </div>
         <div class="post-tag-item-skeleton post-tag-item align-center none">
