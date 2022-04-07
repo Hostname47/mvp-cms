@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Hash;
 use App\Models\{Post,Category,Tag};
 
 class PostController extends Controller
@@ -95,7 +94,8 @@ class PostController extends Controller
         // Create a password for the post if admin specify password locked visibility
         if(isset($password['password'])) {
             $metadata = $post->metadata;
-            $metadata['password'] = Hash::make($password['password']);
+            // $metadata['password'] = Hash::make($password['password']);
+            $metadata['password'] = $password['password'];
             $post->update(['metadata'=>$metadata]);
         }
 
@@ -157,9 +157,11 @@ class PostController extends Controller
             'post_id'=>'required|exists:posts,id',
             'status'=>['required', Rule::in(['draft', 'published', 'awaiting-review'])],
         ]);
-        
+
         $post = Post::withoutGlobalScopes()->find($data['post_id']);
         $post->update(['status'=>$data['status']]);
+
+        Session::flash('message', 'Post status has been updated successfully.');
     }
 
     public function post_data(Request $request) {

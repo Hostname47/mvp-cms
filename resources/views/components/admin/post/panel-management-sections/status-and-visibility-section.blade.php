@@ -11,7 +11,7 @@
         <div class="align-center my4">
             <span class="fs12 bold dark mr4">Current post status :</span>
             @if($post)
-            <span class="fs12 bold mr4 @if($post->status=='published') green @else dark @endif">{{ $post->status }}</span>
+            <span class="fs12 bold mr4 @if($post->status=='published') green @else dark @endif">{{ ucfirst($post->status) }}</span>
             @else
             <em class="fs12 light-gray">Not saved yet</em>
             @endif
@@ -21,31 +21,34 @@
         <div class="align-center visibility-box my4">
             <span class="fs12 bold dark mr4">Visibility :</span>
             <div class="custom-dropdown-box">
-                <input type="hidden" class="selected-value" id="post-visibility" value="public" autocomplete="off">
+                @php
+                    $visibility= ($post) ? $post->visibility : 'public';
+                @endphp
+                <input type="hidden" class="selected-value" id="post-visibility" value="@if($post){{ $post->visibility }}@else{{ 'public' }}@endif" autocomplete="off">
                 <div class="custom-dropdown-button custom-dropdown-button-style">
-                    <span class="fs11 bold dark custom-dropdown-button-text">Public</span>
+                    <span class="fs11 bold dark custom-dropdown-button-text">{{ ucfirst($visibility) }}</span>
                     <svg class="arrow size6 ml4 dark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02">
                         <path d="M13.4,1.43l9.35,11a4,4,0,0,1,0,5.18l-9.35,11a4,4,0,1,1-6.1-5.18L14.46,15,7.3,6.61a4,4,0,0,1,6.1-5.18Z"/>
                     </svg>
                 </div>
                 <div class="custom-dropdown-items-container custom-dropdown-items-container-style" style="max-width: 166px;">
-                    <div class="custom-dropdown-item custom-dropdown-item-style post-visibility-button custom-dropdown-item-selected custom-dropdown-item-selected-style">
+                    <div class="custom-dropdown-item custom-dropdown-item-style post-visibility-button @if($visibility=='public') custom-dropdown-item-selected custom-dropdown-item-selected-style @endif">
                         <span class="custom-dropdown-item-text fs14 dark bold block">Public</span>
                         <span class="fs11 block">Post will be public.</span>
                         <input type="hidden" class="custom-dropdown-item-value visibility" value="public" autocomplete="off">
                     </div>
-                    <div class="custom-dropdown-item custom-dropdown-item-style post-visibility-button mt2">
+                    <div class="custom-dropdown-item custom-dropdown-item-style post-visibility-button mt2 @if($visibility=='private') custom-dropdown-item-selected custom-dropdown-item-selected-style @endif">
                         <span class="custom-dropdown-item-text fs14 dark bold block">Private</span>
                         <span class="fs11 block">post will be hidden and private.</span>
                         <input type="hidden" class="custom-dropdown-item-value visibility" value="private" autocomplete="off">
                     </div>
-                    <div class="custom-dropdown-item custom-dropdown-item-style post-visibility-button mt2">
+                    <div class="custom-dropdown-item custom-dropdown-item-style post-visibility-button mt2 @if($visibility=='password-protected') custom-dropdown-item-selected custom-dropdown-item-selected-style @endif">
                         <span class="custom-dropdown-item-text fs14 dark bold block">Password protected</span>
                         <span class="fs11 block">Protected with a password you choose. Only those with the password can view this post.</span>
                         <input type="hidden" class="custom-dropdown-item-value visibility" value="password-protected" autocomplete="off">
-                        <div id="post-password-container" class="mt4 none">
+                        <div id="post-password-container" class="mt4 @if($visibility!='password-protected') none @endif">
                             <span class="block bold mb2 fs12 light-gray">Password</span>
-                            <input type="text" class="styled-input" id="post-password-input" autocomplete="off" placeholder="Use a secure password">
+                            <input type="text" class="styled-input" id="post-password-input" autocomplete="off" placeholder="Use a secure password" @if($visibility=='password-protected') value="{{ $post->metadata['password'] }}" @endif>
                         </div>
                     </div>
                 </div>

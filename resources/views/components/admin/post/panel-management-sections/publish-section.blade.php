@@ -7,7 +7,7 @@
         <div class="align-center mb8">
             <span class="fs12 bold dark mr4">Status :</span>
             @if($post)
-            <span class="fs12 bold mr4 @if($post->status=='published') green @else dark @endif">{{ $post->status }}</span>
+            <span class="fs12 bold mr4 @if($post->status=='published') green @else dark @endif">{{ ucfirst($post->status) }}</span>
             @else
             <em class="fs12 light-gray">Not saved yet</em>
             @endif
