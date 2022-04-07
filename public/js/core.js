@@ -253,19 +253,31 @@ function handle_image_center_based_on_higher_dim(image) {
             image.height('100%');
     })
 }
+$('.fill-and-center-image-on-parent').each(function() { handle_image_center_fill($(this)); })
 function handle_image_center_fill(image) {
-    load_image(image.attr('src'), function() {
-        image.width('100%');
-        image.height('fit-content');
-        if(image.height() < image.parent().height()) {
-            image.height('100%');
-            image.width('fit-content');
-        }
-    })
+    image.on('load', function(){
+        if(this.naturalWidth > this.naturalHeight)
+            image.css('width', '100%');
+        else
+            image.css('height', '100%');
+
+        /**
+         * Here we have to check if the height after qsetting width to 100% is bigger than
+         * the container or not; If so then ok; otherwise, we have to set height to 100% and width to auto
+         * to make image fill all the parent area (parent should have flex centering styles).
+         * I'll go back to it later to handle image loading and dimensions processing
+         */
+        console.log($(this).width())
+    });
 }
 function load_image(src, callback) {
     let image = new Image();
-    image.onload = callback;
+    image.onload = callback(image);
+    image.src = src;
+}
+function get_image_dimensions(src) {
+    let image = new Image();
+    image.onload = callback(image);
     image.src = src;
 }
 
