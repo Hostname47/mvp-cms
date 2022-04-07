@@ -1,32 +1,32 @@
 let post_editor;
 $(document).ready(function() {
-    if($('#post-content').length) {
-        CKEditor
-            .create($('#post-content')[0], {
-                toolbar: {
-                    items: [
-                        'heading',
-                        'fontfamily', 'fontsize', 'fontColor', 'fontBackgroundColor',
-                        'bold', 'italic', '|',
-                        'link', '|',
-                        'outdent', 'indent', '|',
-                        'bulletedList', 'numberedList',
-                        'insertTable', '|',
-                        'blockQuote', 'code', 'codeBlock', '|',
-                        'undo', 'redo',
-                    ],
-                    shouldNotGroupWhenFull: true,
-                    pasteFilter: null,
-                    fullPage: true
-                }
-            })
-            .then(editor => {
-                post_editor = editor;
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    }
+    // if($('#post-content').length) {
+    //     CKEditor
+    //         .create($('#post-content')[0], {
+    //             toolbar: {
+    //                 items: [
+    //                     'heading',
+    //                     'fontfamily', 'fontsize', 'fontColor', 'fontBackgroundColor',
+    //                     'bold', 'italic', '|',
+    //                     'link', '|',
+    //                     'outdent', 'indent', '|',
+    //                     'bulletedList', 'numberedList',
+    //                     'insertTable', '|',
+    //                     'blockQuote', 'code', 'codeBlock', '|',
+    //                     'undo', 'redo',
+    //                 ],
+    //                 shouldNotGroupWhenFull: true,
+    //                 pasteFilter: null,
+    //                 fullPage: true
+    //             }
+    //         })
+    //         .then(editor => {
+    //             post_editor = editor;
+    //         })
+    //         .catch(error => {
+    //             console.error(error);
+    //         });
+    // }
 });
 
 $('#toggle-meta-and-slug').on('click', function () {
