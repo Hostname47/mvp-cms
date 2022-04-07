@@ -7,7 +7,8 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('js/ckeditor.js') }}" defer></script>
+<script src="{{ asset('js/ckeditor.js') }}" type="text/javascript" defer></script>
+<script src="{{ asset('js/admin/media.js') }}" type="text/javascript" defer></script>
 <script src="{{ asset('js/admin/post/manage.js') }}" type="text/javascript" defer></script>
 <script src="{{ asset('js/admin/post/edit.js') }}" type="text/javascript" defer></script>
 @endpush
@@ -15,9 +16,33 @@
 @push('styles')
 <link href="{{ asset('css/admin/post/admin-post.css') }}" rel="stylesheet">
 <link href="{{ asset('css/admin/post/edit.css') }}" rel="stylesheet">
+<link href="{{ asset('css/admin/media.css') }}" rel="stylesheet">
 @endpush
 
 @section('content')
+<!-- delete media viewer -->
+<x-media-library.delete-media-viewer />
+<!-- set featured image viewer (media library) -->
+<x-media-library.library>
+    <x-slot name="id">set-featured-image-viewer</x-slot>
+    <x-slot name="title">Featured image</x-slot>
+    <x-slot name="selection_type">single</x-slot>
+    @if($post && $post->has_featured_image())
+    <x-slot name="selected_media">{{ $post->metadata['featured_image'] }}</x-slot>
+    @endif
+    <x-slot name="target_button">
+        <div class="typical-button-style dark-bs dark-bs-disabled align-center move-to-right media-viewer-target-action-button set-featured-image prevent-action" style="padding: 6px 12px;">
+            <div class="relative size14 mr4">
+                <svg class="size14 icon-above-spinner" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M58.55,251.39c-9.94,0-15.72-5.59-14.54-14.83,2.77-21.61,6-43.16,9.09-64.73.47-3.3,2.39-5.94,4.78-8.32q40.7-40.6,81.26-81.35c2.57-2.58,3.89-2.93,6.66-.13q33.54,33.93,67.46,67.48c2.68,2.66,2.69,4,0,6.66q-40.81,40.49-81.33,81.27c-3.74,3.76-8.24,4.81-13.18,5.5-18.75,2.6-37.48,5.38-56.22,8.08C61.12,251.22,59.69,251.29,58.55,251.39ZM246.34,89.65c-7.19-36.3-51.11-53.73-81.14-32.19-2,1.43-4.84,2.3-1.42,5.68q34.36,34,68.35,68.34c2.69,2.72,3.75,1.61,5.39-.68,6.47-9.06,9.79-19.13,10.1-32.08C247.74,96.86,247.05,93.25,246.34,89.65ZM142.6,34.57c8.12-.06,13.3-5.32,13.34-12.81s-5.25-13-13.16-13.07c-38.95-.12-77.9-.07-116.84-.06a12.77,12.77,0,0,0-12,7.09C9.22,24.6,15.6,34.48,26.37,34.58c19.37.18,38.74.05,58.11.05S123.23,34.74,142.6,34.57ZM102.41,87c8.81-.07,14.4-5.3,14.35-13.17-.06-7.69-5.36-12.76-14-12.79q-37.92-.16-75.83,0c-8.84,0-14.56,5.36-14.48,13.06s6,12.86,14.73,12.91c12.64.07,25.28,0,37.92,0C77.54,87,90,87.05,102.41,87ZM51.69,139.25c7.56-.53,12.85-5.92,13-12.81.18-7.06-5.31-13-13.09-13.33-8.73-.36-17.5-.36-26.23,0-7.64.32-12.8,5.78-12.94,12.77-.15,7.24,5.11,12.81,13,13.36,4.25.31,8.53.06,12.81.06C42.75,139.31,47.24,139.57,51.69,139.25Z"/></svg>
+                <svg class="spinner size14 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
+                    <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                    <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                </svg>
+            </div>
+            <span class="bold fs12 unselectable" style="margin-top: 1px;">Set featured image</span>
+        </div>
+    </x-slot>
+</x-media-library.library>
 <main class="flex flex-column">
     <div class="admin-top-page-box">
         <div class="align-center">

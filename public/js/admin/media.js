@@ -48,15 +48,26 @@ $('.open-media-library-section').on('click', function () {
                      * If the library has media, then we do the following actions:
                      *  1. Remove none from media container inside library section to display the result
                      *  2. Then take the components payload from request and put it to media items container
-                     *  3. Then we loop through madias and handle their events
+                     *  3. Then we loop through madias and handle their events (as well as selection - see doc below)
                      */
                     let media_container = gmbox.find('.media-library-media-container');
                     let media_items_container = gmbox.find('.media-library-items-container');
                     media_container.removeClass('none');
                     media_items_container.html(response.payload);
                     // Handling events
+                    let selected_media = gmbox.find('.selected-media').val().split(',');
                     media_container.find('.media-library-item-container').each(function () {
                         handle_library_media_event($(this));
+                        /**
+                         * Along with event handling, we have a hidden input: selected-media that holds
+                         * media that are selected already in case it exists; If that hidden input is populated
+                         * one or more media (ids separated with ,) then we need to check if the current
+                         * media is included within it and then trigger click event to select it
+                         */
+                        if(selected_media.length) {
+                            if(selected_media.indexOf($(this).find('.metadata-id').val()) !== -1)
+                                $(this).trigger('click')
+                        }
                     });
                 }
             },

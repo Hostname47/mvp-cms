@@ -7,7 +7,7 @@
 @endsection
 
 @push('scripts')
-<script type="module" src="{{ asset('js/ckeditor.js') }}" defer></script>
+<script src="{{ asset('js/ckeditor.js') }}" type="text/javascript" defer></script>
 <script src="{{ asset('js/admin/media.js') }}" type="text/javascript" defer></script>
 <script src="{{ asset('js/admin/post/manage.js') }}" type="text/javascript" defer></script>
 <script src="{{ asset('js/admin/post/create.js') }}" type="text/javascript" defer></script>

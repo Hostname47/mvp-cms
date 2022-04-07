@@ -73,6 +73,7 @@
                         <!-- the following viewer is the main container that encapsulate media (populated dynamically) -->
                         <div class="media-library-media-container none">
                             <input type="hidden" class="selection-type" value="{{ $selection_type }}" autocomplete="off">
+                            <input type="hidden" class="selected-media" @isset($selected_media) value="{{ $selected_media }}" @endisset autocomplete="off">
                             <div class="media-library-items-container">
                                 
                             </div>
