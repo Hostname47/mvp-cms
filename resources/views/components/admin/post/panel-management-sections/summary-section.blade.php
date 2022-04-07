@@ -17,6 +17,6 @@
             </div>
         </div>
         <p class="fs12 light-gray no-margin mb4">Enter post summary.</p>
-        <textarea id="post-summary" class="styled-input no-textarea-x-resize" style="height: 115px; max-height: 280px;" placeholder="Summary is used in blog posts cards and search results"></textarea>
+        <textarea id="post-summary" class="styled-input no-textarea-x-resize" style="height: 115px; max-height: 280px;" placeholder="Summary is used in blog posts cards and search results">@if($post){{ $post->summary }}@endif</textarea>
     </div>
 </div>

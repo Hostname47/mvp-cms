@@ -11,7 +11,7 @@
             <p class="fs13 dark bold flex no-margin" for="post-summary">Comments</p>
             <p class="fs11 mb4 mt2 light-gray">Controll whether you want to include and let users comment on this blog or not.</p>
             <label class="fs13 align-center" for="allow-comments">
-                <input type="checkbox" id="allow-comments" class="mr8" checked="checked" autocomplete="off">
+                <input type="checkbox" id="allow-comments" class="mr8" @if(!$post OR ($post && $post->allow_comments==1))checked="checked"@endif autocomplete="off">
                 <span class="fs13 flex unselectable">Allow users to comment</span>
             </label>
         </div>
@@ -19,7 +19,7 @@
             <p class="fs13 dark bold flex no-margin mb2" for="post-summary">Reactions</p>
             <p class="fs11 mt2 mb4 light-gray">Specify whether you want to allow users react on your post or not.</p>
             <label class="fs13 align-center" for="allow-reactions">
-                <input type="checkbox" id="allow-reactions" class="mr8" checked="checked" autocomplete="off">
+                <input type="checkbox" id="allow-reactions" class="mr8" @if(!$post OR ($post && $post->allow_reactions==1))checked="checked"@endif autocomplete="off">
                 <span class="fs13 flex unselectable">Allow users reaction</span>
             </label>
         </div>
