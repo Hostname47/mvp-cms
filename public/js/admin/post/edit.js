@@ -160,9 +160,12 @@ $('.update-post').on('click', function() {
     let meta_title = $('#post-meta-title');
     let slug = $('#post-slug');
     let content_element = $('#post-content');
-    
     post_editor.data.processor = post_editor.data.htmlProcessor;
     let content = post_editor.getData();
+
+    let button = $(this);
+    let spinner = button.find('.spinner');
+    let buttonicon = button.find('.icon-above-spinner');
 
     $('.error-container').addClass('none');
     $('.error-asterisk').css('display', 'none');
@@ -180,31 +183,53 @@ $('.update-post').on('click', function() {
         return;
     };
     if (!post_input_validate(content != '', content_element, 'Content field is required.')) return;
+	
+	let categories = [];
+    $('.post-category-id').each(function() {
+        if($(this).is(':checked'))
+            categories.push($(this).val());
+    });
 
-	
-    let button = $(this);
-    let spinner = button.find('.spinner');
-    let buttonicon = button.find('.icon-above-spinner');
-	
-    button.addClass('white-bs-disabled');
-    buttonicon.addClass('none');
-    spinner.removeClass('opacity0');
-    spinner.addClass('inf-rotate');
-	
+    let tags = [];
+    $('.post-tags-wrapper .tag-text').each(function() {
+        tags.push($(this).text());
+    });
+
     let data = {
 		post_id: button.find('.post-id').val(),
         title: title.val(),
         title_meta: meta_title.val(),
         slug: slug.val(),
         content: content,
-        status: $('#post-status').val(),
+		visibility: $('#post-visibility').val(),
+        allow_comments: $('#allow-comments').is(':checked') ? 1 : 0,
         allow_reactions: $('#allow-reactions').is(':checked') ? 1 : 0,
-        allow_comments: $('#allow-reactions').is(':checked') ? 1 : 0,
-        summary: $('#post-summary').val(),
+		categories: categories,
+		tags: tags
     };
+
+    if($('#post-featured-image-metadata-id').val() != '')
+        data.featured_image = $('#post-featured-image-metadata-id').val();
+    
+    if($('#post-summary').val() != '')
+        data.summary = $('#post-summary').val();
+
+    if($('#post-visibility').val() == 'password-protected') {
+        if($('#post-password-input').val() == '') {
+            print_top_message('password is required in case the post visibility is password protected', 'error');
+            return;
+        }
+        else
+            data.password = $('#post-password-input').val();
+    }
 
 	if (!update_post_lock) return;
     update_post_lock = false;
+	
+    button.addClass('white-bs-disabled');
+    buttonicon.addClass('none');
+    spinner.removeClass('opacity0');
+    spinner.addClass('inf-rotate');
 
 	$.ajax({
 		type: 'patch',
@@ -213,7 +238,7 @@ $('.update-post').on('click', function() {
 		success: function() {
 			location.reload();
 		},
-		error: function() {
+		error: function(response) {
 			update_post_lock = true;
             let errorObject = JSON.parse(response.responseText);
             let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';

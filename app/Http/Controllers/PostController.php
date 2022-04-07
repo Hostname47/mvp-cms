@@ -59,7 +59,7 @@ class PostController extends Controller
         $featured_image = $request->validate([
             'featured_image'=>'sometimes|exists:metadata,id'
         ]);
-        // Checking if post is password locked
+        // Checking if post is password protected
         $password = $request->validate([
             'password'=>'required_if:visibility,password-protected|min:8|max:450',
         ]);
@@ -128,16 +128,27 @@ class PostController extends Controller
 
     public function update(Request $request) {
         $postdata = $request->validate([
-            'post_id'=>'required|exists:posts,id',
             'title'=>'required|max:1200',
             'title_meta'=>'required|max:1200',
             'slug'=>'required|max:1200',
             'summary'=>'sometimes|max:2000',
-            'status'=>['sometimes', Rule::in(['draft', 'published', 'awaiting-review'])],
-            'visibility'=>['sometimes', Rule::in(['public', 'private', 'password-locked'])],
+            'visibility'=>['sometimes', Rule::in(['public', 'private', 'password-protected'])],
             'content'=>'required|max:50000',
             'allow_reactions'=>['sometimes', Rule::in([0, 1])],
             'allow_comments'=>['sometimes', Rule::in([0, 1])],
+        ]);
+
+        // Get the post
+        $post_id = $request->validate(['post_id'=>'required|exists:posts,id'])['post_id'];
+        $post = Post::withoutGlobalScopes()->find($post_id);
+
+        /**
+         * Here in update, we check if featured_image is set by admin; If so then we update
+         * its value to the value specified by admin. In the other hand if the value is missed
+         * we need to remove featured_image from the post metadata
+         */
+        $featured_image = $request->validate([
+            'featured_image'=>'sometimes|exists:metadata,id'
         ]);
 
         $categories = $request->validate([
@@ -145,9 +156,56 @@ class PostController extends Controller
             'categories.*'=>'exists:categories,id',
         ]);
 
-        $post = Post::withoutGlobalScopes()->find($postdata['post_id']);
-        unset($postdata['post_id']);
+        $tags = $request->validate([
+            'tags'=>'sometimes|max:36',
+            'tags.*'=>'min:1|max:256',
+        ]);
+
+        // Checking if post is password locked
+        $password = $request->validate([
+            'password'=>'required_if:visibility,password-protected|min:8|max:450',
+        ]);
+
+        // Update post content and other rlated inputs
         $post->update($postdata);
+
+        // Featured image
+        $metadata = $post->metadata;
+        if(isset($featured_image['featured_image']))
+            $metadata['featured_image'] = $featured_image['featured_image'];
+        else
+            unset($metadata['featured_image']);
+        $post->update(['metadata'=>$metadata]);
+
+
+        // Check if visibility is password protected to save the password
+        if(isset($password['password'])) {
+            $metadata = $post->metadata;
+            // $metadata['password'] = Hash::make($password['password']);
+            $metadata['password'] = $password['password'];
+            $post->update(['metadata'=>$metadata]);
+        }
+
+        // Update categories by syncing post categories with the new selected ones
+        if(isset($categories['categories'])) {
+            $post->categories()->sync($categories['categories']);
+        }
+        
+        /**
+         * Syncing tags of post with the new ones
+         *  1. first detach all tags
+         *  2. then attach new selected ones
+         */
+        if(isset($tags['tags'])) {
+            $post->tags()->sync([]); // 1
+            foreach($tags['tags'] as $tag) { // 2
+                $post->tags()->syncWithoutDetaching(Tag::firstOrCreate(['title'=>$tag], [
+                    'title' => $tag,
+                    'slug' => Str::slug($tag, '-'),
+                    'description' => '--'
+                ])->id);
+            }
+        }
 
         Session::flash('message', 'Post has been <strong>updated</strong> successfully. <a href="" class="link-style">click here</a> to view the post');
     }
