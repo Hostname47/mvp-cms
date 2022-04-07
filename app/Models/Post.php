@@ -51,4 +51,8 @@ class Post extends Model
     public function getPublishDateAttribute() {
         return (new Carbon($this->published_at))->isoFormat("dddd D MMM YYYY - H:mm A");
     }
+
+    public function has_featured_image() {
+        return isset($this->metadata['featured_image']);
+    }
 }

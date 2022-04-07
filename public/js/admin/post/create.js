@@ -46,26 +46,35 @@ $('.create-post-button').on('click', function () {
     let meta_title = $('#post-meta-title');
     let slug = $('#post-slug');
     let content_element = $('#post-content');
+    let visibility = $('#post-visibility');
     
     post_editor.data.processor = post_editor.data.htmlProcessor;
     let content = post_editor.getData();
 
-    $('.error-container').addClass('none');
+    $('.post-top-error-container').addClass('none');
     $('.error-asterisk').css('display', 'none');
 
-    // Validating neccessary inputs
+    // validate post title
     if (!post_input_validate(title.val() != '', title, 'Title field is required.')) return;
+    // validate post meta title
     if (!post_input_validate(meta_title.val() != '', meta_title, 'Meta title field is required.')) {
         if ($('#meta-and-slug-section').hasClass('none'))
             $('#toggle-meta-and-slug').trigger('click');
         return;
     };
+    // validate post slug
     if (!post_input_validate(slug.val() != '', slug, 'Slug field is required.')) {
         if ($('#meta-and-slug-section').hasClass('none'))
             $('#toggle-meta-and-slug').trigger('click');
         return;
     };
+    // validate post content
     if (!post_input_validate(content != '', content_element, 'Content field is required.')) return;
+    // validate post visibility in case of visibility is password protected
+    if(visibility.val() == 'password-protected' && $('#post-password-input').val() == '') {
+        print_top_message('password is required in case of password protected visibility posts', 'error');
+        return;
+    }
 
     let categories = [];
     $('.post-category-id').each(function() {
@@ -83,8 +92,8 @@ $('.create-post-button').on('click', function () {
         title_meta: meta_title.val(),
         slug: slug.val(),
         content: content,
-        status: $('#post-status').val(),
-        visibility: $('#post-visibility').val(),
+        status: $(this).find('.status').val(),
+        visibility: visibility.val(),
         allow_reactions: $('#allow-reactions').is(':checked') ? 1 : 0,
         allow_comments: $('#allow-reactions').is(':checked') ? 1 : 0,
         categories: categories,
@@ -97,14 +106,20 @@ $('.create-post-button').on('click', function () {
     if($('#post-summary').val() != '')
         data.summary = $('#post-summary').val();
 
-    if($('#post-visibility').val() == 'password-protected')
-        data.password = $('#post-password-input').val();
+    if($('#post-visibility').val() == 'password-protected') {
+        if($('#post-password-input').val() == '') {
+            print_top_message('password is required in case of password protected visibility posts', 'error');
+            return;
+        }
+        else
+            data.password = $('#post-password-input').val();
+    }
 
     let button = $(this);
     let spinner = button.find('.spinner');
     let buttonicon = button.find('.icon-above-spinner');
 
-    button.addClass('dark-bs-disabled');
+    button.hasClass('dark-bs') ? button.addClass('dark-bs-disabled') : button.addClass('white-bs-disabled');
     buttonicon.addClass('none');
     spinner.removeClass('opacity0');
     spinner.addClass('inf-rotate');
@@ -117,7 +132,16 @@ $('.create-post-button').on('click', function () {
         url: '/admin/posts',
         data: data,
         success: function(response) {
-            location.reload();
+            if(button.hasClass('save-as-draft'))
+                window.location.href = response.editlink;
+            else if(button.hasClass('preview-post')) {
+                // Open post in preview page
+                window.open(response.previewlink, '_blank').focus();
+                // Then redirect to edit link to manage
+                window.location.href = response.editlink;
+            }
+            else
+                window.location.href = response.allpostslink;
         },
         error: function (response) {
             create_post_lock = true;
@@ -128,7 +152,7 @@ $('.create-post-button').on('click', function () {
                 error = errors[Object.keys(errors)[0]][0];
             }
 
-            button.removeClass('dark-bs-disabled');
+            button.hasClass('dark-bs') ? button.removeClass('dark-bs-disabled') : button.removeClass('white-bs-disabled');
             buttonicon.removeClass('none');
             spinner.addClass('opacity0');
             spinner.removeClass('inf-rotate');

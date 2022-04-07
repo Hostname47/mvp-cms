@@ -8,35 +8,18 @@
     </div>
     <div class="post-management-panel-section-content toggle-container none">
         <!-- post status -->
-        <div class="align-center mb4">
-            <p class="fs12 no-margin dark mr4">Status :</p>
-            <div class="custom-dropdown-box" style="margin-left: 9px">
-                <input type="hidden" class="selected-value" id="post-status" value="draft" autocomplete="off">
-                <div class="custom-dropdown-button custom-dropdown-button-style">
-                    <span class="fs11 bold dark custom-dropdown-button-text">Select status</span>
-                    <svg class="arrow size6 ml4 dark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02">
-                        <path d="M13.4,1.43l9.35,11a4,4,0,0,1,0,5.18l-9.35,11a4,4,0,1,1-6.1-5.18L14.46,15,7.3,6.61a4,4,0,0,1,6.1-5.18Z"/>
-                    </svg>
-                </div>
-                <div class="custom-dropdown-items-container custom-dropdown-items-container-style" style="max-width: 166px;">
-                    <div class="custom-dropdown-item custom-dropdown-item-style">
-                        <span class="custom-dropdown-item-text fs14 dark bold block">Awaiting Review</span>
-                        <span class="fs12 block">post will not be available until an admin review it again and publish it.</span>
-                        <input type="hidden" class="custom-dropdown-item-value" value="awaiting-review" autocomplete="off">
-                    </div>
-                    <!-- selected one ->  custom-dropdown-item-selected custom-dropdown-item-selected-style -->
-                    <div class="custom-dropdown-item custom-dropdown-item-style mt2">
-                        <span class="custom-dropdown-item-text fs14 dark bold block">Draft</span>
-                        <span class="fs12 block">post will be saved as draft to be updated and published later.</span>
-                        <input type="hidden" class="custom-dropdown-item-value" value="draft" autocomplete="off">
-                    </div>
-                </div>
-            </div>
+        <div class="align-center my4">
+            <span class="fs12 bold dark mr4">Current post status :</span>
+            @if($post)
+            <span class="fs12 bold mr4 @if($post->status=='published') green @else dark @endif">{{ $post->status }}</span>
+            @else
+            <em class="fs12 light-gray">Not saved yet</em>
+            @endif
         </div>
         <div class="simple-line-separator my4"></div>
         <!-- post visibility -->
         <div class="align-center visibility-box my4">
-            <p class="fs12 no-margin dark mr4">Visibility :</p>
+            <span class="fs12 bold dark mr4">Visibility :</span>
             <div class="custom-dropdown-box">
                 <input type="hidden" class="selected-value" id="post-visibility" value="public" autocomplete="off">
                 <div class="custom-dropdown-button custom-dropdown-button-style">

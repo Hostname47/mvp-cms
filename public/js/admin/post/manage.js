@@ -62,7 +62,7 @@ $('#post-title').on('input', function () {
 });
 
 function post_input_validate(condition, input, message) {
-    let container = $('.error-container');
+    let container = $('.post-top-error-container');
     if(!condition) {
         $(window).scrollTop(0);
         container.find('.message-text').text(message);
@@ -70,7 +70,6 @@ function post_input_validate(condition, input, message) {
         let input_wrapper = input;
         while (!input_wrapper.hasClass('input-wrapper')) input_wrapper = input_wrapper.parent();
         input_wrapper.find('.error-asterisk').css('display', 'inline');
-        lock = true; // Release rade condition lock
 
         return false;
     }
@@ -135,3 +134,7 @@ $('.update-featured-image').on('click', function () {
     $('#set-featured-image-viewer').removeClass('none');
     $('#set-featured-image-viewer').find('.open-medias-library-section').trigger('click');
 });
+
+function validate_post_inputs() {
+    
+}

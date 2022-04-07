@@ -106,7 +106,7 @@
                 <div class="close-parent close-informative-message-style">✖</div>
             </div>
             @endif
-            <div class="informative-message-container error-container align-center relative my8 none">
+            <div class="informative-message-container post-top-error-container align-center relative my8 none">
                 <div class="informative-message-container-left-stripe imcls-red"></div>
                 <p class="no-margin fs13 red bold message-text">Title field is required.</p>
                 <div class="close-parent close-informative-message-style">✖</div>

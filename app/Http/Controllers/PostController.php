@@ -99,7 +99,22 @@ class PostController extends Controller
             $post->update(['metadata'=>$metadata]);
         }
 
-        Session::flash('message', 'Post has been created successfully. <a href="' . route('edit.post', ['post'=>$post->id]) . '" class="link-style">click here</a> to manage the post');
+        $flash="";
+        if($postdata['status'] == 'draft')
+            $flash = 'Post has been created <strong>as draft</strong> successfully.';
+        else if($postdata['status'] == 'awaiting-review')
+            $flash = 'Post has been created successfully under review. One of the admins will review its content before publish it.';
+        else
+            $flash = 'Post has been created successfully. <a href="' . route('edit.post', ['post'=>$post->id]) . '" class="link-style">click here</a> to manage the post';
+
+        Session::flash('message', $flash);
+        
+        return [
+            'id'=>$post->id,
+            'editlink' => route('edit.post', ['post'=>$post->id]),
+            'previewlink' => route('preview.post', ['post'=>$post->id]),
+            'allpostslink' => route('admin.all.posts')
+        ];
     }
 
     public function edit(Request $request) {
@@ -147,5 +162,14 @@ class PostController extends Controller
             'slug'=>$post->slug,
             'content'=>$post->content,
         ];
+    }
+
+    public function preview(Request $request) {
+        $post = null;
+        if($request->has('post'))
+            $post = Post::withoutGlobalScopes()->find($request->get('post'));
+
+        return view('admin.posts.preview')
+            ->with(compact('post'));
     }
 }
