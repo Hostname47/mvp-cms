@@ -161,6 +161,10 @@ class PostController extends Controller
     }
 
     public function update(Request $request) {
+        // Get the post
+        $post_id = $request->validate(['post_id'=>'required|exists:posts,id'])['post_id'];
+        $post = Post::withoutGlobalScopes()->find($post_id);
+
         $postdata = $request->validate([
             'title'=>'required|max:1200',
             'title_meta'=>'required|max:1200',
@@ -171,10 +175,6 @@ class PostController extends Controller
             'allow_reactions'=>['sometimes', Rule::in([0, 1])],
             'allow_comments'=>['sometimes', Rule::in([0, 1])],
         ]);
-
-        // Get the post
-        $post_id = $request->validate(['post_id'=>'required|exists:posts,id'])['post_id'];
-        $post = Post::withoutGlobalScopes()->find($post_id);
 
         /**
          * Here in update, we check if featured_image is set by admin; If so then we update
@@ -275,5 +275,13 @@ class PostController extends Controller
 
         return view('admin.posts.preview')
             ->with(compact('post'));
+    }
+
+    public function delete(Request $request) {
+        $post_id = $request->validate(['post_id'=>'required|exists:posts,id'])['post_id'];
+        $post = Post::withoutGlobalScopes()->find($post_id);
+
+        $post->delete();
+        Session::flash('message', 'Post has been trashed successfully. <a href="" class="blue bold no-underline untrash-post-button">undo</a>');
     }
 }

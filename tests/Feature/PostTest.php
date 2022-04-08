@@ -267,4 +267,20 @@ class PostTest extends TestCase
         $post->refresh();
         $this->assertTrue($post->status == 'published');
     }
+
+    /** @test */
+    public function trash_a_post() {
+        $this->withoutExceptionHandling();
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $post = Post::create(['title' => 'foo','title_meta' => 'foo','slug' => 'foo','summary' => 'foo','content' => 'foo']);
+
+        $this->assertNull($post->deleted_at);
+        $this->post('/admin/posts/trash', [
+            'post_id'=>$post->id
+        ]);
+        $post->refresh();
+        $this->assertNotNull($post->deleted_at);
+    }
 }

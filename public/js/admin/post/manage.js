@@ -344,3 +344,37 @@ $('.update-post-status').on('click', function() {
         }
     })
 });
+
+/** Trashing & deleting posts */
+let trash_post_lock = true;
+$('.trash-post-button').on('click', function(event) {
+    if(!trash_post_lock) return;
+    trash_post_lock = false;
+
+    let button = $(this);
+    let spinner = button.find('.spinner');
+    let post_id = button.find('.post-id').val();
+
+    let post_row = button;
+    while(!post_row.hasClass('post-row')) post_row = post_row.parent();
+    post_row.addClass('prevent-hover-effect');
+
+    spinner.addClass('inf-rotate');
+    spinner.removeClass('none');
+
+    $.ajax({
+        type: 'post',
+        url: '/admin/posts/trash',
+        data: { post_id: post_id },
+        success: function(response) {
+            location.reload();
+        },
+        error: function(response) {
+            post_row.removeClass('prevent-hover-effect');
+            spinner.removeClass('inf-rotate');
+            spinner.addClass('none');
+
+            trash_post_lock = true;
+        }
+    })
+});

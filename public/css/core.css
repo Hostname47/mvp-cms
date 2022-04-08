@@ -347,6 +347,12 @@ body {
     cursor: not-allowed !important;
 }
 
+.red-text-clickable {
+    padding: 0;
+    border: none;
+    background: none;
+}
+
 .my8 {
     margin: 8px 0;
 }

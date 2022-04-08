@@ -128,7 +128,11 @@
                                     <span>Edit</span>
                                 </a>
                                 <span class="fs11 mx8 dark">〡</span>
-                                <span class="fs12 red pointer open-post-trashing-viewer">
+                                <span class="fs12 red pointer align-center trash-post-button">
+                                    <svg class="spinner size12 mr4 none" fill="none" viewBox="0 0 16 16">
+                                        <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                        <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                    </svg>
                                     <span>Trash</span>
                                     <input type="hidden" class="post-id" value="{{ $post->id }}" autocomplete="off">
                                 </span>
