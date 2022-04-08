@@ -51,26 +51,31 @@
             </a>
         </div>
 
-        <div class="align-center mt8 fs13">
-            <a href="{{ route('admin.all.posts') }}" class="blue no-underline">
-                All <span class="dark">({{ $posts->total() }})</span>
-            </a>
-            <span class="fs7 bold light-gray unselectable mx8">●</span>
-            <a href="{{ route('admin.all.posts', ['status'=>'published']) }}" class="blue no-underline">
-                Published <span class="dark">(325)</span>
-            </a>
-            <span class="fs7 bold light-gray unselectable mx8">●</span>
-            <a href="{{ route('admin.all.posts', ['status'=>'published']) }}" class="blue no-underline">
-                Draft <span class="dark">(19)</span>
-            </a>
-            <span class="fs7 bold light-gray unselectable mx8">●</span>
-            <a href="{{ route('admin.all.posts', ['status'=>'published']) }}" class="blue no-underline">
-                Private <span class="dark">(32)</span>
-            </a>
-            <span class="fs7 bold light-gray unselectable mx8">●</span>
-            <a href="{{ route('admin.all.posts', ['status'=>'published']) }}" class="blue no-underline">
-                Trash <span class="dark">(5)</span>
-            </a>
+        <div class="flex align-center space-between mt8">
+            <div class="align-center fs13">
+                <a href="{{ route('admin.all.posts') }}" class="blue no-underline">
+                    All <span class="dark">({{ $posts->total() }})</span>
+                </a>
+                <span class="fs7 bold light-gray unselectable mx8">●</span>
+                <a href="{{ route('admin.all.posts', ['status'=>'published']) }}" class="blue no-underline">
+                    Published <span class="dark">(325)</span>
+                </a>
+                <span class="fs7 bold light-gray unselectable mx8">●</span>
+                <a href="{{ route('admin.all.posts', ['status'=>'published']) }}" class="blue no-underline">
+                    Draft <span class="dark">(19)</span>
+                </a>
+                <span class="fs7 bold light-gray unselectable mx8">●</span>
+                <a href="{{ route('admin.all.posts', ['status'=>'published']) }}" class="blue no-underline">
+                    Private <span class="dark">(32)</span>
+                </a>
+                <span class="fs7 bold light-gray unselectable mx8">●</span>
+                <a href="{{ route('admin.all.posts', ['status'=>'published']) }}" class="blue no-underline">
+                    Trash <span class="dark">(5)</span>
+                </a>
+            </div>
+            <div>
+                {{ $posts->onEachSide(0)->links() }}
+            </div>
         </div>
 
         <table class="full-width posts-table mt8">
@@ -103,6 +108,7 @@
                 @if($posts->count())
                     @foreach($posts as $post)
                     <tr class="flex post-row">
+                        <!-- post selection -->
                         <td class="posts-table-selection-column">
                             <input type="checkbox" class="no-margin size16">
                         </td>
@@ -118,8 +124,9 @@
                                     <span>Edit</span>
                                 </a>
                                 <span class="fs11 mx8 dark">〡</span>
-                                <span class="fs12 red no-underline">
+                                <span class="fs12 red pointer open-post-trashing-viewer">
                                     <span>Trash</span>
+                                    <input type="hidden" class="post-id" value="{{ $post->id }}" autocomplete="off">
                                 </span>
                                 <span class="fs11 mx8 dark">〡</span>
                                 @if($post->status == 'published')
@@ -127,12 +134,13 @@
                                     <span>View</span>
                                 </a>
                                 @else
-                                <a href="" class="fs12 dark-blue no-underline">
+                                <a href="{{ route('preview.post', ['post'=>$post->id]) }}" target="_blank" class="fs12 dark-blue no-underline">
                                     <span>Preview</span>
                                 </a>
                                 @endif
                             </div>
                         </td>
+                        <!-- post author -->
                         <td class="posts-table-author-column">
                             @if($post->author)
                             <a href="" class="dark bold no-underline fs13">{{ $post->author->username }}</a>
@@ -140,15 +148,27 @@
                             <em class="dark">Unknown</em>
                             @endif
                         </td>
+                        <!-- post categories -->
                         <td class="posts-table-categories-column">
                             @foreach($post->categories as $category)
-                            @if($loop->index != 0)<span class="bold light-gray">,</span>@endif
-                            <a href="" class="dark-blue no-underline fs13">{{ $category->title }}</a>
+                                @if($loop->index != 0)<span class="bold light-gray">,</span>@endif
+                                <a href="" class="dark-blue no-underline fs13">{{ $category->title }}</a>
                             @endforeach
+                            @if(!$post->categories->count())
+                            <span class="light-gray">--</span>
+                            @endif
                         </td>
+                        <!-- post tags -->
                         <td class="posts-table-tags-column">
-                            <span class="dark">Tags</span>
+                            @foreach($post->tags as $tag)
+                                @if($loop->index != 0)<span class="bold light-gray">,</span>@endif
+                                <a href="" class="dark-blue no-underline fs13">{{ $tag->title }}</a>
+                            @endforeach
+                            @if(!$post->tags->count())
+                            <span class="light-gray">--</span>
+                            @endif
                         </td>
+                        <!-- post comments count -->
                         <td class="posts-table-comments-column full-center">
                             <span>{{ $post->comments_count }}</span>
                         </td>

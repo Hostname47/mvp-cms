@@ -12,14 +12,29 @@ class PostController extends Controller
 {
     public function all(Request $request) {
         $status = 'all';
-        if($request->has('status')) {
-            $s = $request->validate(['status'=>Rule::in(['published', 'draft', 'private'])])['status'];
-            $status = $s;
+        if($request->has('status'))
+            $status = $request->validate(['status'=>Rule::in(['published', 'draft', 'private'])])['status'];
+
+        $posts = Post::with(['author','categories','tags']);
+        switch($status) {
+            case 'all':
+                $posts = $posts->withoutGlobalScopes();
+                break;
+            case 'published':
+                $posts = $posts->where('status', 'published');
+                break;
+            case 'draft':
+                $posts = $posts->where('status', 'draft');
+                break;
+            case 'trash':
+                $posts = $posts->onlyTrashed();
+                break;
         }
-        $posts = Post::with('author', 'categories')->orderBy('updated_at', 'desc')->paginate(16);
+        $posts = $posts->orderBy('updated_at', 'desc')->paginate(8);
 
         return view('admin.posts.all')
-            ->with(compact('posts'));
+            ->with(compact('posts'))
+            ->with(compact('status'));
     }
 
     public function view(Request $request, Category $category, Post $post) {

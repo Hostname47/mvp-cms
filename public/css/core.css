@@ -899,3 +899,42 @@ textarea {
     background-color: #0e0e0ef2;
     border-radius: 8px;
 }
+
+.pagination-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 26px;
+    border-radius: 3px;
+    background-color: #e9eef2;
+    color: #171717;
+    fill: #171717;
+    text-decoration: none;
+    margin: 0 2px;
+    font-size: 13px;
+    font-weight: bold;
+    border: 1px solid #c7d2dd;
+    user-select: none;
+
+    transition: all 0.3s ease;
+}
+.pagination-button:hover {
+    background-color: #dfe6ec;
+}
+
+.pagination-button-current-page {
+    background-color: #fff !important;
+    color: #007cff !important;
+}
+
+.pagination-button-disabled {
+    background-color: #e6e6e6 !important;
+    fill: gray !important;
+}
+
+.pagination-separator {
+    margin: 0 4px;
+    color: rgb(36, 36, 36);
+    letter-spacing: 1.5px;
+}

@@ -13,4 +13,6 @@
     <x-admin.post.panel-management-sections.summary-section :post="$post" />
     <!-- post comments & reactions section -->
     <x-admin.post.panel-management-sections.comments-and-reactions-section :post="$post" />
+    <!-- ad section -->
+    <x-admin.post.panel-management-sections.ad-section :post="$post" />
 </div>
