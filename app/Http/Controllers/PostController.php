@@ -17,7 +17,7 @@ class PostController extends Controller
             $status = $request->validate(['status'=>Rule::in(['all', 'published', 'draft', 'private', 'trashed', 'awaiting-review'])])['status'];
 
         $statistics = DB::select("
-            SELECT 'all' as k, COUNT(*) as v FROM posts
+            SELECT 'all' as k, COUNT(*) as v FROM posts WHERE deleted_at IS NULL
             union all
             SELECT 'trashed' as k, COUNT(*) as v FROM posts WHERE deleted_at IS NOT NULL
             union all
@@ -25,7 +25,7 @@ class PostController extends Controller
             union all
             SELECT ANY_VALUE(status) as k, COUNT(*) AS v FROM posts GROUP BY status
         ");
-        
+
         $temp = [];
         foreach($statistics as $stats) $temp[$stats->k] = $stats->v;
         $statistics = $temp;
@@ -33,7 +33,10 @@ class PostController extends Controller
         $posts = Post::query();
         switch($status) {
             case 'all':
-                $posts = $posts->withoutGlobalScopes();
+                /**
+                 * Here we don't have to add any contraint. Notice that all does not
+                 * include trashed posts.
+                 */
                 break;
             case 'published':
                 $posts = $posts->where('status', 'published');
@@ -282,6 +285,26 @@ class PostController extends Controller
         $post = Post::withoutGlobalScopes()->find($post_id);
 
         $post->delete();
-        Session::flash('message', 'Post has been trashed successfully. <a href="" class="blue bold no-underline untrash-post-button">undo</a>');
+        Session::flash('message', '
+            <div class="align-center">
+                Post has been trashed successfully. 
+                <div class="blue bold pointer align-center ml4 untrash-post-button">
+                    <svg class="spinner flex size12 mr4 none" style="margin-top: 1px;" fill="none" viewBox="0 0 16 16">
+                        <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                        <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                    </svg>
+                    <span class="fs13">undo</span>
+                    <input type="hidden" class="post-id" value="' . $post_id . '" autocomplete="off">
+                </div>
+            </div>
+        ');
+    }
+
+    public function restore(Request $request) {
+        $post_id = $request->validate(['post_id'=>'required|exists:posts,id'])['post_id'];
+        $post = Post::withoutGlobalScopes()->find($post_id);
+
+        $post->restore();
+        Session::flash('message', 'Post has been restored successfully.');
     }
 }

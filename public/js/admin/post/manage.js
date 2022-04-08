@@ -374,7 +374,61 @@ $('.trash-post-button').on('click', function(event) {
             spinner.removeClass('inf-rotate');
             spinner.addClass('none');
 
+            let errorObject = JSON.parse(response.responseText);
+            let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+            if (errorObject.errors) {
+                let errors = errorObject.errors;
+                error = errors[Object.keys(errors)[0]][0];
+            }
+            print_top_message(error, 'error');
+
             trash_post_lock = true;
+        }
+    })
+});
+
+let untrash_post_lock = true;
+$('.untrash-post-button').on('click', function() {
+    if(!untrash_post_lock) return;
+    untrash_post_lock = false;
+
+    let button = $(this);
+    let spinner = button.find('.spinner');
+    let post_id = button.find('.post-id').val();
+
+    let row;
+    if(button.hasClass('fix-row-hover-event')) {
+        row = button;
+        while(!row.hasClass('post-row')) row = row.parent();
+        row.addClass('prevent-hover-effect');
+    }
+
+    spinner.addClass('inf-rotate');
+    spinner.removeClass('none');
+
+    $.ajax({
+        type: 'post',
+        url: '/admin/posts/untrash',
+        data: { post_id: post_id },
+        success: function(response) {
+            location.reload();
+        },
+        error: function(response) {
+            if(button.hasClass('fix-row-hover-event')) {
+                row.removeClass('prevent-hover-effect');
+            }
+            spinner.removeClass('inf-rotate');
+            spinner.addClass('none');
+
+            let errorObject = JSON.parse(response.responseText);
+            let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+            if (errorObject.errors) {
+                let errors = errorObject.errors;
+                error = errors[Object.keys(errors)[0]][0];
+            }
+            print_top_message(error, 'error');
+
+            untrash_post_lock = true;
         }
     })
 });

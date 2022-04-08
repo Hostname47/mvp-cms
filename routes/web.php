@@ -39,7 +39,8 @@ Route::get('/admin/posts/search', [AdminSearchController::class, 'posts_search']
 Route::get('/admin/posts/data', [PostController::class, 'post_data']); // Used to restore post default content and data in edit page
 Route::get('/admin/posts/preview', [PostController::class, 'preview'])->name('preview.post');
 Route::patch('/admin/posts/status', [PostController::class, 'update_status']);
-Route::post('/admin/posts/trash', [PostController::class, 'delete'])->name('trash.post');
+Route::post('/admin/posts/trash', [PostController::class, 'delete']);
+Route::post('/admin/posts/untrash', [PostController::class, 'restore']);
 
 Route::get('/{category:slug}/{post:slug}', [PostController::class, 'view'])->name('view.post');
 

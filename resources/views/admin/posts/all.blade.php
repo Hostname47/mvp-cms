@@ -38,7 +38,7 @@
         @if(Session::has('message'))
         <div class="informative-message-container media-upload-error-container flex align-center relative my8">
             <div class="informative-message-container-left-stripe imcls-green"></div>
-            <p class="no-margin fs13 message-text">{!! Session::get('message') !!}</p>
+            <div class="no-margin fs13 message-text">{!! Session::get('message') !!}</div>
             <div class="close-parent close-informative-message-style">✖</div>
         </div>
         @endif
@@ -118,33 +118,49 @@
                         </td>
                         <td class="posts-table-title-column">
                             <div>
-                                <a href="{{ route('view.post', ['category'=>$post->categories->first()->slug, 'post'=>$post->slug]) }}" class="dark-blue bold no-underline">{{ $post->title }}</span>
+                                <a href="{{ route('view.post', ['category'=>$post->categories->first()->slug, 'post'=>$post->slug]) }}" class="dark-blue bold no-underline">{{ $post->title }}</a>
                                 @if($post->status != 'published')
                                 <span class="light-gray"> - {{ $post->status }}</span>
                                 @endif
                             </div>
                             <div class="align-center mt4 post-actions-links-container">
-                                <a href="{{ route('edit.post', ['post'=>$post->id]) }}" class="fs12 dark-blue no-underline">
-                                    <span>Edit</span>
-                                </a>
-                                <span class="fs11 mx8 dark">〡</span>
-                                <span class="fs12 red pointer align-center trash-post-button">
-                                    <svg class="spinner size12 mr4 none" fill="none" viewBox="0 0 16 16">
-                                        <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
-                                        <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
-                                    </svg>
-                                    <span>Trash</span>
-                                    <input type="hidden" class="post-id" value="{{ $post->id }}" autocomplete="off">
-                                </span>
-                                <span class="fs11 mx8 dark">〡</span>
-                                @if($post->status == 'published')
-                                <a href="{{ route('view.post', ['category'=>$post->categories->first()->slug, 'post'=>$post->slug]) }}" class="fs12 dark-blue no-underline">
-                                    <span>View</span>
-                                </a>
+                                @if(is_null($post->deleted_at))
+                                    <a href="{{ route('edit.post', ['post'=>$post->id]) }}" class="fs12 dark-blue no-underline">
+                                        <span>Edit</span>
+                                    </a>
+                                    <span class="fs11 mx8 dark">〡</span>
+                                    <span class="fs12 red pointer align-center trash-post-button">
+                                        <svg class="spinner size12 mr4 none" fill="none" viewBox="0 0 16 16">
+                                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                            <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                        </svg>
+                                        <span>Trash</span>
+                                        <input type="hidden" class="post-id" value="{{ $post->id }}" autocomplete="off">
+                                    </span>
+                                    <span class="fs11 mx8 dark">〡</span>
+                                    @if($post->status == 'published')
+                                    <a href="{{ route('view.post', ['category'=>$post->categories->first()->slug, 'post'=>$post->slug]) }}" class="fs12 dark-blue no-underline">
+                                        <span>View</span>
+                                    </a>
+                                    @else
+                                    <a href="{{ route('preview.post', ['post'=>$post->id]) }}" target="_blank" class="fs12 dark-blue no-underline">
+                                        <span>Preview</span>
+                                    </a>
+                                    @endif
                                 @else
-                                <a href="{{ route('preview.post', ['post'=>$post->id]) }}" target="_blank" class="fs12 dark-blue no-underline">
-                                    <span>Preview</span>
-                                </a>
+                                    <span class="fs12 dark-blue pointer align-center fix-row-hover-event untrash-post-button">
+                                        <svg class="spinner size12 mr4 none" fill="none" viewBox="0 0 16 16">
+                                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                            <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                        </svg>
+                                        <span>Restore</span>
+                                        <input type="hidden" class="post-id" value="{{ $post->id }}" autocomplete="off">
+                                    </span>
+                                    <span class="fs11 mx8 dark">〡</span>
+                                    <span class="fs12 red pointer align-center open-post-permanent-delete-viewer">
+                                        <span>Delete Permanently</span>
+                                        <input type="hidden" class="post-id" value="{{ $post->id }}" autocomplete="off">
+                                    </span>
                                 @endif
                             </div>
                         </td>
