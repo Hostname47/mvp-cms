@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Models\{Post,Category,Tag};
+use Carbon\Carbon;
 
 class PostController extends Controller
 {
@@ -47,6 +48,9 @@ class PostController extends Controller
             case 'awaiting-review':
                 $posts = $posts->where('status', 'awaiting-review');
                 break;
+            case 'private':
+                $posts = $posts->where('visibility', 'private');
+                break;
             case 'trashed':
                 $posts = $posts->onlyTrashed();
                 break;
@@ -81,6 +85,10 @@ class PostController extends Controller
             'allow_comments'=>['sometimes', Rule::in([0, 1])],
         ]);
         $postdata['user_id'] = auth()->user()->id;
+        // Handle published at if status is published
+        if(isset($postdata['status']) && $postdata['status'] == 'published') {
+            $postdata['published_at'] = Carbon::now();
+        }
 
         // Categories
         $categories = $request->validate([
@@ -254,7 +262,11 @@ class PostController extends Controller
         ]);
 
         $post = Post::withoutGlobalScopes()->find($data['post_id']);
-        $post->update(['status'=>$data['status']]);
+        $data = [
+            'status'=>$data['status'],
+            'published_at'=>($data['status'] == 'published') ? Carbon::now() : null
+        ];
+        $post->update($data);
 
         Session::flash('message', 'Post status has been updated successfully.');
     }
@@ -268,6 +280,19 @@ class PostController extends Controller
             'title_meta'=>$post->title_meta,
             'slug'=>$post->slug,
             'content'=>$post->content,
+            'visibility'=>$post->visibility,
+            'password'=>($post->visibility == 'password-protected') ? $post->metadata['password'] : '',
+            'categories'=>$post->categories->pluck('id'),
+            'tags'=>$post->tags->pluck('title'),
+            'has_featured_image'=>$post->has_featured_image(),
+            'featured_image'=>[
+                'exists' => $post->has_featured_image(),
+                'path' => $post->featured_image,
+                'metadata_id' => $post->has_featured_image() ? $post->metadata['featured_image'] : ''
+            ],
+            'summary'=>$post->summary,
+            'allow_comments'=>$post->allow_comments,
+            'allow_reactions'=>$post->allow_reactions,
         ];
     }
 

@@ -40,7 +40,7 @@
                             <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
                         </svg>
                     </div>
-                    <span class="bold fs11 unselectable">set post as draft</span>
+                    <span class="bold fs11 unselectable">turn to draft</span>
                     <input type="hidden" class="post-id" value="{{ $post->id }}" autocomplete="off">
                     <input type="hidden" class="status" value="draft" autocomplete="off">
                 </div>

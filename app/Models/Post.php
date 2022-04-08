@@ -58,6 +58,12 @@ class Post extends Model
     }
 
     public function getFeaturedImageAttribute() {
-        return asset('media-library/'.Metadata::where('id', $this->metadata['featured_image'])->first()->data['file']);
+        if($this->has_featured_image()) {
+            $metadata = Metadata::where('id', $this->metadata['featured_image'])->first();
+            if($metadata && isset($metadata->data['file']))
+                return asset('media-library/'.$metadata->data['file']);
+        }
+
+        return '';
     }
 }

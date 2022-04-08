@@ -281,6 +281,49 @@ $('.restore-post-content').on('click', function() {
 			$('#post-slug').val(post.slug);
 			post_editor.setData(post.content);
 
+			// Discussion section
+			$('#allow-comments').prop('checked', post.allow_comments==1);
+			$('#allow-reactions').prop('checked', post.allow_reactions==1);
+			// Summary section
+			$('#post-summary').val(post.summary);
+			// Featured image section
+			if(post.featured_image.exists) {
+				$('.featured-image-upload-box').addClass('none');
+				$('.uploaded-featured-image-box').removeClass('none');
+				$('#post-featured-image-metadata-id').val(post.featured_image.metadata_id);
+				$('.uploaded-featured-image-box .selected-featured-image').attr('src', post.featured_image.path);
+				handle_image_center_fill($('.selected-featured-image'));
+			} else {
+				$('.featured-image-upload-box').removeClass('none');
+				$('.uploaded-featured-image-box').addClass('none');
+				$('#post-featured-image-metadata-id').val('');
+				$('.uploaded-featured-image-box .selected-featured-image').attr('src', '');
+			}
+			// Tags
+			$('.post-tags-wrapper .post-tag-item').remove();
+			for(let i = 0; i < post.tags.length; i++) {
+				let tag = $('.post-tag-item-skeleton').clone(true);
+				tag.find('.tag-text').text(post.tags[i]);
+				tag.removeClass('post-tag-item-skeleton none');
+				$(tag).insertBefore('#post-tags-input');
+			}
+			// Categories
+			$('.post-category-id').prop('checked', false);
+			$('.post-category-id').each(function() {
+				$(this).prop('checked', post.categories.indexOf(parseInt($(this).val())) !== -1);
+			});
+			// Visibiliy section
+			$('.post-visibility-button').removeClass('custom-dropdown-item-selected custom-dropdown-item-selected-style');
+			$('.post-visibility-button').each(function() {
+				if($(this).find('.visibility').val() == post.visibility) {
+					$(this).trigger('click');
+					$('body').trigger('click'); // Hide visibility suboptions container
+					return false;
+				}
+			})
+			$('.post-visibility').val(post.visibility);
+			$('#post-password-input').val(post.password);
+
 			left_bottom_notification('post data restored successfully.');
 		},
 		error: function(response) {

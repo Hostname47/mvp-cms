@@ -232,7 +232,7 @@
                             <span>{{ $post->comments_count }}</span>
                         </td>
                         <td class="posts-table-date-column fs13 dark">
-                            @if($post->status == 'published')
+                            @if($post->status == 'published' && $post->visibility != 'private')
                             <div>
                                 <span class="block bold green">Published</span>
                                 <span>{{ $post->publish_date_humans }}</span>
