@@ -13,9 +13,9 @@ class PostController extends Controller
     public function all(Request $request) {
         $status = 'all';
         if($request->has('status'))
-            $status = $request->validate(['status'=>Rule::in(['published', 'draft', 'private'])])['status'];
+            $status = $request->validate(['status'=>Rule::in(['all', 'published', 'draft', 'private', 'trashed', 'awaiting-review'])])['status'];
 
-        $posts = Post::with(['author','categories','tags']);
+        $posts = Post::query();
         switch($status) {
             case 'all':
                 $posts = $posts->withoutGlobalScopes();
@@ -26,11 +26,14 @@ class PostController extends Controller
             case 'draft':
                 $posts = $posts->where('status', 'draft');
                 break;
-            case 'trash':
+            case 'awaiting-review':
+                $posts = $posts->where('status', 'awaiting-review');
+                break;
+            case 'trashed':
                 $posts = $posts->onlyTrashed();
                 break;
         }
-        $posts = $posts->orderBy('updated_at', 'desc')->paginate(8);
+        $posts = $posts->with(['author','categories','tags'])->orderBy('updated_at', 'desc')->paginate(12);
 
         return view('admin.posts.all')
             ->with(compact('posts'))

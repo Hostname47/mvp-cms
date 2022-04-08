@@ -935,6 +935,8 @@ textarea {
 
 .pagination-separator {
     margin: 0 4px;
-    color: rgb(36, 36, 36);
+    color: rgb(63, 63, 63);
     letter-spacing: 1.5px;
+    font-size: 11px;
+    user-select: none;
 }

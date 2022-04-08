@@ -33,6 +33,8 @@ class CreatePostsTable extends Migration
             $table->timestamp('published_at')->nullable();
             $table->timestamps();
             $table->json('metadata')->nullable();
+            // Soft delete
+            $table->softDeletes();
         });
     }
 
