@@ -296,4 +296,16 @@ class PostTest extends TestCase
         $post->refresh();
         $this->assertNull($post->deleted_at);
     }
+
+    /** @test */
+    public function delete_a_post_permanently() {
+        $this->withoutExceptionHandling();
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $post = Post::create(['title' => 'foo','title_meta' => 'foo','slug' => 'foo','summary' => 'foo','content' => 'foo']);
+        $this->assertCount(1, Post::all());
+        $this->delete('/admin/posts', ['post_id'=>$post->id]);
+        $this->assertCount(0, Post::all());
+    }
 }

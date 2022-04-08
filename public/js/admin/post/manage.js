@@ -345,7 +345,7 @@ $('.update-post-status').on('click', function() {
     })
 });
 
-/** Trashing & deleting posts */
+/** Trashing & Untrashing & Permanent Deleting posts */
 let trash_post_lock = true;
 $('.trash-post-button').on('click', function(event) {
     if(!trash_post_lock) return;
@@ -429,6 +429,61 @@ $('.untrash-post-button').on('click', function() {
             print_top_message(error, 'error');
 
             untrash_post_lock = true;
+        }
+    })
+});
+
+$('.open-post-permanent-delete-viewer').on('click', function() {
+    let post_id = $(this).find('.post-id').val();
+    let row = $(this);
+    while(!row.hasClass('post-row')) row = row.parent();
+    let title = row.find('.post-title').text();
+    let viewer = $('#permanent-delete-post-viewer');
+
+    viewer.find('.post-id').val(post_id);
+    viewer.find('.post-title').text(title);
+
+    viewer.removeClass('none');
+    disable_page_scroll();
+});
+
+let permanent_delete_post_lock = true;
+$('.permanent-delete-post-button').on('click', function() {
+    if(!permanent_delete_post_lock) return;
+    permanent_delete_post_lock = false;
+
+    let button = $(this);
+    let spinner = button.find('.spinner');
+    let buttonicon = button.find('.icon-above-spinner');
+    let post_id = button.find('.post-id').val();
+
+    button.addClass('red-bs-disabled');
+    buttonicon.addClass('none');
+    spinner.removeClass('opacity0');
+    spinner.addClass('inf-rotate');
+
+    $.ajax({
+        type: 'delete',
+        url: '/admin/posts',
+        data: { post_id: post_id },
+        success: function(response) {
+            location.reload();
+        },
+        error: function(response) {
+            permanent_delete_post_lock = true;
+            let errorObject = JSON.parse(response.responseText);
+            let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+            if (errorObject.errors) {
+                let errors = errorObject.errors;
+                error = errors[Object.keys(errors)[0]][0];
+            }
+
+            button.removeClass('red-bs-disabled');
+            buttonicon.removeClass('none');
+            spinner.addClass('opacity0');
+            spinner.removeClass('inf-rotate');
+
+            print_top_message(error, 'error');
         }
     })
 });

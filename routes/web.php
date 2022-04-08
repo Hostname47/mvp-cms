@@ -41,6 +41,7 @@ Route::get('/admin/posts/preview', [PostController::class, 'preview'])->name('pr
 Route::patch('/admin/posts/status', [PostController::class, 'update_status']);
 Route::post('/admin/posts/trash', [PostController::class, 'delete']);
 Route::post('/admin/posts/untrash', [PostController::class, 'restore']);
+Route::delete('/admin/posts', [PostController::class, 'destroy']);
 
 Route::get('/{category:slug}/{post:slug}', [PostController::class, 'view'])->name('view.post');
 

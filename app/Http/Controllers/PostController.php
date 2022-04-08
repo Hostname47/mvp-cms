@@ -307,4 +307,12 @@ class PostController extends Controller
         $post->restore();
         Session::flash('message', 'Post has been restored successfully.');
     }
+
+    public function destroy(Request $request) {
+        $post_id = $request->validate(['post_id'=>'required|exists:posts,id'])['post_id'];
+        $post = Post::withoutGlobalScopes()->find($post_id);
+
+        $post->forceDelete();
+        Session::flash('message', 'Post has been permanently deleted successfully');
+    }
 }
