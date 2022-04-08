@@ -54,27 +54,27 @@
         <div class="flex align-center space-between mt8">
             <div class="align-center fs13">
                 <a href="{{ route('admin.all.posts') }}" class="@if($status=='all') dark bold @else blue @endif no-underline">
-                    All <span class="dark default-weight">({{ $posts->total() }})</span>
+                    All <span class="dark default-weight">({{ $statistics['all'] }})</span>
                 </a>
                 <span class="fs7 bold light-gray unselectable mx8">●</span>
                 <a href="{{ route('admin.all.posts', ['status'=>'published']) }}" class="@if($status=='published') dark bold @else blue @endif no-underline">
-                    Published <span class="dark default-weight">(325)</span>
+                    Published <span class="dark default-weight">({{ $statistics['published'] }})</span>
                 </a>
                 <span class="fs7 bold light-gray unselectable mx8">●</span>
                 <a href="{{ route('admin.all.posts', ['status'=>'draft']) }}" class="@if($status=='draft') dark bold @else blue @endif no-underline">
-                    Draft <span class="dark default-weight">(19)</span>
+                    Draft <span class="dark default-weight">({{ $statistics['draft'] }})</span>
                 </a>
                 <span class="fs7 bold light-gray unselectable mx8">●</span>
                 <a href="{{ route('admin.all.posts', ['status'=>'awaiting-review']) }}" class="@if($status=='awaiting-review') dark bold @else blue @endif no-underline">
-                    Awaiting review <span class="dark default-weight">(32)</span>
+                    Awaiting review <span class="dark default-weight">({{ $statistics['awaiting-review'] }})</span>
                 </a>
                 <span class="fs7 bold light-gray unselectable mx8">●</span>
                 <a href="{{ route('admin.all.posts', ['status'=>'private']) }}" class="@if($status=='private') dark bold @else blue @endif no-underline">
-                    Private <span class="dark default-weight">(32)</span>
+                    Private <span class="dark default-weight">({{ $statistics['private'] }})</span>
                 </a>
                 <span class="fs7 bold light-gray unselectable mx8">●</span>
                 <a href="{{ route('admin.all.posts', ['status'=>'trashed']) }}" class="@if($status=='trashed') dark bold @else blue @endif no-underline">
-                    Trash <span class="dark default-weight">(5)</span>
+                    Trash <span class="dark default-weight">({{ $statistics['trashed'] }})</span>
                 </a>
             </div>
             <div>

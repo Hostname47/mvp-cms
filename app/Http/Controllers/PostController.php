@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use App\Models\{Post,Category,Tag};
 
 class PostController extends Controller
@@ -14,6 +15,20 @@ class PostController extends Controller
         $status = 'all';
         if($request->has('status'))
             $status = $request->validate(['status'=>Rule::in(['all', 'published', 'draft', 'private', 'trashed', 'awaiting-review'])])['status'];
+
+        $statistics = DB::select("
+            SELECT 'all' as k, COUNT(*) as v FROM posts
+            union all
+            SELECT 'trashed' as k, COUNT(*) as v FROM posts WHERE deleted_at IS NOT NULL
+            union all
+            SELECT ANY_VALUE(visibility) as k, COUNT(*) AS v FROM posts GROUP BY visibility
+            union all
+            SELECT ANY_VALUE(status) as k, COUNT(*) AS v FROM posts GROUP BY status
+        ");
+        
+        $temp = [];
+        foreach($statistics as $stats) $temp[$stats->k] = $stats->v;
+        $statistics = $temp;
 
         $posts = Post::query();
         switch($status) {
@@ -37,7 +52,8 @@ class PostController extends Controller
 
         return view('admin.posts.all')
             ->with(compact('posts'))
-            ->with(compact('status'));
+            ->with(compact('status'))
+            ->with(compact('statistics'));
     }
 
     public function view(Request $request, Category $category, Post $post) {
