@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{IndexController, AdminController, PostController, CategoryController,
-    MediaController, OAuthController};
+    MediaController, OAuthController, TagController};
 use App\Http\Controllers\Admin\{AdminSearchController};
 
 Route::get('/test', function() {
@@ -42,6 +42,8 @@ Route::patch('/admin/posts/status', [PostController::class, 'update_status']);
 Route::post('/admin/posts/trash', [PostController::class, 'delete']);
 Route::post('/admin/posts/untrash', [PostController::class, 'restore']);
 Route::delete('/admin/posts', [PostController::class, 'destroy']);
+
+Route::get('/admin/tags', [TagController::class, 'manage'])->name('admin.tags.management');
 
 Route::get('/{category:slug}/{post:slug}', [PostController::class, 'view'])->name('view.post');
 
