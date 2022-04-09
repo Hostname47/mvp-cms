@@ -52,6 +52,29 @@ class PostTest extends TestCase
     }
 
     /** @test */
+    public function create_a_post_with_password_protected_visibility() {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $this->post('/admin/posts', [
+            'title'=>'pp','title_meta'=>'pp','slug'=>'p-p','content'=>'pp',
+            'visibility'=>'password-protected'
+        ])->assertRedirect()->assertSessionHasErrors(['password']);
+
+        $this->post('/admin/posts', [
+            'title'=>'pp','title_meta'=>'pp','slug'=>'p-p','content'=>'pp',
+            'visibility'=>'password-protected',
+            'password'=>'short'
+        ])->assertRedirect()->assertSessionHasErrors(['password']); // Short password
+
+        $this->post('/admin/posts', [
+            'title'=>'pp','title_meta'=>'pp','slug'=>'p-p','content'=>'pp',
+            'visibility'=>'password-protected',
+            'password'=>'strong-password'
+        ])->assertOk();
+    }
+
+    /** @test */
     public function create_a_post_within_a_category() {
         $user = User::factory()->create();
         $category = Category::factory()->create([
@@ -293,8 +316,192 @@ class PostTest extends TestCase
 
         $this->patch('/admin/posts', ['post_id'=>$post->id, 'visibility'=>'private'])
             ->assertOk();
-        $this->patch('/admin/posts', ['post_id'=>$post->id, 'visibility'=>'proviate']) // Length
+        $this->patch('/admin/posts', ['post_id'=>$post->id, 'visibility'=>'proviate'])
             ->assertRedirect()->assertSessionHasErrors(['visibility']);
+    }
+
+    /** @test */
+    public function update_post_visibility() {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $this->post('/admin/posts', [
+            'title' => 'foo','title_meta' => 'foo','slug' => 'f-o-o','content' => 'foo content',
+        ]);
+        $post = Post::first();
+        $this->assertTrue($post->visibility == 'public');
+
+        $this->patch('/admin/posts', [
+            'post_id'=>$post->id, 'visibility'=>'private'
+        ]);
+        $post->refresh();
+        $this->assertTrue($post->visibility == 'private');
+
+        $this->patch('/admin/posts', [
+            'post_id'=>$post->id, 'visibility'=>'password-protected' // Password protected visibility require a password
+        ])->assertRedirect()->assertSessionHasErrors(['password']);
+
+        $this->patch('/admin/posts', [
+            'post_id'=>$post->id, 'visibility'=>'password-protected', 'password'=>'short' // Short password
+        ])->assertRedirect()->assertSessionHasErrors(['password']);
+
+        $this->patch('/admin/posts', [
+            'post_id'=>$post->id, 'visibility'=>'password-protected', 'password'=>'strong-password' // Short password
+        ])->assertOk();
+        $post->refresh();
+        $this->assertTrue($post->metadata['password'] == 'strong-password');
+    }
+
+    /** @test */
+    public function update_post_categories() {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+        $category1 = Category::factory()->create(['title'=>'Technology','slug'=>'technology']);
+        $category2 = Category::factory()->create(['title'=>'Lifestyle','slug'=>'lifestyle']);
+
+        $this->post('/admin/posts', [
+            'title'=>'fa','title_meta'=>'ka','slug'=>'pa','content'=>'de',
+        ]);
+        // Here the post will have the default category uncategorized
+        $post = Post::first();
+        $this->assertCount(1, $post->categories);
+        // Then the admin will update post categories
+        $this->patch('/admin/posts', [
+            'post_id'=>$post->id,
+            'categories'=>[$category1->id, $category2->id]
+        ]);
+        $post->refresh();
+        $this->assertCount(2, $post->categories);
+        // Notice that uncategorized is not here because the admin sync the post categories with the new ones
+        $this->assertTrue('technology' == $post->categories[0]->slug);
+        $this->assertTrue('lifestyle' == $post->categories[1]->slug);
+    }
+
+    /** @test */
+    public function remove_all_post_categories_will_take_uncategorized_as_default() {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+        $category1 = Category::factory()->create(['title'=>'Technology','slug'=>'technology']);
+        $category2 = Category::factory()->create(['title'=>'Lifestyle','slug'=>'lifestyle']);
+
+        $this->post('/admin/posts', [
+            'title'=>'fa','title_meta'=>'ka','slug'=>'pa','content'=>'de',
+            'categories'=>[$category1->id, $category2->id]
+        ]);
+        // Now the post has 2 categories (tech and lifestyle)
+        $post = Post::first();
+        $this->assertCount(2, $post->categories);
+        $this->patch('/admin/posts', [
+            'post_id'=>$post->id,
+            'categories'=>[]
+        ]);
+        // Now we remove all categries, so the post will take the default uncategorized category
+        $post->refresh();
+        $this->assertCount(1, $post->categories);
+        $this->assertTrue('uncategorized'==$post->categories[0]->slug);
+    }
+
+    /** @test */
+    public function update_post_tags() {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $tag1 = Tag::create(['title'=>'mouad', 'slug'=>'mouad']);
+        $tag2 = Tag::create(['title'=>'thomas', 'slug'=>'acquinas']);
+
+        $this->post('/admin/posts', [
+            'title' => 'a','title_meta' => 'a','slug' => 'a','summary' => 'a','content' => 'a',
+            'tags' => [$tag1->id, $tag2->id]
+        ]);
+        $post = Post::first();
+        $this->assertCount(2, $post->tags);
+
+        $this->patch('/admin/posts', [
+            'post_id'=>$post->id,
+            'tags'=>['holly', 'quran']
+        ]);
+        $post->refresh();
+        $this->assertCount(2, $post->tags);
+        $this->assertTrue('holly'==$post->tags[0]->slug);
+        $this->assertTrue('quran'==$post->tags[1]->slug);
+
+        $this->patch('/admin/posts', [
+            'post_id'=>$post->id,
+            'tags'=>[]
+        ]);
+        $post->refresh();
+        $this->assertCount(0, $post->tags);
+    }
+
+    /** @test */
+    public function update_post_featured_image() {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $featured_image0 = UploadedFile::fake()->image('thumbnail_0.png', 30, 80)->size(200);
+        $featured_image1 = UploadedFile::fake()->image('thumbnail_1.png', 30, 80)->size(200);
+        $this->post('/admin/media-library/upload', ['files'=>[$featured_image0, $featured_image1]]);
+
+        $fi0metadata = Metadata::all()[0];
+        $fi1metadata = Metadata::all()[1];
+
+        $this->post('/admin/posts', [
+            'title' => 'Foo','title_meta' => 'foo','slug' => 'foo-boo','content' => 'foo',
+            'featured_image' => $fi0metadata->id
+        ]);
+        $post = Post::first();
+        $this->assertEquals($fi0metadata->id, $post->metadata['featured_image']);
+        
+        $this->patch('/admin/posts', [
+            'post_id'=>$post->id,
+            'featured_image'=>$fi1metadata->id
+        ]);
+        $post->refresh();
+        $this->assertEquals($fi1metadata->id, $post->metadata['featured_image']);
+
+        $this->patch('/admin/posts', [
+            'post_id'=>$post->id,
+            'featured_image'=>5842557
+        ])->assertRedirect()->assertSessionHasErrors(['featured_image']); // INVALIDE featured image metadata id
+
+        /**
+         * Here in update phase, If the post has a feautured_image, and the admin remove it from edit ui,
+         * then the featured_image_metadata_id will be null in the hidden input. Si in terms of backend,
+         * If the featured_image is not present in the request data, or it is null, then the post featured_image
+         * will be cleared from post metadata
+         */
+        $this->patch('/admin/posts', [
+            'post_id'=>$post->id,
+        ]);
+        $post->refresh();
+        $this->assertTrue(!isset($post->metadata['featured_image']));
+    }
+
+    /** @test */
+    public function update_post_comments_and_reactions_switches() {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $this->post('/admin/posts', [
+            'title'=>'a','title_meta'=>'a','slug'=>'a','content'=>'a',
+        ]);
+        $post = Post::first();
+        $this->assertTrue(1 == $post->allow_comments);
+        $this->assertTrue(1 == $post->allow_reactions);
+
+        $this->patch('/admin/posts', [
+            'post_id'=>$post->id,
+            'allow_comments'=>0,
+            'allow_reactions'=>0,
+        ]);
+        $post->refresh();
+        $this->assertTrue(0 == $post->allow_comments);
+        $this->assertTrue(0 == $post->allow_reactions);
+        $this->patch('/admin/posts', [
+            'post_id'=>$post->id,
+            'allow_comments'=>9,
+            'allow_reactions'=>'invalid',
+        ])->assertRedirect()->assertSessionHasErrors(['allow_comments', 'allow_reactions']);
     }
 
     /** @test */

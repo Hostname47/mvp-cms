@@ -205,7 +205,7 @@ class PostController extends Controller
         ]);
 
         $categories = $request->validate([
-            'categories'=>'sometimes|min:1|max:10',
+            'categories'=>'sometimes|max:10',
             'categories.*'=>'exists:categories,id',
         ]);
 
@@ -240,7 +240,7 @@ class PostController extends Controller
         }
 
         // Update categories by syncing post categories with the new selected ones
-        if(isset($categories['categories']))
+        if(isset($categories['categories']) && count($categories['categories']))
             $post->categories()->sync($categories['categories']);
         else // If admin remove all categories we need to put the post as uncategorized
             $post->categories()->sync(Category::where('slug', 'uncategorized')->first()->id);
