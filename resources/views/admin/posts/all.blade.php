@@ -80,13 +80,28 @@
         <div class="align-center">
             <h2 class="dark no-margin">Posts</h2>
             <span class="fs7 bold light-gray unselectable mx8">●</span>
-            <a href="{{ route('create.new.post') }}" class="dark no-underline align-center" style="padding: 5px 11px;">
+            <a href="{{ route('create.new.post') }}" class="dark no-underline align-center">
                 <svg class="flex size13 mr4" fill="#363942" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M58.55,251.39c-9.94,0-15.72-5.59-14.54-14.83,2.77-21.61,6-43.16,9.09-64.73.47-3.3,2.39-5.94,4.78-8.32q40.7-40.6,81.26-81.35c2.57-2.58,3.89-2.93,6.66-.13q33.54,33.93,67.46,67.48c2.68,2.66,2.69,4,0,6.66q-40.81,40.49-81.33,81.27c-3.74,3.76-8.24,4.81-13.18,5.5-18.75,2.6-37.48,5.38-56.22,8.08C61.12,251.22,59.69,251.29,58.55,251.39ZM246.34,89.65c-7.19-36.3-51.11-53.73-81.14-32.19-2,1.43-4.84,2.3-1.42,5.68q34.36,34,68.35,68.34c2.69,2.72,3.75,1.61,5.39-.68,6.47-9.06,9.79-19.13,10.1-32.08C247.74,96.86,247.05,93.25,246.34,89.65ZM142.6,34.57c8.12-.06,13.3-5.32,13.34-12.81s-5.25-13-13.16-13.07c-38.95-.12-77.9-.07-116.84-.06a12.77,12.77,0,0,0-12,7.09C9.22,24.6,15.6,34.48,26.37,34.58c19.37.18,38.74.05,58.11.05S123.23,34.74,142.6,34.57ZM102.41,87c8.81-.07,14.4-5.3,14.35-13.17-.06-7.69-5.36-12.76-14-12.79q-37.92-.16-75.83,0c-8.84,0-14.56,5.36-14.48,13.06s6,12.86,14.73,12.91c12.64.07,25.28,0,37.92,0C77.54,87,90,87.05,102.41,87ZM51.69,139.25c7.56-.53,12.85-5.92,13-12.81.18-7.06-5.31-13-13.09-13.33-8.73-.36-17.5-.36-26.23,0-7.64.32-12.8,5.78-12.94,12.77-.15,7.24,5.11,12.81,13,13.36,4.25.31,8.53.06,12.81.06C42.75,139.31,47.24,139.57,51.69,139.25Z"/></svg>
                 <span class="bold fs11 unselectable">Add new post</span>
             </a>
+            <!-- search section -->
+            <div class="move-to-right">
+                <form action="" class="align-center relative">
+                    <svg class="search-icon-style-1" fill="#5b5b5b" enable-background="new 0 0 515.558 515.558" viewBox="0 0 515.558 515.558" xmlns="http://www.w3.org/2000/svg"><path d="m378.344 332.78c25.37-34.645 40.545-77.2 40.545-123.333 0-115.484-93.961-209.445-209.445-209.445s-209.444 93.961-209.444 209.445 93.961 209.445 209.445 209.445c46.133 0 88.692-15.177 123.337-40.547l137.212 137.212 45.564-45.564c0-.001-137.214-137.213-137.214-137.213zm-168.899 21.667c-79.958 0-145-65.042-145-145s65.042-145 145-145 145 65.042 145 145-65.043 145-145 145z"></path></svg>
+                    <input type="text" required name="k" class="search-input-style-1" style="width: 360px" placeholder="search posts by title, slug or keywords" @if($k) value="{{ $k }}" @endif>
+                    <button class="search-button-style-1">
+                        <span>Search Posts</span>
+                    </button>
+                </form>
+            </div>
         </div>
+        @if($k)
+        <div class="typical-section-style my4">
+            <p class="dark fs13 no-margin">Search result for : "<strong class="blue fs14">{{ $k }}</strong>" - ({{ $posts->total() }})</p>
+        </div>
+        @endif
 
-        <div class="flex align-center space-between mt8">
+        <div class="flex align-center space-between my8">
             <div class="align-center fs13">
                 <a href="{{ route('admin.all.posts') }}" class="@if($status=='all') dark bold @else blue @endif no-underline">
                     All <span class="dark default-weight">({{ $statistics['all'] }})</span>

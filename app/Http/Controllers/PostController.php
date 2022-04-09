@@ -14,6 +14,7 @@ class PostController extends Controller
 {
     public function all(Request $request) {
         $status = 'all';
+        $k = '';
         if($request->has('status'))
             $status = $request->validate(['status'=>Rule::in(['all', 'published', 'draft', 'private', 'trashed', 'awaiting-review'])])['status'];
 
@@ -26,41 +27,48 @@ class PostController extends Controller
             union all
             SELECT ANY_VALUE(status) as k, COUNT(*) AS v FROM posts GROUP BY status
         ");
-
         $temp = [];
         foreach($statistics as $stats) $temp[$stats->k] = $stats->v;
         $statistics = $temp;
 
-        $posts = Post::query();
-        switch($status) {
-            case 'all':
-                /**
-                 * Here we don't have to add any contraint. Notice that all does not
-                 * include trashed posts.
-                 */
-                break;
-            case 'published':
-                $posts = $posts->where('status', 'published');
-                break;
-            case 'draft':
-                $posts = $posts->where('status', 'draft');
-                break;
-            case 'awaiting-review':
-                $posts = $posts->where('status', 'awaiting-review');
-                break;
-            case 'private':
-                $posts = $posts->where('visibility', 'private');
-                break;
-            case 'trashed':
-                $posts = $posts->onlyTrashed();
-                break;
+        if($request->has('k')) {
+            $k = $request->validate(['k'=>'max:1200'])['k'];
+            $posts = Post::withoutGlobalScopes()->where('title', 'like', "%$k%")
+                ->orWhere('slug', 'like', "%$k%")
+                ->orWhere('content', 'like', "%$k%");
+        } else {
+            $posts = Post::query();
+            switch($status) {
+                case 'all':
+                    /**
+                     * Here we don't have to add any contraint. Notice that all does not
+                     * include trashed posts.
+                     */
+                    break;
+                case 'published':
+                    $posts = $posts->where('status', 'published');
+                    break;
+                case 'draft':
+                    $posts = $posts->where('status', 'draft');
+                    break;
+                case 'awaiting-review':
+                    $posts = $posts->where('status', 'awaiting-review');
+                    break;
+                case 'private':
+                    $posts = $posts->where('visibility', 'private');
+                    break;
+                case 'trashed':
+                    $posts = $posts->onlyTrashed();
+                    break;
+            }
         }
         $posts = $posts->with(['author','categories','tags'])->orderBy('updated_at', 'desc')->paginate(12);
-
+        
         return view('admin.posts.all')
             ->with(compact('posts'))
             ->with(compact('status'))
-            ->with(compact('statistics'));
+            ->with(compact('statistics'))
+            ->with(compact('k'));
     }
 
     public function view(Request $request, Category $category, Post $post) {
@@ -232,9 +240,10 @@ class PostController extends Controller
         }
 
         // Update categories by syncing post categories with the new selected ones
-        if(isset($categories['categories'])) {
+        if(isset($categories['categories']))
             $post->categories()->sync($categories['categories']);
-        }
+        else // If admin remove all categories we need to put the post as uncategorized
+            $post->categories()->sync(Category::where('slug', 'uncategorized')->first()->id);
         
         /**
          * Syncing tags of post with the new ones

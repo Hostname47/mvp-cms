@@ -946,3 +946,32 @@ textarea {
     font-size: 11px;
     user-select: none;
 }
+
+.search-input-style-1 {
+    padding: 8px 10px 8px 34px;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 3px;
+    border: 1px solid #b9b9b9;
+}
+.search-button-style-1 {
+    padding: 0 10px;
+    margin-left: -3px;
+    height: 34px;
+    border: 1px solid #b9b9b9;
+    background-color: #f1f3f4;
+    color: #171717;
+    border-radius: 0 3px 3px 0;
+    cursor: pointer;
+}
+.search-button-style-1:hover {
+    background-color: #e1e6e9;
+}
+.search-icon-style-1 {
+    width: 13px;
+    height: 13px;
+    position: absolute;
+    display: flex;
+    left: 12px;
+}
