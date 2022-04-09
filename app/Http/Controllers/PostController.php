@@ -153,9 +153,9 @@ class PostController extends Controller
         }
 
         $flash="";
-        if($postdata['status'] == 'draft')
+        if(isset($postdata['status']) && $postdata['status'] == 'draft')
             $flash = 'Post has been created <strong>as draft</strong> successfully.';
-        else if($postdata['status'] == 'awaiting-review')
+        else if(isset($postdata['status']) && $postdata['status'] == 'awaiting-review')
             $flash = 'Post has been created successfully under review. One of the admins will review its content before publish it.';
         else
             $flash = 'Post has been created successfully. <a href="' . route('edit.post', ['post'=>$post->id]) . '" class="link-style">click here</a> to manage the post';
@@ -185,12 +185,12 @@ class PostController extends Controller
         $post = Post::withoutGlobalScopes()->find($post_id);
 
         $postdata = $request->validate([
-            'title'=>'required|max:1200',
-            'title_meta'=>'required|max:1200',
-            'slug'=>'required|max:1200',
+            'title'=>'sometimes|max:1200',
+            'title_meta'=>'sometimes|max:1200',
+            'slug'=>'sometimes|max:1200',
             'summary'=>'sometimes|max:2000',
             'visibility'=>['sometimes', Rule::in(['public', 'private', 'password-protected'])],
-            'content'=>'required|max:50000',
+            'content'=>'sometimes|max:50000',
             'allow_reactions'=>['sometimes', Rule::in([0, 1])],
             'allow_comments'=>['sometimes', Rule::in([0, 1])],
         ]);
