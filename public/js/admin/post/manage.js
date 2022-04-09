@@ -17,7 +17,10 @@ $(document).ready(function() {
                     ],
                     shouldNotGroupWhenFull: true,
                     pasteFilter: null,
-                    fullPage: true
+                    fullPage: true,
+                },
+                mediaEmbed: {
+                    previewsInData: true
                 }
             })
             .then(editor => {

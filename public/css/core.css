@@ -298,6 +298,10 @@ body {
     width: 6px;
 }
 
+figure {
+    margin: 0;
+}
+
 .no-margin {
     margin: 0;
 }
