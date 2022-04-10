@@ -3,7 +3,7 @@
 @section('title', 'Admin - Tags')
 
 @push('scripts')
-
+<script src="{{ asset('js/admin/tags.js') }}" type="text/javascript" defer></script>
 @endpush
 
 @push('styles')
@@ -65,34 +65,46 @@
                     <h3 class="dark fs16 no-margin">Create Tag</h3>
                 </div>
                 <p class="no-margin my4 fs13 dark">Create a new tag, and start classify your posts more precisely.</p>
-                <div id="tag-create-error-container" class="error-container-style flex my8 none">
-                    <svg class="size13 mr8" style="min-width: 14px; margin-top: 3px" fill="rgb(228, 48, 48)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M501.61,384.6,320.54,51.26a75.09,75.09,0,0,0-129.12,0c-.1.18-.19.36-.29.53L10.66,384.08a75.06,75.06,0,0,0,64.55,113.4H435.75c27.35,0,52.74-14.18,66.27-38S515.26,407.57,501.61,384.6ZM226,167.15a30,30,0,0,1,60.06,0V287.27a30,30,0,0,1-60.06,0V167.15Zm30,270.27a45,45,0,1,1,45-45A45.1,45.1,0,0,1,256,437.42Z"/></svg>
-                    <p class="error-message bold no-margin fs13" style="margin-top: 1px">Category title is required</p>
+                <!-- ERROR block -->
+                <div id="tag-create-error-container" class="informative-message-container post-top-error-container align-center relative my8 none">
+                    <div class="informative-message-container-left-stripe imcls-red"></div>
+                    <p class="no-margin fs13 red bold message-text">Title field is required.</p>
+                    <div class="close-parent close-informative-message-style">✖</div>
                 </div>
+                <!-- green message block -->
+                <div id="tag-create-green-message-container" class="informative-message-container align-center relative my8 none">
+                    <div class="informative-message-container-left-stripe imcls-green"></div>
+                    <p class="no-margin fs13 dark-green bold message-text">Title field is required.</p>
+                    <div class="close-parent close-informative-message-style">✖</div>
+                </div>
+                <!-- title -->
                 <div class="input-wrapper" style="margin-top: 16px;">
                     <label class="input-label fs13 dark my4" for="create-tag-title">Tag title<span class="error-asterisk red ml4">*</span></label>
                     <input type="text" id="create-tag-title" class="styled-input" autocomplete="off" placeholder='{{ __("Tag title") }}'>
                     <p class="fs12 my4 light-gray">This title is displayed in website to represent tag.</p>
                 </div>
+                <!-- title-meta -->
                 <div class="input-wrapper" style="margin-top: 12px;">
                     <label class="input-label fs13 dark my4" for="create-tag-meta-title">Tag meta title<span class="error-asterisk red ml4">*</span></label>
                     <input type="text" id="create-tag-meta-title" class="styled-input" autocomplete="off" placeholder='{{ __("Tag meta title") }}'>
                     <p class="fs12 my4 light-gray">Meta title used to improve <strong>tag SEO</strong> and displayed in browser tab title.</p>
                 </div>
+                <!-- slug -->
                 <div class="input-wrapper" style="margin-top: 12px;">
                     <label class="input-label fs13 dark my4" for="create-tag-slug">Tag slug<span class="error-asterisk red ml4">*</span></label>
                     <input type="text" id="create-tag-slug" class="styled-input" autocomplete="off" placeholder='{{ __("Tag slug") }}'>
                     <p class="fs12 my4 light-gray">The “slug” is the URL-friendly version of the title. It is usually all lowercase and contains only letters, numbers, and hyphens.</p>
                 </div>
+                <!-- description -->
                 <div class="input-wrapper" style="margin-top: 12px;">
-                    <label class="input-label fs13 dark my4" for="create-tag-description">Tag description<span class="error-asterisk red ml4">*</span></label>
+                    <label class="input-label fs13 dark my4" for="create-tag-description">Tag description (optional)<span class="error-asterisk red ml4">*</span></label>
                     <textarea type="text" id="create-tag-description" class="styled-input no-textarea-x-resize" style="height: 130px;" autocomplete="off" placeholder='{{ __("Description here") }}'></textarea>
                 </div>
 
                 <div class="flex">
-                    <div class="typical-button-style dark-bs full-center create-tag-button mt8" style="padding: 8px 11px;">
-                        <div class="relative size10 mr4">
-                            <svg class="flex size10 icon-above-spinner" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M4.41,104.24c2.53-3,5.67-4,9.7-4,26.83.17,53.67,0,80.5.17,3.53,0,4.61-.67,4.58-4.44-.18-27-.1-54-.09-81,0-7.29,2-9.31,9.16-9.32q21.22,0,42.45,0c6.91,0,9,2.09,9,9,0,27,.09,54-.09,81,0,3.82.94,4.79,4.76,4.76,26.83-.17,53.67-.1,80.5-.09,7.58,0,9.5,1.92,9.51,9.47q0,21.23,0,42.45c0,6.55-2.17,8.66-8.83,8.67-27.16,0-54.32.09-81.47-.09-3.77,0-4.47,1-4.45,4.58.15,26.83,0,53.66.17,80.49,0,4-1,7.17-4,9.7H103c-3-2.53-4-5.67-4-9.7.16-26.85,0-53.7.18-80.55,0-3.65-.87-4.54-4.52-4.52-26.85.18-53.7,0-80.55.18-4,0-7.18-1-9.71-4Z"></path></svg>
+                    <div id="create-tag-button" class="typical-button-style dark-bs full-center mt8" style="padding: 8px 11px;">
+                        <div class="relative size12 mr4">
+                            <svg class="flex size12 icon-above-spinner" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M4.41,104.24c2.53-3,5.67-4,9.7-4,26.83.17,53.67,0,80.5.17,3.53,0,4.61-.67,4.58-4.44-.18-27-.1-54-.09-81,0-7.29,2-9.31,9.16-9.32q21.22,0,42.45,0c6.91,0,9,2.09,9,9,0,27,.09,54-.09,81,0,3.82.94,4.79,4.76,4.76,26.83-.17,53.67-.1,80.5-.09,7.58,0,9.5,1.92,9.51,9.47q0,21.23,0,42.45c0,6.55-2.17,8.66-8.83,8.67-27.16,0-54.32.09-81.47-.09-3.77,0-4.47,1-4.45,4.58.15,26.83,0,53.66.17,80.49,0,4-1,7.17-4,9.7H103c-3-2.53-4-5.67-4-9.7.16-26.85,0-53.7.18-80.55,0-3.65-.87-4.54-4.52-4.52-26.85.18-53.7,0-80.55.18-4,0-7.18-1-9.71-4Z"></path></svg>
                             <svg class="spinner size12 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
                                 <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
                                 <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>

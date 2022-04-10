@@ -30,12 +30,13 @@ class TagController extends Controller
             'title'=>'required|unique:tags,title|max:600',
             'title_meta'=>'required|max:600',
             'slug'=>'required|unique:tags,slug|max:1000',
-            'description'=>'required|max:4000'
+            'description'=>'sometimes|max:4000'
         ], [
             'title.unique'=>'Tag title is already taken',
             'slug.unique'=>'Slug is already taken',
         ]);
-        Tag::create($data);
-        Session::flash('message', 'Tag has been created successfully.');
+        if(!isset($data['description'])) $data['description'] = '--';
+
+        // Tag::create($data);
     }
 }
