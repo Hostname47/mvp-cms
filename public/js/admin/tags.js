@@ -1,32 +1,37 @@
 let create_tag_lock = true;
 $('#create-tag-button').on('click', function() {
-    let title = $('#create-tag-title');
-    let title_meta = $('#create-tag-meta-title');
-    let slug = $('#create-tag-slug');
-    let description = $('#create-tag-description');
+    let form = $(this);
+    while(!form.hasClass('tag-form')) form = form.parent();
+    let title = form.find('.title');
+    let title_meta = form.find('.meta-title');
+    let slug = form.find('.slug');
+    let description = form.find('.description');
     
-    $('#tag-create-error-container').addClass('none');
-    $('#create-tag-section .error-asterisk').css('display', 'none');
+    let error_container = $('#tag-create-error-container');
+    let green_message_container = $('#tag-create-green-message-container');
+
+    error_container.addClass('none');
+    form.find('.error-asterisk').css('display', 'none');
 
     // validate post title
-    if (!tag_input_validate(title.val() != '', title, 'Title field is required.')) return;
+    if (!tag_input_validate(title.val() != '', title, form, 'Title field is required.')) return;
     // validate post meta title
-    if (!tag_input_validate(title_meta.val() != '', title_meta, 'Meta title field is required.')) return;
+    if (!tag_input_validate(title_meta.val() != '', title_meta, form, 'Meta title field is required.')) return;
     // validate post slug
-    if (!tag_input_validate(slug.val() != '', slug, 'Slug field is required.')) return;
+    if (!tag_input_validate(slug.val() != '', slug, form, 'Slug field is required.')) return;
 
     let button = $(this);
     let spinner = button.find('.spinner');
     let buttonicon = button.find('.icon-above-spinner');
-
+    
     if(!create_tag_lock) return;
     create_tag_lock = false;
-
+    
     button.addClass('dark-bs-disabled');
     spinner.addClass('inf-rotate');
     spinner.removeClass('opacity0');
     buttonicon.addClass('none');
-
+    
     $.ajax({
         type: 'post',
         url: '/admin/tags',
@@ -37,9 +42,9 @@ $('#create-tag-button').on('click', function() {
             description: description.val()
         },
         success: function(response) {
-            let container = $('#tag-create-green-message-container');
-            container.find('.message-text').text('Tag has been created successfully.');
-            container.removeClass('none');
+            error_container.addClass('none');
+            green_message_container.find('.message-text').text('Tag has been created successfully.');
+            green_message_container.removeClass('none');
             scroll_to_element('tag-create-green-message-container', -8);
 
             // Clone tag row and append it to tags table
@@ -52,7 +57,10 @@ $('#create-tag-button').on('click', function() {
                 error = errors[Object.keys(errors)[0]][0];
             }
 
-            tag_input_validate(false, false, error);
+            green_message_container.addClass('none');
+            error_container.find('.message-text').text(error);
+            error_container.removeClass('none');
+            scroll_to_element('tag-create-error-container', -8);
         },
         complete: function(response) {
             create_tag_lock = true;
@@ -86,13 +94,14 @@ $('.open-tag-update-viewer').on('click', function() {
 
         $.ajax({
             url: '/admin/tags/data?tag='+tag_id,
-            success: function(response) {
+            success: function(tag) {
                 last_tag_update_opened = tag_id;
 
-                content_container.find('.title').val(response.title);
-                content_container.find('.meta-title').val(response.title_meta);
-                content_container.find('.slug').val(response.slug);
-                content_container.find('.description').val(response.description);
+                content_container.find('.title').val(tag.title);
+                content_container.find('.meta-title').val(tag.title_meta);
+                content_container.find('.slug').val(tag.slug);
+                content_container.find('.description').val(tag.description);
+                content_container.find('.tag-id').val(tag.id);
 
                 content_container.removeClass('none');
                 loading_container.addClass('none');
@@ -121,14 +130,99 @@ $('.open-tag-update-viewer').on('click', function() {
 
 let update_tag_lock = true;
 $('#update-tag-button').on('click', function() {
+    let button = $(this);
+    let spinner = button.find('.spinner');
+    let buttonicon = button.find('.icon-above-spinner');
+    
+    let form = button;
+    while(!form.hasClass('tag-form')) form = form.parent();
+    let title = form.find('.title');
+    let title_meta = form.find('.meta-title');
+    let slug = form.find('.slug');
+    let description = form.find('.description');
+    let tag_id = button.find('.tag-id').val();
+    
+    let error_container = $('#tag-create-error-container');
+    let green_message_container = $('#tag-create-green-message-container');
 
+    error_container.addClass('none');
+    form.find('.error-asterisk').css('display', 'none');
+
+    // validate post title
+    if (!tag_input_validate(title.val() != '', title, form, 'Title field is required.')) return;
+    // validate post meta title
+    if (!tag_input_validate(title_meta.val() != '', title_meta, form, 'Meta title field is required.')) return;
+    // validate post slug
+    if (!tag_input_validate(slug.val() != '', slug, form, 'Slug field is required.')) return;
+
+    let data = {
+        tag_id: tag_id,
+        title: title.val(),
+        title_meta: title_meta.val(),
+        slug: slug.val(),
+    };
+    if(description.val() != '')
+        data.description = description.val();
+
+    button.addClass('dark-bs-disabled');
+    spinner.addClass('inf-rotate');
+    spinner.removeClass('opacity0');
+    buttonicon.addClass('none');
+
+    if(!update_tag_lock) return;
+    update_tag_lock = false;
+
+    $.ajax({
+        type: 'patch',
+        url: '/admin/tags',
+        data: data,
+        success: function() {
+            let tag_row;
+            $('.tag-row').each(function() {
+                if($(this).find('.tag-id').val() == tag_id) {
+                    tag_row = $(this);
+                    return false;
+                }
+            });
+            tag_row.find('.title-text').text(title.val());
+            tag_row.find('.meta-title-text').text(title_meta.val());
+            tag_row.find('.slug-text').text(slug.val());
+            tag_row.find('.description-text').text(description.val());
+
+            let viewer = button;
+            while(!viewer.hasClass('global-viewer')) viewer = viewer.parent();
+
+            viewer.find('.close-global-viewer').trigger('click');
+            print_top_message('tag has been updated successfully.', 'green');
+            last_tag_update_opened = -1;
+        },
+        error: function(response) {
+            let errorObject = JSON.parse(response.responseText);
+            let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+            if (errorObject.errors) {
+                let errors = errorObject.errors;
+                error = errors[Object.keys(errors)[0]][0];
+            }
+
+            print_top_message(error, 'error');
+        },
+        complete: function() {
+            update_tag_lock = true;
+
+            button.removeClass('dark-bs-disabled');
+            spinner.removeClass('inf-rotate');
+            spinner.addClass('opacity0');
+            buttonicon.removeClass('none');
+        }
+    })
 });
 
-function tag_input_validate(condition, input, message) {
-    let container = $('#tag-create-error-container');
+function tag_input_validate(condition, input, form, message) {
     if(!condition) {
-        container.find('.message-text').text(message);
-        container.removeClass('none');
+        let error_container = form.find('.error-container');
+        form.find('.green-message-container').addClass('none')
+        error_container.find('.message-text').text(message);
+        error_container.removeClass('none');
         if(input) {
             let input_wrapper = input;
             while (!input_wrapper.hasClass('input-wrapper')) input_wrapper = input_wrapper.parent();
@@ -141,12 +235,15 @@ function tag_input_validate(condition, input, message) {
     return true;
 }
 
-$('#create-tag-title').on('input', function() {
+$('.tag-form .title').on('input', function() {
     let value = $(this).val().trim();
     let slug = slugify(value);
 
-    $('#create-tag-meta-title').val(value);
-    $('#create-tag-slug').val(slug);
+    let form = $(this);
+    while(!form.hasClass('tag-form')) form = form.parent();
+
+    form.find('.meta-title').val(value);
+    form.find('.slug').val(slug);
 });
 
 $('.tag-row').on({

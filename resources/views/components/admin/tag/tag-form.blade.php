@@ -1,14 +1,14 @@
 <div class="tag-form">
     <!-- ERROR block -->
-    <div class="informative-message-container error-container align-center relative my8 none">
+    <div id="tag-{{ $operation }}-error-container" class="informative-message-container error-container align-center relative my8 none">
         <div class="informative-message-container-left-stripe imcls-red"></div>
-        <p class="no-margin fs13 red bold message-text">Title field is required.</p>
+        <p class="no-margin fs13 red bold message-text"></p>
         <div class="close-parent close-informative-message-style">✖</div>
     </div>
     <!-- green message block -->
-    <div class="informative-message-container green-message-container align-center relative my8 none">
+    <div id="tag-{{ $operation }}-green-message-container" class="informative-message-container green-message-container align-center relative my8 none">
         <div class="informative-message-container-left-stripe imcls-green"></div>
-        <p class="no-margin fs13 dark-green bold message-text">Title field is required.</p>
+        <p class="no-margin fs13 dark-green bold message-text"></p>
         <div class="close-parent close-informative-message-style">✖</div>
     </div>
     <!-- title -->

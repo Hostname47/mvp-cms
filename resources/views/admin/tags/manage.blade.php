@@ -160,7 +160,10 @@
                                 </td>
                                 <!-- tags title -->
                                 <td class="tags-table-title-column">
-                                    <a href="" class="dark-blue bold no-underline post-title">{{ $tag->title }}</a>
+                                    <div>
+                                        <a href="" class="dark-blue bold no-underline title-text">{{ $tag->title }}</a>
+                                        <p class="fs12 bold light-gray my2 meta-title-text">meta title: {{ $tag->title_meta }}</p>
+                                    </div>
                                     <div class="align-center mt4 tag-actions-links-container">
                                         <div class="fs12 dark-blue pointer open-tag-update-viewer">
                                             <span>Edit</span>
@@ -183,11 +186,11 @@
                                 </td>
                                 <!-- tags slug -->
                                 <td class="tags-table-slug-column">
-                                    <p class="dark no-margin fs13">{{ $tag->slug }}</p>
+                                    <p class="dark no-margin fs13 slug-text">{{ $tag->slug }}</p>
                                 </td>
                                 <!-- tags description -->
                                 <td class="tags-table-description-column">
-                                    <p class="dark no-margin fs13">{{ $tag->description }}</p>
+                                    <p class="dark no-margin fs13 description-text">{{ $tag->description }}</p>
                                 </td>
                                 <!-- tags posts count -->
                                 <td class="tags-table-count-column">
