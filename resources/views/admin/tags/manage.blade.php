@@ -65,10 +65,19 @@
                     <h3 class="dark fs16 no-margin">Create Tag</h3>
                 </div>
                 <p class="no-margin my4 fs13 dark">Create a new tag, and start classify your posts more precisely.</p>
+                <div id="tag-create-error-container" class="error-container-style flex my8 none">
+                    <svg class="size13 mr8" style="min-width: 14px; margin-top: 3px" fill="rgb(228, 48, 48)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M501.61,384.6,320.54,51.26a75.09,75.09,0,0,0-129.12,0c-.1.18-.19.36-.29.53L10.66,384.08a75.06,75.06,0,0,0,64.55,113.4H435.75c27.35,0,52.74-14.18,66.27-38S515.26,407.57,501.61,384.6ZM226,167.15a30,30,0,0,1,60.06,0V287.27a30,30,0,0,1-60.06,0V167.15Zm30,270.27a45,45,0,1,1,45-45A45.1,45.1,0,0,1,256,437.42Z"/></svg>
+                    <p class="error-message bold no-margin fs13" style="margin-top: 1px">Category title is required</p>
+                </div>
                 <div class="input-wrapper" style="margin-top: 16px;">
                     <label class="input-label fs13 dark my4" for="create-tag-title">Tag title<span class="error-asterisk red ml4">*</span></label>
                     <input type="text" id="create-tag-title" class="styled-input" autocomplete="off" placeholder='{{ __("Tag title") }}'>
                     <p class="fs12 my4 light-gray">This title is displayed in website to represent tag.</p>
+                </div>
+                <div class="input-wrapper" style="margin-top: 12px;">
+                    <label class="input-label fs13 dark my4" for="create-tag-meta-title">Tag meta title<span class="error-asterisk red ml4">*</span></label>
+                    <input type="text" id="create-tag-meta-title" class="styled-input" autocomplete="off" placeholder='{{ __("Tag meta title") }}'>
+                    <p class="fs12 my4 light-gray">Meta title used to improve <strong>tag SEO</strong> and displayed in browser tab title.</p>
                 </div>
                 <div class="input-wrapper" style="margin-top: 12px;">
                     <label class="input-label fs13 dark my4" for="create-tag-slug">Tag slug<span class="error-asterisk red ml4">*</span></label>
@@ -77,7 +86,7 @@
                 </div>
                 <div class="input-wrapper" style="margin-top: 12px;">
                     <label class="input-label fs13 dark my4" for="create-tag-description">Tag description<span class="error-asterisk red ml4">*</span></label>
-                    <textarea type="text" id="create-tag-description" class="styled-input no-textarea-x-resize" autocomplete="off" placeholder='{{ __("Description here") }}'></textarea>
+                    <textarea type="text" id="create-tag-description" class="styled-input no-textarea-x-resize" style="height: 130px;" autocomplete="off" placeholder='{{ __("Description here") }}'></textarea>
                 </div>
 
                 <div class="flex">

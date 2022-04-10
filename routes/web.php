@@ -44,6 +44,7 @@ Route::post('/admin/posts/untrash', [PostController::class, 'restore']);
 Route::delete('/admin/posts', [PostController::class, 'destroy']);
 
 Route::get('/admin/tags', [TagController::class, 'manage'])->name('admin.tags.management');
+Route::post('/admin/tags', [TagController::class, 'store']);
 
 Route::get('/{category:slug}/{post:slug}', [PostController::class, 'view'])->name('view.post');
 
