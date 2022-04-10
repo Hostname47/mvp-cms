@@ -7,7 +7,7 @@
 @endpush
 
 @push('styles')
-
+    <link rel="stylesheet" href="{{ asset('css/admin/tags.css') }}">
 @endpush
 
 @section('left-panel')
@@ -56,6 +56,97 @@
                         <span>Search Tags</span>
                     </button>
                 </form>
+            </div>
+        </div>
+        <div class="flex mt8">
+            <div id="create-tag-section">
+
+            </div>
+            <div id="tags-section">
+                <div class="flex my8">
+                    <div class="move-to-right">
+                        {{ $tags->appends(request()->query())->links() }}
+                    </div>
+                </div>
+                <table class="full-width">
+                    <thead>
+                        <tr class="flex">
+                            <th class="tags-table-selection-column">
+                                <input type="checkbox" class="no-margin size16">
+                            </th>
+                            <th class="tags-table-title-column">
+                                <span class="blue">Tag title</span>
+                            </th>
+                            <th class="tags-table-slug-column">
+                                <span class="dark fs13">Tag slug</span>
+                            </th>
+                            <th class="tags-table-description-column">
+                                <span class="dark fs13">Description</span>
+                            </th>
+                            <th class="tags-table-count-column">
+                                <span class="dark fs13">Count</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if($tags->count())
+                            @foreach($tags as $tag)
+                            <tr class="flex tag-row">
+                                <!-- tags selection -->
+                                <td class="tags-table-selection-column">
+                                    <input type="checkbox" class="no-margin size16" autocomplete="off">
+                                </td>
+                                <!-- tags title -->
+                                <td class="tags-table-title-column">
+                                    <a href="" class="dark-blue bold no-underline post-title">{{ $tag->title }}</a>
+                                    <div class="align-center mt4 tag-actions-links-container">
+                                        <a href="" class="fs12 dark-blue no-underline">
+                                            <span>Edit</span>
+                                        </a>
+                                        <span class="fs11 mx8 dark">〡</span>
+                                        <span class="fs12 red pointer align-center delete-tag-button">
+                                            <svg class="spinner size12 mr4 none" fill="none" viewBox="0 0 16 16">
+                                                <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                                <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                            </svg>
+                                            <span>Delete</span>
+                                            <input type="hidden" class="tag-id" value="{{ $tag->id }}" autocomplete="off">
+                                        </span>
+                                        <span class="fs11 mx8 dark">〡</span>
+                                        <a href="" class="fs12 dark-blue no-underline">
+                                            <span>View</span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <!-- tags slug -->
+                                <td class="tags-table-slug-column">
+                                    <p class="dark no-margin fs13">{{ $tag->slug }}</p>
+                                </td>
+                                <!-- tags description -->
+                                <td class="tags-table-description-column">
+                                    <p class="dark no-margin fs13">{{ $tag->description }}</p>
+                                </td>
+                                <!-- tags posts count -->
+                                <td class="tags-table-count-column">
+                                    <p class="dark no-margin">0</p>
+                                </td>
+                            </tr>
+                            @endforeach
+                        @else
+                        <tr>
+                            <td colspan="5" class="full-center">
+                                <svg class="size14 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                                <p class="bold dark fs13 my4">No tags found. <a class="link-style">Click here</a> to create a new tag</p>
+                            </td>
+                        </tr>
+                        @endif
+                    </tbody>
+                </table>
+                <div class="flex my8">
+                    <div class="move-to-right">
+                        {{ $tags->appends(request()->query())->links() }}
+                    </div>
+                </div>
             </div>
         </div>
     </div>

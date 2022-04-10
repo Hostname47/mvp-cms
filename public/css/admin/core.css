@@ -125,3 +125,29 @@ body {
     padding: 16px 20px;
 }
 
+table {
+    border: 1px solid #ced6dd;
+    border-bottom: unset;
+    border-right: unset;
+    border-collapse: collapse;
+}
+
+thead {
+    background-color: #edf1f4;
+}
+
+th {
+    text-align: start;
+    cursor: pointer;
+    padding: 8px 10px;
+    box-sizing: border-box;
+    border-right: 1px solid #ced6dd;
+    border-bottom: 1px solid #ced6dd;
+}
+td {
+    padding: 8px 10px;
+    box-sizing: border-box;
+    border-right: 1px solid #ced6dd;
+    border-bottom: 1px solid #ced6dd;
+    background-color: white;
+}

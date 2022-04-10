@@ -1,29 +1,3 @@
-.posts-table {
-    border: 1px solid #ced6dd;
-    border-bottom: unset;
-    border-right: unset;
-    border-collapse: collapse;
-}
-
-.posts-table thead {
-    background-color: #edf1f4;
-}
-
-.posts-table th {
-    text-align: start;
-    cursor: pointer;
-    padding: 8px 10px;
-    box-sizing: border-box;
-    border-right: 1px solid #ced6dd;
-    border-bottom: 1px solid #ced6dd;
-}
-.posts-table td {
-    padding: 8px 10px;
-    box-sizing: border-box;
-    border-right: 1px solid #ced6dd;
-    border-bottom: 1px solid #ced6dd;
-}
-
 
 .posts-table-selection-column {
     display: flex;
