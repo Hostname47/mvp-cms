@@ -1,5 +1,6 @@
 #create-tag-section {
     flex: 0.65;
+    margin-right: 16px;
 }
 #tags-section {
     flex: 1;

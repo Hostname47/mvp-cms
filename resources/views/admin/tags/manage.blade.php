@@ -40,13 +40,8 @@
             <div class="close-parent close-informative-message-style">✖</div>
         </div>
         @endif
-        <div class="align-center">
-            <h2 class="dark no-margin">Tags</h2>
-            <span class="fs7 bold light-gray unselectable mx8">●</span>
-            <a href="" class="dark no-underline align-center">
-                <svg class="flex size13 mr4" fill="#363942" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M58.55,251.39c-9.94,0-15.72-5.59-14.54-14.83,2.77-21.61,6-43.16,9.09-64.73.47-3.3,2.39-5.94,4.78-8.32q40.7-40.6,81.26-81.35c2.57-2.58,3.89-2.93,6.66-.13q33.54,33.93,67.46,67.48c2.68,2.66,2.69,4,0,6.66q-40.81,40.49-81.33,81.27c-3.74,3.76-8.24,4.81-13.18,5.5-18.75,2.6-37.48,5.38-56.22,8.08C61.12,251.22,59.69,251.29,58.55,251.39ZM246.34,89.65c-7.19-36.3-51.11-53.73-81.14-32.19-2,1.43-4.84,2.3-1.42,5.68q34.36,34,68.35,68.34c2.69,2.72,3.75,1.61,5.39-.68,6.47-9.06,9.79-19.13,10.1-32.08C247.74,96.86,247.05,93.25,246.34,89.65ZM142.6,34.57c8.12-.06,13.3-5.32,13.34-12.81s-5.25-13-13.16-13.07c-38.95-.12-77.9-.07-116.84-.06a12.77,12.77,0,0,0-12,7.09C9.22,24.6,15.6,34.48,26.37,34.58c19.37.18,38.74.05,58.11.05S123.23,34.74,142.6,34.57ZM102.41,87c8.81-.07,14.4-5.3,14.35-13.17-.06-7.69-5.36-12.76-14-12.79q-37.92-.16-75.83,0c-8.84,0-14.56,5.36-14.48,13.06s6,12.86,14.73,12.91c12.64.07,25.28,0,37.92,0C77.54,87,90,87.05,102.41,87ZM51.69,139.25c7.56-.53,12.85-5.92,13-12.81.18-7.06-5.31-13-13.09-13.33-8.73-.36-17.5-.36-26.23,0-7.64.32-12.8,5.78-12.94,12.77-.15,7.24,5.11,12.81,13,13.36,4.25.31,8.53.06,12.81.06C42.75,139.31,47.24,139.57,51.69,139.25Z"/></svg>
-                <span class="bold fs11 unselectable">Create Tag</span>
-            </a>
+        <div class="flex">
+            <h2 class="blue no-margin">Tags</h2>
             <!-- search section -->
             <div class="move-to-right">
                 <form action="" class="align-center relative">
@@ -58,16 +53,47 @@
                 </form>
             </div>
         </div>
+        <div class="flex my8">
+            <div class="move-to-right">
+                {{ $tags->appends(request()->query())->links() }}
+            </div>
+        </div>
         <div class="flex mt8">
             <div id="create-tag-section">
+                <div class="align-center">
+                    <svg class="size12 mr8" style="margin-top: 1px;" fill="#202224" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M4.41,104.24c2.53-3,5.67-4,9.7-4,26.83.17,53.67,0,80.5.17,3.53,0,4.61-.67,4.58-4.44-.18-27-.1-54-.09-81,0-7.29,2-9.31,9.16-9.32q21.22,0,42.45,0c6.91,0,9,2.09,9,9,0,27,.09,54-.09,81,0,3.82.94,4.79,4.76,4.76,26.83-.17,53.67-.1,80.5-.09,7.58,0,9.5,1.92,9.51,9.47q0,21.23,0,42.45c0,6.55-2.17,8.66-8.83,8.67-27.16,0-54.32.09-81.47-.09-3.77,0-4.47,1-4.45,4.58.15,26.83,0,53.66.17,80.49,0,4-1,7.17-4,9.7H103c-3-2.53-4-5.67-4-9.7.16-26.85,0-53.7.18-80.55,0-3.65-.87-4.54-4.52-4.52-26.85.18-53.7,0-80.55.18-4,0-7.18-1-9.71-4Z"></path></svg>
+                    <h3 class="dark fs16 no-margin">Create Tag</h3>
+                </div>
+                <p class="no-margin my4 fs13 dark">Create a new tag, and start classify your posts more precisely.</p>
+                <div class="input-wrapper" style="margin-top: 16px;">
+                    <label class="input-label fs13 dark my4" for="create-tag-title">Tag title<span class="error-asterisk red ml4">*</span></label>
+                    <input type="text" id="create-tag-title" class="styled-input" autocomplete="off" placeholder='{{ __("Tag title") }}'>
+                    <p class="fs12 my4 light-gray">This title is displayed in website to represent tag.</p>
+                </div>
+                <div class="input-wrapper" style="margin-top: 12px;">
+                    <label class="input-label fs13 dark my4" for="create-tag-slug">Tag slug<span class="error-asterisk red ml4">*</span></label>
+                    <input type="text" id="create-tag-slug" class="styled-input" autocomplete="off" placeholder='{{ __("Tag slug") }}'>
+                    <p class="fs12 my4 light-gray">The “slug” is the URL-friendly version of the title. It is usually all lowercase and contains only letters, numbers, and hyphens.</p>
+                </div>
+                <div class="input-wrapper" style="margin-top: 12px;">
+                    <label class="input-label fs13 dark my4" for="create-tag-description">Tag description<span class="error-asterisk red ml4">*</span></label>
+                    <textarea type="text" id="create-tag-description" class="styled-input no-textarea-x-resize" autocomplete="off" placeholder='{{ __("Description here") }}'></textarea>
+                </div>
 
-            </div>
-            <div id="tags-section">
-                <div class="flex my8">
-                    <div class="move-to-right">
-                        {{ $tags->appends(request()->query())->links() }}
+                <div class="flex">
+                    <div class="typical-button-style dark-bs full-center create-tag-button mt8" style="padding: 8px 11px;">
+                        <div class="relative size10 mr4">
+                            <svg class="flex size10 icon-above-spinner" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M4.41,104.24c2.53-3,5.67-4,9.7-4,26.83.17,53.67,0,80.5.17,3.53,0,4.61-.67,4.58-4.44-.18-27-.1-54-.09-81,0-7.29,2-9.31,9.16-9.32q21.22,0,42.45,0c6.91,0,9,2.09,9,9,0,27,.09,54-.09,81,0,3.82.94,4.79,4.76,4.76,26.83-.17,53.67-.1,80.5-.09,7.58,0,9.5,1.92,9.51,9.47q0,21.23,0,42.45c0,6.55-2.17,8.66-8.83,8.67-27.16,0-54.32.09-81.47-.09-3.77,0-4.47,1-4.45,4.58.15,26.83,0,53.66.17,80.49,0,4-1,7.17-4,9.7H103c-3-2.53-4-5.67-4-9.7.16-26.85,0-53.7.18-80.55,0-3.65-.87-4.54-4.52-4.52-26.85.18-53.7,0-80.55.18-4,0-7.18-1-9.71-4Z"></path></svg>
+                            <svg class="spinner size12 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
+                                <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                            </svg>
+                        </div>
+                        <span class="bold fs12 unselectable">Create Tag</span>
                     </div>
                 </div>
+            </div>
+            <div id="tags-section">
                 <table class="full-width">
                     <thead>
                         <tr class="flex">
@@ -142,11 +168,11 @@
                         @endif
                     </tbody>
                 </table>
-                <div class="flex my8">
-                    <div class="move-to-right">
-                        {{ $tags->appends(request()->query())->links() }}
-                    </div>
-                </div>
+            </div>
+        </div>
+        <div class="flex my8">
+            <div class="move-to-right">
+                {{ $tags->appends(request()->query())->links() }}
             </div>
         </div>
     </div>
