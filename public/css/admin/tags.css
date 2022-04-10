@@ -30,3 +30,7 @@
 .tags-table-count-column {
     width: 56px;
 }
+
+.tag-actions-links-container {
+    opacity: 0;
+}

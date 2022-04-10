@@ -33,6 +33,52 @@
         </div>
     </div>
     <div class="admin-page-content-box">
+        <!-- post permanent delete viewer -->
+        <div id="update-tag-viewer" class="global-viewer full-center none" style="z-index:11112">
+            <div class="viewer-box-style-1">
+                <div class="flex align-center space-between light-gray-border-bottom" style="padding: 12px 16px;">
+                    <div class="flex align-center">
+                        <svg class="size18 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M155.32,3.3h78.12c11.19,3.13,18.39,10.25,21.48,21.49v79.09c-1.28.34-1,1.52-1.23,2.38-2.34,9.41-7.32,17.21-14.14,24Q183.26,186.47,127,242.73C112.72,257,95,256.88,80.58,242.52Q48.47,210.45,16.4,178.35C.91,162.85,1,145.73,16.51,130.17Q67,79.62,117.55,29C128.53,18,139.19,6.68,155.32,3.3ZM197.4,86.52a26,26,0,1,0-25.7-26.18A25.94,25.94,0,0,0,197.4,86.52Z"/></svg>
+                        <span class="fs20 bold dark">Update tag informations</span>
+                    </div>
+                    <div class="pointer size24 full-center fs20 close-global-viewer unselectable">✖</div>
+                </div>
+                <div style="padding: 14px;" class="dark fs13">
+                    <div class="content-container none">
+                        <h3 class="dark fs16 no-margin">Update Tag</h3>
+                        <!-- tag form component that include tag inputs to update the selected tag -->
+                        <x-admin.tag.tag-form operation="update">
+                            <x-slot name="bottomline">
+                                <div class="flex">
+                                    <div id="update-tag-button" class="typical-button-style dark-bs full-center mt8" style="padding: 8px 11px;">
+                                        <div class="relative size14 mr4">
+                                            <svg class="flex size14 icon-above-spinner" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M3.53,137.79a8.46,8.46,0,0,1,8.7-4c2.1.23,4.28-.18,6.37.09,3.6.47,4.61-.68,4.57-4.46-.28-24.91,7.59-47.12,23-66.65C82.8,16.35,151.92,9.31,197.09,47.21c3,2.53,3.53,4,.63,7.08-5.71,6.06-11,12.5-16.28,19-2.13,2.63-3.37,3.21-6.4.73-42.11-34.47-103.77-13.24-116,39.81a72.6,72.6,0,0,0-1.61,17c0,2.36.76,3.09,3.09,3,4.25-.17,8.51-.19,12.75,0,5.46.25,8.39,5.55,4.94,9.66-12,14.24-24.29,28.18-36.62,42.39L4.91,143.69c-.37-.43-.5-1.24-1.38-1Z"></path><path d="M216.78,81.86l35.71,41c1.93,2.21,3.13,4.58,1.66,7.58s-3.91,3.54-6.9,3.58c-3.89.06-8.91-1.65-11.33.71-2.1,2-1.29,7-1.8,10.73-6.35,45.41-45.13,83.19-90.81,88.73-28.18,3.41-53.76-3-76.88-19.47-2.81-2-3.61-3.23-.85-6.18,6-6.45,11.66-13.26,17.26-20.09,1.79-2.19,2.87-2.46,5.39-.74,42.83,29.26,99.8,6.7,111.17-43.93,2.2-9.8,2.2-9.8-7.9-9.8-1.63,0-3.27-.08-4.9,0-3.2.18-5.94-.6-7.29-3.75s.13-5.61,2.21-8c7.15-8.08,14.21-16.24,21.31-24.37C207.43,92.59,212,87.31,216.78,81.86Z"></path></svg>
+                                            <svg class="spinner size14 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
+                                                <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                                <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                            </svg>
+                                        </div>
+                                        <span class="bold fs12 unselectable">Update Tag</span>
+                                        <input type="hidden" class="tag-id" autocomplete="off"> <!-- set dynamically -->
+                                    </div>
+                                </div>
+                            </x-slot>
+                        </x-admin.tag.tag-form>
+
+                    </div>
+                    <div class="loading-container full-center" style="height: 160px;">
+                        <div class="full-center flex-column">
+                            <svg class="spinner size18" fill="none" viewBox="0 0 16 16">
+                                <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                            </svg>
+                            <p class="dark bold fs12 my8">Fetching tag informations</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         @if(Session::has('message'))
         <div class="informative-message-container flex align-center relative my8">
             <div class="informative-message-container-left-stripe imcls-green"></div>
@@ -65,54 +111,23 @@
                     <h3 class="dark fs16 no-margin">Create Tag</h3>
                 </div>
                 <p class="no-margin my4 fs13 dark">Create a new tag, and start classify your posts more precisely.</p>
-                <!-- ERROR block -->
-                <div id="tag-create-error-container" class="informative-message-container post-top-error-container align-center relative my8 none">
-                    <div class="informative-message-container-left-stripe imcls-red"></div>
-                    <p class="no-margin fs13 red bold message-text">Title field is required.</p>
-                    <div class="close-parent close-informative-message-style">✖</div>
-                </div>
-                <!-- green message block -->
-                <div id="tag-create-green-message-container" class="informative-message-container align-center relative my8 none">
-                    <div class="informative-message-container-left-stripe imcls-green"></div>
-                    <p class="no-margin fs13 dark-green bold message-text">Title field is required.</p>
-                    <div class="close-parent close-informative-message-style">✖</div>
-                </div>
-                <!-- title -->
-                <div class="input-wrapper" style="margin-top: 16px;">
-                    <label class="input-label fs13 dark my4" for="create-tag-title">Tag title<span class="error-asterisk red ml4">*</span></label>
-                    <input type="text" id="create-tag-title" class="styled-input" autocomplete="off" placeholder='{{ __("Tag title") }}'>
-                    <p class="fs12 my4 light-gray">This title is displayed in website to represent tag.</p>
-                </div>
-                <!-- title-meta -->
-                <div class="input-wrapper" style="margin-top: 12px;">
-                    <label class="input-label fs13 dark my4" for="create-tag-meta-title">Tag meta title<span class="error-asterisk red ml4">*</span></label>
-                    <input type="text" id="create-tag-meta-title" class="styled-input" autocomplete="off" placeholder='{{ __("Tag meta title") }}'>
-                    <p class="fs12 my4 light-gray">Meta title used to improve <strong>tag SEO</strong> and displayed in browser tab title.</p>
-                </div>
-                <!-- slug -->
-                <div class="input-wrapper" style="margin-top: 12px;">
-                    <label class="input-label fs13 dark my4" for="create-tag-slug">Tag slug<span class="error-asterisk red ml4">*</span></label>
-                    <input type="text" id="create-tag-slug" class="styled-input" autocomplete="off" placeholder='{{ __("Tag slug") }}'>
-                    <p class="fs12 my4 light-gray">The “slug” is the URL-friendly version of the title. It is usually all lowercase and contains only letters, numbers, and hyphens.</p>
-                </div>
-                <!-- description -->
-                <div class="input-wrapper" style="margin-top: 12px;">
-                    <label class="input-label fs13 dark my4" for="create-tag-description">Tag description (optional)<span class="error-asterisk red ml4">*</span></label>
-                    <textarea type="text" id="create-tag-description" class="styled-input no-textarea-x-resize" style="height: 130px;" autocomplete="off" placeholder='{{ __("Description here") }}'></textarea>
-                </div>
-
-                <div class="flex">
-                    <div id="create-tag-button" class="typical-button-style dark-bs full-center mt8" style="padding: 8px 11px;">
-                        <div class="relative size12 mr4">
-                            <svg class="flex size12 icon-above-spinner" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M4.41,104.24c2.53-3,5.67-4,9.7-4,26.83.17,53.67,0,80.5.17,3.53,0,4.61-.67,4.58-4.44-.18-27-.1-54-.09-81,0-7.29,2-9.31,9.16-9.32q21.22,0,42.45,0c6.91,0,9,2.09,9,9,0,27,.09,54-.09,81,0,3.82.94,4.79,4.76,4.76,26.83-.17,53.67-.1,80.5-.09,7.58,0,9.5,1.92,9.51,9.47q0,21.23,0,42.45c0,6.55-2.17,8.66-8.83,8.67-27.16,0-54.32.09-81.47-.09-3.77,0-4.47,1-4.45,4.58.15,26.83,0,53.66.17,80.49,0,4-1,7.17-4,9.7H103c-3-2.53-4-5.67-4-9.7.16-26.85,0-53.7.18-80.55,0-3.65-.87-4.54-4.52-4.52-26.85.18-53.7,0-80.55.18-4,0-7.18-1-9.71-4Z"></path></svg>
-                            <svg class="spinner size12 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
-                                <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
-                                <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
-                            </svg>
+                <!-- tag form component that include tag inputs to create a new tag -->
+                <x-admin.tag.tag-form operation="create">
+                    <x-slot name="bottomline">
+                        <div class="flex">
+                            <div id="create-tag-button" class="typical-button-style dark-bs full-center mt8" style="padding: 8px 11px;">
+                                <div class="relative size12 mr4">
+                                    <svg class="flex size12 icon-above-spinner" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M4.41,104.24c2.53-3,5.67-4,9.7-4,26.83.17,53.67,0,80.5.17,3.53,0,4.61-.67,4.58-4.44-.18-27-.1-54-.09-81,0-7.29,2-9.31,9.16-9.32q21.22,0,42.45,0c6.91,0,9,2.09,9,9,0,27,.09,54-.09,81,0,3.82.94,4.79,4.76,4.76,26.83-.17,53.67-.1,80.5-.09,7.58,0,9.5,1.92,9.51,9.47q0,21.23,0,42.45c0,6.55-2.17,8.66-8.83,8.67-27.16,0-54.32.09-81.47-.09-3.77,0-4.47,1-4.45,4.58.15,26.83,0,53.66.17,80.49,0,4-1,7.17-4,9.7H103c-3-2.53-4-5.67-4-9.7.16-26.85,0-53.7.18-80.55,0-3.65-.87-4.54-4.52-4.52-26.85.18-53.7,0-80.55.18-4,0-7.18-1-9.71-4Z"></path></svg>
+                                    <svg class="spinner size12 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
+                                        <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                        <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                    </svg>
+                                </div>
+                                <span class="bold fs12 unselectable">Create Tag</span>
+                            </div>
                         </div>
-                        <span class="bold fs12 unselectable">Create Tag</span>
-                    </div>
-                </div>
+                    </x-slot>
+                </x-admin.tag.tag-form>
             </div>
             <div id="tags-section">
                 <table class="full-width">
@@ -147,9 +162,10 @@
                                 <td class="tags-table-title-column">
                                     <a href="" class="dark-blue bold no-underline post-title">{{ $tag->title }}</a>
                                     <div class="align-center mt4 tag-actions-links-container">
-                                        <a href="" class="fs12 dark-blue no-underline">
+                                        <div class="fs12 dark-blue pointer open-tag-update-viewer">
                                             <span>Edit</span>
-                                        </a>
+                                            <input type="hidden" class="tag-id" value="{{ $tag->id }}" autocomplete="off">
+                                        </div>
                                         <span class="fs11 mx8 dark">〡</span>
                                         <span class="fs12 red pointer align-center delete-tag-button">
                                             <svg class="spinner size12 mr4 none" fill="none" viewBox="0 0 16 16">

@@ -24,7 +24,6 @@ class TagController extends Controller
             ->with(compact('k'))
             ->with(compact('tags'));
     }
-
     public function store(Request $request) {
         $data = $this->validate($request, [
             'title'=>'required|unique:tags,title|max:600',
@@ -33,10 +32,15 @@ class TagController extends Controller
             'description'=>'sometimes|max:4000'
         ], [
             'title.unique'=>'Tag title is already taken',
-            'slug.unique'=>'Slug is already taken',
+            'slug.unique'=>'Tag slug is already taken',
         ]);
         if(!isset($data['description'])) $data['description'] = '--';
 
-        // Tag::create($data);
+        Tag::create($data);
+    }
+    public function data(Request $request) {
+        $tag_id = $request->validate(['tag'=>'required|exists:tags,id'])['tag'];
+
+        return Tag::find($tag_id);
     }
 }
