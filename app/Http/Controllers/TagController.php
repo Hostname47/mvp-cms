@@ -36,7 +36,16 @@ class TagController extends Controller
         ]);
         if(!isset($data['description'])) $data['description'] = '--';
 
-        Tag::create($data);
+        $tag = Tag::create($data);
+
+        return [
+            'id'=>$tag->id,
+            'title'=>$tag->title,
+            'title_meta'=>$tag->title_meta,
+            'slug'=>$tag->slug,
+            'description'=>$tag->description,
+            'link'=>''
+        ];
     }
     public function data(Request $request) {
         $tag_id = $request->validate(['tag'=>'required|exists:tags,id'])['tag'];
@@ -54,5 +63,9 @@ class TagController extends Controller
 
         $tag = Tag::find($tag_id);
         $tag->update($data);
+    }
+    public function delete(Request $request) {
+        $tag_id = $request->validate(['tag_id'=>'required|exists:tags,id'])['tag_id'];
+        Tag::find($tag_id)->delete();
     }
 }

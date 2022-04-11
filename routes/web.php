@@ -47,6 +47,7 @@ Route::get('/admin/tags', [TagController::class, 'manage'])->name('admin.tags.ma
 Route::post('/admin/tags', [TagController::class, 'store']);
 Route::get('/admin/tags/data', [TagController::class, 'data']);
 Route::patch('/admin/tags', [TagController::class, 'update']);
+Route::delete('/admin/tags', [TagController::class, 'delete']);
 
 Route::get('/{category:slug}/{post:slug}', [PostController::class, 'view'])->name('view.post');
 

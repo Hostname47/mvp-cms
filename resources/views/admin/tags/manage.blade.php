@@ -172,7 +172,7 @@
                         {{ $tags->appends(request()->query())->links() }}
                     </div>
                 </div>
-                <table class="full-width">
+                <table id="tags-table" class="full-width">
                     <thead>
                         <tr class="flex">
                             <th class="tags-table-selection-column">
@@ -193,61 +193,102 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if($tags->count())
-                            @foreach($tags as $tag)
-                            <tr class="flex tag-row">
-                                <!-- tags selection -->
-                                <td class="tags-table-selection-column">
-                                    <input type="checkbox" class="no-margin size16" autocomplete="off">
-                                </td>
-                                <!-- tags title -->
-                                <td class="tags-table-title-column">
-                                    <div>
-                                        <a href="" class="dark-blue bold no-underline title-text">{{ $tag->title }}</a>
-                                        <p class="fs12 light-gray my2">meta title: <span class="meta-title-text">{{ $tag->title_meta }}</span></p>
+                        @foreach($tags as $tag)
+                        <tr class="flex tag-row">
+                            <!-- tags selection -->
+                            <td class="tags-table-selection-column">
+                                <input type="checkbox" class="no-margin size16" autocomplete="off">
+                            </td>
+                            <!-- tags title -->
+                            <td class="tags-table-title-column">
+                                <div>
+                                    <a href="" class="dark-blue bold no-underline title-text">{{ $tag->title }}</a>
+                                    <p class="fs12 light-gray my2">meta title: <span class="meta-title-text">{{ $tag->title_meta }}</span></p>
+                                </div>
+                                <div class="align-center mt4 tag-actions-links-container">
+                                    <div class="fs12 dark-blue pointer open-tag-update-viewer">
+                                        <span>Edit</span>
+                                        <input type="hidden" class="tag-id" value="{{ $tag->id }}" autocomplete="off">
                                     </div>
-                                    <div class="align-center mt4 tag-actions-links-container">
-                                        <div class="fs12 dark-blue pointer open-tag-update-viewer">
-                                            <span>Edit</span>
-                                            <input type="hidden" class="tag-id" value="{{ $tag->id }}" autocomplete="off">
-                                        </div>
-                                        <span class="fs11 mx8 dark">〡</span>
-                                        <span class="fs12 red pointer align-center open-tag-delete-viewer">
-                                            <svg class="spinner size12 mr4 none" fill="none" viewBox="0 0 16 16">
-                                                <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
-                                                <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
-                                            </svg>
-                                            <span>Delete</span>
-                                            <input type="hidden" class="tag-id" value="{{ $tag->id }}" autocomplete="off">
-                                        </span>
-                                        <span class="fs11 mx8 dark">〡</span>
-                                        <a href="" class="fs12 dark-blue no-underline tag-page">
-                                            <span>View</span>
-                                        </a>
-                                    </div>
-                                </td>
-                                <!-- tags slug -->
-                                <td class="tags-table-slug-column">
-                                    <p class="dark no-margin fs13 slug-text">{{ $tag->slug }}</p>
-                                </td>
-                                <!-- tags description -->
-                                <td class="tags-table-description-column">
-                                    <p class="dark no-margin fs13 description-text">{{ $tag->description }}</p>
-                                </td>
-                                <!-- tags posts count -->
-                                <td class="tags-table-count-column">
-                                    <a href="" class="dark-blue bold no-underline tag-page">0</a>
-                                </td>
-                            </tr>
-                            @endforeach
-                        @else
-                        <tr>
-                            <td colspan="5" class="full-center">
-                                <svg class="size14 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
-                                <p class="bold dark fs13 my4">No tags found. <a class="link-style">Click here</a> to create a new tag</p>
+                                    <span class="fs11 mx8 dark">〡</span>
+                                    <span class="fs12 red pointer align-center open-tag-delete-viewer">
+                                        <svg class="spinner size12 mr4 none" fill="none" viewBox="0 0 16 16">
+                                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                            <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                        </svg>
+                                        <span>Delete</span>
+                                        <input type="hidden" class="tag-id" value="{{ $tag->id }}" autocomplete="off">
+                                    </span>
+                                    <span class="fs11 mx8 dark">〡</span>
+                                    <a href="" class="fs12 dark-blue no-underline tag-link">
+                                        <span>View</span>
+                                    </a>
+                                </div>
+                            </td>
+                            <!-- tags slug -->
+                            <td class="tags-table-slug-column">
+                                <p class="dark no-margin fs13 slug-text">{{ $tag->slug }}</p>
+                            </td>
+                            <!-- tags description -->
+                            <td class="tags-table-description-column">
+                                <p class="dark no-margin fs13 description-text">{{ $tag->description }}</p>
+                            </td>
+                            <!-- tags posts count -->
+                            <td class="tags-table-count-column">
+                                <a href="" class="dark-blue bold no-underline tag-link tag-count">0</a>
                             </td>
                         </tr>
-                        @endif
+                        @endforeach
+                        <tr class="empty-tags-row @if($tags->count()) none @endif">
+                            <td colspan="5" class="full-center">
+                                <svg class="size14 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                                <p class="bold dark fs13 my4">No tags found. Consider the left section to create a new tag</p>
+                            </td>
+                        </tr>
+                        <tr class="flex tag-row tag-row-skeleton none">
+                            <!-- tags selection -->
+                            <td class="tags-table-selection-column">
+                                <input type="checkbox" class="no-margin tag-selection-id size16" autocomplete="off">
+                            </td>
+                            <!-- tags title -->
+                            <td class="tags-table-title-column">
+                                <div>
+                                    <a href="" class="dark-blue bold no-underline title-text"></a>
+                                    <p class="fs12 light-gray my2">meta title: <span class="meta-title-text"></span></p>
+                                </div>
+                                <div class="align-center mt4 tag-actions-links-container">
+                                    <div class="fs12 dark-blue pointer open-tag-update-viewer">
+                                        <span>Edit</span>
+                                        <input type="hidden" class="tag-id" value="" autocomplete="off">
+                                    </div>
+                                    <span class="fs11 mx8 dark">〡</span>
+                                    <span class="fs12 red pointer align-center open-tag-delete-viewer">
+                                        <svg class="spinner size12 mr4 none" fill="none" viewBox="0 0 16 16">
+                                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                            <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                        </svg>
+                                        <span>Delete</span>
+                                        <input type="hidden" class="tag-id" value="" autocomplete="off">
+                                    </span>
+                                    <span class="fs11 mx8 dark">〡</span>
+                                    <a href="" class="fs12 dark-blue no-underline tag-link">
+                                        <span>View</span>
+                                    </a>
+                                </div>
+                            </td>
+                            <!-- tags slug -->
+                            <td class="tags-table-slug-column">
+                                <p class="dark no-margin fs13 slug-text"></p>
+                            </td>
+                            <!-- tags description -->
+                            <td class="tags-table-description-column">
+                                <p class="dark no-margin fs13 description-text"></p>
+                            </td>
+                            <!-- tags posts count -->
+                            <td class="tags-table-count-column">
+                                <a href="" class="dark-blue bold no-underline tag-link tag-count"></a>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
                 <div class="flex my8">

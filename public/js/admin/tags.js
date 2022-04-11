@@ -41,18 +41,31 @@ $('#create-tag-button').on('click', function() {
             slug: slug.val(),
             description: description.val()
         },
-        success: function(response) {
+        success: function(tag) {
             error_container.addClass('none');
             green_message_container.find('.message-text').text('Tag has been created successfully.');
             green_message_container.removeClass('none');
             print_top_message('Tag has been created successfully.', 'green')
 
+            // Clone tag row and append it to tags table
+            let row = $('.tag-row-skeleton').clone(true);
+            row.find('.tag-id').val(tag.id);
+            row.find('.tag-selection-id').val(tag.id);
+            row.find('.title-text').text(tag.title);
+            row.find('.meta-title-text').text(tag.title_meta);
+            row.find('.slug-text').text(tag.slug);
+            row.find('.description-text').text(tag.description);
+            row.find('.tag-count').text('0');
+            row.find('.tag-link').attr('href', tag.link);
+            row.removeClass('tag-row-skeleton none');
+
+            $('#tags-table tbody').prepend(row);
+
+            // Clean inputs after addition
             title.val('');
             title_meta.val('');
             slug.val('');
             description.val('');
-
-            // Clone tag row and append it to tags table
         },
         error: function(response) {
             let errorObject = JSON.parse(response.responseText);
@@ -261,9 +274,15 @@ $('#delete-tag-button').on('click', function() {
             $('.tag-row').each(function() {
                 if($(this).find('.tag-id').val() == tag_id) {
                     $(this).remove();
+                    if($('.tag-row').length == 0)
+                        $('.empty-tags-row').removeClass('none');
                     return false;
                 }
             });
+
+            let viewer = button;
+            while(!viewer.hasClass('global-viewer')) viewer = viewer.parent();
+            viewer.find('.close-global-viewer').trigger('click');
 
             print_top_message('Tag has been deleted successfully.', 'green');
         },
