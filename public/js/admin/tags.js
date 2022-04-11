@@ -45,7 +45,12 @@ $('#create-tag-button').on('click', function() {
             error_container.addClass('none');
             green_message_container.find('.message-text').text('Tag has been created successfully.');
             green_message_container.removeClass('none');
-            scroll_to_element('tag-create-green-message-container', -8);
+            print_top_message('Tag has been created successfully.', 'green')
+
+            title.val('');
+            title_meta.val('');
+            slug.val('');
+            description.val('');
 
             // Clone tag row and append it to tags table
         },
@@ -60,7 +65,7 @@ $('#create-tag-button').on('click', function() {
             green_message_container.addClass('none');
             error_container.find('.message-text').text(error);
             error_container.removeClass('none');
-            scroll_to_element('tag-create-error-container', -8);
+            print_top_message(error, 'error');
         },
         complete: function(response) {
             create_tag_lock = true;

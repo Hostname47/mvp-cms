@@ -33,7 +33,7 @@
         </div>
     </div>
     <div class="admin-page-content-box">
-        <!-- post permanent delete viewer -->
+        <!-- update tag viewer -->
         <div id="update-tag-viewer" class="global-viewer full-center none" style="z-index:11112">
             <div class="viewer-box-style-1">
                 <div class="flex align-center space-between light-gray-border-bottom" style="padding: 12px 16px;">
@@ -99,11 +99,6 @@
                 </form>
             </div>
         </div>
-        <div class="flex my8">
-            <div class="move-to-right">
-                {{ $tags->appends(request()->query())->links() }}
-            </div>
-        </div>
         <div class="flex mt8">
             <div id="create-tag-section">
                 <div class="align-center">
@@ -130,6 +125,11 @@
                 </x-admin.tag.tag-form>
             </div>
             <div id="tags-section">
+                <div class="flex my8">
+                    <div class="move-to-right">
+                        {{ $tags->appends(request()->query())->links() }}
+                    </div>
+                </div>
                 <table class="full-width">
                     <thead>
                         <tr class="flex">
@@ -162,7 +162,7 @@
                                 <td class="tags-table-title-column">
                                     <div>
                                         <a href="" class="dark-blue bold no-underline title-text">{{ $tag->title }}</a>
-                                        <p class="fs12 bold light-gray my2 meta-title-text">meta title: {{ $tag->title_meta }}</p>
+                                        <p class="fs12 light-gray my2">meta title: <span class="meta-title-text">{{ $tag->title_meta }}</span></p>
                                     </div>
                                     <div class="align-center mt4 tag-actions-links-container">
                                         <div class="fs12 dark-blue pointer open-tag-update-viewer">
@@ -208,11 +208,11 @@
                         @endif
                     </tbody>
                 </table>
-            </div>
-        </div>
-        <div class="flex my8">
-            <div class="move-to-right">
-                {{ $tags->appends(request()->query())->links() }}
+                <div class="flex my8">
+                    <div class="move-to-right">
+                        {{ $tags->appends(request()->query())->links() }}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
