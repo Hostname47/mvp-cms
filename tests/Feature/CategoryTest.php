@@ -5,14 +5,23 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Models\Category;
+use App\Models\{Category,User};
 
 class CategoryTest extends TestCase
 {
     use DatabaseTransactions;
 
+    protected $authuser;
+
+    public function setUp(): void {
+        parent::setUp();
+
+        $user = $this->authuser = User::factory()->create();
+        $this->actingAs($user);
+    }
+
     /** @test */
-    public function category_creation() {
+    public function create_a_category() {
         $this->assertCount(0, Category::all());
         $this->post('/admin/categories', [
             'title'=>'cool category',
@@ -24,8 +33,7 @@ class CategoryTest extends TestCase
     }
 
     /** @test */
-    public function category_parent() {
-        $this->withoutExceptionHandling();
+    public function create_a_category_with_parent() {
         $parent = Category::create([
             'title'=>'cool category',
             'title_meta'=>'cool category',
@@ -46,7 +54,7 @@ class CategoryTest extends TestCase
     }
 
     /** @test */
-    public function multiple_category_ancestors() {
+    public function create_a_category_with_multiple_ancestors() {
         $grandparent = Category::create([
             'title'=>'cool category',
             'title_meta'=>'cool category',
@@ -74,16 +82,12 @@ class CategoryTest extends TestCase
     }
 
     /** @test */
-    public function category_inputs_validation() {
-        $response = $this->post('/admin/categories', [
-            'title'=>'cool category',
-            'slug'=>'cool-category',
-            'description'=>'cool description'
-        ]);
-        $response->assertStatus(302);
-        $response->assertSessionHasErrors(['title_meta']);
-        $response = $this->post('/admin/categories', ['parent_category_id'=>8475]);
-        $response->assertSessionHasErrors(['title','title_meta','slug','description','parent_category_id']);
+    public function create_a_category_validation() {
+        $this->post('/admin/categories', ['title'=>'c','slug'=>'c','description'=>'c description'])
+            ->assertRedirect()->assertSessionHasErrors(['title_meta']); // Title meta is required
+
+        $this->post('/admin/categories', ['parent_category_id'=>847845])
+            ->assertRedirect()->assertSessionHasErrors(['parent_category_id']); // Invalide parent category
     }
 
     /** @test */
@@ -94,9 +98,9 @@ class CategoryTest extends TestCase
             'slug'=>'cool-category',
             'description'=>'cool description'
         ]);
-        $response = 
-            $this->post('/admin/categories', ['title'=>'cool category', 'title_meta'=>'cool category','slug'=>'cool-category'])
-            ->assertStatus(302)
+
+        $this->post('/admin/categories', ['title'=>'cool category', 'title_meta'=>'cool category','slug'=>'cool-category'])
+            ->assertRedirect()
             ->assertSessionHasErrors(['title','title_meta','slug']);
     }
 
@@ -108,35 +112,34 @@ class CategoryTest extends TestCase
         $this->assertEquals(2, $category2->priority);
         $this->patch('/categories/priorities', [
             'categories_ids'=>[$category1->id, $category2->id],
-            'categories_priorities'=>[2, 3]
+            'categories_priorities'=>[2, 1]
         ]);
         $this->assertEquals(2, $category1->refresh()->priority);
-        $this->assertEquals(3, $category2->refresh()->priority);
+        $this->assertEquals(1, $category2->refresh()->priority);
     }
 
     /** @test */
     public function categories_priorities_update_validation() {
-        $response = $this->patch('/categories/priorities', [
+        // priority should be numeric and categories ids should exist
+        $this->patch('/categories/priorities', [
             'categories_ids'=>[485, 548],
             'categories_priorities'=>['invalid-priority-value', 3]
-        ]);
-        $response->assertStatus(302);
-        $response->assertSessionHasErrors(['categories_ids.*','categories_priorities.*']);
-
+        ])->assertRedirect()->assertSessionHasErrors(['categories_ids.*','categories_priorities.*']);
+        // Number of categories should equal the number of priorities
         $category1 = Category::create(['title'=>'category 1','title_meta'=>'category 1','slug'=>'category 1','description'=>'category 1 description','priority'=>1]);
         $response = $this->patch('/categories/priorities', [
             'categories_ids'=>[$category1->id],
-            'categories_priorities'=>[3]
-        ]);
-        $this->assertEquals(3, $category1->refresh()->priority);
+            'categories_priorities'=>[3, 5]
+        ])->assertStatus(422);
     }
 
     /** @test */
-    public function updating_category() {
+    public function update_a_category() {
         $c1 = Category::create(['title'=>'cool category-a','title_meta'=>'cool category-a','slug'=>'cool-category-a','description'=>'cool description-a', 'priority'=>4]);
         $c2 = Category::create(['title'=>'cool category-b','title_meta'=>'cool category-b','slug'=>'cool-category-b','description'=>'cool description-b', 'priority'=>5]);
+        
         $category = Category::create(['title'=>'cool category','title_meta'=>'cool category','slug'=>'cool-category','description'=>'cool description', 'priority'=>6, 'parent_category_id'=>$c1->id]);
-        $response = $this->patch('/admin/category', [
+        $this->patch('/admin/category', [
             'category_id'=>$category->id,
             'title'=>'new category',
             'title_meta'=>'new category',
@@ -144,8 +147,7 @@ class CategoryTest extends TestCase
             'description'=>'new description',
             'priority'=>9,
             'parent_category_id'=>$c2->id
-        ]);
-        $response->assertOk();
+        ])->assertOk();
         $category->refresh();
         $this->assertEquals('new category', $category->title);
         $this->assertEquals('new category', $category->title_meta);
@@ -156,26 +158,32 @@ class CategoryTest extends TestCase
     }
 
     /** @test */
-    public function updating_category_validation() {
+    public function update_a_category_validation() {
         $category = Category::create(['title'=>'cool category','title_meta'=>'cool category','slug'=>'cool-category','description'=>'cool description', 'priority'=>6]);
         $this->patch('/admin/category', [
             'category_id'=>$category->id,
             'parent_category_id'=>54845 // Invalid parent category
-        ])->assertStatus(302)->assertSessionHasErrors(['parent_category_id']);
+        ])->assertRedirect()->assertSessionHasErrors(['parent_category_id']);
+
         $parent = Category::create(['title'=>'parent category','title_meta'=>'parent category','slug'=>'parent-category','description'=>'parent category description', 'priority'=>5]);
         $this->patch('/admin/category', [
             'category_id'=>$category->id,
-            'parent_category_id'=>$parent->id // Invalid parent category
+            'parent_category_id'=>$parent->id
         ])->assertOk();
+
         $this->patch('/admin/category', [
             'category_id'=>$category->id,
             'title'=>\Illuminate\Support\Str::random(601) // Invalid title length category
-        ])->assertStatus(302)->assertSessionHasErrors(['title']);
+        ])->assertRedirect()->assertSessionHasErrors(['title']);
+
+        $this->patch('/admin/category', [
+            'category_id'=>$category->id,
+            'priority'=>'Invalid priority value' // Invalid title length category
+        ])->assertRedirect()->assertSessionHasErrors(['priority']);
     }
 
     /** @test */
     public function updating_category_status() {
-        $this->withoutExceptionHandling();
         $category = Category::create(['title'=>'cool category','title_meta'=>'cool category','slug'=>'cool-category','description'=>'cool description', 'status'=>'awaiting review', 'priority'=>6]);
         $this->assertEquals('awaiting review', $category->status);
         $this->patch('/admin/category/status', [
@@ -208,9 +216,9 @@ class CategoryTest extends TestCase
     public function update_category_status_validation() {
         $c0 = Category::create(['title'=>'c0','title_meta'=>'c0','slug'=>'c0','description'=>'c0', 'status'=>'awaiting review', 'priority'=>0]);
         $this->patch('/admin/category/status', ['category_id'=>$c0->id, 'status'=>'invalide status'])
-            ->assertStatus(302)->assertSessionHasErrors(['status']);
+            ->assertRedirect()->assertSessionHasErrors(['status']);
         $this->patch('/admin/category/status', ['category_id'=>985478, 'status'=>'invalide status'])
-            ->assertStatus(302)->assertSessionHasErrors(['category_id','status']);
+            ->assertRedirect()->assertSessionHasErrors(['category_id','status']);
     }
 
     /** @test */
@@ -243,13 +251,39 @@ class CategoryTest extends TestCase
         $response = $this->patch('/admin/category/set-as-root', [
             'category_id'=>$category->id,
         ]);
-        $category->refresh();
-        $this->assertEquals($category->parent_category_id, null);
+        $this->assertEquals($category->refresh()->parent_category_id, null);
     }
 
     /** @test */
     public function delete_a_category() {
-        /** We will handle this case finishing all remaining resources like posts and comments.. etc */
-        $this->assertTrue(true);
+        $category = Category::create(['title'=>'cool category','title_meta'=>'cool category','slug'=>'cool-category','description'=>'cool description', 'priority'=>6]);
+        $this->assertCount(1, Category::all());
+        $this->delete('/admin/categories', ['category_id'=>$category->id]);
+        $this->assertCount(0, Category::all());
+    }
+
+    /** @test */
+    public function delete_a_category_will_make_all_its_subcategories_roots() {
+        $category0 = Category::create(['title'=>'c0','title_meta'=>'c0','slug'=>'c0','description'=>'c0', 'priority'=>1]);
+        $category1 = Category::create(['title'=>'c1','title_meta'=>'c1','slug'=>'c1','description'=>'c1', 'priority'=>2, 'parent_category_id'=>$category0->id]);
+        
+        $this->assertEquals($category1->parent_category_id, $category0->id);
+        $this->delete('/admin/categories', ['category_id'=>$category0->id]);
+        $this->assertNull($category1->refresh()->parent_category_id);
+    }
+
+    /** @test */
+    public function delete_a_category_and_all_its_subcategories() {
+        $category0 = Category::create(['title'=>'c0','title_meta'=>'c0','slug'=>'c0','description'=>'c0','priority'=>1]);
+        $category1 = Category::create(['title'=>'c1','title_meta'=>'c1','slug'=>'c1','description'=>'c1','priority'=>2,'parent_category_id'=>$category0->id]);
+        $category2 = Category::create(['title'=>'c2','title_meta'=>'c2','slug'=>'c2','description'=>'c2','priority'=>3,'parent_category_id'=>$category1->id]);
+        $category3 = Category::create(['title'=>'c3','title_meta'=>'c3','slug'=>'c3','description'=>'c3','priority'=>4,'parent_category_id'=>$category2->id]);
+
+        $this->assertCount(4, Category::all());
+        $this->delete('/admin/categories', [
+            'category_id'=>$category0->id,
+            'after_hook'=>'delete-all-subcategories'
+        ]);
+        $this->assertCount(0, Category::all());
     }
 }

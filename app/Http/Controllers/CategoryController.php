@@ -18,10 +18,10 @@ class CategoryController extends Controller
 
     public function store(Request $request) {
         $data = $request->validate([
-            'title'=>'required|unique:categories|min:2|max:600',
-            'title_meta'=>'required|unique:categories|min:2|max:600',
+            'title'=>'required|unique:categories|max:600',
+            'title_meta'=>'required|unique:categories|max:600',
             'slug'=>'required|min:2|unique:categories|max:1000',
-            'description'=>'required|min:2|max:4000',
+            'description'=>'required|max:4000',
             'parent_category_id'=>'sometimes|exists:categories,id'
         ]);
         /**
@@ -30,6 +30,85 @@ class CategoryController extends Controller
          */
         Category::create($data);
         Session::flash('message', 'Category created successfully. <a class="no-underline blue bold" href="' . route('category.manage') . '">click here</a> to manage it in category management page');
+    }
+
+    public function update(Request $request) {
+        $category_id = $request->validate(['category_id'=>'required|exists:categories,id'])['category_id'];
+        $data = $request->validate([
+            'title'=>"sometimes|unique:categories,title,$category_id|min:2|max:600",
+            'title_meta'=>"sometimes|unique:categories,title_meta,$category_id|min:2|max:600",
+            'slug'=>"sometimes|min:2|unique:categories,slug,$category_id|max:1000",
+            'description'=>'sometimes|min:2|max:4000',
+            'priority'=>'sometimes|numeric',
+            'parent_category_id'=>'sometimes|exists:categories,id',
+        ]);
+
+        if(isset($data['parent_category_id']) && $category_id == $data['parent_category_id']) 
+            abort(422, 'A category could not be a parent to itself');
+            
+        $category = Category::find($category_id);
+
+        if(isset($data['parent_category_id']) 
+            && $data['parent_category_id'] == Category::where('slug', 'uncategorized')->first()->id)
+            abort(422, 'Uncategorized category could not be a parent to other categories.');
+
+        $category->update($data);
+        Session::flash('message', 'Category informations have been updated successfully.');
+
+        return route('category.manage', ['category'=>$category->refresh()->slug]);
+    }
+
+    public function update_status(Request $request) {
+        $data = $request->validate([
+            'category_id'=>'required|exists:categories,id',
+            'status'=>['required', Rule::in(['awaiting review', 'hidden', 'live'])]
+        ]);
+        
+        $category = Category::find($data['category_id']);
+        // First update category status
+        $category->update(['status'=>$data['status']]);
+        // Then we fetch all its subcategories in all levels to update them as well
+        $subcategories = DB::select("
+            with recursive subcategories (id, parent_category_id) as (
+                select id, parent_category_id
+                from categories
+                where parent_category_id = " . $category->id . "
+                union all
+                select c.id, c.parent_category_id
+                from categories c
+                inner join subcategories
+                        on c.parent_category_id = subcategories.id
+            )
+            select * from subcategories;
+        ");
+
+        collect($subcategories)->each(function($subcategory) use ($data) {
+            Category::find($subcategory->id)->update(['status'=>$data['status']]);
+        });
+
+        Session::flash('message', 'The category "'.$category->title.'" status has been updated successfully. (all its subcategories\' status are updated as well)');
+    }
+
+    public function delete(Request $request) {
+        $data = $request->validate([
+            'category_id'=>'required|exists:categories,id',
+            'after_hook'=>['sometimes', Rule::in(['delete-all-subcategories'])]
+        ]);
+
+        $category = Category::find($data['category_id']);
+
+        if($category->slug == 'uncategorized')
+            abort(422, 'This category could not be deleted');
+
+        if(isset($data['after_hook'])) {
+            switch($data['after_hook']) {
+                case 'delete-all-subcategories':
+                    $category->descendants()->delete();
+                    break;
+            }
+        }
+
+        $category->delete();
     }
 
     public function manage(Request $request) {
@@ -59,57 +138,6 @@ class CategoryController extends Controller
             ->with(compact('category_hierarchy'));
     }
 
-    public function update(Request $request) {
-        $category_id = $request->validate(['category_id'=>'required|exists:categories,id'])['category_id'];
-        $data = $request->validate([
-            'title'=>"sometimes|unique:categories,title,$category_id|min:2|max:600",
-            'title_meta'=>"sometimes|unique:categories,title_meta,$category_id|min:2|max:600",
-            'slug'=>"sometimes|min:2|unique:categories,slug,$category_id|max:1000",
-            'description'=>'sometimes|min:2|max:4000',
-            'priority'=>'sometimes|numeric',
-            'parent_category_id'=>'sometimes|exists:categories,id',
-        ]);
-
-        if(isset($data['parent_category_id']) && $category_id == $data['parent_category_id']) abort(422, 'A category could not be a parent to itself');
-
-        $category = Category::find($category_id);
-        $category->update($data);
-        Session::flash('message', 'Category informations have been updated successfully.');
-
-        return route('category.manage', ['category'=>$category->refresh()->slug]);
-    }
-
-    public function update_status(Request $request) {
-        $data = $request->validate([
-            'category_id'=>'required|exists:categories,id',
-            'status'=>['sometimes', Rule::in(['awaiting review', 'hidden', 'live'])]
-        ]);
-        
-        $category = Category::find($data['category_id']);
-        // First update category status
-        $category->update(['status'=>$data['status']]);
-        // Then we fetch all its subcategories in all levels to update them as well
-        $subcategories = DB::select("
-            with recursive subcategories (id, parent_category_id) as (
-                select id, parent_category_id
-                from categories
-                where parent_category_id = " . $category->id . "
-                union all
-                select c.id, c.parent_category_id
-                from categories c
-                inner join subcategories
-                        on c.parent_category_id = subcategories.id
-            )
-            select * from subcategories;
-        ");
-
-        collect($subcategories)->each(function($subcategory) use ($data) {
-            Category::find($subcategory->id)->update(['status'=>$data['status']]);
-        });
-
-        Session::flash('message', 'The category "'.$category->title.'" status has been updated successfully. (all its subcategories\' status are updated as well)');
-    }
-
     public function set_as_root(Request $request) {
         $category_id = $request->validate(['category_id'=>'required|exists:categories,id'])['category_id'];
         $category = Category::find($category_id);
@@ -124,6 +152,9 @@ class CategoryController extends Controller
             'categories_priorities'=>'required',
             'categories_priorities.*'=>'numeric',
         ]);
+
+        if(count($data['categories_ids']) != count($data['categories_priorities']))
+            abort(422, 'Number of categories should equal the number of priorities');
 
         $i = 0;
         foreach($data['categories_ids'] as $cid) {

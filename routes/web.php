@@ -6,8 +6,9 @@ use App\Http\Controllers\{IndexController, AdminController, PostController, Cate
 use App\Http\Controllers\Admin\{AdminSearchController};
 
 Route::get('/test', function() {
-    $tag = \App\Models\Tag::where('slug', 'websocKets')->first();
-    dd($tag);
+    $posts = \App\Models\Post::withoutGlobalScopes()->get();
+
+    return 'hello';
 });
 
 Route::get('/', [IndexController::class, 'index']);
@@ -22,6 +23,7 @@ Route::patch('/admin/category', [CategoryController::class, 'update']);
 Route::patch('/admin/category/status', [CategoryController::class, 'update_status']);
 Route::patch('/admin/category/set-as-root', [CategoryController::class, 'set_as_root']);
 Route::get('/admin/categories/manage', [CategoryController::class, 'manage'])->name('category.manage');
+Route::delete('/admin/categories', [CategoryController::class, 'delete']);
 
 Route::get('/admin/media/fetch', [MediaController::class, 'fetch_media']);
 Route::get('/admin/media/set/components', [MediaController::class, 'fetch_media_set_components']);
