@@ -5,31 +5,40 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Models\{Category,User};
+use App\Models\{Post,Category,User};
 
 class CategoryTest extends TestCase
 {
     use DatabaseTransactions;
 
     protected $authuser;
+    protected $uncategorized;
 
     public function setUp(): void {
         parent::setUp();
 
         $user = $this->authuser = User::factory()->create();
         $this->actingAs($user);
+
+        $this->uncategorized = Category::factory()->create([
+            'title'=>'Uncategorized',
+            'title_meta'=>'Uncategorized',
+            'slug'=>'uncategorized',
+        ]);
+
+        dd($this->uncategorized);
     }
 
     /** @test */
     public function create_a_category() {
-        $this->assertCount(0, Category::all());
+        $this->assertCount(1, Category::all()); // 1: because of uncategorized created in setup method
         $this->post('/admin/categories', [
             'title'=>'cool category',
             'title_meta'=>'cool category',
             'slug'=>'cool-category',
             'description'=>'cool description'
         ]);
-        $this->assertCount(1, Category::all());
+        $this->assertCount(2, Category::all());
     }
 
     /** @test */
@@ -48,7 +57,7 @@ class CategoryTest extends TestCase
             'description'=>'awesome description',
             'parent_category_id'=>$parent->id
         ]);
-        $this->assertCount(2, Category::all());
+        $this->assertCount(3, Category::all());
         $category = Category::where('title', 'awesome category')->get()->first();
         $this->assertEquals('cool category', $category->ancestor->title);
     }
@@ -75,7 +84,7 @@ class CategoryTest extends TestCase
             'description'=>'awesome description',
             'parent_category_id'=>$parent->id
         ]);
-        $this->assertCount(3, Category::all());
+        $this->assertCount(4, Category::all());
         $category = Category::where('title', 'awesome category')->get()->first();
         $this->assertEquals('nice category', $category->ancestor->title);
         $this->assertEquals('cool category', $category->ancestor->ancestor->title);
@@ -257,9 +266,9 @@ class CategoryTest extends TestCase
     /** @test */
     public function delete_a_category() {
         $category = Category::create(['title'=>'cool category','title_meta'=>'cool category','slug'=>'cool-category','description'=>'cool description', 'priority'=>6]);
-        $this->assertCount(1, Category::all());
+        $this->assertCount(2, Category::all());
         $this->delete('/admin/categories', ['category_id'=>$category->id]);
-        $this->assertCount(0, Category::all());
+        $this->assertCount(1, Category::all());
     }
 
     /** @test */
@@ -279,11 +288,49 @@ class CategoryTest extends TestCase
         $category2 = Category::create(['title'=>'c2','title_meta'=>'c2','slug'=>'c2','description'=>'c2','priority'=>3,'parent_category_id'=>$category1->id]);
         $category3 = Category::create(['title'=>'c3','title_meta'=>'c3','slug'=>'c3','description'=>'c3','priority'=>4,'parent_category_id'=>$category2->id]);
 
-        $this->assertCount(4, Category::all());
+        $this->assertCount(5, Category::all());
         $this->delete('/admin/categories', [
             'category_id'=>$category0->id,
             'after_hook'=>'delete-all-subcategories'
         ]);
-        $this->assertCount(0, Category::all());
+        $this->assertCount(1, Category::all());
+    }
+
+    /** @test */
+    public function delete_a_category_will_turn_posts_with_only_this_category_uncategorized() {
+        $uncategorized = $this->uncategorized;
+        // categories
+        $category0 = Category::create(['title'=>'c0','title_meta'=>'c0','slug'=>'c0','description'=>'c0','priority'=>1]);
+        $category1 = Category::create(['title'=>'c1','title_meta'=>'c1','slug'=>'c1','description'=>'c1','parent_category_id'=>$category0->id]);
+        $category2 = Category::create(['title'=>'c2','title_meta'=>'c2','slug'=>'c2','description'=>'c2','parent_category_id'=>$category1->id]);
+        $category3 = Category::create(['title'=>'c3','title_meta'=>'c3','slug'=>'c3','description'=>'c3','parent_category_id'=>$category2->id]);
+        $other_category = Category::create(['title'=>'c3','title_meta'=>'c3','slug'=>'c3','description'=>'c3']);
+        // Create a post in each category
+        $this->post('/admin/posts', [
+            'title'=>'p0','title_meta'=>'p0','slug'=>'p0','content'=>'content','categories'=>[$category0->id]
+        ]);
+        $this->post('/admin/posts', [
+            'title'=>'p1','title_meta'=>'p1','slug'=>'p1','content'=>'content','categories'=>[$category1->id]
+        ]);
+        $this->post('/admin/posts', [
+            'title'=>'p2','title_meta'=>'p2','slug'=>'p2','content'=>'content','categories'=>[$category2->id]
+        ]);
+        $this->post('/admin/posts', [
+            'title'=>'p3','title_meta'=>'p3','slug'=>'p3','content'=>'content','categories'=>[$category3->id]
+        ]);
+        $this->post('/admin/posts', [
+            'title'=>'p4','title_meta'=>'p4','slug'=>'p4','content'=>'content','categories'=>[$category3->id, $other_category->id]
+        ]);
+        
+        $this->assertEquals(0, $uncategorized->posts->count());
+        $this->delete('/admin/categories', [
+            'category_id'=>$category0->id,
+            'after_hook'=>'delete-all-subcategories'
+        ]);
+        $this->assertEquals(4, $uncategorized->refresh()->posts->count());
+        /**
+         * Notice that p4 post will not be under uncategorized because it has other category ($other_category) which is 
+         * not a descendent of the deleted category ($c0).
+         */
     }
 }

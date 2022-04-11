@@ -100,9 +100,32 @@ class CategoryController extends Controller
         if($category->slug == 'uncategorized')
             abort(422, 'This category could not be deleted');
 
+        /**
+         * Before delete the category we have to check the posts that have only this category and
+         * set them as uncategorized. Also if the after_hook require to delete the subcategories as well
+         * instead of set them as root (no parents); then we have to perform the same operation for
+         * each descendant category.
+         */
+        $uncategorized = Category::where('slug', 'uncategorized')->first();
+        $category->posts()->chunk(100, function ($posts) use ($uncategorized) { // Avoid memory overflow
+            foreach ($posts as $post) {
+                if($post->categories()->count() == 1)
+                    $post->categories()->attach($uncategorized->id);
+            }
+        });
+
         if(isset($data['after_hook'])) {
             switch($data['after_hook']) {
                 case 'delete-all-subcategories':
+                    foreach($category->descendants as $subcategory) {
+                        $subcategory->posts()->chunk(40, function ($posts) use ($uncategorized) {
+                            foreach ($posts as $post) {
+                                if($post->categories()->count() == 1) {
+                                    $post->categories()->attach($uncategorized->id);
+                                }
+                            }
+                        });             
+                    }
                     $category->descendants()->delete();
                     break;
             }
