@@ -33,6 +33,8 @@ class PostTest extends TestCase
 
     public function tearDown():void {
         (new Filesystem)->cleanDirectory(storage_path('app/testing'));
+        
+        parent::tearDown();
     }
 
     /** @test */
@@ -189,7 +191,7 @@ class PostTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        Tag::create(['title'=>'mouad', 'slug'=>'mouad']);
+        Tag::create(['title'=>'mouad', 'title_meta'=>'mouad', 'slug'=>'mouad']);
         $this->assertCount(1, Tag::all());
         $this->post('/admin/posts', [
             'title' => 'a','title_meta' => 'a','slug' => 'a','summary' => 'a','content' => 'a',
@@ -205,7 +207,7 @@ class PostTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        Tag::create(['title'=>'mouad', 'slug'=>'mouad']);
+        Tag::create(['title'=>'mouad', 'title_meta'=>'mouad', 'slug'=>'mouad']);
         $this->assertCount(1, Tag::all());
         $this->post('/admin/posts', [
             'title' => 'a','title_meta' => 'a','slug' => 'a','summary' => 'a','content' => 'a',
@@ -406,12 +408,12 @@ class PostTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        $tag1 = Tag::create(['title'=>'mouad', 'slug'=>'mouad']);
-        $tag2 = Tag::create(['title'=>'thomas', 'slug'=>'acquinas']);
+        $tag1 = Tag::create(['title'=>'mouad', 'title_meta'=>'mouad', 'slug'=>'mouad']);
+        $tag2 = Tag::create(['title'=>'thomas', 'title_meta'=>'thomas', 'slug'=>'acquinas']);
 
         $this->post('/admin/posts', [
             'title' => 'a','title_meta' => 'a','slug' => 'a','summary' => 'a','content' => 'a',
-            'tags' => [$tag1->id, $tag2->id]
+            'tags' => [$tag1->title, $tag2->title]
         ]);
         $post = Post::first();
         $this->assertCount(2, $post->tags);

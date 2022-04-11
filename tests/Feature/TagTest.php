@@ -26,4 +26,19 @@ class TagTest extends TestCase
         ]);
         $this->assertCount(1, Tag::all());
     }
+
+    /** @test */
+    public function tags_could_not_have_same_title_or_slug() {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $this->assertCount(0, Tag::all());
+        $this->post('/admin/tags', [
+            'title'=>'Websockets',
+            'title_meta'=>'Websockets',
+            'slug'=>'websockets',
+            'description'=>'websockets desc'
+        ]);
+        $this->assertCount(1, Tag::all());
+    }
 }

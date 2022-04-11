@@ -6,8 +6,8 @@ use App\Http\Controllers\{IndexController, AdminController, PostController, Cate
 use App\Http\Controllers\Admin\{AdminSearchController};
 
 Route::get('/test', function() {
-    $post = \App\Models\Post::find(39);
-    dd($post->featured_image);
+    $tag = \App\Models\Tag::where('slug', 'websocKets')->first();
+    dd($tag);
 });
 
 Route::get('/', [IndexController::class, 'index']);

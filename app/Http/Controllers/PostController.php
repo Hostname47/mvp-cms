@@ -129,11 +129,15 @@ class PostController extends Controller
         // Attach tags to the post
         if(isset($tags['tags'])) {
             foreach($tags['tags'] as $tag) {
-                $post->tags()->syncWithoutDetaching(Tag::firstOrCreate(['title'=>$tag], [
-                    'title' => $tag,
-                    'slug' => Str::slug($tag, '-'),
-                    'description' => '--'
-                ])->id);
+                /**
+                 * Here, we have to check if a tag exists with that title or not, If a tag already
+                 * exists with the same title or generated slug, then we return it and get its id to attach it
+                 * Otherwise the first_or_create_method will create it
+                 */
+                $post->tags()->syncWithoutDetaching(Tag::first_or_create(
+                    ['title'=>$tag, 'title_meta'=>$tag, 'slug'=>Str::slug($tag, '-')], 
+                    ['title'=>$tag, 'title_meta'=>$tag, 'slug'=>Str::slug($tag, '-'), 'description' => '--']
+                )->id);
             }
         }
 
@@ -253,11 +257,10 @@ class PostController extends Controller
         if(isset($tags['tags'])) {
             $post->tags()->sync([]); // 1
             foreach($tags['tags'] as $tag) { // 2
-                $post->tags()->syncWithoutDetaching(Tag::firstOrCreate(['title'=>$tag], [
-                    'title' => $tag,
-                    'slug' => Str::slug($tag, '-'),
-                    'description' => '--'
-                ])->id);
+                $post->tags()->syncWithoutDetaching(Tag::first_or_create(
+                    ['title'=>$tag, 'title_meta'=>$tag, 'slug'=>Str::slug($tag, '-')], 
+                    ['title'=>$tag, 'title_meta'=>$tag, 'slug'=>Str::slug($tag, '-'), 'description' => '--']
+                )->id);
             }
         }
 
