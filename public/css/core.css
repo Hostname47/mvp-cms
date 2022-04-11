@@ -112,6 +112,10 @@ body {
     color: #2777b9;
 }
 
+.blue-when-hover:hover {
+    color: #2777b9;
+}
+
 .gray {
     color: rgb(29, 29, 29);
 }

@@ -222,6 +222,72 @@ $('#update-tag-button').on('click', function() {
     })
 });
 
+$('.open-tag-delete-viewer').on('click', function() {
+    // First we open the tag update 
+    let viewer = $('#delete-tag-viewer');
+    let tag_row = $(this);
+    while(!tag_row.hasClass('tag-row')) tag_row = tag_row.parent();
+
+    viewer.find('.tag-id').val(tag_row.find('.tag-id').val());
+    viewer.find('.slug-text').text(tag_row.find('.slug-text').text());
+    viewer.find('.title-text').text(tag_row.find('.title-text').text());
+    viewer.find('.meta-title-text').text(tag_row.find('.meta-title-text').text());
+    viewer.find('.description-text').text(tag_row.find('.description-text').text());
+
+    viewer.removeClass('none');
+    disable_page_scroll();
+});
+
+let delete_tag_lock = true;
+$('#delete-tag-button').on('click', function() {
+    if(!delete_tag_lock) return;
+    delete_tag_lock = false;
+    
+    let button = $(this);
+    let spinner = button.find('.spinner');
+    let buttonicon = button.find('.icon-above-spinner');
+    let tag_id = button.find('.tag-id').val();
+
+    button.addClass('red-bs-disabled');
+    spinner.addClass('inf-rotate');
+    spinner.removeClass('opacity0');
+    buttonicon.addClass('none');
+
+    $.ajax({
+        type: 'delete',
+        url: '/admin/tags',
+        data: { tag_id: tag_id },
+        success: function() {
+            $('.tag-row').each(function() {
+                if($(this).find('.tag-id').val() == tag_id) {
+                    $(this).remove();
+                    return false;
+                }
+            });
+
+            print_top_message('Tag has been deleted successfully.', 'green');
+        },
+        error: function(response) {
+            let errorObject = JSON.parse(response.responseText);
+            let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+            if (errorObject.errors) {
+                let errors = errorObject.errors;
+                error = errors[Object.keys(errors)[0]][0];
+            }
+
+            print_top_message(error, 'error');
+        },
+        complete: function() {
+            delete_tag_lock = true;
+
+            button.removeClass('red-bs-disabled');
+            buttonicon.removeClass('none');
+            spinner.addClass('opacity0');
+            spinner.removeClass('inf-rotate');
+        }
+    })
+})
+
 function tag_input_validate(condition, input, form, message) {
     if(!condition) {
         let error_container = form.find('.error-container');

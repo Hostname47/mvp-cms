@@ -78,6 +78,48 @@
                 </div>
             </div>
         </div>
+        <!-- delete tag viewer -->
+        <div id="delete-tag-viewer" class="global-viewer full-center none" style="z-index:11112">
+            <div class="viewer-box-style-1">
+                <div class="flex align-center space-between light-gray-border-bottom" style="padding: 12px 16px;">
+                    <div class="flex align-center">
+                        <svg class="size18 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M130.3,99.52c24.62,0,49.23.06,73.84-.08,3.27,0,4.38.56,4.36,4.14-.15,37.49-.05,75-.11,112.48,0,14.25-10.08,24.28-24.35,24.3q-53.79.09-107.58,0c-14.57,0-24.53-10-24.55-24.6,0-37.33.07-74.66-.13-112,0-4,1.35-4.35,4.68-4.33C81.07,99.58,105.69,99.52,130.3,99.52Zm24,93.89a7.65,7.65,0,0,0,6.44-4.63c1.59-3.43.68-6.43-1.76-8.95-5-5.15-10-10.26-15.23-15.2-2-1.89-2.14-3-.06-5,5-4.69,9.77-9.59,14.55-14.49,4-4.12,4.31-8.7.92-12.06s-7.93-3-12.05,1c-4.66,4.56-9.43,9-13.76,13.9-2.59,2.91-4.05,2.41-6.41-.17-4.29-4.69-8.9-9.08-13.44-13.53-4.35-4.28-9-4.64-12.4-1.09s-2.9,7.9,1.18,12c4.8,4.88,9.6,9.78,14.56,14.49,1.84,1.76,2,2.8.06,4.63-5,4.7-9.76,9.61-14.56,14.48-4.11,4.17-4.54,8.6-1.3,12.05,3.38,3.6,8.09,3.28,12.41-1,4.77-4.69,9.6-9.32,14.13-14.23,2.14-2.33,3.33-2,5.34.1,4.56,4.88,9.41,9.49,14.12,14.23C148.89,192,151,193.48,154.26,193.41ZM130.19,83.87h-88c-12.52,0-13.8-1.36-13.81-14.07a17.33,17.33,0,0,1,2.69-10.19,15.58,15.58,0,0,1,13.7-7c13.85,0,27.71-.13,41.55.1,3.73.06,5.14-.77,4.77-4.71a23.51,23.51,0,0,1,4.81-17.44,22.89,22.89,0,0,1,18.55-9.22q15.41-.12,30.8,0c13.93.12,23.85,10.14,24,24.14.09,7.15.09,7.15,7.05,7.15H214c11.9,0,17.89,6.09,17.92,18.13,0,1.14,0,2.28,0,3.42-.08,7-2.79,9.74-9.79,9.74Q176.14,83.89,130.19,83.87Zm-.28-31.3c6.82,0,13.65,0,20.47,0,1.11,0,2.54.79,3.25-1.09,2.78-7.39-1.95-14.48-9.83-14.52-8.29,0-16.57,0-24.85,0-10.39,0-12.53,2.31-12.36,12.57,0,2.7.94,3.19,3.34,3.14C116.59,52.48,123.25,52.57,129.91,52.57Z"></path></svg>
+                        <span class="fs20 bold dark">Delete tag</span>
+                    </div>
+                    <div class="pointer size24 full-center fs20 close-global-viewer unselectable">✖</div>
+                </div>
+                <div style="padding: 14px;" class="dark fs13">
+                    <div class="content-container">
+                        <h3 class="dark fs16 no-margin">Delete Tag :</h3>
+                        <div class="ml8">
+                            <div class="full-center">
+                                <a href="" class="text-center fs24 bold my8 dark blue-when-hover">#<span class="slug-text">websockets</span></a>
+                            </div>
+                            <p class="my8 blue"><strong>Title</strong> : <span class="dark title-text">Websockets</span></p>
+                            <p class="my8 blue"><strong>Meta title</strong> : <span class="dark meta-title-text">Websockets</span></p>
+                            <p class="my8 blue"><strong>Slug</strong> : <span class="dark slug-text">web-sockets</span></p>
+                            <p class="my8 blue"><strong>Description</strong> : <span class="dark description-text">This is cool description about websockets</span></p>
+                        </div>
+                        <div class="typical-section-style my8" style="margin-top: 14px;">
+                            <p class="no-margin dark">You are about to <strong>permanently delete this tag</strong> from your site. Once it gets deleted, all posts with that tag will not be classified under it anymore. This action cannot be undone.</p>
+                        </div>
+                        <div class="flex">
+                            <div id="delete-tag-button" class="typical-button-style red-bs align-center" style="padding: 8px 11px;">
+                                <div class="relative size14 mr4">
+                                    <svg class="flex size14 icon-above-spinner" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M3.53,137.79a8.46,8.46,0,0,1,8.7-4c2.1.23,4.28-.18,6.37.09,3.6.47,4.61-.68,4.57-4.46-.28-24.91,7.59-47.12,23-66.65C82.8,16.35,151.92,9.31,197.09,47.21c3,2.53,3.53,4,.63,7.08-5.71,6.06-11,12.5-16.28,19-2.13,2.63-3.37,3.21-6.4.73-42.11-34.47-103.77-13.24-116,39.81a72.6,72.6,0,0,0-1.61,17c0,2.36.76,3.09,3.09,3,4.25-.17,8.51-.19,12.75,0,5.46.25,8.39,5.55,4.94,9.66-12,14.24-24.29,28.18-36.62,42.39L4.91,143.69c-.37-.43-.5-1.24-1.38-1Z"></path><path d="M216.78,81.86l35.71,41c1.93,2.21,3.13,4.58,1.66,7.58s-3.91,3.54-6.9,3.58c-3.89.06-8.91-1.65-11.33.71-2.1,2-1.29,7-1.8,10.73-6.35,45.41-45.13,83.19-90.81,88.73-28.18,3.41-53.76-3-76.88-19.47-2.81-2-3.61-3.23-.85-6.18,6-6.45,11.66-13.26,17.26-20.09,1.79-2.19,2.87-2.46,5.39-.74,42.83,29.26,99.8,6.7,111.17-43.93,2.2-9.8,2.2-9.8-7.9-9.8-1.63,0-3.27-.08-4.9,0-3.2.18-5.94-.6-7.29-3.75s.13-5.61,2.21-8c7.15-8.08,14.21-16.24,21.31-24.37C207.43,92.59,212,87.31,216.78,81.86Z"></path></svg>
+                                    <svg class="spinner size14 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
+                                        <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                        <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                    </svg>
+                                </div>
+                                <span class="bold fs12 unselectable">Delete Tag</span>
+                                <input type="hidden" class="tag-id" autocomplete="off"> <!-- set dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         @if(Session::has('message'))
         <div class="informative-message-container flex align-center relative my8">
@@ -170,7 +212,7 @@
                                             <input type="hidden" class="tag-id" value="{{ $tag->id }}" autocomplete="off">
                                         </div>
                                         <span class="fs11 mx8 dark">〡</span>
-                                        <span class="fs12 red pointer align-center delete-tag-button">
+                                        <span class="fs12 red pointer align-center open-tag-delete-viewer">
                                             <svg class="spinner size12 mr4 none" fill="none" viewBox="0 0 16 16">
                                                 <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
                                                 <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
@@ -179,7 +221,7 @@
                                             <input type="hidden" class="tag-id" value="{{ $tag->id }}" autocomplete="off">
                                         </span>
                                         <span class="fs11 mx8 dark">〡</span>
-                                        <a href="" class="fs12 dark-blue no-underline">
+                                        <a href="" class="fs12 dark-blue no-underline tag-page">
                                             <span>View</span>
                                         </a>
                                     </div>
@@ -194,7 +236,7 @@
                                 </td>
                                 <!-- tags posts count -->
                                 <td class="tags-table-count-column">
-                                    <p class="dark no-margin">0</p>
+                                    <a href="" class="dark-blue bold no-underline tag-page">0</a>
                                 </td>
                             </tr>
                             @endforeach
