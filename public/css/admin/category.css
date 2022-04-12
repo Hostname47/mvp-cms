@@ -105,3 +105,14 @@
     margin-top: 4px;
     margin: 3px 6px 0 3px;
 }
+
+.category-delete-item {
+    display: flex;
+    padding: 8px;
+    border: 1px solid #c5ccd2;
+    border-radius: 3px;
+    cursor: pointer;
+}
+.category-delete-item:hover {
+    background-color: #f9fbfd;
+}

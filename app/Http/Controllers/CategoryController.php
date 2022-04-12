@@ -98,7 +98,7 @@ class CategoryController extends Controller
     public function delete(Request $request) {
         $data = $request->validate([
             'category_id'=>'required|exists:categories,id',
-            'after_hook'=>['sometimes', Rule::in(['delete-all-subcategories'])]
+            'type'=>['required', Rule::in(['delete-category-only', 'delete-category-and-subcategories'])]
         ]);
 
         $category = Category::find($data['category_id']);
@@ -113,31 +113,30 @@ class CategoryController extends Controller
          * each descendant category.
          */
         $uncategorized = Category::where('slug', 'uncategorized')->first();
-        $category->posts()->chunk(100, function ($posts) use ($uncategorized) { // Avoid memory overflow
-            foreach ($posts as $post) {
-                if($post->categories()->count() == 1)
-                    $post->categories()->attach($uncategorized->id);
-            }
-        });
-
-        if(isset($data['after_hook'])) {
-            switch($data['after_hook']) {
-                case 'delete-all-subcategories':
-                    foreach($category->descendants as $subcategory) {
-                        $subcategory->posts()->chunk(40, function ($posts) use ($uncategorized) {
-                            foreach ($posts as $post) {
-                                if($post->categories()->count() == 1) {
-                                    $post->categories()->attach($uncategorized->id);
-                                }
-                            }
-                        });             
+        
+        switch($data['type']) {
+            case 'delete-category-only':
+                $category->posts()->chunk(100, function ($posts) use ($uncategorized) { // Avoid memory overflow
+                    foreach ($posts as $post) {
+                        if($post->categories()->count() == 1)
+                            $post->categories()->attach($uncategorized->id);
                     }
-                    $category->descendants()->delete();
-                    break;
-            }
+                });
+                $category->delete();
+                break;
+            case 'delete-category-and-subcategories':
+                foreach($category->descendantsAndSelf as $subcategory) {
+                    $subcategory->posts()->chunk(40, function ($posts) use ($uncategorized) {
+                        foreach ($posts as $post) {
+                            if($post->categories()->count() == 1) {
+                                $post->categories()->attach($uncategorized->id);
+                            }
+                        }
+                    });             
+                }
+                $category->descendantsAndSelf()->delete();
+                break;
         }
-
-        $category->delete();
     }
 
     public function manage(Request $request) {
@@ -206,7 +205,7 @@ class CategoryController extends Controller
             'type'=>['required', Rule::in(['select-one', 'select-many', 'select-by-click'])]
         ]);
         $category = Category::find($data['category_id']);
-        $subcategories = $category->subcategories;
+        $subcategories = $category->subcategories()->orderBy('priority', 'asc')->get();
 
         switch($data['type']) {
             case 'select-one':

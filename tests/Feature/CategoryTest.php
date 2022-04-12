@@ -265,7 +265,10 @@ class CategoryTest extends TestCase
     public function delete_a_category() {
         $category = Category::create(['title'=>'cool category','title_meta'=>'cool category','slug'=>'cool-category','description'=>'cool description', 'priority'=>6]);
         $this->assertCount(2, Category::all());
-        $this->delete('/admin/categories', ['category_id'=>$category->id]);
+        $this->delete('/admin/categories', [
+            'category_id'=>$category->id,
+            'type'=>'delete-category-only'
+        ]);
         $this->assertCount(1, Category::all());
     }
 
@@ -275,7 +278,10 @@ class CategoryTest extends TestCase
         $category1 = Category::create(['title'=>'c1','title_meta'=>'c1','slug'=>'c1','description'=>'c1', 'priority'=>2, 'parent_category_id'=>$category0->id]);
         
         $this->assertEquals($category1->parent_category_id, $category0->id);
-        $this->delete('/admin/categories', ['category_id'=>$category0->id]);
+        $this->delete('/admin/categories', [
+            'category_id'=>$category0->id,
+            'type'=>'delete-category-only'
+        ]);
         $this->assertNull($category1->refresh()->parent_category_id);
     }
 
@@ -289,7 +295,7 @@ class CategoryTest extends TestCase
         $this->assertCount(5, Category::all());
         $this->delete('/admin/categories', [
             'category_id'=>$category0->id,
-            'after_hook'=>'delete-all-subcategories'
+            'type'=>'delete-category-and-subcategories'
         ]);
         $this->assertCount(1, Category::all());
     }
@@ -323,7 +329,7 @@ class CategoryTest extends TestCase
         $this->assertEquals(0, $uncategorized->posts->count());
         $this->delete('/admin/categories', [
             'category_id'=>$category0->id,
-            'after_hook'=>'delete-all-subcategories'
+            'type'=>'delete-category-and-subcategories'
         ]);
         $this->assertEquals(4, $uncategorized->refresh()->posts->count());
         /**
