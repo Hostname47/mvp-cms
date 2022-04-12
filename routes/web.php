@@ -12,6 +12,7 @@ Route::get('/test', function() {
 });
 
 Route::post('/admin/roles', [RoleController::class, 'store']);
+Route::patch('/admin/roles', [RoleController::class, 'update']);
 
 Route::get('/admin/categories', [CategoryController::class, 'manage'])->name('admin.categories.management');
 Route::get('/admin/categories/hierarchy/select-one-category-viewer', [CategoryController::class, 'get_select_one_category_viewer']);

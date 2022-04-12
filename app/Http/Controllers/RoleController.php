@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use App\Models\Role;
 
 class RoleController extends Controller
@@ -22,6 +23,20 @@ class RoleController extends Controller
         $data['priority'] = ++$lowest_priority;
         Role::create($data);
 
-        \Session::flash('message', 'Role "' . $data['title'] . '" has been created successfully. Now you can attach some permissions to that role and give it to users');
+        Session::flash('message', 'Role "' . $data['title'] . '" has been created successfully. Now you can attach permissions to that role and then grant it to users');
+    }
+
+    public function update(Request $request) {
+        $role_id = $request->validate(['role_id'=>'required|exists:roles,id'])['role_id'];
+        $data = $request->validate([
+            'title'=>"sometimes|max:255|unique:roles,title,$role_id",
+            'slug'=>"sometimes|max:255|unique:roles,slug,$role_id",
+            'description'=>'sometimes|max:2000'
+        ]);
+
+        $role = Role::find($role_id);
+        $role->update($data);
+
+        Session::flash('message', 'Role has been updated successfully.');
     }
 }
