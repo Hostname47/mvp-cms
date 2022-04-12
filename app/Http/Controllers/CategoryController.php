@@ -29,7 +29,7 @@ class CategoryController extends Controller
          * before publish it as live to public in manage categories page
          */
         $category = Category::create($data);
-        Session::flash('message', 'Category created successfully. <a class="no-underline blue bold" href="' . route('category.manage', ['category'=>$category->id]) . '">click here</a> to manage it');
+        Session::flash('message', 'Category created successfully. <a class="no-underline blue bold" href="' . route('admin.categories.management', ['category'=>$category->slug]) . '">click here</a> to manage it');
     }
 
     public function update(Request $request) {
@@ -153,7 +153,7 @@ class CategoryController extends Controller
         }
         
         if(is_null($category))
-            $categories = Category::whereNull('parent_category_id')->orderBy('priority', 'asc')->get();
+            $categories = Category::whereNull('parent_category_id')->where('slug', '<>', 'uncategorized')->orderBy('priority', 'asc')->get();
 
         return view('admin.categories.manage')
             ->with(compact('categories'))

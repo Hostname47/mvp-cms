@@ -1,0 +1,54 @@
+#create-category-section {
+    flex: 0.8;
+}
+
+#categories-to-manage-section {
+    flex: 1;
+}
+
+.hierarchy-category-wrapper {
+    padding: 6px 4px;
+}
+
+.categories-hierarchy-level {
+    padding: 6px;
+    background-color: #f4f5f782;
+    border: 1px solid #dde0e6;
+    border-radius: 3px;
+}
+
+.expand-subcategories-button {
+    height: 16px;
+    width: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1f2324;
+    fill: white;
+    border-radius: 4px;
+    margin-left: 8px;
+    padding: 1px;
+}
+
+.angle-before-subcategories-box {
+    height: 12px;
+    width: 12px;
+    position: absolute;
+    left: -24px;
+    top: 0px;
+}
+
+.category-manage-section {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.category-manage-informations-section {
+    flex: 1;
+}
+
+.category-manage-operations-section {
+    width: 380px;
+    margin-left: 12px;
+}

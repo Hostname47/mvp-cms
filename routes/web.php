@@ -15,12 +15,11 @@ Route::get('/', [IndexController::class, 'index']);
 Route::get('/home', [IndexController::class, 'index'])->name('home');
 
 Route::get('/admin/categories', [CategoryController::class, 'manage'])->name('admin.categories.management');
-Route::get('/admin/categories/create', [CategoryController::class, 'create'])->name('create.new.category');
 Route::get('/admin/categories/hierarchy/select-one-category-viewer', [CategoryController::class, 'get_select_one_category_viewer']);
 Route::get('/admin/categories/hierarchy/subcategories/one-level-subcategories', [CategoryController::class, 'get_one_level_hierarchy_subcategories']);
 Route::post('/admin/categories', [CategoryController::class, 'store']);
-Route::patch('/categories/priorities', [CategoryController::class, 'update_categories_priorities']);
 Route::patch('/admin/category', [CategoryController::class, 'update']);
+Route::patch('/categories/priorities', [CategoryController::class, 'update_categories_priorities']);
 Route::patch('/admin/category/status', [CategoryController::class, 'update_status']);
 Route::patch('/admin/category/set-as-root', [CategoryController::class, 'set_as_root']);
 Route::get('/admin/categories/manage', [CategoryController::class, 'manage'])->name('category.manage');
