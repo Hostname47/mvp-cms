@@ -58,6 +58,22 @@
             <svg class="size13 mr8" fill="@if($page=='tags.management') #2ca0ff @else #fff @endif" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M155.32,3.3h78.12c11.19,3.13,18.39,10.25,21.48,21.49v79.09c-1.28.34-1,1.52-1.23,2.38-2.34,9.41-7.32,17.21-14.14,24Q183.26,186.47,127,242.73C112.72,257,95,256.88,80.58,242.52Q48.47,210.45,16.4,178.35C.91,162.85,1,145.73,16.51,130.17Q67,79.62,117.55,29C128.53,18,139.19,6.68,155.32,3.3ZM197.4,86.52a26,26,0,1,0-25.7-26.18A25.94,25.94,0,0,0,197.4,86.52Z"/></svg>
             <span class="@if($page=='tags.management') blue bold @endif">Tags Management</span>
         </a>
+        <!-- roles and permissions -->
+        <div class="toggle-box admin-sidebar-button-with-nestedbuttons-box">
+            <div class="toggle-button admin-sidebar-button-with-nestedbuttons">
+                <svg class="size13 mr8" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M256.44,172.34c-10.15,14.26-25.88,18.13-41.5,21.48-43.65,9.35-87.82,10-132.06,5.81-20.18-1.9-40.31-4.88-59.29-12.74-5-2.07-9.8-4.58-13.76-8.36-7.07-6.75-7-14.28.28-20.79s16.06-9.27,25-12c7.48-2.28,7.64-2.16,8.08,5.36.51,8.47,5.39,13.72,12.37,17.54,12.18,6.68,25.66,8.72,39.12,10.42a273.28,273.28,0,0,0,89-2.87c8.2-1.66,16.17-4,23.41-8.45s11.29-10.5,10.57-19c-.41-4.91,1.19-5.3,5.38-4,7.64,2.44,15.22,4.9,22.25,8.84,5.28,3,9.22,7,11.18,12.84Zm-88.5-.17c12-1.77,23.93-3.57,34.76-9.58,5.6-3.11,9.07-7.2,8.51-14.09-.58-7.18-.45-14.41-1.09-21.58-1.28-14.37-3.68-28.52-9.74-41.81-9.14-20-25.42-28.5-46.66-23.8-9.94,2.19-19.17,6.43-28,11.51a23.2,23.2,0,0,1-15.59,2.63,207,207,0,0,0-21.46-2.33c-11.61-.5-21.11,3.7-27.4,14A52.88,52.88,0,0,0,56,98.65c-5.58,17.25-5.48,35.16-5.91,53-.11,4.68,3.07,7.85,6.88,10.09a50.94,50.94,0,0,0,10.65,4.9c20.56,6.33,41.72,7.84,68,7.93A204.19,204.19,0,0,0,167.94,172.17Z"/></svg>
+                <span>Roles and Permissions</span>
+                <svg class="toggle-arrow size7 move-to-right" style="@if($page == 'admin.posts') transform: rotate(90deg) @endif" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02">
+                    <path d="M13.4,1.43l9.35,11a4,4,0,0,1,0,5.18l-9.35,11a4,4,0,1,1-6.1-5.18L14.46,15,7.3,6.61a4,4,0,0,1,6.1-5.18Z"/>
+                </svg>
+            </div>
+            <div class="toggle-container admin-sidebar-button-nestedbuttons-box @if($page != 'admin.roles-and-permissions') none @endif">
+                <a href="" class="admin-sidebar-sub-button align-center @if(isset($subpage) && $subpage == 'admin.roles-and-permissions.overview') blue @endif">
+                    <svg class="size10 mr8" fill="@if(isset($subpage) && $subpage == 'admin.roles-and-permissions.overview') #2ca0ff @else #fff @endif" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M250.29,9.76V250.24H9.71V9.76ZM116,116.17V36.55H36.37v79.62Zm27.87-.09h79.62V36.48H143.83ZM36.3,223.56h79.76V144.14H36.3Zm107.43-.05h79.75V144.13H143.73Z"/></svg>
+                    <span style="color: @if(isset($subpage) && $subpage == 'admin.roles-and-permissions.overview') #2ca0ff @endif">Overview</span>
+                </a>
+            </div>
+        </div>
         <!-- designed with <3 by mouad -->
         <div class="move-to-bottom mr8" style="margin-left: 20px">
             <div class="flex align-center white fs13" style="letter-spacing: 1.2px;">

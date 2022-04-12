@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{IndexController, AdminController, PostController, CategoryController,
-    MediaController, OAuthController, TagController};
+    MediaController, OAuthController, TagController, RoleController};
 use App\Http\Controllers\Admin\{AdminSearchController};
 
 Route::get('/test', function() {
@@ -10,6 +10,8 @@ Route::get('/test', function() {
 
     return 'hello';
 });
+
+Route::post('/admin/roles', [RoleController::class, 'store']);
 
 Route::get('/admin/categories', [CategoryController::class, 'manage'])->name('admin.categories.management');
 Route::get('/admin/categories/hierarchy/select-one-category-viewer', [CategoryController::class, 'get_select_one_category_viewer']);
