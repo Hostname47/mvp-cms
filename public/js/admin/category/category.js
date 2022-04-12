@@ -1,38 +1,38 @@
-function verify_category_inputs() {
-    let title = $('#category-title');
-    let title_meta = $('#category-meta-title');
-    let slug = $('#category-slug');
-    let description = $('#category-description');
+function verify_category_inputs(wrapper) {
+    let title = wrapper.find('.title');
+    let title_meta = wrapper.find('.meta-title');
+    let slug = wrapper.find('.slug');
+    let description = wrapper.find('.description');
 
     /**
      * Before we verify category inputs, we hide the message and all error asterisks and then we 
      * validate the inputs so that If the admin fix a previous issue the error message will not appear
      * when all inputs are verified.
      */
-    $('#category-error-container').addClass('none');
-    $('.error-asterisk').css('display', 'none');
+    wrapper.find('.error-container').addClass('none');
+    wrapper.find('.error-asterisk').css('display', 'none');
 
     if(title.val() == '') {
-        display_category_error(title, 'category title field is required');
+        display_category_error(title, wrapper, 'category title field is required');
         return false;
     }
     if(title_meta.val() == '') {
-        display_category_error(title_meta, 'category title meta field is required');
+        display_category_error(title_meta, wrapper, 'category title meta field is required');
         return false;
     }
     if(slug.val() == '') {
-        display_category_error(slug, 'category slug field is required');
+        display_category_error(slug, wrapper, 'category slug field is required');
         return false;
     }
     if(description.val() == '') {
-        display_category_error(description, 'category description field is required');
+        display_category_error(description, wrapper, 'category description field is required');
         return false;
     }
 
     return true;
 }
-function verify_category_parent() {
-    let is_subcategory = $('#is-sub-category').val() == 'yes';
+function verify_category_parent(wrapper) {
+    let is_subcategory = wrapper.find('.is-sub-category').val() == 'yes';
     let category_selected = false;
     $('.hierarchy-category-id').each(function() {
         if($(this).is(':checked')) {
@@ -40,38 +40,42 @@ function verify_category_parent() {
             return false;
         }
     });
-
+    
     if(is_subcategory && !category_selected) {
-        display_category_error($('#is-sub-category'), 'Since the category is a subcategory, you have to select a parent category');
+        display_category_error(wrapper.find('.is-sub-category'), wrapper, 'Since the category is a subcategory, you have to select a parent category');
         return false;
     }
 
     return true;
 }
 
-function display_category_error(input, error_message) {
-    $('#category-error-container .error-message').text(error_message);
-    $('#category-error-container').removeClass('none');
+function display_category_error(input, wrapper, error_message) {
+    wrapper.find('.error-container .message-text').text(error_message);
+    wrapper.find('.error-container').removeClass('none');
     if(input) {
         let input_box = input;
         while(!input_box.hasClass('input-container')) input_box = input_box.parent();
         input_box.find('.error-asterisk').css('display', 'inline');
     }
-    scroll_to_element('category-error-container', -100);
+    $(window).scrollTop(0);
 }
 
-$('#category-title').on('input', function() {
+$('.title').on('input', function() {
     let value = $(this).val().trim();
-    let slug = convertToSlug(value);
+    let slug = slugify(value);
 
-    $('#category-meta-title').val(value);
-    $('#category-slug').val(slug);
+    let wrapper = $(this);
+    while(!wrapper.hasClass('category-form')) wrapper = wrapper.parent();
+    wrapper.find('.meta-title').val(value);
+    wrapper.find('.slug').val(slug);
 });
 
-$('#is-sub-category-toggle-button').on('click', function() {
+$('.is-sub-category-toggle-button').on('click', function() {
     let button = $(this);
-    let state = $('#is-sub-category');
-    let target_button = $('.open-select-one-category-viewer');
+    let wrapper = button;
+    while(!wrapper.hasClass('category-form')) wrapper = wrapper.parent();
+    let state = wrapper.find('.is-sub-category');
+    let target_button = wrapper.find('.open-select-one-category-viewer');
 
     if(state.val() == 'no') {
         button.find('.off-icon').addClass('none');

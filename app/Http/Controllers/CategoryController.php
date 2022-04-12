@@ -28,8 +28,8 @@ class CategoryController extends Controller
          * Category status is under review by default - admin should add some blog posts and maintain it 
          * before publish it as live to public in manage categories page
          */
-        Category::create($data);
-        Session::flash('message', 'Category created successfully. <a class="no-underline blue bold" href="' . route('category.manage') . '">click here</a> to manage it in category management page');
+        $category = Category::create($data);
+        Session::flash('message', 'Category created successfully. <a class="no-underline blue bold" href="' . route('category.manage', ['category'=>$category->id]) . '">click here</a> to manage it');
     }
 
     public function update(Request $request) {
@@ -49,8 +49,8 @@ class CategoryController extends Controller
         $category = Category::find($category_id);
 
         if(isset($data['parent_category_id']) 
-            && $data['parent_category_id'] == Category::where('slug', 'uncategorized')->first()->id)
-            abort(422, 'Uncategorized category could not be a parent to other categories.');
+            && $category_id == Category::where('slug', 'uncategorized')->first()->id)
+            abort(422, 'This category could not be a parent or subcategory to other categories.');
 
         $category->update($data);
         Session::flash('message', 'Category informations have been updated successfully.');

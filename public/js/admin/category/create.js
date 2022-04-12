@@ -1,10 +1,11 @@
 
 let create_category_lock = true;
 $('#create-category').on('click', function() {
+    let wrapper = $('#create-category-section');
     // verify category inputs (in category.js file)
-    if(!verify_category_inputs()) return;
-    if(!verify_category_parent()) return;
-    
+    if(!verify_category_inputs(wrapper)) return;
+    if(!verify_category_parent(wrapper)) return;
+
     if(!create_category_lock) return;
     create_category_lock = false;
 
@@ -18,19 +19,19 @@ $('#create-category').on('click', function() {
     spinner.addClass('inf-rotate');
 
     let data = {
-        title: $('#category-title').val(),
-        title_meta: $('#category-meta-title').val(),
-        slug: $('#category-slug').val(),
-        description: $('#category-description').val(),
+        title: wrapper.find('.title').val(),
+        title_meta: wrapper.find('.meta-title').val(),
+        slug: wrapper.find('.slug').val(),
+        description: wrapper.find('.description').val(),
     };
-    let issubcategory = $('#is-sub-category').val() == 'yes';
+    let issubcategory = wrapper.find('.is-sub-category').val() == 'yes';
     if(issubcategory) {
         $('.hierarchy-category-id').each(function() {
             if($(this).is(':checked')) {
                 data.parent_category_id = $(this).val();
                 return false;
             }
-        })
+        });
     }
 
     $.ajax({
