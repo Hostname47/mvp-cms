@@ -75,38 +75,8 @@
                     <svg class="size14 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M4.41,104.24c2.53-3,5.67-4,9.7-4,26.83.17,53.67,0,80.5.17,3.53,0,4.61-.67,4.58-4.44-.18-27-.1-54-.09-81,0-7.29,2-9.31,9.16-9.32q21.22,0,42.45,0c6.91,0,9,2.09,9,9,0,27,.09,54-.09,81,0,3.82.94,4.79,4.76,4.76,26.83-.17,53.67-.1,80.5-.09,7.58,0,9.5,1.92,9.51,9.47q0,21.23,0,42.45c0,6.55-2.17,8.66-8.83,8.67-27.16,0-54.32.09-81.47-.09-3.77,0-4.47,1-4.45,4.58.15,26.83,0,53.66.17,80.49,0,4-1,7.17-4,9.7H103c-3-2.53-4-5.67-4-9.7.16-26.85,0-53.7.18-80.55,0-3.65-.87-4.54-4.52-4.52-26.85.18-53.7,0-80.55.18-4,0-7.18-1-9.71-4Z"/></svg>
                     <h2 class="dark no-margin">Create a category</h2>
                 </div>
-                <div class="simple-line-separator my4"></div>
-                <!-- error container -->
-                <div class="informative-message-container error-container align-center relative my8 none">
-                    <div class="informative-message-container-left-stripe imcls-red"></div>
-                    <p class="no-margin fs13 red bold message-text">Title field is required.</p>
-                    <div class="close-parent close-informative-message-style">✖</div>
-                </div>
-                <!-- title -->
-                <div class="input-container">
-                    <label class="input-label dark fs14" for="create-category-title">Category Title<span class="error-asterisk ml4">*</span></label>
-                    <p class="fs12 my2 light-gray">By default, meta title and slug will be cloned to match the exact title.</p>
-                    <input type="text" id="create-category-title" class="styled-input title" maxlength="400" autocomplete="off" placeholder='{{ __("Enter post title here") }}'>
-                </div>
-                <div class="typical-section-style mt4">
-                    <p class="fs12 mb2 light-gray no-margin">Meta title and slug are useful to <strong>improve SEO</strong> of blog post and ranking. Meta title and slug will match exactly the title while typing title. You can disable this by checking the checkbox above.</p>
-                    <!-- meta title -->
-                    <div class="input-container">
-                        <label class="input-label dark fs13 my2" for="create-category-meta-title">Meta title<span class="error-asterisk ml4">*</span></label>
-                        <input type="text" id="create-category-meta-title" class="styled-input meta-title" maxlength="400" autocomplete="off" placeholder='{{ __("Enter meta title here (displayed by search engines and browser tab title)") }}'>
-                    </div>
-                    <!-- slug -->
-                    <div class="input-container mt8">
-                        <label class="input-label dark fs13 my2" for="create-category-slug">Slug<span class="error-asterisk ml4">*</span></label>
-                        <input type="text" id="create-category-slug" class="styled-input slug" maxlength="400" autocomplete="off" placeholder='{{ __("Enter slug here (e.g. xyz-category-and-more)") }}'>
-                    </div>
-                </div>
-                <!-- description -->
-                <div class="input-container flex flex-column" style="margin-top: 10px">
-                    <label class="input-label dark fs14" for="create-category-description">Description<span class="error-asterisk ml4">*</span></label>
-                    <p class="fs12 my2 light-gray">Category description should include all related topics and keywords</p>
-                    <textarea id="create-category-description" class="styled-input no-textarea-resize description" style="height: 126px;" autocomplete="off" placeholder='Category description'></textarea>
-                </div>
+                <div class="simple-line-separator my8"></div>
+                <x-admin.category.form-inputs :category="$category" action="create" />
                 <!-- parent category selector -->
                 <div class="input-container flex flex-column" style="margin-top: 10px">
                     <label class="input-label dark fs14">Is subcategory ?<span class="error-asterisk ml4">*</span></label>
@@ -241,9 +211,24 @@
             </div>
             <p class="no-margin fs13 dark">Here, you can edit category informations, change its status and manage other stuff.</p>
 
-            <div class="flex">
-                <div id="update-category-informations-section">
-                    
+            <div class="flex" style="margin-top: 12px;">
+                <div id="update-category-informations-section" class="category-form">
+                    <h2 class="dark no-margin mb8">Update Category Informations</h2>
+                    <div class="simple-line-separator my8"></div>
+                    <x-admin.category.form-inputs :category="$category" action="update" />
+                    <!-- update informations button -->
+                    <div style="margin-top: 12px">
+                        <div id="update-category-informations" class="typical-button-style dark-bs width-max-content align-center">
+                            <div class="relative size13 mr4">
+                                <svg class="size13 flex icon-above-spinner" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M3.53,137.79a8.46,8.46,0,0,1,8.7-4c2.1.23,4.28-.18,6.37.09,3.6.47,4.61-.68,4.57-4.46-.28-24.91,7.59-47.12,23-66.65C82.8,16.35,151.92,9.31,197.09,47.21c3,2.53,3.53,4,.63,7.08-5.71,6.06-11,12.5-16.28,19-2.13,2.63-3.37,3.21-6.4.73-42.11-34.47-103.77-13.24-116,39.81a72.6,72.6,0,0,0-1.61,17c0,2.36.76,3.09,3.09,3,4.25-.17,8.51-.19,12.75,0,5.46.25,8.39,5.55,4.94,9.66-12,14.24-24.29,28.18-36.62,42.39L4.91,143.69c-.37-.43-.5-1.24-1.38-1Z"></path><path d="M216.78,81.86l35.71,41c1.93,2.21,3.13,4.58,1.66,7.58s-3.91,3.54-6.9,3.58c-3.89.06-8.91-1.65-11.33.71-2.1,2-1.29,7-1.8,10.73-6.35,45.41-45.13,83.19-90.81,88.73-28.18,3.41-53.76-3-76.88-19.47-2.81-2-3.61-3.23-.85-6.18,6-6.45,11.66-13.26,17.26-20.09,1.79-2.19,2.87-2.46,5.39-.74,42.83,29.26,99.8,6.7,111.17-43.93,2.2-9.8,2.2-9.8-7.9-9.8-1.63,0-3.27-.08-4.9,0-3.2.18-5.94-.6-7.29-3.75s.13-5.61,2.21-8c7.15-8.08,14.21-16.24,21.31-24.37C207.43,92.59,212,87.31,216.78,81.86Z"></path></svg>
+                                <svg class="spinner size13 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
+                                    <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                    <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                </svg>
+                            </div>
+                            <span class="bold fs11 unselectable">Update category informations</span>
+                        </div>
+                    </div>
                 </div>
                 <div id="update-category-settings-section">
 

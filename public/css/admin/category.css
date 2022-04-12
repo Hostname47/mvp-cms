@@ -6,6 +6,21 @@
     flex: 1;
 }
 
+#update-category-informations-section {
+    flex: 0.5;
+    border: 1px solid #c4ced2;
+    padding: 12px;
+    border-radius: 3px;
+    margin-right: 12px;
+}
+
+#update-category-settings-section {
+    flex: 0.5;
+    border: 1px solid #c4ced2;
+    padding: 12px;
+    border-radius: 3px;
+}
+
 .hierarchy-category-wrapper {
     padding: 6px 4px;
 }

@@ -99,7 +99,8 @@ $('#update-categories-priorities').on('click', function() {
 
 let update_category_informations_lock = true;
 $('#update-category-informations').on('click', function() {
-    if(!verify_category_inputs() || !update_category_informations_lock) return;
+    let wrapper = $('#update-category-informations-section');
+    if(!verify_category_inputs(wrapper) || !update_category_informations_lock) return;
     update_category_informations_lock = false;
 
     let button = $(this);
@@ -116,10 +117,10 @@ $('#update-category-informations').on('click', function() {
         url: '/admin/category',
         data: {
             category_id: $('#category-id').val(),
-            title: $('#category-title').val(),
-            title_meta: $('#category-meta-title').val(),
-            slug: $('#category-slug').val(),
-            description: $('#category-description').val(),
+            title: wrapper.find('.title').val(),
+            title_meta: wrapper.find('.meta-title').val(),
+            slug: wrapper.find('.slug').val(),
+            description: wrapper.find('.description').val(),
         },
         success: function(response) {
             window.location.href = response;

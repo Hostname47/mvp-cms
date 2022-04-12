@@ -55,7 +55,7 @@ class CategoryController extends Controller
         $category->update($data);
         Session::flash('message', 'Category informations have been updated successfully.');
 
-        return route('category.manage', ['category'=>$category->refresh()->slug]);
+        return route('category.manage', ['category'=>$category->refresh()->slug]); // This is important when slug is changed
     }
 
     public function update_status(Request $request) {

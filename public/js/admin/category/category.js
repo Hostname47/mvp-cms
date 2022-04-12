@@ -61,13 +61,15 @@ function display_category_error(input, wrapper, error_message) {
 }
 
 $('.title').on('input', function() {
-    let value = $(this).val().trim();
-    let slug = slugify(value);
-
     let wrapper = $(this);
     while(!wrapper.hasClass('category-form')) wrapper = wrapper.parent();
-    wrapper.find('.meta-title').val(value);
-    wrapper.find('.slug').val(slug);
+    if(wrapper.find('.live-title-match').is(':checked')) {
+        let value = $(this).val().trim();
+        let slug = slugify(value);
+    
+        wrapper.find('.meta-title').val(value);
+        wrapper.find('.slug').val(slug);
+    }
 });
 
 $('.is-sub-category-toggle-button').on('click', function() {
