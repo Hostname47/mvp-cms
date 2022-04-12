@@ -11,9 +11,6 @@ Route::get('/test', function() {
     return 'hello';
 });
 
-Route::get('/', [IndexController::class, 'index']);
-Route::get('/home', [IndexController::class, 'index'])->name('home');
-
 Route::get('/admin/categories', [CategoryController::class, 'manage'])->name('admin.categories.management');
 Route::get('/admin/categories/hierarchy/select-one-category-viewer', [CategoryController::class, 'get_select_one_category_viewer']);
 Route::get('/admin/categories/hierarchy/subcategories/one-level-subcategories', [CategoryController::class, 'get_one_level_hierarchy_subcategories']);
@@ -51,7 +48,11 @@ Route::get('/admin/tags/data', [TagController::class, 'data']);
 Route::patch('/admin/tags', [TagController::class, 'update']);
 Route::delete('/admin/tags', [TagController::class, 'delete']);
 
-Route::get('/{category:slug}/{post:slug}', [PostController::class, 'view'])->name('view.post');
+Route::middleware('client.scopes')->group(function() {
+    Route::get('/{category:slug}/{post:slug}', [PostController::class, 'view'])->name('view.post');
+    Route::get('/', [IndexController::class, 'index']);
+    Route::get('/home', [IndexController::class, 'index'])->name('home');
+});
 
 Route::get('/login/{provider}', [OAuthController::class, 'redirectToProvider']);
 Route::get('/{provider}/callback', [OAuthController::class, 'handleProviderCallback']);
