@@ -25,8 +25,6 @@ class CategoryTest extends TestCase
             'title_meta'=>'Uncategorized',
             'slug'=>'uncategorized',
         ]);
-
-        dd($this->uncategorized);
     }
 
     /** @test */

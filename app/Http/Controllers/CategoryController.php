@@ -42,9 +42,15 @@ class CategoryController extends Controller
             'priority'=>'sometimes|numeric',
             'parent_category_id'=>'sometimes|exists:categories,id',
         ]);
-
-        if(isset($data['parent_category_id']) && $category_id == $data['parent_category_id']) 
-            abort(422, 'A category could not be a parent to itself');
+        
+        if(isset($data['parent_category_id'])) {
+            if($category_id == $data['parent_category_id'])
+                abort(422, 'A category could not be a parent to itself');
+            
+            $uncategorized = Category::where('slug', 'uncategorized')->first();
+            if($data['parent_category_id'] == $uncategorized->id || $category_id == $uncategorized->id)
+                abort(422, 'This category could not be a parent or subcategory to other categories.');    
+        }
             
         $category = Category::find($category_id);
 

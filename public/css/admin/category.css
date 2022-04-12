@@ -67,3 +67,41 @@
     width: 380px;
     margin-left: 12px;
 }
+
+.angle-before-hierarchy-item {
+    width: 10px;
+    height: 10px;
+    min-width: 10px;
+    margin-top: 4px;
+    margin: 3px 6px 0 3px;
+}
+
+/* category settings section */
+
+.category-change-box {
+    padding: 12px;
+    width: 350px;
+    right: 0;
+}
+.category-status-button {
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 3px;
+    border: 1px solid white;
+}
+.category-status-button:hover {
+    background-color: #f9f9f9;
+    border-color: #e3e6e8;
+}
+.category-status-button-selected {
+    cursor: default !important;
+    background-color: #f9f9f9 !important;
+    border-color: #e3e6e8 !important;
+}
+.angle-before-hierarchy-item {
+    width: 10px;
+    height: 10px;
+    min-width: 10px;
+    margin-top: 4px;
+    margin: 3px 6px 0 3px;
+}
