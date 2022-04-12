@@ -204,9 +204,8 @@
                     </div>
                 </div>
             </div>
-
             <!-- delete category viewer -->
-            <div id="delete-category-viewer" class="global-viewer full-center">
+            <div id="delete-category-viewer" class="global-viewer full-center none">
                 <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
                 <div class="viewer-box-style-1" style="width: 680px;">
                     <div class="flex align-center space-between light-gray-border-bottom" style="padding: 10px 14px;">
@@ -222,24 +221,36 @@
                         <div class="typical-section-style my8">
                             <p class="fs13 dark no-margin">Before deleting the category, all the posts that have only the deleted category <strong>will be attached to 'uncategorized' category</strong>, because a post should have at least one category.</p>
                         </div>
-                        <p class="dark my8 bold">After deleting the category:</p>
-                        <label class="category-delete-item mb4">
-                            <input type="radio" name="category-delete-type" checked value="delete-category-only" autocomplete="off" class="no-margin mt2 height-max-content category-delete-type">
-                            <div class="ml8">
-                                <p class="bold dark no-margin">Delete category only</p>
-                                <p class="light-gray no-margin mt4 fs13">After deleting this category, all its subcategories (if it has sub-categories) will become roots categories and will not get deleted.</p>
-                            </div>
-                        </label>
-                        <label class="category-delete-item">
-                            <input type="radio" name="category-delete-type" value="delete-category-and-subcategories" autocomplete="off" class="no-margin mt2 height-max-content category-delete-type">
-                            <div class="ml8">
-                                <p class="bold dark no-margin">Delete category and all its subcategories</p>
-                                <p class="light-gray no-margin mt4 fs13">After the category get deleted, all its subcategories (if it has sub-categories) will be deleted in cascading.</p>
+                        <!-- chose the type of deletion -->
+                        <div>
+                            <p class="dark my8 bold">After deleting the category:</p>
+                            <label class="category-delete-item mb4">
+                                <input type="radio" name="category-delete-type" checked value="delete-category-only" autocomplete="off" class="no-margin mt2 height-max-content category-delete-type">
+                                <div class="ml8">
+                                    <p class="bold dark no-margin">Delete category only</p>
+                                    <p class="light-gray no-margin mt4 fs13">After deleting this category, all its subcategories (if it has sub-categories) will become roots categories and will not get deleted.</p>
+                                </div>
+                            </label>
+                            <label class="category-delete-item">
+                                <input type="radio" name="category-delete-type" value="delete-category-and-subcategories" autocomplete="off" class="no-margin mt2 height-max-content category-delete-type">
+                                <div class="ml8">
+                                    <p class="bold dark no-margin">Delete category and all its subcategories</p>
+                                    <p class="light-gray no-margin mt4 fs13">After the category get deleted, all its subcategories (if it has sub-categories) will be deleted in cascading.</p>
+                                </div>
+                            </label>
+                        </div>
+                        <!-- confirmation -->
+                        <label class="block" for="delete-category-confirm-input" style="margin-top: 12px">
+                            <span class="mb2 bold dark">Confirmation</span>
+                            <p class="no-margin mb4 dark">Please type <strong>{{ auth()->user()->username }}::delete-category::{{ $category->slug }}</strong> to confirm.</p>
+                            <div>
+                                <input type="text" autocomplete="off" class="full-width styled-input" id="delete-category-confirm-input" style="padding: 8px 10px" placeholder="Delete category confirmation">
+                                <input type="hidden" id="delete-category-confirm-value" autocomplete="off" value="{{ auth()->user()->username }}::delete-category::{{ $category->slug }}">
                             </div>
                         </label>
 
                         <div class="flex" style="margin-top: 12px;">
-                            <div id="delete-category-button" class="typical-button-style red-bs align-center" style="padding: 7px 11px;">
+                            <div id="delete-category-button" class="typical-button-style red-bs red-bs-disabled align-center" style="padding: 7px 11px;">
                                 <div class="relative size14 mr4">
                                     <svg class="flex size14 icon-above-spinner" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M130.3,99.52c24.62,0,49.23.06,73.84-.08,3.27,0,4.38.56,4.36,4.14-.15,37.49-.05,75-.11,112.48,0,14.25-10.08,24.28-24.35,24.3q-53.79.09-107.58,0c-14.57,0-24.53-10-24.55-24.6,0-37.33.07-74.66-.13-112,0-4,1.35-4.35,4.68-4.33C81.07,99.58,105.69,99.52,130.3,99.52Zm24,93.89a7.65,7.65,0,0,0,6.44-4.63c1.59-3.43.68-6.43-1.76-8.95-5-5.15-10-10.26-15.23-15.2-2-1.89-2.14-3-.06-5,5-4.69,9.77-9.59,14.55-14.49,4-4.12,4.31-8.7.92-12.06s-7.93-3-12.05,1c-4.66,4.56-9.43,9-13.76,13.9-2.59,2.91-4.05,2.41-6.41-.17-4.29-4.69-8.9-9.08-13.44-13.53-4.35-4.28-9-4.64-12.4-1.09s-2.9,7.9,1.18,12c4.8,4.88,9.6,9.78,14.56,14.49,1.84,1.76,2,2.8.06,4.63-5,4.7-9.76,9.61-14.56,14.48-4.11,4.17-4.54,8.6-1.3,12.05,3.38,3.6,8.09,3.28,12.41-1,4.77-4.69,9.6-9.32,14.13-14.23,2.14-2.33,3.33-2,5.34.1,4.56,4.88,9.41,9.49,14.12,14.23C148.89,192,151,193.48,154.26,193.41ZM130.19,83.87h-88c-12.52,0-13.8-1.36-13.81-14.07a17.33,17.33,0,0,1,2.69-10.19,15.58,15.58,0,0,1,13.7-7c13.85,0,27.71-.13,41.55.1,3.73.06,5.14-.77,4.77-4.71a23.51,23.51,0,0,1,4.81-17.44,22.89,22.89,0,0,1,18.55-9.22q15.41-.12,30.8,0c13.93.12,23.85,10.14,24,24.14.09,7.15.09,7.15,7.05,7.15H214c11.9,0,17.89,6.09,17.92,18.13,0,1.14,0,2.28,0,3.42-.08,7-2.79,9.74-9.79,9.74Q176.14,83.89,130.19,83.87Zm-.28-31.3c6.82,0,13.65,0,20.47,0,1.11,0,2.54.79,3.25-1.09,2.78-7.39-1.95-14.48-9.83-14.52-8.29,0-16.57,0-24.85,0-10.39,0-12.53,2.31-12.36,12.57,0,2.7.94,3.19,3.34,3.14C116.59,52.48,123.25,52.57,129.91,52.57Z"></path></svg>
                                     <svg class="spinner size14 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
@@ -247,7 +258,7 @@
                                         <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
                                     </svg>
                                 </div>
-                                <span class="bold fs12 unselectable">Delete Tag</span>
+                                <span class="bold fs12 unselectable">Delete Category</span>
                                 <input type="hidden" class="category-id" value="{{ $category->id }}" autocomplete="off"> <!-- set dynamically -->
                             </div>
                         </div>
@@ -455,7 +466,7 @@
                             </div>
                             <div id="open-delete-category-viewer" class="typical-button-style red-bs width-max-content align-center mt8" style="padding: 8px 10px;">
                                 <svg class="size13 mr4 flex" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M130.3,99.52c24.62,0,49.23.06,73.84-.08,3.27,0,4.38.56,4.36,4.14-.15,37.49-.05,75-.11,112.48,0,14.25-10.08,24.28-24.35,24.3q-53.79.09-107.58,0c-14.57,0-24.53-10-24.55-24.6,0-37.33.07-74.66-.13-112,0-4,1.35-4.35,4.68-4.33C81.07,99.58,105.69,99.52,130.3,99.52Zm24,93.89a7.65,7.65,0,0,0,6.44-4.63c1.59-3.43.68-6.43-1.76-8.95-5-5.15-10-10.26-15.23-15.2-2-1.89-2.14-3-.06-5,5-4.69,9.77-9.59,14.55-14.49,4-4.12,4.31-8.7.92-12.06s-7.93-3-12.05,1c-4.66,4.56-9.43,9-13.76,13.9-2.59,2.91-4.05,2.41-6.41-.17-4.29-4.69-8.9-9.08-13.44-13.53-4.35-4.28-9-4.64-12.4-1.09s-2.9,7.9,1.18,12c4.8,4.88,9.6,9.78,14.56,14.49,1.84,1.76,2,2.8.06,4.63-5,4.7-9.76,9.61-14.56,14.48-4.11,4.17-4.54,8.6-1.3,12.05,3.38,3.6,8.09,3.28,12.41-1,4.77-4.69,9.6-9.32,14.13-14.23,2.14-2.33,3.33-2,5.34.1,4.56,4.88,9.41,9.49,14.12,14.23C148.89,192,151,193.48,154.26,193.41ZM130.19,83.87h-88c-12.52,0-13.8-1.36-13.81-14.07a17.33,17.33,0,0,1,2.69-10.19,15.58,15.58,0,0,1,13.7-7c13.85,0,27.71-.13,41.55.1,3.73.06,5.14-.77,4.77-4.71a23.51,23.51,0,0,1,4.81-17.44,22.89,22.89,0,0,1,18.55-9.22q15.41-.12,30.8,0c13.93.12,23.85,10.14,24,24.14.09,7.15.09,7.15,7.05,7.15H214c11.9,0,17.89,6.09,17.92,18.13,0,1.14,0,2.28,0,3.42-.08,7-2.79,9.74-9.79,9.74Q176.14,83.89,130.19,83.87Zm-.28-31.3c6.82,0,13.65,0,20.47,0,1.11,0,2.54.79,3.25-1.09,2.78-7.39-1.95-14.48-9.83-14.52-8.29,0-16.57,0-24.85,0-10.39,0-12.53,2.31-12.36,12.57,0,2.7.94,3.19,3.34,3.14C116.59,52.48,123.25,52.57,129.91,52.57Z"/></svg>
-                                <span class="bold fs11 unselectable">Delete category</span>
+                                <span class="bold fs11 unselectable">Open deletion section</span>
                                 <input type="hidden" class="category-id" value="{{ $category->id }}" autocomplete="off">
                             </div>
                         </div>

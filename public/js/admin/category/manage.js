@@ -291,3 +291,70 @@ $('#set-category-as-root').on('click', function() {
         }
     });
 });
+
+/** delete category */
+
+$('#open-delete-category-viewer').on('click', function() {
+    $('#delete-category-viewer').removeClass('none');
+    disable_page_scroll();
+});
+
+$('#delete-category-confirm-input').on('input', function() {
+    if(!delete_category_lock) return;
+
+    let confirmation_input = $(this);
+    let confirmation_value = $('#delete-category-confirm-value').val();
+	let button = $('#delete-category-button');
+    
+	delete_category_confirmed = false;
+    if(confirmation_input.val().trim() == confirmation_value) {
+		delete_category_confirmed = true;
+		button.removeClass('red-bs-disabled');
+    } else
+        button.addClass('red-bs-disabled');
+});
+
+let delete_category_confirmed = false;
+let delete_category_lock = true;
+$('#delete-category-button').on('click', function() {
+    if(!delete_category_confirmed || !delete_category_lock) return;
+    delete_category_lock = false;
+
+    let button = $(this);
+    let spinner = button.find('.spinner');
+    let buttonicon = button.find('.icon-above-spinner');
+    let category_id = button.find('.category-id').val();
+    let type = $('.category-delete-type:checked').val();
+
+    spinner.addClass('inf-rotate');
+	spinner.removeClass('opacity0');
+	buttonicon.addClass('none');
+	button.addClass('red-bs-disabled');
+
+    $.ajax({
+        type: 'delete',
+        url: '/admin/categories',
+        data: {
+            category_id: category_id,
+            type: type
+        },
+        success: function(response) {
+            window.location.href = response;
+        },
+        error: function(response) {
+            spinner.removeClass('inf-rotate');
+            spinner.addClass('opacity0');
+            buttonicon.removeClass('none');
+            button.removeClass('red-bs-disabled');
+
+            let errorObject = JSON.parse(response.responseText);
+			let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+			if(errorObject.errors) {
+				let errors = errorObject.errors;
+				error = errors[Object.keys(errors)[0]][0];
+			}
+			print_top_message(error, 'error');
+            delete_category_lock = true;
+        }
+    })
+});

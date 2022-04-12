@@ -137,6 +137,8 @@ class CategoryController extends Controller
                 $category->descendantsAndSelf()->delete();
                 break;
         }
+
+        return route('admin.categories.management');
     }
 
     public function manage(Request $request) {
