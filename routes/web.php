@@ -16,6 +16,7 @@ Route::patch('/admin/roles', [RoleController::class, 'update']);
 Route::delete('/admin/roles', [RoleController::class, 'delete']);
 Route::post('/admin/roles/attach-permissions', [RoleController::class, 'attach_permissions']);
 Route::post('/admin/roles/detach-permissions', [RoleController::class, 'detach_permissions']);
+Route::post('/admin/roles/grant-to-users', [RoleController::class, 'grant']);
 
 Route::post('/admin/permissions', [PermissionController::class, 'store']);
 Route::patch('/admin/permissions', [PermissionController::class, 'update']);

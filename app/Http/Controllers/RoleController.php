@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-use App\Models\Role;
+use App\Models\{User,Role};
 
 class RoleController extends Controller
 {
@@ -72,5 +72,20 @@ class RoleController extends Controller
         $role->permissions()->detach($data['permissions']);
 
         Session::flash('message', 'Permissions have been detached from "' . $role->title . '" role successfully.');
+    }
+    public function grant(Request $request) {
+        $data = $request->validate([
+            'role'=>'required|exists:roles,id',
+            'users'=>'required',
+            'users.*'=>'exists:users,id'
+        ]);
+
+        $role = Role::find($data['role']);
+        /**
+         * Instead of getting users as models and then attach role to User roles
+         * relationship, we can do it in the opposite way by attaching users to role.
+         * This way we'll save time of iterating over users ids and getting models..
+         */
+        $role->users()->syncWithPivotValues($data['users'], ['giver_id'=>auth()->user()->id], false);
     }
 }

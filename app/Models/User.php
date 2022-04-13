@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\{Role,RoleUser};
 
 class User extends Authenticatable
 {
@@ -20,6 +21,12 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function roles() {
+        return $this->belongsToMany(Role::class)
+            ->using(RoleUser::class)
+            ->withPivot('giver_id');
+    }
 
     public function getHasAvatarAttribute() {
         if(is_null($this->avatar)) {

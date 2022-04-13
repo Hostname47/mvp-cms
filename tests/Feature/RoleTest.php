@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Models\{Role,Permission};
+use App\Models\{User,Role,Permission};
 
 class RoleTest extends TestCase
 {
@@ -84,7 +84,6 @@ class RoleTest extends TestCase
         ]);
         $this->assertCount(1, $role->refresh()->permissions);
     }
-
     /** @test */
     public function detach_permission_from_role() {
         $this->withoutExceptionHandling();
@@ -99,5 +98,22 @@ class RoleTest extends TestCase
             'permissions'=>[$permission0->id]
         ]);
         $this->assertCount(1, $role->refresh()->permissions);
+    }
+
+    /** @test */
+    public function grant_role_to_user() {
+        $this->withoutExceptionHandling();
+        $authuser = User::factory()->create();
+        $this->actingAs($authuser);
+        $role = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description']);
+        $user = User::factory()->create();
+
+        $this->assertCount(0, $user->roles);
+        $this->post('/admin/roles/grant-to-users', [
+            'role'=>$role->id,
+            'users'=>[$user->id]
+        ]);
+        $this->assertCount(1, $user->refresh()->roles);
+        $this->assertEquals($authuser->id, $user->refresh()->roles->first()->pivot->giver->id);
     }
 }
