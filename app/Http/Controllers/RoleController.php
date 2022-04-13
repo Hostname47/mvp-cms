@@ -49,4 +49,28 @@ class RoleController extends Controller
 
         Session::flash('message', 'Role has been deleted successfully.');
     }
+    public function attach_permissions(Request $request) {
+        $data = $request->validate([
+            'role'=>'required|exists:roles,id',
+            'permissions'=>'required',
+            'permissions.*'=>'exists:permissions,id'
+        ]);
+
+        $role = Role::find($data['role']);
+        $role->permissions()->syncWithoutDetaching($data['permissions']);
+
+        Session::flash('message', 'Permissions have been attached to "' . $role->title . '" role successfully.');
+    }
+    public function detach_permissions(Request $request) {
+        $data = $request->validate([
+            'role'=>'required|exists:roles,id',
+            'permissions'=>'required',
+            'permissions.*'=>'exists:permissions,id'
+        ]);
+
+        $role = Role::find($data['role']);
+        $role->permissions()->detach($data['permissions']);
+
+        Session::flash('message', 'Permissions have been detached from "' . $role->title . '" role successfully.');
+    }
 }
