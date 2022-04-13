@@ -19,7 +19,6 @@ class PermissionController extends Controller
         $permission = Permission::create($data);
         Session::flash('message', 'Permission "' . $permission->title . '" has been created successfully. Now you can attach it to a role or grant it directly to users');
     }
-
     public function update(Request $request) {
         $permission_id = $request->validate(['permission_id'=>'required|exists:permissions,id'])['permission_id'];
         $data = $request->validate([
@@ -33,5 +32,12 @@ class PermissionController extends Controller
         $permission->update($data);
 
         Session::flash('message', 'Permission has been updated successfully.');
+    }
+    public function delete(Request $request) {
+        $permission_id = $request->validate(['permission_id'=>'required|exists:permissions,id'])['permission_id'];
+        // Get role and delete it as well
+        Permission::find($permission_id)->delete();
+
+        Session::flash('message', 'Permission has been deleted successfully.');
     }
 }

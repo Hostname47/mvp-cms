@@ -13,7 +13,6 @@ class PermissionTest extends TestCase
     
     /** @test */
     public function create_a_permission() {
-        $this->withoutExceptionHandling();
         $this->assertCount(0, Permission::all());
         $this->post('/admin/permissions', ['title'=>'Create posts','slug'=>'create-a-post','description'=>'Create a post permission that allows user to create posts','scope'=>'posts']);
         $this->assertCount(1, Permission::all());
@@ -65,4 +64,13 @@ class PermissionTest extends TestCase
             ->assertRedirect()->assertSessionHasErrors(['title','slug']); // title and slug already exists
     }
 
+    /** @test */
+    public function delete_a_permission() {
+        $this->withoutExceptionHandling();
+        $permission = Permission::create(['title'=>'Create posts','slug'=>'create-a-post','description'=>'Create a post permission that allows user to create posts','scope'=>'posts']);
+
+        $this->assertCount(1, Permission::all());
+        $this->delete('/admin/permissions', ['permission_id'=>$permission->id]);
+        $this->assertCount(0, Permission::all());
+    }
 }
