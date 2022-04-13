@@ -73,7 +73,7 @@ class RoleTest extends TestCase
     }
 
     /** @test */
-    public function attach_a_permission_to_role() {
+    public function attach_permissions_to_role() {
         $permission = Permission::create(['title'=>'Create posts','slug'=>'create-a-post','description'=>'Create a post permission that allows user to create posts','scope'=>'posts']);
         $role = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description']);
 
@@ -83,10 +83,23 @@ class RoleTest extends TestCase
             'permissions'=>[$permission->id]
         ]);
         $this->assertCount(1, $role->refresh()->permissions);
+
+        // Attach multiple permissions
+        $permission0 = Permission::create(['title'=>'P0 title','slug'=>'p-0','description'=>'p0 desc','scope'=>'p0']);
+        $permission1 = Permission::create(['title'=>'P1 title','slug'=>'p-1','description'=>'p1 desc','scope'=>'p1']);
+        $this->post('/admin/roles/attach-permissions', [
+            'role'=>$role->id,
+            'permissions'=>[$permission0->id,$permission1->id]
+        ]);
+        $this->assertCount(3, $role->refresh()->permissions);
+        // Validation
+        $this->post('/admin/roles/attach-permissions', [
+            'role'=>$role->id,
+            'permissions'=>[$permission->id, -85]
+        ])->assertRedirect()->assertSessionHasErrors(['permissions.*']);
     }
     /** @test */
     public function detach_permission_from_role() {
-        $this->withoutExceptionHandling();
         $permission0 = Permission::create(['title'=>'Create posts','slug'=>'create-a-post','description'=>'Create a post permission that allows user to create posts','scope'=>'posts']);
         $permission1 = Permission::create(['title'=>'Update posts','slug'=>'update-a-post','description'=>'Update a post permission that allows user to create posts','scope'=>'posts']);
         $role = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description']);
@@ -98,11 +111,19 @@ class RoleTest extends TestCase
             'permissions'=>[$permission0->id]
         ]);
         $this->assertCount(1, $role->refresh()->permissions);
+
+        // Validation (detach a permission that the role does not have)
+        $permission2 = Permission::create(['title'=>'Delete posts','slug'=>'delete-a-post','description'=>'Delete a post permission that allows user to create posts','scope'=>'posts']);
+        $this->assertCount(1, $role->refresh()->permissions);
+        $this->post('/admin/roles/detach-permissions', [
+            'role'=>$role->id,
+            'permissions'=>[$permission2->id]
+        ]);
+        $this->assertCount(1, $role->refresh()->permissions);
     }
 
     /** @test */
     public function grant_role_to_user() {
-        $this->withoutExceptionHandling();
         $authuser = User::factory()->create();
         $this->actingAs($authuser);
         $role = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description']);
@@ -115,5 +136,24 @@ class RoleTest extends TestCase
         ]);
         $this->assertCount(1, $user->refresh()->roles);
         $this->assertEquals($authuser->id, $user->refresh()->roles->first()->pivot->giver->id);
+    }
+    /** @test */
+    public function revoke_role_from_user() {
+        $this->withoutExceptionHandling();
+        $authuser = User::factory()->create();
+        $this->actingAs($authuser);
+        $role = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description']);
+        $user = User::factory()->create();
+
+        $this->post('/admin/roles/grant-to-users', [
+            'role'=>$role->id,
+            'users'=>[$user->id]
+        ]);
+        $this->assertCount(1, $user->refresh()->roles);
+        $this->post('/admin/roles/revoke-from-users', [
+            'role'=>$role->id,
+            'users'=>[$user->id]
+        ]);
+        $this->assertCount(0, $user->refresh()->roles);
     }
 }

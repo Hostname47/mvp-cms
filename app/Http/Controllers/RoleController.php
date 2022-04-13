@@ -81,11 +81,16 @@ class RoleController extends Controller
         ]);
 
         $role = Role::find($data['role']);
-        /**
-         * Instead of getting users as models and then attach role to User roles
-         * relationship, we can do it in the opposite way by attaching users to role.
-         * This way we'll save time of iterating over users ids and getting models..
-         */
         $role->users()->syncWithPivotValues($data['users'], ['giver_id'=>auth()->user()->id], false);
+    }
+    public function revoke(Request $request) {
+        $data = $request->validate([
+            'role'=>'required|exists:roles,id',
+            'users'=>'required',
+            'users.*'=>'exists:users,id'
+        ]);
+
+        $role = Role::find($data['role']);
+        $role->users()->detach($data['users']);
     }
 }
