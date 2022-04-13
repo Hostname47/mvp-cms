@@ -28,6 +28,10 @@ class User extends Authenticatable
             ->withPivot('giver_id');
     }
 
+    public function permissions() {
+        return $this->belongsToMany(Permission::class);
+    }
+
     public function getHasAvatarAttribute() {
         if(is_null($this->avatar)) {
             /**

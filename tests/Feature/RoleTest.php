@@ -138,6 +138,58 @@ class RoleTest extends TestCase
         $this->assertEquals($authuser->id, $user->refresh()->roles->first()->pivot->giver->id);
     }
     /** @test */
+    public function grant_a_role_will_attach_all_its_associated_permissions_to_role_owners() {
+        $authuser = User::factory()->create();
+        $this->actingAs($authuser);
+        $role = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description']);
+        $user = User::factory()->create();
+
+        $permission0 = Permission::create(['title'=>'P0 title','slug'=>'p-0','description'=>'p0 desc','scope'=>'p0']);
+        $permission1 = Permission::create(['title'=>'P1 title','slug'=>'p-1','description'=>'p1 desc','scope'=>'p1']);
+        $permission2 = Permission::create(['title'=>'P2 title','slug'=>'p-2','description'=>'p2 desc','scope'=>'p2']);
+        $this->post('/admin/roles/attach-permissions', [
+            'role'=>$role->id,
+            'permissions'=>[$permission0->id, $permission1->id, $permission2->id]
+        ]);
+        $this->assertCount(0, $user->permissions);
+        $this->post('/admin/roles/grant-to-users', [
+            'role'=>$role->id,
+            'users'=>[$user->id]
+        ]);
+        $this->assertCount(3, $user->refresh()->permissions);
+
+        // Some validations
+        $this->assertCount(1, $user->roles);
+        $this->post('/admin/roles/grant-to-users', [
+            'role'=>$role->id,
+            'users'=>[$user->id]
+        ]);
+        $this->assertCount(1, $user->refresh()->roles); // Already has this role so it should be 1 still
+        $this->assertCount(3, $user->refresh()->permissions);
+    }
+    /** @test */
+    public function grant_role_to_multiple_users_to_check_permissions_assignments() {
+        $authuser = User::factory()->create();
+        $this->actingAs($authuser);
+        $role = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description']);
+        $user0 = User::factory()->create();
+        $user1 = User::factory()->create();
+
+        $permission0 = Permission::create(['title'=>'P0 title','slug'=>'p-0','description'=>'p0 desc','scope'=>'p0']);
+        $permission1 = Permission::create(['title'=>'P1 title','slug'=>'p-1','description'=>'p1 desc','scope'=>'p1']);
+        $permission2 = Permission::create(['title'=>'P2 title','slug'=>'p-2','description'=>'p2 desc','scope'=>'p2']);
+        $role->permissions()->attach([$permission0->id,$permission1->id,$permission2->id]);
+
+        $this->assertCount(0, $user0->permissions);
+        $this->assertCount(0, $user1->permissions);
+        $this->post('/admin/roles/grant-to-users', [
+            'role'=>$role->id,
+            'users'=>[$user0->id, $user1->id]
+        ]);
+        $this->assertCount(3, $user0->refresh()->permissions);
+        $this->assertCount(3, $user1->refresh()->permissions);
+    }
+    /** @test */
     public function revoke_role_from_user() {
         $this->withoutExceptionHandling();
         $authuser = User::factory()->create();
@@ -155,5 +207,46 @@ class RoleTest extends TestCase
             'users'=>[$user->id]
         ]);
         $this->assertCount(0, $user->refresh()->roles);
+    }
+    /** @test */
+    public function revoke_role_from_user_will_revoke_all_its_associated_permissions_as_well() {
+        $authuser = User::factory()->create();
+        $this->actingAs($authuser);
+        $role = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description']);
+        $user = User::factory()->create();
+
+        $permission0 = Permission::create(['title'=>'P0 title','slug'=>'p-0','description'=>'p0 desc','scope'=>'p0']);
+        $permission1 = Permission::create(['title'=>'P1 title','slug'=>'p-1','description'=>'p1 desc','scope'=>'p1']);
+        $permission2 = Permission::create(['title'=>'P2 title','slug'=>'p-2','description'=>'p2 desc','scope'=>'p2']);
+        $role->permissions()->attach([$permission0->id,$permission1->id,$permission2->id]);
+
+        $this->assertCount(0, $user->permissions);
+        $this->post('/admin/roles/grant-to-users', ['role'=>$role->id,'users'=>[$user->id]]);
+        $this->assertCount(3, $user->refresh()->permissions);
+        $this->post('/admin/roles/revoke-from-users', ['role'=>$role->id,'users'=>[$user->id]]);
+        $this->assertCount(0, $user->refresh()->permissions);
+    }
+
+    /** @test */
+    public function revoke_role_from_multiple_users_to_check_permissions_detachments() {
+        $authuser = User::factory()->create();
+        $this->actingAs($authuser);
+        $role = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description']);
+        $user0 = User::factory()->create();
+        $user1 = User::factory()->create();
+
+        $permission0 = Permission::create(['title'=>'P0 title','slug'=>'p-0','description'=>'p0 desc','scope'=>'p0']);
+        $permission1 = Permission::create(['title'=>'P1 title','slug'=>'p-1','description'=>'p1 desc','scope'=>'p1']);
+        $permission2 = Permission::create(['title'=>'P2 title','slug'=>'p-2','description'=>'p2 desc','scope'=>'p2']);
+        $role->permissions()->attach([$permission0->id,$permission1->id,$permission2->id]);
+
+        $this->assertCount(0, $user0->permissions);
+        $this->assertCount(0, $user1->permissions);
+        $this->post('/admin/roles/grant-to-users', ['role'=>$role->id,'users'=>[$user0->id, $user1->id]]);
+        $this->assertCount(3, $user0->refresh()->permissions);
+        $this->assertCount(3, $user1->refresh()->permissions);
+        $this->post('/admin/roles/revoke-from-users', ['role'=>$role->id,'users'=>[$user0->id, $user1->id]]);
+        $this->assertCount(0, $user0->refresh()->permissions);
+        $this->assertCount(0, $user1->refresh()->permissions);
     }
 }

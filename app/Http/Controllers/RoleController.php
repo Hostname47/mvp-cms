@@ -81,6 +81,15 @@ class RoleController extends Controller
         ]);
 
         $role = Role::find($data['role']);
+        $permissions = $role->permissions()->pluck('id')->toArray();
+        /**
+         * Before grant the role to user(s), we need to get all role permissions and
+         * attach them to user(s).
+         */
+        foreach(User::findMany($data['users']) as $user) {
+            $user->permissions()->syncWithoutDetaching($permissions);
+        }
+        
         $role->users()->syncWithPivotValues($data['users'], ['giver_id'=>auth()->user()->id], false);
     }
     public function revoke(Request $request) {
@@ -91,6 +100,15 @@ class RoleController extends Controller
         ]);
 
         $role = Role::find($data['role']);
+        $permissions = $role->permissions()->pluck('id')->toArray();
+        /**
+         * Before revoke the role from user(s), we need to get all role permissions and
+         * detach them from user(s).
+         */
+        foreach(User::findMany($data['users']) as $user) {
+            $user->permissions()->detach($permissions);
+        }
+
         $role->users()->detach($data['users']);
     }
 }

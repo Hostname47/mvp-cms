@@ -11,4 +11,8 @@ class Permission extends Model
 
     protected $guarded = [];
     public $timestamps = false;
+
+    public function users() {
+        return $this->belongsToMany(User::class);
+    }
 }
