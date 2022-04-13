@@ -21,9 +21,9 @@ class RoleController extends Controller
          */
         $lowest_priority = \DB::select("SELECT MAX(priority) as maxpriority FROM roles")[0]->maxpriority;
         $data['priority'] = ++$lowest_priority;
-        Role::create($data);
+        $role = Role::create($data);
 
-        Session::flash('message', 'Role "' . $data['title'] . '" has been created successfully. Now you can attach permissions to that role and then grant it to users');
+        Session::flash('message', 'Role "' . $role->title . '" has been created successfully. Now you can attach permissions to that role and then grant it to users');
     }
     public function update(Request $request) {
         $role_id = $request->validate(['role_id'=>'required|exists:roles,id'])['role_id'];
