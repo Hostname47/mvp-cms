@@ -25,7 +25,6 @@ class RoleController extends Controller
 
         Session::flash('message', 'Role "' . $data['title'] . '" has been created successfully. Now you can attach permissions to that role and then grant it to users');
     }
-
     public function update(Request $request) {
         $role_id = $request->validate(['role_id'=>'required|exists:roles,id'])['role_id'];
         $data = $request->validate([
@@ -38,5 +37,16 @@ class RoleController extends Controller
         $role->update($data);
 
         Session::flash('message', 'Role has been updated successfully.');
+    }
+    public function delete(Request $request) {
+        $role_id = $request->validate(['role_id'=>'required|exists:roles,id'])['role_id'];
+        // Get role and delete it as well
+        $role = Role::find($role_id);
+        if($role->slug == 'site-owner')
+            abort(422, 'Site owner role could not be deleted');
+
+        $role->delete();
+
+        Session::flash('message', 'Role has been deleted successfully.');
     }
 }

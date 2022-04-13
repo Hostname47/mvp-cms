@@ -57,6 +57,23 @@ class RoleTest extends TestCase
             ->assertRedirect()->assertSessionHasErrors(['role_id']); // invalid role id
 
         $this->patch('/admin/roles', ['role_id'=>$siteowner->id,'title'=>'Admin','slug'=>'admin'])
-            ->assertRedirect()->assertSessionHasErrors(['title','slug']);
+            ->assertRedirect()->assertSessionHasErrors(['title','slug']); // title and slug already exists in roles
+    }
+
+    /** @test */
+    public function delete_a_role() {
+        $role = Role::create(['title'=>'Admin','slug'=>'admin','description'=>'admin description']);
+
+        $this->assertCount(1, Role::all());
+        $this->delete('/admin/roles', ['role_id'=>$role->id]);
+        $this->assertCount(0, Role::all());
+    }
+
+    /** @test */
+    public function delete_site_owner_role_is_not_possible() {
+        $role = Role::create(['title'=>'Site Owner','slug'=>'site-owner','description'=>'Site owner description']);
+
+        $this->delete('/admin/roles', ['role_id'=>$role->id])
+            ->assertStatus(422);
     }
 }
