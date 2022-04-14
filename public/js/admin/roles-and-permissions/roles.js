@@ -29,7 +29,7 @@ let create_role_confirmed = false;
 let create_role_lock = true;
 $('#create-role-button').on('click', function() {
     if(!create_role_confirmed) return;
-    
+
     let title = $('#create-role-title-input');
     let slug = $('#create-role-slug-input');
     let description = $('#create-role-description-input');
@@ -75,6 +75,63 @@ $('#create-role-button').on('click', function() {
             }
 
             button.removeClass('green-bs-disabled');
+            buttonicon.removeClass('none');
+            spinner.addClass('opacity0');
+            spinner.removeClass('inf-rotate');
+
+            validate_role_input(false, false, error_container, error);
+        }
+    })
+});
+
+let update_role_lock = true;
+$('#update-role-button').on('click', function() {
+    let title = $('#update-role-title-input');
+    let slug = $('#update-role-slug-input');
+    let description = $('#update-role-description-input');
+    let error_container = $('#update-role-error-container');
+
+    $('#update-role-section .error-asterisk').css('display', 'none');
+    error_container.addClass('none');
+
+    if(!validate_role_input(title.val() != '', title, error_container, 'Title field is required')) return;
+    if(!validate_role_input(slug.val() != '', slug, error_container, 'Slug field is required')) return;
+    if(!validate_role_input(description.val() != '', description, error_container, 'Description field is required')) return;
+
+    if(!update_role_lock) return;
+    update_role_lock = false;
+
+    let button = $(this);
+    let spinner = button.find('.spinner');
+    let buttonicon = button.find('.icon-above-spinner');
+
+    button.addClass('dark-bs-disabled');
+    buttonicon.addClass('none');
+    spinner.removeClass('opacity0');
+    spinner.addClass('inf-rotate');
+
+    $.ajax({
+        type: 'patch',
+        url: '/admin/roles',
+        data: {
+            role_id: $('#role-id').val(),
+            title: title.val(),
+            slug: slug.val(),
+            description: description.val()
+        },
+        success: function(response) {
+            window.location.href = response;
+        },
+        error: function (response) {
+            update_role_lock = true;
+            let errorObject = JSON.parse(response.responseText);
+            let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+            if (errorObject.errors) {
+                let errors = errorObject.errors;
+                error = errors[Object.keys(errors)[0]][0];
+            }
+
+            button.removeClass('dark-bs-disabled');
             buttonicon.removeClass('none');
             spinner.addClass('opacity0');
             spinner.removeClass('inf-rotate');

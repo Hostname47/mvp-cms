@@ -37,7 +37,8 @@ class RoleController extends Controller
         $role = Role::find($role_id);
         $role->update($data);
 
-        Session::flash('message', 'Role has been updated successfully.');
+        Session::flash('message', 'Role informations have been updated successfully.');
+        return route('admin.rp.manage.roles', ['role'=>$role->refresh()->slug]);
     }
     public function delete(Request $request) {
         $role_id = $request->validate(['role_id'=>'required|exists:roles,id'])['role_id'];
