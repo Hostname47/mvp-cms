@@ -60,7 +60,7 @@
     </div>
     <div class="admin-page-content-box">
         @if(Session::has('message'))
-        <div class="informative-message-container media-upload-error-container flex align-center relative my8">
+        <div class="informative-message-container flex align-center relative my8">
             <div class="informative-message-container-left-stripe imcls-green"></div>
             <p class="no-margin fs13 message-text">{!! Session::get('message') !!}</p>
             <div class="close-parent close-informative-message-style">✖</div>

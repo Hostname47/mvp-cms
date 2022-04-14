@@ -44,8 +44,8 @@
         @endif
 
         <!-- create role viewer -->
-        <div id="create-role-viewer" class="global-viewer full-center">
-            <div class="viewer-box-style-1">
+        <div id="create-role-viewer" class="global-viewer full-center none">
+            <div class="viewer-content-box viewer-box-style-1">
                 <div class="flex align-center space-between light-gray-border-bottom" style="padding: 12px 16px;">
                     <div class="flex align-center">
                         <svg class="size18 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M155.32,3.3h78.12c11.19,3.13,18.39,10.25,21.48,21.49v79.09c-1.28.34-1,1.52-1.23,2.38-2.34,9.41-7.32,17.21-14.14,24Q183.26,186.47,127,242.73C112.72,257,95,256.88,80.58,242.52Q48.47,210.45,16.4,178.35C.91,162.85,1,145.73,16.51,130.17Q67,79.62,117.55,29C128.53,18,139.19,6.68,155.32,3.3ZM197.4,86.52a26,26,0,1,0-25.7-26.18A25.94,25.94,0,0,0,197.4,86.52Z"/></svg>
@@ -90,14 +90,19 @@
                                 <span class="error fs13 bold no-margin create-role-error"></span>
                             </div>
                         </div>
+                        <div id="create-role-error-container" class="informative-message-container align-center relative my8 none">
+                            <div class="informative-message-container-left-stripe imcls-red"></div>
+                            <p class="no-margin fs13 red bold message-text">Title field is required.</p>
+                            <div class="close-parent close-informative-message-style">✖</div>
+                        </div>
                         <div class="mb8">
-                            <label for="create-role-name-input" class="flex align-center bold forum-color fs13">{{ __('Name') }}<span class="error-asterisk ml4">*</span></label>
-                            <p class="no-margin fs12 mb2 gray">Role name should contain only characters.</p>
-                            <input type="text" autocomplete="off" class="styled-input full-width" id="create-role-name-input" placeholder="Role name" style="padding: 8px 10px">
+                            <label for="create-role-title-input" class="flex align-center bold forum-color fs13">{{ __('Title') }}<span class="error-asterisk ml4">*</span></label>
+                            <p class="no-margin fs12 mb2 gray">Role title should contain only characters.</p>
+                            <input type="text" autocomplete="off" class="styled-input full-width" id="create-role-title-input" placeholder="Role title" style="padding: 8px 10px">
                         </div>
                         <div class="mb8">
                             <label for="create-role-slug-input" class="flex align-center bold forum-color fs13">{{ __('Slug') }}<span class="error-asterisk ml4">*</span></label>
-                            <p class="no-margin fs12 mb2 gray">Role slug should be a dashed version ot title. (dashed-version-of-title)</p>
+                            <p class="no-margin fs12 mb2 gray">Role slug should be a dashed version of title. (dashed-version-of-title)</p>
                             <input type="text" autocomplete="off" class="styled-input full-width" id="create-role-slug-input" placeholder="Role slug" style="padding: 8px 10px">
                         </div>
                         <div class="mb8">
@@ -112,7 +117,7 @@
                     </div>
                     <div class="simple-line-separator my8"></div>
                     <p class="mt8 mb4 bold fs15 dark">Confirmation</p>
-                    <p class="no-margin mb4">Please type <strong>{{ auth()->user()->username }}::create-role</strong> to confirm.</p>
+                    <p class="no-margin dark mb4">Please type <strong>{{ auth()->user()->username }}::create-role</strong> to confirm.</p>
                     <div>
                         <input type="text" autocomplete="off" class="full-width styled-input" id="create-role-confirm-input" style="padding: 8px 10px" placeholder="confirmation">
                         <input type="hidden" id="create-role-confirm-value" autocomplete="off" value="{{ auth()->user()->username }}::create-role">

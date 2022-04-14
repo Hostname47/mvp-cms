@@ -24,6 +24,7 @@ class RoleController extends Controller
         $role = Role::create($data);
 
         Session::flash('message', 'Role "' . $role->title . '" has been created successfully. Now you can attach permissions to that role and then grant it to users');
+        return route('admin.rp.manage.roles');
     }
     public function update(Request $request) {
         $role_id = $request->validate(['role_id'=>'required|exists:roles,id'])['role_id'];
