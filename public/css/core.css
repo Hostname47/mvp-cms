@@ -555,7 +555,10 @@ textarea {
 
 .green-bs {
     color: white;
-    background-color: #363942;
+    background-color: #43bb67;
+}
+.green-bs:hover {
+    background-color: #41ad62;
 }
 
 .dark-bs {
