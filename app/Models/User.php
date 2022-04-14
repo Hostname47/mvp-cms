@@ -62,4 +62,7 @@ class User extends Authenticatable
     public function getFullnameAttribute() {
         return $this->firstname . ' ' . $this->lastname;
     }
+    public function getLightusernameAttribute() {
+        return strlen($this->username) > 14 ? substr($this->username, 0, 14) . '..' : $this->username;
+    }
 }

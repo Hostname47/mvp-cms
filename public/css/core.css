@@ -808,6 +808,21 @@ textarea {
     background-color: rgb(10 11 12);
 }
 
+.suboption-style-2 {
+    cursor: pointer;
+    text-decoration: none;
+    color: rgb(14, 15, 15);
+    font-size: 13px;
+    padding: 5px 8px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.2s ease;
+}
+.suboption-style-2:hover {
+    background-color: rgb(231, 233, 235);
+}
+
 .simple-line-separator {
     height: 1px;
     width: 100%;
