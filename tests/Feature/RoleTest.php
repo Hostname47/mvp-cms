@@ -226,7 +226,6 @@ class RoleTest extends TestCase
         $this->post('/admin/roles/revoke-from-users', ['role'=>$role->id,'users'=>[$user->id]]);
         $this->assertCount(0, $user->refresh()->permissions);
     }
-
     /** @test */
     public function revoke_role_from_multiple_users_to_check_permissions_detachments() {
         $authuser = User::factory()->create();

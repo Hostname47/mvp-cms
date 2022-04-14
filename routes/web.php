@@ -2,15 +2,24 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{IndexController, AdminController, PostController, CategoryController,
-    MediaController, OAuthController, TagController, RoleController, PermissionController};
+    MediaController, OAuthController, TagController, RoleController, PermissionController, RPManagement};
 use App\Http\Controllers\Admin\{AdminSearchController};
 
 Route::get('/test', function() {
-    $posts = \App\Models\Post::withoutGlobalScopes()->get();
+    $role = \App\Models\Role::first();
+    $user0 = \App\Models\User::where('email', 'john@gmail.com')->first();
+    $user1 = \App\Models\User::where('email', 'rick@gmail.com')->first();
+
+    $arr = collect(['a'=>[], 'b'=>[]]);
+    $arr->get('a')->push($user0);
+    $arr->get('a')->push($user1);
+    
+    dd($arr);
 
     return 'hello';
 });
 
+// Roles management
 Route::post('/admin/roles', [RoleController::class, 'store']);
 Route::patch('/admin/roles', [RoleController::class, 'update']);
 Route::delete('/admin/roles', [RoleController::class, 'delete']);
@@ -18,10 +27,12 @@ Route::post('/admin/roles/attach-permissions', [RoleController::class, 'attach_p
 Route::post('/admin/roles/detach-permissions', [RoleController::class, 'detach_permissions']);
 Route::post('/admin/roles/grant-to-users', [RoleController::class, 'grant']);
 Route::post('/admin/roles/revoke-from-users', [RoleController::class, 'revoke']);
-
+// Permissions managemet
 Route::post('/admin/permissions', [PermissionController::class, 'store']);
 Route::patch('/admin/permissions', [PermissionController::class, 'update']);
 Route::delete('/admin/permissions', [PermissionController::class, 'delete']);
+// Roles & Permissions
+Route::get('/admin/roles-and-permissions/overview', [RPManagement::class, 'overview'])->name('admin.rp.overview');
 
 Route::get('/admin/categories', [CategoryController::class, 'manage'])->name('admin.categories.management');
 Route::get('/admin/categories/hierarchy/select-one-category-viewer', [CategoryController::class, 'get_select_one_category_viewer']);

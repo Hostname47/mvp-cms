@@ -67,10 +67,10 @@
                     <path d="M13.4,1.43l9.35,11a4,4,0,0,1,0,5.18l-9.35,11a4,4,0,1,1-6.1-5.18L14.46,15,7.3,6.61a4,4,0,0,1,6.1-5.18Z"/>
                 </svg>
             </div>
-            <div class="toggle-container admin-sidebar-button-nestedbuttons-box @if($page != 'admin.roles-and-permissions') none @endif">
-                <a href="" class="admin-sidebar-sub-button align-center @if(isset($subpage) && $subpage == 'admin.roles-and-permissions.overview') blue @endif">
-                    <svg class="size10 mr8" fill="@if(isset($subpage) && $subpage == 'admin.roles-and-permissions.overview') #2ca0ff @else #fff @endif" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M250.29,9.76V250.24H9.71V9.76ZM116,116.17V36.55H36.37v79.62Zm27.87-.09h79.62V36.48H143.83ZM36.3,223.56h79.76V144.14H36.3Zm107.43-.05h79.75V144.13H143.73Z"/></svg>
-                    <span style="color: @if(isset($subpage) && $subpage == 'admin.roles-and-permissions.overview') #2ca0ff @endif">Overview</span>
+            <div class="toggle-container admin-sidebar-button-nestedbuttons-box @if($page != 'admin.rp') none @endif">
+                <a href="{{ route('admin.rp.overview') }}" class="admin-sidebar-sub-button align-center @if(isset($subpage) && $subpage == 'admin.rp.overview') blue @endif">
+                    <svg class="size10 mr8" fill="@if(isset($subpage) && $subpage == 'admin.rp.overview') #2ca0ff @else #fff @endif" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M250.29,9.76V250.24H9.71V9.76ZM116,116.17V36.55H36.37v79.62Zm27.87-.09h79.62V36.48H143.83ZM36.3,223.56h79.76V144.14H36.3Zm107.43-.05h79.75V144.13H143.73Z"/></svg>
+                    <span style="color: @if(isset($subpage) && $subpage == 'admin.rp.overview') #2ca0ff @endif">Overview</span>
                 </a>
             </div>
         </div>
