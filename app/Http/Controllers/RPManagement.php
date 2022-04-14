@@ -38,13 +38,19 @@ class RPManagement extends Controller
     public function manage_roles(Request $request) {
         $role = null;
         $roles = Role::orderBy('priority', 'asc')->get();
+        $users = collect([]);
+        $scoped_permissions = collect([]);
         if($request->has('role')) {
             $role_slug = $request->validate(['role'=>'exists:roles,slug'])['role'];
             $role = Role::where('slug', $role_slug)->first();
+            $users = $role->users;
+            $scoped_permissions = $role->permissions->groupBy('scope');
         }
 
         return view('admin.roles-and-permissions.manage-roles')
+            ->with(compact('roles'))
             ->with(compact('role'))
-            ->with(compact('roles'));
+            ->with(compact('users'))
+            ->with(compact('scoped_permissions'));
     }
 }
