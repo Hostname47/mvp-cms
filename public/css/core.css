@@ -560,6 +560,10 @@ textarea {
 .green-bs:hover {
     background-color: #41ad62;
 }
+.green-bs-disabled {
+    background-color: #8bbd9b !important;
+    cursor: default !important;
+}
 
 .dark-bs {
     color: white;
@@ -818,8 +822,6 @@ textarea {
     font-size: 13px;
     padding: 5px 8px;
     border-radius: 2px;
-    display: flex;
-    align-items: center;
     transition: background-color 0.2s ease;
 }
 .suboption-style-2:hover {

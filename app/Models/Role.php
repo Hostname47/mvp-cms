@@ -22,4 +22,8 @@ class Role extends Model
             ->using(RoleUser::class)
             ->withPivot('giver_id');
     }
+
+    public function getDescriptionSliceAttribute() {
+        return strlen($this->description) > 100 ? substr($this->description, 0, 100) . '..' : $this->description;
+    }
 }

@@ -64,7 +64,6 @@
                                 </div>
                             </x-slot>
                         </x-admin.tag.tag-form>
-
                     </div>
                     <div class="loading-container full-center" style="height: 160px;">
                         <div class="full-center flex-column">
