@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Role;
+use App\Models\{Role,User};
 
 class RPManagement extends Controller
 {
@@ -52,5 +52,32 @@ class RPManagement extends Controller
             ->with(compact('role'))
             ->with(compact('users'))
             ->with(compact('scoped_permissions'));
+    }
+
+    public function role_users_search(Request $request ) {
+        $data = $request->validate([
+            'role'=>'required|exists:roles,id',
+            'k'=>'required|min:1|max:255'
+        ]);
+
+        $role = Role::find($data['role']);
+        $users = User::where('username', 'like', "%" . $data['k'] . "%")->take(9)->get();
+        $hasmore = $users->count() > 8;
+        $users = $users->take(8)->map(function($user) use ($role) {
+            return [
+                'id'=>$user->id,
+                'fullname'=>$user->fullname,
+                'username'=>$user->username,
+                'avatar'=>$user->avatar(100),
+                'role'=>($high_role = $user->high_role()) ? $high_role->title : null,
+                'user_manage_link'=>'',
+                'already_has_this_role'=>$user->has_role($role->slug)
+            ];
+        });
+
+        return [
+            'users'=>$users,
+            'hasmore'=>$hasmore
+        ];
     }
 }

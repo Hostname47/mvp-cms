@@ -1,0 +1,64 @@
+.role-section {
+    padding: 10px;
+    border: 1px solid #cbd4d9;
+    border-radius: 3px;
+}
+
+#update-role-section {
+    flex: 0.75;
+}
+
+#update-role-settings-section {
+    flex: 1;
+}
+
+.rounded-entity-for-role {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 4px solid #52affb;
+}
+.rounded-blue-when-hover:hover {
+    background-color: #52affb;
+    color: white;
+    fill: white;
+}
+.open-revoke-role-dialog {
+    right: -11px;
+    top: -9px;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e3e3e3;
+    border-radius: 50%;
+    font-size: 10px;
+    cursor: pointer;
+}
+.open-revoke-role-dialog:hover {
+    background-color: #d9d9d9;
+}
+.open-grant-role-dialog {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    cursor: pointer;
+}
+#role-members-search-result-box {
+    padding: 12px 10px 10px 10px;
+    background-color: white;
+    border: 1px solid #bdbdbd;
+    border-radius: 4px 4px 0 0;
+    position: absolute;
+    bottom: calc(100% + 35px);
+}
+
+.role-member-search-user, .selected-role-member-to-get-role {
+    padding: 8px;
+    background-color: #ecf0f0;
+    border: 1px solid #c3ced0;
+    border-radius: 3px;
+}

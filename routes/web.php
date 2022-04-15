@@ -34,6 +34,7 @@ Route::delete('/admin/permissions', [PermissionController::class, 'delete']);
 // Roles & Permissions
 Route::get('/admin/roles-and-permissions/overview', [RPManagement::class, 'overview'])->name('admin.rp.overview');
 Route::get('/admin/roles-and-permissions/roles', [RPManagement::class, 'manage_roles'])->name('admin.rp.manage.roles');
+Route::get('/admin/roles/users/search', [RPManagement::class, 'role_users_search']);
 
 Route::get('/admin/categories', [CategoryController::class, 'manage'])->name('admin.categories.management');
 Route::get('/admin/categories/hierarchy/select-one-category-viewer', [CategoryController::class, 'get_select_one_category_viewer']);
@@ -72,11 +73,11 @@ Route::get('/admin/tags/data', [TagController::class, 'data']);
 Route::patch('/admin/tags', [TagController::class, 'update']);
 Route::delete('/admin/tags', [TagController::class, 'delete']);
 
+Route::get('/login/{provider}', [OAuthController::class, 'redirectToProvider']);
+Route::get('/{provider}/callback', [OAuthController::class, 'handleProviderCallback']);
+
 Route::middleware('client.scopes')->group(function() {
     Route::get('/{category:slug}/{post:slug}', [PostController::class, 'view'])->name('view.post');
     Route::get('/', [IndexController::class, 'index']);
     Route::get('/home', [IndexController::class, 'index'])->name('home');
 });
-
-Route::get('/login/{provider}', [OAuthController::class, 'redirectToProvider']);
-Route::get('/{provider}/callback', [OAuthController::class, 'handleProviderCallback']);

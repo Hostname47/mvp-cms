@@ -49,17 +49,3 @@
     top: 0;
     right: -10px;
 }
-
-.role-section {
-    padding: 10px;
-    border: 1px solid #cbd4d9;
-    border-radius: 3px;
-}
-
-#update-role-section {
-    flex: 0.75;
-}
-
-#update-role-settings-section {
-    flex: 1;
-}

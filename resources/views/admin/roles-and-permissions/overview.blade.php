@@ -3,7 +3,7 @@
 @section('title', 'Admin - Roles & Permissions overview')
 
 @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/admin/roles-and-permissions.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin/roles-and-permissions/overview.css') }}">
 @endpush
 
 @push('scripts')

@@ -68,4 +68,10 @@ class User extends Authenticatable
     public function high_role() {
         return $this->roles->sortBy('priority')->first();
     }
+    public function has_role($slug) {
+        return (bool) $this->roles()->where('slug', $slug)->count() > 0;
+    }
+    public function has_permission($slug) {
+        return (bool) $this->permissions()->where('slug', $slug)->count() > 0;
+    }
 }
