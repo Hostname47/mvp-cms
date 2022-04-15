@@ -884,3 +884,6 @@ $('#detach-permissions-from-role-button').on('click', function() {
 		},
 	});
 });
+
+/** delete role - DANGER ZONE */
+

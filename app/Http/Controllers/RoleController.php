@@ -42,10 +42,15 @@ class RoleController extends Controller
     }
     public function delete(Request $request) {
         $role_id = $request->validate(['role_id'=>'required|exists:roles,id'])['role_id'];
-        // Get role and delete it as well
+        // Get role and its permissions (ids)
         $role = Role::find($role_id);
+        $permissions = $role->permissions()->pluck('id');
+
         if($role->slug == 'site-owner')
             abort(422, 'Site owner role could not be deleted');
+
+        // Before deleting the role, we have to detach all its permissions from members who own this role         
+        foreach(User::findMany($role->users()->pluck('id')) as $user) $user->permissions()->detach($permissions);
 
         $role->delete();
 

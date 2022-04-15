@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Models\{User,Role,Permission};
+use App\Models\{User,Role,Permission,RoleUser,PermissionUser};
 
 class RoleTest extends TestCase
 {
@@ -70,6 +70,31 @@ class RoleTest extends TestCase
 
         $this->delete('/admin/roles', ['role_id'=>$role->id])
             ->assertStatus(422);
+    }
+    /** @test */
+    public function delete_a_role_will_delete_all_associated_users_and_permissions() {
+        $authuser = User::factory()->create();
+        $this->actingAs($authuser);
+        $role = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description']);
+        $user0 = User::factory()->create();
+        $user1 = User::factory()->create();
+        $permission0 = Permission::create(['title'=>'P0 title','slug'=>'p-0','description'=>'p0 desc','scope'=>'p0']);
+        $permission1 = Permission::create(['title'=>'P1 title','slug'=>'p-1','description'=>'p1 desc','scope'=>'p1']);
+        $permission2 = Permission::create(['title'=>'P2 title','slug'=>'p-2','description'=>'p2 desc','scope'=>'p2']);
+
+        $this->post('/admin/roles/grant-to-users', [
+            'role'=>$role->id,
+            'users'=>[$user0->id,$user1->id]
+        ]);
+        $this->post('/admin/roles/attach-permissions', [
+            'role'=>$role->id,
+            'permissions'=>[$permission0->id, $permission1->id, $permission2->id]
+        ]);
+        $this->assertCount(2, RoleUser::all());
+        $this->assertCount(6, PermissionUser::all());
+        $this->delete('/admin/roles', ['role_id'=>$role->id]);
+        $this->assertCount(0, RoleUser::all());
+        $this->assertCount(0, PermissionUser::all());
     }
 
     /** @test */

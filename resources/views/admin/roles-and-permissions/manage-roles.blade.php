@@ -28,10 +28,10 @@
             </a>
             <svg class="size10 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
             <div class="align-center">
-                <span class="fs13 bold">Roles Management</span>
+                <span class="fs13 bold">Roles & Permissions</span>
             </div>
             <svg class="size10 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"/></svg>
-            <a href="{{ route('admin.rp.overview') }}" class="blue-link align-center bold fs13">overview</a>
+            <a href="{{ route('admin.rp.manage.roles') }}" class="blue-link align-center bold fs13">roles management</a>
         </div>
     </div>
     <div class="admin-page-content-box">
@@ -565,17 +565,17 @@
                         <div class="close-parent close-informative-message-style">✖</div>
                     </div>
                     <div class="mb8">
-                        <label for="update-role-title-input" class="align-center bold dark fs13">{{ __('Title') }}<span class="error-asterisk ml4">*</span></label>
+                        <label for="update-role-title-input" class="align-center bold dark">{{ __('Title') }}<span class="error-asterisk ml4">*</span></label>
                         <p class="no-margin fs12 mb2 gray">Role title should contain only characters.</p>
                         <input type="text" autocomplete="off" class="styled-input full-width" id="update-role-title-input" value="{{ $role->title }}" placeholder="Role title" style="padding: 8px 10px">
                     </div>
                     <div class="mb8">
-                        <label for="update-role-slug-input" class="align-center bold dark fs13">{{ __('Slug') }}<span class="error-asterisk ml4">*</span></label>
+                        <label for="update-role-slug-input" class="align-center bold dark">{{ __('Slug') }}<span class="error-asterisk ml4">*</span></label>
                         <p class="no-margin fs12 mb2 gray">Role slug should be a dashed version of title. (dashed-version-of-title)</p>
                         <input type="text" autocomplete="off" class="styled-input full-width" id="update-role-slug-input" value="{{ $role->slug }}" placeholder="Role slug" style="padding: 8px 10px">
                     </div>
                     <div class="mb8">
-                        <label for="update-role-description-input" class="align-center bold dark mb4 fs13">{{ __('Description') }}<span class="error-asterisk ml4">*</span></label>
+                        <label for="update-role-description-input" class="align-center bold dark mb4">{{ __('Description') }}<span class="error-asterisk ml4">*</span></label>
                         <textarea id="update-role-description-input" class="styled-input no-textarea-x-resize fs14"
                             style="margin: 0; padding: 8px; min-height: 110px; max-height: 110px;"
                             maxlength="800"
@@ -657,7 +657,7 @@
                                 <span class="flex bold blue fs12" style="flex-basis: 100%">{{ ucfirst($scope) }}</span>
                                 @foreach($permissions as $permission)
                                 <div class="button-style-1" style="padding: 6px 10px;">
-                                    <span class="permission-name fs12">{{ $permission->title }}</span>
+                                    <span class="permission-name fs11 bold">{{ $permission->title }}</span>
                                 </div>
                                 @endforeach
                             @endforeach
@@ -668,6 +668,21 @@
                             <p class="fs12 no-margin gray">This role does not have any attached permission for the moment</p>
                         </div>
                         @endif
+                    </div>
+
+                    <!-- delete role -->
+                    <div class="flex align-center mb4">
+                        <svg class="size14 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M300,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H300a12,12,0,0,0-12,12V404A12,12,0,0,0,300,416ZM464,80H381.59l-34-56.7A48,48,0,0,0,306.41,0H205.59a48,48,0,0,0-41.16,23.3l-34,56.7H48A16,16,0,0,0,32,96v16a16,16,0,0,0,16,16H64V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48h0V128h16a16,16,0,0,0,16-16V96A16,16,0,0,0,464,80ZM203.84,50.91A6,6,0,0,1,209,48h94a6,6,0,0,1,5.15,2.91L325.61,80H186.39ZM400,464H112V128H400ZM188,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H188a12,12,0,0,0-12,12V404A12,12,0,0,0,188,416Z"/></svg>
+                        <p class="no-margin bold dark fs15">Delete role</p>
+                    </div>
+                    <p class="my4 fs13 dark lh15">Deleting the role will revoke it from all members who have this role already.</p>
+                    <div class="typical-section-style dark">
+                        <span class="block bold lblack mb8">Important</span>
+                        <p class="no-margin fs13 lblack lh15">Notice that when the role is deleted, all its associated permissions will be revoked from members with this role.</p>
+                    </div>
+                    <div class="typical-button-style red-bs width-max-content flex align-center mt8 open-delete-role-dialog">
+                        <svg class="size12 mr4" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M300,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H300a12,12,0,0,0-12,12V404A12,12,0,0,0,300,416ZM464,80H381.59l-34-56.7A48,48,0,0,0,306.41,0H205.59a48,48,0,0,0-41.16,23.3l-34,56.7H48A16,16,0,0,0,32,96v16a16,16,0,0,0,16,16H64V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48h0V128h16a16,16,0,0,0,16-16V96A16,16,0,0,0,464,80ZM203.84,50.91A6,6,0,0,1,209,48h94a6,6,0,0,1,5.15,2.91L325.61,80H186.39ZM400,464H112V128H400ZM188,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H188a12,12,0,0,0-12,12V404A12,12,0,0,0,188,416Z"/></svg>
+                        <span class="fs11 bold">Open deletion viewer</span>
                     </div>
                 </div>
             </div>
