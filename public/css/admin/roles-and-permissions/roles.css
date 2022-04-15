@@ -71,3 +71,23 @@
     overflow-wrap: break-word;
     text-align: center;
 }
+
+.role-permission-switch-button {
+    font-size: 11px;
+    border-radius: 4px;
+    padding: 7px 12px;
+    background-color: #fbfbfb;
+    cursor: pointer;
+    text-decoration: none;
+    border: 1px solid #dadada;
+    transition: all 0.2s ease;
+    font-weight: bold;
+    color: #090a09;
+}
+
+.already-attached-permission-button-style {
+    background-color: #e6ffe5;
+    border: 1px solid #99bf98;
+    cursor: default !important;
+    color: #0d460d;
+}

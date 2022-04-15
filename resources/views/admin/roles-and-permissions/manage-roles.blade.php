@@ -308,7 +308,7 @@
                         </div>
                         <div style="margin-top: 12px">
                             <p class="no-margin mb2 bold dark">Confirmation</p>
-                            <p class="no-margin mb4 bblack">Please type <strong>{{ auth()->user()->username }}::grant-role::{{ $role->slug }}</strong> to confirm.</p>
+                            <p class="no-margin mb4 dark">Please type <strong>{{ auth()->user()->username }}::grant-role::{{ $role->slug }}</strong> to confirm.</p>
                             <div>
                                 <input type="text" autocomplete="off" class="full-width styled-input" id="grant-role-confirm-input" style="padding: 8px 10px" placeholder="role grant confirmation">
                                 <input type="hidden" id="grant-role-confirm-value" autocomplete="off" value="{{ auth()->user()->username }}::grant-role::{{ $role->slug }}">
@@ -343,13 +343,107 @@
                         <div class="pointer fs20 close-global-viewer unselectable">✖</div>
                     </div>
                     <div class="full-center relative">
-                        <div class="global-viewer-content-box full-dimensions scrolly" style="padding: 14px; min-height: 200px; max-height: 450px">
+                        <div class="global-viewer-content-box full-dimensions y-auto-overflow" style="padding: 14px; min-height: 200px; max-height: 450px">
 
                         </div>
                         <svg class="loading-viewer-spinner size32 absolute black" fill="none" viewBox="0 0 16 16">
                             <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
                             <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
                         </svg>
+                    </div>
+                </div>
+            </div>
+            <!-- attach permissions to role -->
+            <div id="attach-permissions-to-role-viewer" class="global-viewer full-center">
+                <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
+                <div class="viewer-box-style-1">
+                    <div class="flex align-center space-between light-gray-border-bottom" style="padding: 14px;">
+                        <div class="flex align-center">
+                            <svg class="size16 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M147,2.42h18.91c1.35,2,3.59,1,5.36,1.5C195.88,10.2,212.71,25.18,220,49.5s1.76,46.27-15.55,64.88c-9,9.71-18.69,18.84-28.07,28.23q-24.8,24.81-49.61,49.62C117,202,105.42,206.8,91.67,204.94c-16.76-2.27-28.49-11.59-33.88-27.58S56.28,146.94,68,134.82c7.74-8,15.69-15.74,23.54-23.6q26.58-26.56,53.16-53.11c5.57-5.53,12.73-6.59,19.14-3.16,6.25,3.36,9.28,9.85,8,17.21-.7,4.17-3.3,7.1-6.15,10q-37.34,37.27-74.6,74.6c-4.71,4.73-5,10.11-1.08,14.06,3.72,3.73,9.14,3.82,13.33-.36,26.32-26.22,52.79-52.3,78.68-78.95,13-13.34,11.8-34.73-1.36-47.5a34,34,0,0,0-48,.15q-40.71,40.23-80.92,81c-18.81,19.13-21.72,49.17-7.67,72.05,20.19,32.87,65.31,38.12,93,10.62,30.73-30.5,61.25-61.21,91.88-91.81,11.22-11.22,23.46-8.73,29.38,6v8c-1.76,2.32-3.27,4.88-5.31,6.93-31.6,31.69-63,63.58-95,94.86-21.81,21.31-48.64,29.56-78.53,24.23-35.29-6.3-59.88-27-71.14-61.12s-4.36-65.49,20.47-91.53c26.76-28.07,54.65-55,82.14-82.42,8.27-8.24,18.31-13.47,29.58-16.47C142.77,3.76,145.25,4.28,147,2.42Z"/></svg>
+                            <span class="fs20 bold dark">Attach permissions to role</span>
+                        </div>
+                        <div class="pointer fs20 close-global-viewer unselectable">✖</div>
+                    </div>
+                    <div class="viewer-scrollable-box y-auto-overflow" style="padding: 14px; max-height: 430px">
+                        <input type="hidden" id="at-least-one-selected-permission-message" value="You need to select at least one permission to attach to role" autocomplete="off">
+                        <h2 class="fs17 bold no-margin mb4 dark">Attach permissions to "<span class="blue">{{ $role->title }}</span>" role</h2>
+                        <div class="typical-section-style fs13 dark mb8">
+                            <p class="no-margin">Here you can attach permissions to "{{ $role->title }}" role. Before proceding this process, consider the following points</p>
+                            <div class="ml8 mt8">
+                                <div class="flex mt4">
+                                    <div class="fs10 mr8 mt4 gray">•</div>
+                                    <p class="no-margin" style="line-height: 1.5">Once you select permissions and attach them to role, all members with that role will <strong>acquired those permissions</strong> that allow them to perform all activities allowed by those permissions.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="simple-line-separator my4"></div>
+                        <div style="margin-top: 14px">
+                            <div class="align-center">
+                                <span class="fs12 dark bold mr8">Role :</span>
+                                <h3 class="no-margin dark fs18">{{ $role->title }}</h3>
+                            </div>
+                        </div>
+                        <div style="margin-top: 14px">
+                            <span class="block fs12 dark bold">Select permissions to attach :</span>
+                            <span class="block fs12 gray my4">The following section contains both <strong>already-attached</strong> and <strong>non-attached</strong> permissions, so you can choose only from non-attached permissions</span>
+                            <div id="all-permissions-box" class="flex flex-wrap typical-section-style y-auto-overflow" style="padding: 10px; max-height: 160px; gap: 8px;">
+                                @foreach($all_permissions_scoped as $scope=>$permissions)
+                                    <span class="block bold blue fs11 mb4" style="flex-basis: 100%">{{ ucfirst($scope) }}</span>
+                                    @foreach($permissions as $permission)
+                                        @if($permission->already_attached_to_role($role->slug))
+                                        <div class="role-permission-switch-button already-attached-permission-button-style" title="Permission already attached to '{{ $role->title }}' role">
+                                            <span>{{ $permission->title }}</span>
+                                            <span class="block fs10 default-weight">(already atached)</span>
+                                        </div>
+                                        @else
+                                        <div class="role-permission-switch-button align-center select-permission-to-attach-to-role">
+                                            <span class="permission-name">{{ $permission->title }}</span>
+                                            <svg class="size8 ml4 x-ico" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M156.22,3.31c3.07,2.55,4.08,5.71,4.06,9.78-.17,27.07,0,54.14-.18,81.21,0,3.57.69,4.66,4.49,4.63,27.24-.19,54.47-.11,81.71-.1,7.36,0,9.39,2,9.4,9.25q0,21.4,0,42.82c0,7-2.1,9.06-9.09,9.06-27.24,0-54.48.09-81.71-.09-3.85,0-4.83.95-4.8,4.81.17,27.07.1,54.14.09,81.21,0,7.65-1.94,9.59-9.56,9.6q-21.4,0-42.82,0c-6.62,0-8.75-2.19-8.75-8.91,0-27.4-.1-54.8.09-82.2,0-3.8-1.06-4.51-4.62-4.49-27.08.16-54.15,0-81.22.18-4.07,0-7.23-1-9.78-4.06V102.8c2.55-3.08,5.72-4.08,9.79-4.06,27.09.17,54.18,0,81.27.18,3.68,0,4.58-.87,4.55-4.56-.17-27.09,0-54.18-.18-81.27,0-4.06,1-7.23,4.06-9.78Z"></path></svg>
+                                            <svg class="size10 ml4 v-ico none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M433.73,49.92,178.23,305.37,78.91,206.08.82,284.17,178.23,461.56,511.82,128Z"></path></svg>
+                                            <input type="hidden" class="pid" value="{{ $permission->id }}" autocomplete="off">
+                                        </div>
+                                        @endif
+                                    @endforeach
+                                @endforeach
+                            </div>
+                        </div>
+                        <div style="margin-top: 12px">
+                            <span class="block mb4 fs12 dark bold">Selected permissions</span>
+                            <div id="empty-role-permissions-selected-box" class="flex align-center typical-section-style">
+                                <svg class="size14 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                                <p class="fs13 gray no-margin">Select at least one permission that you want to attach to this role</p>
+                            </div>
+                            <div id="role-permissions-selected-box" class="flex flex-wrap section-style none" style="max-height: 160px; overflow-y: auto; padding-bottom: 3px"> <!-- sum: selected user member -->
+                                
+                            </div>
+                            <div class="selected-permission-to-attach-to-role selected-permission-to-attach-to-role-factory button-style-4 mb8 mr8 full-center relative none">
+                                <span class="permission-name fs11"></span>
+                                <input type="hidden" class="pid" value="{{ $permission->id }}" autocomplete="off">
+                                <div class="remove-selected-permission-to-attach-to-role x-close-container-style" style="right: -8px; top: -8px; width: 16px; height: 16px; min-width: 16px">
+                                    <span class="x-close unselectable fs8">✖</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 12px">
+                            <p class="no-margin mb2 bold dark">Confirmation</p>
+                            <p class="no-margin mb4 dark">Please type <strong>{{ auth()->user()->username }}::attach-permissions-to-role::{{ $role->slug }}</strong> to confirm.</p>
+                            <div>
+                                <input type="text" autocomplete="off" class="full-width styled-input" id="attach-permissions-to-role-confirm-input" style="padding: 8px 10px" placeholder="attach permission(s) from role confirmation">
+                                <input type="hidden" id="attach-permissions-to-role-confirm-value" autocomplete="off" value="{{ auth()->user()->username }}::attach-permissions-to-role::{{ $role->slug }}">
+                            </div>
+                            <div class="flex" style="margin-top: 12px">
+                                <div id="attach-permissions-to-role-button" class="typical-button-style green-bs green-bs-disabled full-center">
+                                    <div class="relative size14 mr4">
+                                        <svg class="size12 icon-above-spinner" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M147,2.42h18.91c1.35,2,3.59,1,5.36,1.5C195.88,10.2,212.71,25.18,220,49.5s1.76,46.27-15.55,64.88c-9,9.71-18.69,18.84-28.07,28.23q-24.8,24.81-49.61,49.62C117,202,105.42,206.8,91.67,204.94c-16.76-2.27-28.49-11.59-33.88-27.58S56.28,146.94,68,134.82c7.74-8,15.69-15.74,23.54-23.6q26.58-26.56,53.16-53.11c5.57-5.53,12.73-6.59,19.14-3.16,6.25,3.36,9.28,9.85,8,17.21-.7,4.17-3.3,7.1-6.15,10q-37.34,37.27-74.6,74.6c-4.71,4.73-5,10.11-1.08,14.06,3.72,3.73,9.14,3.82,13.33-.36,26.32-26.22,52.79-52.3,78.68-78.95,13-13.34,11.8-34.73-1.36-47.5a34,34,0,0,0-48,.15q-40.71,40.23-80.92,81c-18.81,19.13-21.72,49.17-7.67,72.05,20.19,32.87,65.31,38.12,93,10.62,30.73-30.5,61.25-61.21,91.88-91.81,11.22-11.22,23.46-8.73,29.38,6v8c-1.76,2.32-3.27,4.88-5.31,6.93-31.6,31.69-63,63.58-95,94.86-21.81,21.31-48.64,29.56-78.53,24.23-35.29-6.3-59.88-27-71.14-61.12s-4.36-65.49,20.47-91.53c26.76-28.07,54.65-55,82.14-82.42,8.27-8.24,18.31-13.47,29.58-16.47C142.77,3.76,145.25,4.28,147,2.42Z"/></svg>
+                                        <svg class="spinner size14 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
+                                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                            <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                        </svg>
+                                    </div>
+                                    <span class="bold">Attach permissions to role</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

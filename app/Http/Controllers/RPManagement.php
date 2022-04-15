@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{Role,User};
+use App\Models\{Role,User,Permission};
 use App\View\Components\Admin\Role\RevokeViewer;
 
 class RPManagement extends Controller
@@ -43,19 +43,24 @@ class RPManagement extends Controller
         $role = null;
         $roles = Role::orderBy('priority', 'asc')->get();
         $users = collect([]);
+        $all_permissions_scoped = collect([]);
         $scoped_permissions = collect([]);
         if($request->has('role')) {
             $role_slug = $request->validate(['role'=>'exists:roles,slug'])['role'];
             $role = Role::where('slug', $role_slug)->first();
             $users = $role->users;
             $scoped_permissions = $role->permissions->groupBy('scope');
+            // In the following, we eager load roles, to prevent querying permission roles relationship
+            // on each permission because we'll check if the permission already attached to role or not (avoid N+1 issue)
+            $all_permissions_scoped = Permission::with('roles')->get()->groupBy('scope');
         }
 
         return view('admin.roles-and-permissions.manage-roles')
             ->with(compact('roles'))
             ->with(compact('role'))
             ->with(compact('users'))
-            ->with(compact('scoped_permissions'));
+            ->with(compact('scoped_permissions'))
+            ->with(compact('all_permissions_scoped'));
     }
     public function role_users_search(Request $request ) {
         $data = $request->validate([
@@ -110,7 +115,6 @@ class RPManagement extends Controller
             'hasmore'=>$hasmore
         ];
     }
-
     public function get_role_revoke_viewer(Request $request) {
         $data = $request->validate([
             'role'=>'required|exists:roles,id',
