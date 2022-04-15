@@ -354,7 +354,7 @@
                 </div>
             </div>
             <!-- attach permissions to role -->
-            <div id="attach-permissions-to-role-viewer" class="global-viewer full-center">
+            <div id="attach-permissions-to-role-viewer" class="global-viewer full-center none">
                 <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
                 <div class="viewer-box-style-1">
                     <div class="flex align-center space-between light-gray-border-bottom" style="padding: 14px;">
@@ -440,6 +440,103 @@
                                         </svg>
                                     </div>
                                     <span class="bold">Attach permissions to role</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- detach permissions from role -->
+            <div id="detach-permissions-from-role-viewer" class="global-viewer full-center">
+                <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
+                <div class="viewer-box-style-1" style="width: 600px;">
+                    <div class="flex align-center space-between light-gray-border-bottom" style="padding: 14px;">
+                        <div class="flex align-center">
+                            <svg class="size16 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M167.69,256.92c-4.4-51.22,37.26-92.87,89-89,0,28.5-.05,57,.09,85.51,0,3-.6,3.55-3.55,3.54C224.71,256.86,196.2,256.92,167.69,256.92ZM19.86,3.86c-16.27,0-16.31.05-16.31,16.07q0,94.91,0,189.79c0,7.15,2.26,9.84,8.61,9.85,38.23.05,76.47,0,114.7.08,2.56,0,3.43-.63,3.3-3.27a77.64,77.64,0,0,1,1.45-19.65c8.29-39.74,41.06-66.4,81.87-66.2,5.11,0,6-1.32,6-6.12-.22-36.58-.11-73.15-.12-109.73,0-8.73-2.06-10.81-10.65-10.81H19.86Zm49.8,76.56c-4.07-4.07-4-4.72.84-9.54s5.56-5,9.55-1C90.24,80,100.39,90.26,111.43,101.34c0-5.58,0-10,0-14.31,0-3.5,1.63-5.17,5.14-5,1.64,0,3.29,0,4.94,0,3.26-.07,4.84,1.45,4.82,4.76,0,10.7.07,21.4-.06,32.1-.05,5-2.7,7.64-7.66,7.71-10.7.15-21.41,0-32.11.07-3.27,0-4.87-1.54-4.8-4.82,0-1.48.07-3,0-4.44-.24-3.94,1.48-5.8,5.52-5.66,4.21.14,8.44,0,13.87,0C89.94,100.65,79.78,90.55,69.66,80.42Z"/></svg>
+                            <span class="fs20 bold dark">Detach permissions from role</span>
+                        </div>
+                        <div class="pointer fs20 close-global-viewer unselectable">✖</div>
+                    </div>
+                    <div class="viewer-scrollable-box y-auto-overflow" style="padding: 14px; max-height: 430px">
+                        <input type="hidden" id="at-least-one-selected-permission-to-detach-from-role-message" value="You need to select at least one permission to detach from role" autocomplete="off">
+                        <h3 class="fs15 bold dark no-margin mb4">Detach permissions from "<span class="blue">{{ $role->title }}</span>" role</h3>
+                        <div class="typical-section-style fs13 dark mb8">
+                            <p class="no-margin">Here you can detach permissions from "{{ $role->title }}" role. Before proceding this process, consider the following points</p>
+                            <div class="ml8 mt8">
+                                <div class="flex mt4">
+                                    <div class="fs10 mr8 mt4 gray">•</div>
+                                    <p class="no-margin" style="line-height: 1.5">Once you select permissions and detach them from role, all members with that role will <strong>miss those permissions</strong> and they cannot perform any activity allowed by those permissions anymore.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="simple-line-separator my4"></div>
+                        <div style="margin-top: 12px">
+                            <div class="align-center">
+                                <span class="fs12 dark bold mr8">Role :</span>
+                                <h3 class="no-margin dark-blue fs18">{{ $role->title }}</h3>
+                            </div>
+                        </div>
+                        <div style="margin-top: 12px">
+                            <div>
+                                <span class="block fs12 dark bold">Select permissions to detach :</span>
+                                <span class="block fs12 gray my4 lh15">The following list of permissions are already attached to "<strong>{{ $role->title }}</strong>" role. Choose only permission(s) that you want to detach.</span>
+                                <div id="all-permissions-box" class="typical-section-style y-auto-overflow" style="padding: 10px; max-height: 250px;">
+                                    @foreach($scoped_permissions as $scope => $permissions)
+                                        <span class="block bold blue fs11 mb4" style="flex-basis: 100%">{{ ucfirst($scope) }}</span>
+                                        <div class="flex flex-wrap" style="gap: 6px;">
+                                            @foreach($permissions as $permission)
+                                            <div class="button-style-1 align-center fs11 select-permission-to-detach-from-role" style="padding: 7px 12px;">
+                                                <span class="permission-name">{{ $permission->title }}</span>
+                                                <svg class="size8 ml4 x-ico" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M156.22,3.31c3.07,2.55,4.08,5.71,4.06,9.78-.17,27.07,0,54.14-.18,81.21,0,3.57.69,4.66,4.49,4.63,27.24-.19,54.47-.11,81.71-.1,7.36,0,9.39,2,9.4,9.25q0,21.4,0,42.82c0,7-2.1,9.06-9.09,9.06-27.24,0-54.48.09-81.71-.09-3.85,0-4.83.95-4.8,4.81.17,27.07.1,54.14.09,81.21,0,7.65-1.94,9.59-9.56,9.6q-21.4,0-42.82,0c-6.62,0-8.75-2.19-8.75-8.91,0-27.4-.1-54.8.09-82.2,0-3.8-1.06-4.51-4.62-4.49-27.08.16-54.15,0-81.22.18-4.07,0-7.23-1-9.78-4.06V102.8c2.55-3.08,5.72-4.08,9.79-4.06,27.09.17,54.18,0,81.27.18,3.68,0,4.58-.87,4.55-4.56-.17-27.09,0-54.18-.18-81.27,0-4.06,1-7.23,4.06-9.78Z"></path></svg>
+                                                <svg class="size10 ml4 v-ico none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M433.73,49.92,178.23,305.37,78.91,206.08.82,284.17,178.23,461.56,511.82,128Z"></path></svg>
+                                                <input type="hidden" class="pid" value="{{ $permission->id }}" autocomplete="off">
+                                            </div>
+                                            @endforeach
+                                        </div>
+                                    @endforeach
+                                    @if(!$scoped_permissions->count())
+                                    <div class="flex align-center">
+                                        <svg class="size14 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                                        <p class="no-margin fs13 italic gray">This role has no permissions to detach for the moment</p>
+                                    </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 12px">
+                            <span class="block mb4 fs12 dark bold">Selected permissions</span>
+                            <div id="empty-role-permissions-to-detach-selected-box" class="flex align-center typical-section-style">
+                                <svg class="size14 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                                <p class="fs13 gray no-margin">Select at least one permission that you want to detach from this role</p>
+                            </div>
+                            <div id="role-permissions-to-detach-selected-box" class="flex flex-wrap section-style none" style="max-height: 160px; overflow-y: auto; padding-bottom: 3px"> <!-- sum: selected user member -->
+                                
+                            </div>
+                            <div class="selected-permission-to-detach-from-role selected-permission-to-detach-from-role-factory button-style-4 mb8 mr8 full-center relative none">
+                                <span class="permission-name fs11"></span>
+                                <input type="hidden" class="pid" value="" autocomplete="off">
+                                <div class="remove-selected-permission-to-detach-from-role x-close-container-style" style="right: -8px; top: -8px; width: 16px; height: 16px; min-width: 16px">
+                                    <span class="x-close unselectable fs8">✖</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 12px">
+                            <p class="no-margin mb2 fs15 bold dark">Confirmation</p>
+                            <p class="no-margin mb4 fs13 dark">Please type <strong>{{ auth()->user()->username }}::detach-permissions-from-role::{{ $role->slug }}</strong> to confirm.</p>
+                            <div>
+                                <input type="text" autocomplete="off" class="full-width styled-input" id="detach-permissions-from-role-confirm-input" style="padding: 8px 10px" placeholder="detach permission(s) from role confirmation">
+                                <input type="hidden" id="detach-permissions-from-role-confirm-value" autocomplete="off" value="{{ auth()->user()->username }}::detach-permissions-from-role::{{ $role->slug }}">
+                            </div>
+                            <div class="flex" style="margin-top: 12px">
+                                <div id="detach-permissions-from-role-button" class="typical-button-style red-bs red-bs-disabled full-center">
+                                    <div class="relative size14 mr4">
+                                        <svg class="size12 icon-above-spinner" fill="white" viewBox="0 0 260 260"><path d="M167.69,256.92c-4.4-51.22,37.26-92.87,89-89,0,28.5-.05,57,.09,85.51,0,3-.6,3.55-3.55,3.54C224.71,256.86,196.2,256.92,167.69,256.92ZM19.86,3.86c-16.27,0-16.31.05-16.31,16.07q0,94.91,0,189.79c0,7.15,2.26,9.84,8.61,9.85,38.23.05,76.47,0,114.7.08,2.56,0,3.43-.63,3.3-3.27a77.64,77.64,0,0,1,1.45-19.65c8.29-39.74,41.06-66.4,81.87-66.2,5.11,0,6-1.32,6-6.12-.22-36.58-.11-73.15-.12-109.73,0-8.73-2.06-10.81-10.65-10.81H19.86Zm49.8,76.56c-4.07-4.07-4-4.72.84-9.54s5.56-5,9.55-1C90.24,80,100.39,90.26,111.43,101.34c0-5.58,0-10,0-14.31,0-3.5,1.63-5.17,5.14-5,1.64,0,3.29,0,4.94,0,3.26-.07,4.84,1.45,4.82,4.76,0,10.7.07,21.4-.06,32.1-.05,5-2.7,7.64-7.66,7.71-10.7.15-21.41,0-32.11.07-3.27,0-4.87-1.54-4.8-4.82,0-1.48.07-3,0-4.44-.24-3.94,1.48-5.8,5.52-5.66,4.21.14,8.44,0,13.87,0C89.94,100.65,79.78,90.55,69.66,80.42Z"/></svg>
+                                        <svg class="spinner size14 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
+                                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                            <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                        </svg>
+                                    </div>
+                                    <span class="bold">Detach permissions from role</span>
                                 </div>
                             </div>
                         </div>
