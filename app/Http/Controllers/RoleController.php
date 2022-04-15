@@ -54,7 +54,8 @@ class RoleController extends Controller
 
         $role->delete();
 
-        Session::flash('message', 'Role has been deleted successfully.');
+        Session::flash('message', 'Role "' . $role->title . '" has been deleted successfully.');
+        return route('admin.rp.manage.roles');
     }
     public function attach_permissions(Request $request) {
         $data = $request->validate([

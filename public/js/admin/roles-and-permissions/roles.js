@@ -886,4 +886,63 @@ $('#detach-permissions-from-role-button').on('click', function() {
 });
 
 /** delete role - DANGER ZONE */
+$('.open-delete-role-dialog').on('click', function() {
+	$('#delete-role-viewer').removeClass('none');
+    disable_page_scroll();
+});
 
+let delete_role_confirmed = false;
+$('#delete-role-confirm-input').on('input', function() {
+    let confirmation_input = $(this);
+    let confirmation_value = $('#delete-role-confirm-value').val();
+	let button = $('#delete-role-button');
+    
+	delete_role_confirmed = false;
+    if(confirmation_input.val() == confirmation_value) {
+		delete_role_confirmed = true;
+		button.removeClass('red-bs-disabled');
+    } else
+		button.addClass('red-bs-disabled');
+});
+
+let delete_role_lock = true;
+$('#delete-role-button').on('click', function() {
+	if(!delete_role_confirmed || !delete_role_lock) return;
+	delete_role_lock = false;
+
+	let button = $(this);
+	let buttonicon = button.find('.icon-above-spinner');
+	let spinner = button.find('.spinner');
+
+	button.addClass('red-bs-disabled');
+	spinner.addClass('inf-rotate');
+	buttonicon.addClass('none');
+	spinner.removeClass('opacity0');
+
+	$.ajax({
+		type: 'delete',
+		url: '/admin/roles',
+		data: {
+			role_id: $('#role-id').val()
+		},
+		success: function(response) {
+			window.location.href = response;
+		},
+		error: function(response) {
+			spinner.addClass('opacity0');
+			spinner.removeClass('inf-rotate');
+			buttonicon.removeClass('none');
+			button.removeClass('red-bs-disabled');
+
+			let errorObject = JSON.parse(response.responseText);
+			let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+			if(errorObject.errors) {
+				let errors = errorObject.errors;
+				error = errors[Object.keys(errors)[0]][0];
+			}
+			print_top_message(error, 'error');
+
+			delete_role_lock = true;
+		},
+	});
+});

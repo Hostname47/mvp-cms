@@ -171,8 +171,12 @@
                 @foreach($roles as $role)
                 <a href="?role={{ $role->slug }}" class="role-to-manage">
                     <h3 class="fs20 dark no-margin">{{ $role->title }}</h3>
-                    <p class="dark fs13 no-margin mt4">{{ $role->description }}</p>
-                    <p class="dark fs12 bold no-margin mt4">(click to manage)</p>
+                    @if($role->slug == 'site-owner')
+                    <em class="fs13 light-gray mt4">Absolute Control</em>
+                    @else
+                    <p class="dark fs13 no-margin mt4">Permissions : <strong class='fs14 black'>{{ $role->permissions()->count() }}</strong></p>
+                    @endif
+                    <p class="dark fs13 no-margin mt4">Role members : <strong class="fs14 black">{{ $role->users()->count() }}</strong></p>
                 </a>
                 @endforeach
             </div>
@@ -543,7 +547,7 @@
                 </div>
             </div>
             <!-- delete role viewer -->
-            <div id="delete-role-viewer" class="global-viewer full-center">
+            <div id="delete-role-viewer" class="global-viewer full-center none">
                 <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
                 <div class="viewer-box-style-1" style="width: 600px;">
                     <div class="flex align-center space-between light-gray-border-bottom" style="padding: 14px;">
@@ -576,7 +580,7 @@
                         </div>
                         <div class="mt8">
                             <span class="block fs12 gray bold mb4">Role permissions :</span>
-                            <div class="flex flex-wrap typical-section-style y-auto-overflow" style="padding: 10px; max-height: 200px;">
+                            <div class="flex flex-wrap typical-section-style y-auto-overflow" style="padding: 10px; max-height: 180px;">
                                 @foreach($scoped_permissions as $scope=>$permissions)
                                     <span class="block bold blue fs11 mb4" style="flex-basis: 100%">{{ ucfirst($scope) }}</span>
                                     @foreach($permissions as $permission)
