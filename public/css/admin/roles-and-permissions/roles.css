@@ -62,3 +62,12 @@
     border: 1px solid #c3ced0;
     border-radius: 3px;
 }
+
+.role-user-box {
+    width: 74px;
+}
+.role-user-box .username {
+    inline-size: 80px;
+    overflow-wrap: break-word;
+    text-align: center;
+}

@@ -179,7 +179,7 @@
         @else
             <input type="hidden" id="role-id" value="{{ $role->id }}" autocomplete="off">
             <!-- grant role to users viewer -->
-            <div id="grant-role-to-users-viewer" class="global-viewer full-center">
+            <div id="grant-role-to-users-viewer" class="global-viewer full-center none">
                 <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
                 <div class="viewer-box-style-1" style="width: 600px;">
                     <div class="align-center space-between light-gray-border-bottom" style="padding: 14px;">
@@ -288,7 +288,7 @@
                                 <svg class="size14 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
                                 <p class="fs13 gray no-margin">Select at least one member that you want to attach this role to</p>
                             </div>
-                            <div id="role-members-selected-box" class="flex flex-wrap scrolly none" style="max-height: 160px"> <!-- sum: selected user member -->
+                            <div id="role-members-selected-box" class="flex flex-wrap y-auto-overflow none" style="max-height: 160px"> <!-- sum: selected user member -->
                                 
                             </div>
                             <div class="selected-role-member-to-get-role selected-role-member-to-get-role-factory mb4 mr4 full-center flex-column relative none">
@@ -394,12 +394,14 @@
                     <p class="my4 fs12 lblack lh15">The following section includes members that own this role. You can grant this role to more members, or revoke it from its owners.</p>
 
                     <div class="flex flex-wrap typical-section-style my8" style="padding: 20px; max-height: 250px; overflow-y: auto; gap: 15px;">
-                        <div class="rounded-entity-for-role rounded-blue-when-hover open-grant-role-dialog">
-                            <svg class="size10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M156.22,3.31c3.07,2.55,4.08,5.71,4.06,9.78-.17,27.07,0,54.14-.18,81.21,0,3.57.69,4.66,4.49,4.63,27.24-.19,54.47-.11,81.71-.1,7.36,0,9.39,2,9.4,9.25q0,21.4,0,42.82c0,7-2.1,9.06-9.09,9.06-27.24,0-54.48.09-81.71-.09-3.85,0-4.83.95-4.8,4.81.17,27.07.1,54.14.09,81.21,0,7.65-1.94,9.59-9.56,9.6q-21.4,0-42.82,0c-6.62,0-8.75-2.19-8.75-8.91,0-27.4-.1-54.8.09-82.2,0-3.8-1.06-4.51-4.62-4.49-27.08.16-54.15,0-81.22.18-4.07,0-7.23-1-9.78-4.06V102.8c2.55-3.08,5.72-4.08,9.79-4.06,27.09.17,54.18,0,81.27.18,3.68,0,4.58-.87,4.55-4.56-.17-27.09,0-54.18-.18-81.27,0-4.06,1-7.23,4.06-9.78Z"></path></svg>
+                        <div class="flex justify-center role-user-box">
+                            <div class="rounded-entity-for-role rounded-blue-when-hover open-grant-role-dialog">
+                                <svg class="size10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M156.22,3.31c3.07,2.55,4.08,5.71,4.06,9.78-.17,27.07,0,54.14-.18,81.21,0,3.57.69,4.66,4.49,4.63,27.24-.19,54.47-.11,81.71-.1,7.36,0,9.39,2,9.4,9.25q0,21.4,0,42.82c0,7-2.1,9.06-9.09,9.06-27.24,0-54.48.09-81.71-.09-3.85,0-4.83.95-4.8,4.81.17,27.07.1,54.14.09,81.21,0,7.65-1.94,9.59-9.56,9.6q-21.4,0-42.82,0c-6.62,0-8.75-2.19-8.75-8.91,0-27.4-.1-54.8.09-82.2,0-3.8-1.06-4.51-4.62-4.49-27.08.16-54.15,0-81.22.18-4.07,0-7.23-1-9.78-4.06V102.8c2.55-3.08,5.72-4.08,9.79-4.06,27.09.17,54.18,0,81.27.18,3.68,0,4.58-.87,4.55-4.56-.17-27.09,0-54.18-.18-81.27,0-4.06,1-7.23,4.06-9.78Z"></path></svg>
+                            </div>
                         </div>
                         <div class="gray height-max-content mx8 fs10" style="margin-top: 22px">•</div>
                         @foreach($users as $user)
-                        <div class="align-center flex-column">
+                        <div class="align-center flex-column role-user-box">
                             <div class="relative">
                                 <img src="{{ $user->avatar(100) }}" class="rounded-entity-for-role" alt="">
                                 <div class="open-revoke-role-dialog">
@@ -407,7 +409,7 @@
                                     <input type="hidden" class="uid" value="{{ $user->id }}" autocomplete="off">
                                 </div>
                             </div>
-                            <span class="bold dark-blue fs11">{{ $user->username }}</span>
+                            <span class="bold dark-blue fs11 username">{{ $user->username }}</span>
                             <span class="bold dark fs10">{{ $user->high_role()->title }}</span>
                         </div>
                         @endforeach

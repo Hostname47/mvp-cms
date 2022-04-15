@@ -93,6 +93,7 @@ class RoleController extends Controller
         }
         
         $role->users()->syncWithPivotValues($data['users'], ['giver_id'=>auth()->user()->id], false);
+        Session::flash('message', "Role '$role->title' has been granted to users successfully.");
     }
     public function revoke(Request $request) {
         $data = $request->validate([

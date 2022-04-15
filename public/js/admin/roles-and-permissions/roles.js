@@ -455,5 +455,50 @@ $('#grant-role-confirm-input').on('input', function() {
 let grant_role_confirmed = false;
 let grant_role_lock = true;
 $('#grant-role-button').on('click', function() {
-    console.log('hello');
+    if(!grant_role_lock || !grant_role_confirmed) return;
+	grant_role_lock = false;
+
+	let button = $(this);
+	let buttonicon = button.find('.icon-above-spinner');
+	let spinner = button.find('.spinner');
+
+	let selected_members = [];
+	$('#role-members-selected-box .selected-role-member-to-get-role').each(function() {
+		selected_members.push($(this).find('.selected-user-id').val());
+	});
+
+	let data = {
+		role: $('#role-id').val(),
+		users: selected_members,
+	};
+
+	button.addClass('green-bs-disabled');
+	spinner.addClass('inf-rotate');
+	buttonicon.addClass('none');
+	spinner.removeClass('opacity0');
+
+	$.ajax({
+		type: 'post',
+		url: '/admin/roles/grant-to-users',
+		data: data,
+		success: function(response) {
+			location.reload();
+		},
+		error: function(response) {
+			spinner.addClass('opacity0');
+            spinner.removeClass('inf-rotate');
+            buttonicon.removeClass('none');
+            button.removeClass('green-bs-disabled');
+
+			let errorObject = JSON.parse(response.responseText);
+			let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+			if(errorObject.errors) {
+				let errors = errorObject.errors;
+				error = errors[Object.keys(errors)[0]][0];
+			}
+			print_top_message(error, 'error');
+
+			grant_role_lock = true;
+		}
+	});
 });
