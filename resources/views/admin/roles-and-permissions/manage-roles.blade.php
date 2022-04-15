@@ -190,7 +190,6 @@
                         <div class="pointer fs20 close-global-viewer unselectable">✖</div>
                     </div>
                     <div class="viewer-scrollable-box y-auto-overflow" style="padding: 14px; max-height: 430px">
-                        <input type="hidden" id="um-at-least-one-selected-message" value="You need to select at least one member to attach role into" autocomplete="off">
                         <div class="section-style fs13 lblack mb8">
                             <p class="no-margin dark lh15">Here you can grant "{{ $role->title }}" role to members. Once the selected member(s) get the role, he will <strong>acquired all permissions in that role</strong> that allow him to perform all activities allowed by all its associated permissions.</p>
                         </div>
@@ -232,21 +231,21 @@
                                 </div>
                                 <div class="relative">
                                     <div id="role-members-search-result-box" class="full-width y-auto-overflow none" style="max-height: 234px;">
-                                        <input type="hidden" id="ru-k" autocomplete="off">
+                                        <input type="hidden" id="role-user-k" autocomplete="off">
                                         <div class="results-container none">
                                             results
                                         </div>
                                         <div class="role-member-search-user role-member-search-user-factory mb4 flex none">
-                                            <input type="hidden" class="ru-uid" autocomplete="off">
-                                            <a href="" class="ru-user-manage-link" style="height: 42px">
-                                                <img src="" class="size36 rounded mr8 ru-avatar" alt="" style="border: 3px solid #9f9f9f;">
+                                            <input type="hidden" class="role-user-id" autocomplete="off">
+                                            <a href="" class="role-user-user-manage-link" style="height: 42px">
+                                                <img src="" class="size36 rounded mr8 role-user-avatar" alt="" style="border: 3px solid #9f9f9f;">
                                             </a>
                                             <div>
                                                 <div class="align-center">
-                                                    <span class="block bold fs15 dark ru-fullname">Mouad Nassri</span>
-                                                    <div class="button-style-4 align-center ml8 height-max-content role-select-member none" style="padding: 6px 10px">
-                                                        <svg class="size12 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M197.63,2.4C199,4.24,201.19,3.45,203,4.08a32,32,0,0,1,21.4,28.77c.14,4,.18,7.93,0,11.88-.26,6.3-4.8,10.58-10.82,10.44-5.84-.13-9.9-4.25-10.17-10.51-.14-3.3.08-6.61-.09-9.91C202.94,27.81,199,23.86,192,23.52c-3-.14-5.94,0-8.91,0-6-.14-10.05-3-11.2-7.82-1.23-5.13.68-9.09,5.92-12.31a5.8,5.8,0,0,0,1-1ZM38.88,2.4c-.22.78-.87.78-1.52.94C24.43,6.58,16.51,14.91,13.46,27.71c-1.34,5.64-.74,11.53-.53,17.3a10.08,10.08,0,0,0,10.5,10.18c5.78,0,10.14-4.29,10.45-10.36.16-3.13,0-6.28,0-9.42C34.05,27.9,38,23.79,45.5,23.51c3.46-.13,6.94.06,10.4-.14,4.87-.28,7.94-3.08,9.31-7.6s-.25-8-3.59-11.09C60.7,3.83,59.05,4,58.73,2.4Zm55.56,0c-.16,1.13-1.22.84-1.87,1.21-4.47,2.56-6.49,7-5.37,11.67,1.16,4.89,4.64,8,9.88,8.1q21.56.23,43.13,0a9.75,9.75,0,0,0,9.7-7.7c1-4.8-.35-8.79-4.57-11.64-.77-.52-2-.44-2.28-1.63ZM142.29,247c0,3.87.55,7.36,4.66,9,4,1.53,6.55-.77,9.05-3.38,12.14-12.64,24.36-25.2,36.43-37.91a9.54,9.54,0,0,1,7.68-3.37c15.71.18,31.42.06,47.12.09,4,0,7.28-1,8.54-5.19,1.14-3.81-1.26-6.2-3.65-8.58q-47.88-47.85-95.75-95.74c-2.63-2.64-5.24-5.33-9.43-3.7-4.36,1.7-4.66,5.47-4.65,9.46q.06,34.47,0,68.94Q142.31,211.74,142.29,247Zm-87-33c6.06-.34,10.36-4.74,10.35-10.45a10.59,10.59,0,0,0-10.37-10.52c-3.46-.18-6.94,0-10.41-.07-6.56-.23-10.71-4.41-10.92-11-.12-3.64.14-7.29-.12-10.91a10.52,10.52,0,0,0-10-9.8c-5.11-.22-10.18,3.43-10.65,8.43-.61,6.57-1,13.26.49,19.75,3.7,15.82,16.07,24.61,34.23,24.59C50.34,213.94,52.82,214.05,55.3,213.91ZM12.86,128.57C13,135.3,17.31,140,23.27,140s10.57-4.64,10.62-11.27q.15-20.53,0-41.08c0-6.68-4.52-11.11-10.71-11-6,.07-10.17,4.3-10.3,10.87-.15,6.93,0,13.86,0,20.79C12.84,115,12.75,121.81,12.86,128.57ZM203.39,97.73c0,3.63-.16,7.28,0,10.9.32,5.93,4.46,9.91,10.13,10s10.47-3.78,10.72-9.47c.34-7.75.36-15.54,0-23.29-.27-5.64-5.21-9.48-10.87-9.28a10,10,0,0,0-9.93,9.7c-.23,3.78,0,7.6,0,11.4Zm-84,116.12a10.44,10.44,0,0,0,0-20.84c-7.56-.3-15.15-.29-22.71,0a10.44,10.44,0,0,0,0,20.84c3.77.23,7.57,0,11.35.05S115.57,214.09,119.34,213.85Z"></path></svg>
-                                                        <span class="fs11 bold">select user</span>
+                                                    <span class="block bold fs15 dark role-user-fullname">Mouad Nassri</span>
+                                                    <div class="button-style-1 align-center ml8 role-select-member none" style="padding: 4px 8px">
+                                                        <svg class="size11 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M197.63,2.4C199,4.24,201.19,3.45,203,4.08a32,32,0,0,1,21.4,28.77c.14,4,.18,7.93,0,11.88-.26,6.3-4.8,10.58-10.82,10.44-5.84-.13-9.9-4.25-10.17-10.51-.14-3.3.08-6.61-.09-9.91C202.94,27.81,199,23.86,192,23.52c-3-.14-5.94,0-8.91,0-6-.14-10.05-3-11.2-7.82-1.23-5.13.68-9.09,5.92-12.31a5.8,5.8,0,0,0,1-1ZM38.88,2.4c-.22.78-.87.78-1.52.94C24.43,6.58,16.51,14.91,13.46,27.71c-1.34,5.64-.74,11.53-.53,17.3a10.08,10.08,0,0,0,10.5,10.18c5.78,0,10.14-4.29,10.45-10.36.16-3.13,0-6.28,0-9.42C34.05,27.9,38,23.79,45.5,23.51c3.46-.13,6.94.06,10.4-.14,4.87-.28,7.94-3.08,9.31-7.6s-.25-8-3.59-11.09C60.7,3.83,59.05,4,58.73,2.4Zm55.56,0c-.16,1.13-1.22.84-1.87,1.21-4.47,2.56-6.49,7-5.37,11.67,1.16,4.89,4.64,8,9.88,8.1q21.56.23,43.13,0a9.75,9.75,0,0,0,9.7-7.7c1-4.8-.35-8.79-4.57-11.64-.77-.52-2-.44-2.28-1.63ZM142.29,247c0,3.87.55,7.36,4.66,9,4,1.53,6.55-.77,9.05-3.38,12.14-12.64,24.36-25.2,36.43-37.91a9.54,9.54,0,0,1,7.68-3.37c15.71.18,31.42.06,47.12.09,4,0,7.28-1,8.54-5.19,1.14-3.81-1.26-6.2-3.65-8.58q-47.88-47.85-95.75-95.74c-2.63-2.64-5.24-5.33-9.43-3.7-4.36,1.7-4.66,5.47-4.65,9.46q.06,34.47,0,68.94Q142.31,211.74,142.29,247Zm-87-33c6.06-.34,10.36-4.74,10.35-10.45a10.59,10.59,0,0,0-10.37-10.52c-3.46-.18-6.94,0-10.41-.07-6.56-.23-10.71-4.41-10.92-11-.12-3.64.14-7.29-.12-10.91a10.52,10.52,0,0,0-10-9.8c-5.11-.22-10.18,3.43-10.65,8.43-.61,6.57-1,13.26.49,19.75,3.7,15.82,16.07,24.61,34.23,24.59C50.34,213.94,52.82,214.05,55.3,213.91ZM12.86,128.57C13,135.3,17.31,140,23.27,140s10.57-4.64,10.62-11.27q.15-20.53,0-41.08c0-6.68-4.52-11.11-10.71-11-6,.07-10.17,4.3-10.3,10.87-.15,6.93,0,13.86,0,20.79C12.84,115,12.75,121.81,12.86,128.57ZM203.39,97.73c0,3.63-.16,7.28,0,10.9.32,5.93,4.46,9.91,10.13,10s10.47-3.78,10.72-9.47c.34-7.75.36-15.54,0-23.29-.27-5.64-5.21-9.48-10.87-9.28a10,10,0,0,0-9.93,9.7c-.23,3.78,0,7.6,0,11.4Zm-84,116.12a10.44,10.44,0,0,0,0-20.84c-7.56-.3-15.15-.29-22.71,0a10.44,10.44,0,0,0,0,20.84c3.77.23,7.57,0,11.35.05S115.57,214.09,119.34,213.85Z"></path></svg>
+                                                        <span class="fs11 dark bold">select user</span>
                                                     </div>
                                                     <div class="align-center ml8 height-max-content already-has-role none" style="padding: 2px">
                                                         <svg class="size12 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M433.73,49.92,178.23,305.37,78.91,206.08.82,284.17,178.23,461.56,511.82,128Z" style="fill:#52c563"></path></svg>
@@ -254,12 +253,13 @@
                                                     </div>
                                                 </div>
                                                 <div class="align-center mt2">
-                                                    <span class="block fs13 lblack ru-username">codename49</span>
+                                                    <span class="block fs13 lblack role-user-username">codename49</span>
                                                     <div class="light-gray mx4 fs8">•</div>
-                                                    <span class="block bold fs12 blue ru-role">Site owner</span>
+                                                    <span class="block bold fs12 blue role-user-role">Site owner</span>
                                                 </div>
                                             </div>
                                         </div>
+                                        <!-- fetch more users -->
                                         <div id="role-users-fetch-more-results" class="full-center none" style='height: 40px;'>
                                             <svg class="spinner size20" fill="none" viewBox="0 0 16 16">
                                                 <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
@@ -276,7 +276,7 @@
                                         <!-- no results found -->
                                         <div class="no-results-found-box full-center none" style='height: 40px;'>
                                             <svg class="size14 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
-                                            <p class="fs13 gray no-margin bold">Users not found with this username</p>
+                                            <p class="fs13 gray no-margin bold">No users found with this username.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -284,7 +284,7 @@
                         </div>
                         <div style="margin-top: 12px">
                             <span class="block mb4 fs12 gray bold">Selected members</span>
-                            <div id="empty-role-members-selected-box" class="align-center section-style">
+                            <div id="empty-role-members-selected-box" class="align-center typical-section-style">
                                 <svg class="size14 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
                                 <p class="fs13 gray no-margin">Select at least one member that you want to attach this role to</p>
                             </div>
@@ -292,16 +292,16 @@
                                 
                             </div>
                             <div class="selected-role-member-to-get-role selected-role-member-to-get-role-factory mb4 mr4 full-center flex-column relative none">
-                                <input type="hidden" class="sum-uid" autocomplete="off">
-                                <a href="" class="sum-user-manage-link" style="height: 42px">
-                                    <img src="{{ auth()->user()->avatar(100) }}" class="size48 rounded mr8 sum-avatar" alt="" style="border: 3px solid #9f9f9f;">
+                                <input type="hidden" class="selected-user-id" autocomplete="off">
+                                <a href="" class="selected-user-manage-link" style="height: 42px">
+                                    <img src="{{ auth()->user()->avatar(100) }}" class="size36 rounded mr8 selected-user-avatar" alt="" style="border: 3px solid #9f9f9f;">
                                 </a>
-                                <span class="block bold sum-fullname mt4">Mouad Nassri</span>
-                                <span class="block bold fs13 lblack sum-username">codename49</span>
-                                <span class="block bold fs12 blue sum-role">Site owner</span>
+                                <span class="block bold selected-user-fullname mt4">Mouad Nassri</span>
+                                <span class="block my4 fs12 lblack selected-user-username">codename49</span>
+                                <span class="block bold fs12 blue selected-user-role">Site owner</span>
 
                                 <!-- remove member from selected users -->
-                                <div class="remove-sum-from-selection x-close-container-style">
+                                <div class="remove-selected-user-from-selection x-close-container-style">
                                     <span class="x-close unselectable">✖</span>
                                 </div>
                             </div>

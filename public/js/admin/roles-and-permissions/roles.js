@@ -162,9 +162,8 @@ $('.open-grant-role-dialog').on('click', function() {
 $('body').on('click', (event) => $('#role-members-search-result-box').addClass('none'));
 $('#role-members-search-result-box,#role-member-search-input').on('click', (event) => event.stopPropagation());
 $('#role-member-search-input').on('keyup', function(event) {
-    if(event.key === 'Enter' || event.keyCode === 13) {
+    if(event.key === 'Enter' || event.keyCode === 13)
 		$('#role-search-for-member-to-grant').trigger('click');
-	}
 });
 
 $('.open-role-grant-dialog').on('click', function() {
@@ -245,7 +244,7 @@ $('#role-search-for-member-to-grant').on('click', function(event) {
 			results.removeClass('none');
 			resultbox.removeClass('none');
 			role_last_member_search_query = query;
-			$('#rum-k').val(query); // This is used in fetch more
+			$('#role-user-k').val(query); // This is used in fetch more
 		},
 		error: function(response) {
 			spinner.addClass('opacity0');
@@ -265,25 +264,80 @@ $('#role-search-for-member-to-grant').on('click', function(event) {
 	})
 });
 
+$('.role-select-member').on('click', function() {
+	let selected_user_component = $(this);
+	while(!selected_user_component.hasClass('role-member-search-user'))
+		selected_user_component = selected_user_component.parent();
+
+	let selected_members_box = $('#role-members-selected-box');
+	let empty_selected_members_box = $('#empty-role-members-selected-box');
+
+	let user_component = $('.selected-role-member-to-get-role-factory').clone(true, true);
+	let uid = selected_user_component.find('.role-user-id').val();
+	user_component.find('.selected-user-id').val(uid);
+	user_component.find('.selected-user-avatar').attr('src', selected_user_component.find('.role-user-avatar').attr('src'));
+	user_component.find('.selected-user-fullname').text(selected_user_component.find('.role-user-fullname').text());
+	user_component.find('.selected-user-profilelink').attr('href', selected_user_component.find('.role-user-profilelink').attr('href'));
+	user_component.find('.selected-user-username').text(selected_user_component.find('.role-user-username').text());
+	user_component.find('.selected-user-role').text(selected_user_component.find('.role-user-role').text());
+
+	user_component.removeClass('none selected-role-member-to-get-role-factory');
+
+	if(!role_user_already_selected(uid))
+		selected_members_box.append(user_component);
+
+	if(selected_members_box.hasClass('none')) {
+		selected_members_box.removeClass('none');
+		empty_selected_members_box.addClass('none');
+	}
+});
+
+function role_user_already_selected(uid) {
+	let already_selected = false;
+	$('.selected-role-member-to-get-role').each(function() {
+		if($(this).find('.selected-user-id').val() == uid) {
+			already_selected = true;
+			return false;
+		}
+	});
+
+	return already_selected;
+}
+
+$('.remove-selected-user-from-selection').on('click', function() {
+	let selected_user_component = $(this);
+	while(!selected_user_component.hasClass('selected-role-member-to-get-role')) {
+		selected_user_component = selected_user_component.parent();
+	}
+
+	selected_user_component.remove();
+
+	if(!$('#role-members-selected-box .selected-role-member-to-get-role').length) {
+		$('#role-members-selected-box').addClass('none');
+		$('#empty-role-members-selected-box').removeClass('none');
+		disable_grant_role_button();
+	}
+});
+
 function create_role_member_search_component(user) {
-	let usercomponent = $('#role-members-search-result-box .role-member-search-user-factory').clone(true);
+	let usercomponent = $('#role-members-search-result-box .role-member-search-user-factory').clone(true, true);
 	usercomponent.removeClass('none role-member-search-user-factory');
 
 	let role = user.role;
 	let already_has_role = user.already_has_this_role;
 
-	usercomponent.find('.ru-uid').val(user.id);
-	usercomponent.find('.ru-avatar').attr('src', user.avatar);
-	usercomponent.find('.ru-fullname').text(user.fullname);
-	usercomponent.find('.ru-username').text(user.username);
-	usercomponent.find('.ru-user-manage-link').attr('href', user.user_manage_link);
+	usercomponent.find('.role-user-id').val(user.id);
+	usercomponent.find('.role-user-avatar').attr('src', user.avatar);
+	usercomponent.find('.role-user-fullname').text(user.fullname);
+	usercomponent.find('.role-user-username').text(user.username);
+	usercomponent.find('.role-user-user-manage-link').attr('href', user.user_manage_link);
 	
 	if(role == null) {
-		usercomponent.find('.ru-role').text('normal user');
-		usercomponent.find('.ru-role').removeClass('blue bold');
-		usercomponent.find('.ru-role').addClass('gray italic');
+		usercomponent.find('.role-user-role').text('normal user');
+		usercomponent.find('.role-user-role').removeClass('blue bold');
+		usercomponent.find('.role-user-role').addClass('gray italic');
 	} else
-		usercomponent.find('.ru-role').text(role);
+		usercomponent.find('.role-user-role').text(role);
 
 	if(already_has_role) {
 		usercomponent.find('.role-select-member').remove();
@@ -295,3 +349,55 @@ function create_role_member_search_component(user) {
 
 	return usercomponent;
 }
+
+function disable_grant_role_button() {
+	let confirmation_input = $('#grant-role-confirm-input');
+	let confirmation_value = $('#grant-role-confirm-value').val();
+	if(confirmation_input.val() == confirmation_value)
+		confirmation_input.val(confirmation_input.val() + ' - x');
+
+	$('#grant-role-button').addClass('green-bs-disabled');
+	grant_role_confirmed = false;
+}
+
+$('#grant-role-confirm-input').on('input', function() {
+    let input_value = $(this).val();
+    let confirm_value = $('#grant-role-confirm-value').val();
+	let grantbutton = $('#grant-role-button');
+    
+    grant_role_confirmed = false;
+    if(input_value == confirm_value) {
+		// Check if at least one member selected
+		if(!$('#role-members-selected-box .selected-role-member-to-get-role').length) {
+			// Only append error to confirmation when the values match
+			let confirmation_input = $('#grant-role-confirm-input');
+			let confirmation_value = $('#grant-role-confirm-value').val();
+			if(confirmation_input.val() == confirmation_value)
+				confirmation_input.val(confirmation_input.val() + ' - x');
+
+            print_top_message('You need to select at least one member to attach role into', 'error');
+			grantbutton.addClass('green-bs-disabled');
+			grant_role_confirmed = false;
+
+			return;
+		} else {
+			grantbutton.removeClass('green-bs-disabled');
+			grant_role_confirmed = true;
+		}
+    } else {
+        // Only append error to confirmation when the values match
+		let confirmation_input = $('#grant-role-confirm-input');
+		let confirmation_value = $('#grant-role-confirm-value').val();
+		if(confirmation_input.val() == confirmation_value)
+			confirmation_input.val(confirmation_input.val() + ' - x');
+
+		$('#grant-role-button').addClass('green-bs-disabled');
+		grant_role_confirmed = false;
+    }
+});
+
+let grant_role_confirmed = false;
+let grant_role_lock = true;
+$('#grant-role-button').on('click', function() {
+    console.log('hello');
+});

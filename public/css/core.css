@@ -1019,3 +1019,28 @@ textarea {
     display: flex;
     left: 12px;
 }
+
+.x-close-container-style {
+    position: absolute;
+    z-index: 1;
+    right: 6px;
+    top: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    height: 20px;
+    width: 20px;
+    min-width: 20px;
+    border-radius: 50%;
+    background-color: #0000006b;
+    color: white;
+}
+
+.x-close-container-style:hover {
+    background-color: black;
+}
+
+.x-close {
+    font-size: 10px;
+}
