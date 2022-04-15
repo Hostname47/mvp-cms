@@ -109,23 +109,21 @@ function print_top_message(message, type) {
 
     let top_message_box = $('#top-message-box');
     top_message_box.removeClass('none');
-
+    let message_container;
+    $('.top-message-container').addClass('none'); // First close all message containers types
     switch(type) {
         case 'green':
-            $('.top-message-container').addClass('none'); // First close all message containers types
-            let top_green_message_container = $('#top-green-message-container');
-            top_green_message_container.find('.message-text').text(message);
-            top_green_message_container.removeClass('none')
+            message_container = $('#top-green-message-container');
             break;
         case 'warning':
+            message_container = $('#top-warning-message-container');
             break;
         case 'error':
-            $('.top-message-container').addClass('none'); // First close all message containers types
-            let top_error_message_container = $('#top-error-message-container');
-            top_error_message_container.find('.message-text').text(message);
-            top_error_message_container.removeClass('none')
+            message_container = $('#top-error-message-container');
             break;
-    }
+    }    
+    message_container.find('.message-text').text(message);
+    message_container.removeClass('none')
     
     // This timeout will wait for 6 sec before close the message
     top_message_timeout = setTimeout(function() {

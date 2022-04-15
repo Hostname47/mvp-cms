@@ -613,3 +613,136 @@ function handle_role_revoke_button() {
 		});
 	});
 }
+
+$('.open-attach-permissions-to-role-dialog').on('click', function() {
+	$('#attach-permissions-to-role-viewer').removeClass('none');
+    disable_page_scroll();
+});
+
+$('.select-permission-to-attach-to-role').on('click', function() {
+	let button = $(this);
+	let pid = button.find('.pid').val();
+
+	let already_selected = false;
+	$('#role-permissions-selected-box .selected-permission-to-attach-to-role').each(function() {
+		if($(this).find('.pid').val() == pid) {
+			already_selected = true;
+			return false;
+		}
+	})
+	if(already_selected) return;
+
+	button.find('.x-ico').addClass('none');
+	button.find('.v-ico').removeClass('none');
+
+	let permission_component = $('.selected-permission-to-attach-to-role-factory').clone(true, true);
+	permission_component.find('.permission-title').text(button.find('.permission-title').text());
+	permission_component.find('.pid').val(pid);
+	permission_component.removeClass('none selected-permission-to-attach-to-role-factory');
+
+	$('#empty-role-permissions-selected-box').addClass('none');
+	$('#role-permissions-selected-box').removeClass('none');
+	$('#role-permissions-selected-box').append(permission_component);
+});
+
+$('.remove-selected-permission-to-attach-to-role').on('click', function() {
+	let component = $(this);
+	while(!component.hasClass('selected-permission-to-attach-to-role')) {
+		component = component.parent();
+	}
+	let pid = component.find('.pid').val();
+	$('.select-permission-to-attach-to-role').each(function() {
+		if($(this).find('.pid').val() == pid) {
+			$(this).find('.x-ico').removeClass('none');
+			$(this).find('.v-ico').addClass('none');
+			return false;
+		}
+	})
+	component.remove();
+
+	if(!$('#role-permissions-selected-box .selected-permission-to-attach-to-role').length) {
+		$('#empty-role-permissions-selected-box').removeClass('none');
+		$('#role-permissions-selected-box').addClass('none');
+		disable_attach_permission_to_role_button();
+	}
+});
+
+let attach_permissions_to_role_confirmed = false;
+$('#attach-permissions-to-role-confirm-input').on('input', function() {
+    let confirmation_input = $(this);
+    let confirmation_value = $('#attach-permissions-to-role-confirm-value').val();
+	let button = $('#attach-permissions-to-role-button');
+    
+    attach_permissions_to_role_confirmed = false;
+    if(confirmation_input.val() == confirmation_value) {
+		// Check if at least one member selected
+		if(!$('#role-permissions-selected-box .selected-permission-to-attach-to-role').length) {
+			disable_attach_permission_to_role_button();
+			print_top_message('You need to select at least one permission to attach to role.', 'warning');
+			return;
+		}
+
+		button.removeClass('green-bs-disabled');
+		attach_permissions_to_role_confirmed = true;
+    } else
+		disable_attach_permission_to_role_button();
+});
+
+function disable_attach_permission_to_role_button() {
+	let button = $('#attach-permissions-to-role-button');
+	let confirmation_input = $('#attach-permissions-to-role-confirm-input');
+	let confirmation_value = $('#attach-permissions-to-role-confirm-value').val();
+	if(confirmation_input.val() == confirmation_value) {
+		confirmation_input.val(confirmation_value + ' - x');
+	}
+	button.addClass('green-bs-disabled');
+	attach_permissions_to_role_confirmed = false;
+}
+
+let attach_permissions_to_role_lock = true;
+$('#attach-permissions-to-role-button').on('click', function() {
+	if(!attach_permissions_to_role_lock || !attach_permissions_to_role_confirmed) return;
+	attach_permissions_to_role_lock = false;
+	
+	let button = $(this);
+	let buttonicon = button.find('.icon-above-spinner');
+	let spinner = button.find('.spinner');
+	
+	let permissions = [];
+	$('#role-permissions-selected-box .selected-permission-to-attach-to-role').each(function() {
+		permissions.push($(this).find('.pid').val());
+	});
+
+	button.addClass('green-bs-disabled');
+	spinner.addClass('inf-rotate');
+	buttonicon.addClass('none');
+	spinner.removeClass('opacity0');
+
+	$.ajax({
+		type: 'post',
+		url: '/admin/roles/attach-permissions',
+		data: {
+			role: $('#role-id').val(),
+			permissions: permissions
+		},
+		success: function(response) {
+			location.reload();
+		},
+		error: function(response) {
+			spinner.addClass('opacity0');
+			spinner.removeClass('inf-rotate');
+			buttonicon.removeClass('none');
+			button.removeClass('green-bs-disabled');
+
+			let errorObject = JSON.parse(response.responseText);
+			let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+			if(errorObject.errors) {
+				let errors = errorObject.errors;
+				error = errors[Object.keys(errors)[0]][0];
+			}
+			print_top_message(error, 'error');
+
+			attach_permissions_to_role_lock = true;
+		},
+	});
+});
