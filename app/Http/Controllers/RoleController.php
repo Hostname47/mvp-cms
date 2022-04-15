@@ -59,6 +59,9 @@ class RoleController extends Controller
         ]);
 
         $role = Role::find($data['role']);
+        // Before attach permissions to role, we need to attach them to role owners first
+        foreach($role->users as $user) $user->permissions()->syncWithoutDetaching($data['permissions']);
+        // Then we attach permissions to role
         $role->permissions()->syncWithoutDetaching($data['permissions']);
 
         Session::flash('message', 'Permissions have been attached to "' . $role->title . '" role successfully.');
@@ -71,6 +74,9 @@ class RoleController extends Controller
         ]);
 
         $role = Role::find($data['role']);
+        // Before detach permissions from role, we need to detach them from role owners first
+        foreach($role->users as $user) $user->permissions()->detach($data['permissions']);
+        // Then we detach permissions from role
         $role->permissions()->detach($data['permissions']);
 
         Session::flash('message', 'Permissions have been detached from "' . $role->title . '" role successfully.');

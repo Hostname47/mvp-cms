@@ -190,7 +190,7 @@
                         <div class="pointer fs20 close-global-viewer unselectable">✖</div>
                     </div>
                     <div class="viewer-scrollable-box y-auto-overflow" style="padding: 14px; max-height: 430px">
-                        <div class="section-style fs13 lblack mb8">
+                        <div class="section-style fs13 dark mb8">
                             <p class="no-margin dark lh15">Here you can grant "{{ $role->title }}" role to members. Once the selected member(s) get the role, he will <strong>acquired all permissions in that role</strong> that allow him to perform all activities allowed by all its associated permissions.</p>
                         </div>
                         <div class="simple-line-separator my4"></div>
@@ -253,7 +253,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="align-center mt2">
-                                                    <span class="block fs13 lblack role-user-username">codename49</span>
+                                                    <span class="block fs13 dark role-user-username">codename49</span>
                                                     <div class="light-gray mx4 fs8">•</div>
                                                     <span class="block bold fs12 blue role-user-role">Site owner</span>
                                                 </div>
@@ -297,7 +297,7 @@
                                     <img src="{{ auth()->user()->avatar(100) }}" class="size36 rounded mr8 selected-user-avatar" alt="" style="border: 3px solid #9f9f9f;">
                                 </a>
                                 <span class="block bold selected-user-fullname mt4">Mouad Nassri</span>
-                                <span class="block my4 fs12 lblack selected-user-username">codename49</span>
+                                <span class="block my4 fs12 dark selected-user-username">codename49</span>
                                 <span class="block bold fs12 blue selected-user-role">Site owner</span>
 
                                 <!-- remove member from selected users -->
@@ -338,7 +338,7 @@
                     <div class="flex align-center space-between light-gray-border-bottom" style="padding: 14px;">
                         <div class="flex align-center">
                             <svg class="size16 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M2.19,144V114.32c2.06-1.67,1.35-4.2,1.78-6.3Q19.81,30.91,94.83,7.28c6.61-2.07,13.5-3.26,20.26-4.86h26.73c1.44,1.93,3.6.92,5.39,1.2C215,14.2,261.83,74.5,254.91,142.49c-6.25,61.48-57.27,110-119,113.3A127.13,127.13,0,0,1,4.9,155.18C4.09,151.45,4.42,147.42,2.19,144Zm126.75-30.7c-19.8,0-39.6.08-59.4-.08-3.24,0-4.14.82-4.05,4,.24,8.08.21,16.17,0,24.25-.07,2.83.77,3.53,3.55,3.53q59.89-.14,119.8,0c2.8,0,3.6-.74,3.53-3.54-.18-8.08-.23-16.17,0-24.25.1-3.27-.85-4.06-4.06-4C168.55,113.4,148.75,113.33,128.94,113.33Z"/></svg>
-                            <span class="fs20 bold forum-color">Revoke role from user</span>
+                            <span class="fs20 bold dark">Revoke role from user</span>
                         </div>
                         <div class="pointer fs20 close-global-viewer unselectable">✖</div>
                     </div>
@@ -413,8 +413,7 @@
                         <svg class="size15 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M3.12,231.24c2.31-3.71,3.06-8.13,5.64-11.76a36.53,36.53,0,0,1,14.13-11.94c-6-5.69-9.23-12.14-8.34-20.21a21.81,21.81,0,0,1,8-14.77,22.21,22.21,0,0,1,30,1.73c8.91,9.18,8.22,21.91-1.78,32.9,2.87,2.14,5.94,4.06,8.58,6.46,7.19,6.54,10.59,14.89,10.81,24.54.14,6.25.1,12.5.14,18.75-21.12,0-42.23-.05-63.34.06-2.81,0-4.05-.27-3.9-3.64C3.35,246,3.12,238.61,3.12,231.24Zm252.72,25.7c0-6.42.14-12.85,0-19.26-.32-11.65-5.39-20.8-15-27.44-1.46-1-3-1.93-4.51-2.92,10.06-10.85,11-23,2.57-32.36A22.2,22.2,0,0,0,209,172a21.26,21.26,0,0,0-8.41,13.48c-1.51,8.68,1.38,16,7.89,21.91-13.05,7.83-19.22,17.23-19.62,29.81-.21,6.58-.12,13.17-.17,19.75Zm-92.8,0c0-6.42.09-12.85-.09-19.27a33,33,0,0,0-13-26c-2-1.61-4.3-2.92-6.49-4.38,10.35-11,10.92-24.16,1.56-33.38a22.16,22.16,0,0,0-30.72-.32c-9.69,9.21-9.27,22.38,1.27,33.8-1.28.78-2.53,1.49-3.74,2.29-9.73,6.38-15.15,15.39-15.76,27-.36,6.73-.12,13.5-.15,20.25ZM96,77.28a87.53,87.53,0,0,1-.07,11.34c-.45,4.15,1.32,4.76,4.94,4.72,16.77-.17,33.53-.06,50.3-.08,3.77,0,8.79,1.31,11-.59,2.61-2.26.6-7.43.87-11.33,1.1-16.44-4.23-29.59-19.56-37.45C153.86,32,154.27,19,144.7,9.93A22.16,22.16,0,0,0,114,10.2c-9.3,9.07-8.77,22.19,1.61,33.66C102.06,51.07,95.58,62.15,96,77.28ZM33.4,122.86c-3.47,0-4.5,1-4.39,4.42.26,7.41.15,14.83,0,22.24,0,2.26.6,3.1,3,3.26,11.75.78,11.88.86,11.82-10.59,0-3.45.94-4.44,4.4-4.41,20.88.15,41.77.07,62.66.07,10.84,0,10.94,0,11,10.87,0,2.82.48,4,3.73,4.09,11,.13,11.14.28,11.15-10.84,0-3.16.78-4.21,4.09-4.19q35,.21,70.07,0c3.36,0,4,1.15,4.05,4.25,0,11.09.12,10.95,11.17,10.78,3.27-.06,3.75-1.34,3.69-4.12-.16-7.08-.29-14.18,0-21.25.18-3.85-1.16-4.6-4.74-4.58-25.82.14-51.65.08-77.47.08-10.66,0-10.76,0-10.76-10.63,0-3-.48-4.34-4-4.34-10.85,0-11-.17-10.9,10.6,0,3.39-.79,4.5-4.33,4.45-14-.21-28-.08-41.94-.08C61.69,122.94,47.54,123.05,33.4,122.86Z"/></svg>
                         <p class="no-margin bold dark fs16">Members with that role</p>
                     </div>
-                    <p class="my4 fs12 lblack lh15">The following section includes members that own this role. You can grant this role to more members, or revoke it from its owners.</p>
-
+                    <p class="my4 fs12 dark lh15">The following section includes members that own this role. You can grant this role to more members, or revoke it from its owners.</p>
                     <div class="flex flex-wrap typical-section-style my8" style="padding: 20px; max-height: 250px; overflow-y: auto; gap: 15px;">
                         <div class="flex justify-center role-user-box">
                             <div class="rounded-entity-for-role rounded-blue-when-hover open-grant-role-dialog">
@@ -439,6 +438,45 @@
                         <div class="align-center">
                             <svg class="size12 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
                             <p class="fs12 no-margin gray">This role is not attached to any user for the moment</p>
+                        </div>
+                        @endif
+                    </div>
+
+                    <!-- manage role permissions -->
+                    <div class="flex align-center mb4" style="margin-top: 12px;">
+                        <svg class="size15 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M130.34,245.7q-40.65,0-81.31,0c-10.29,0-13.65-3.39-13.65-13.66q0-60.49,0-121c0-9.82,3.61-13.39,13.47-13.41,5,0,9.93-.19,14.87.07,3,.15,3.43-1,3.47-3.63C67.32,83.05,66.29,72,69,61c7.38-29.7,34.36-49.32,66.07-47.81,28.86,1.38,53.84,24.47,58.24,53.66,1.36,9.06.6,18.15.71,27.22,0,2.69.58,3.73,3.49,3.61,5.61-.24,11.24-.14,16.86,0,7.2.11,11.43,4.23,11.44,11.43q.09,62.47,0,125c0,7.7-4.13,11.62-12.18,11.63Q172,245.76,130.34,245.7Zm-.09-148c13,0,26.09-.07,39.13,0,2.67,0,3.83-.49,3.71-3.47-.24-5.94.09-11.9-.12-17.83-.79-22.48-16.7-39.91-38.29-42.1-20.86-2.12-40.25,11.75-45.25,32.56-2.11,8.77-.85,17.76-1.32,26.65-.19,3.69,1.22,4.26,4.49,4.21C105.15,97.54,117.7,97.65,130.25,97.65Zm.37,42.41a31.73,31.73,0,0,0-.29,63.46,32,32,0,0,0,32-31.67A31.61,31.61,0,0,0,130.62,140.06Z"/></svg>
+                        <p class="no-margin bold dark fs16">Role permissions</p>
+                    </div>
+                    <p class="mt8 mb4 gray bold fs12">• Attach/Detach permissions</p>
+                    <div class="flex align-center">
+                        <div class="typical-button-style green-bs align-center open-attach-permissions-to-role-dialog">
+                            <svg class="size10 mr4" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M156.22,3.31c3.07,2.55,4.08,5.71,4.06,9.78-.17,27.07,0,54.14-.18,81.21,0,3.57.69,4.66,4.49,4.63,27.24-.19,54.47-.11,81.71-.1,7.36,0,9.39,2,9.4,9.25q0,21.4,0,42.82c0,7-2.1,9.06-9.09,9.06-27.24,0-54.48.09-81.71-.09-3.85,0-4.83.95-4.8,4.81.17,27.07.1,54.14.09,81.21,0,7.65-1.94,9.59-9.56,9.6q-21.4,0-42.82,0c-6.62,0-8.75-2.19-8.75-8.91,0-27.4-.1-54.8.09-82.2,0-3.8-1.06-4.51-4.62-4.49-27.08.16-54.15,0-81.22.18-4.07,0-7.23-1-9.78-4.06V102.8c2.55-3.08,5.72-4.08,9.79-4.06,27.09.17,54.18,0,81.27.18,3.68,0,4.58-.87,4.55-4.56-.17-27.09,0-54.18-.18-81.27,0-4.06,1-7.23,4.06-9.78Z"></path></svg>
+                            <span class="fs11 bold">attach new permissions</span>
+                        </div>
+                        <div class="light-gray fs8 mx8">•</div>
+                        <div class="typical-button-style red-bs align-center open-detach-permissions-from-role-dialog">
+                            <svg class="size12 mr4" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M2.19,144V114.32c2.06-1.67,1.35-4.2,1.78-6.3Q19.81,30.91,94.83,7.28c6.61-2.07,13.5-3.26,20.26-4.86h26.73c1.44,1.93,3.6.92,5.39,1.2C215,14.2,261.83,74.5,254.91,142.49c-6.25,61.48-57.27,110-119,113.3A127.13,127.13,0,0,1,4.9,155.18C4.09,151.45,4.42,147.42,2.19,144Zm126.75-30.7c-19.8,0-39.6.08-59.4-.08-3.24,0-4.14.82-4.05,4,.24,8.08.21,16.17,0,24.25-.07,2.83.77,3.53,3.55,3.53q59.89-.14,119.8,0c2.8,0,3.6-.74,3.53-3.54-.18-8.08-.23-16.17,0-24.25.1-3.27-.85-4.06-4.06-4C168.55,113.4,148.75,113.33,128.94,113.33Z"/></svg>
+                            <span class="fs11 bold">detach permissions</span>
+                        </div>
+                    </div>
+                    <p class="my4 fs12 dark lh15">The following permissions are attached to "<strong>{{ $role->title }}</strong>" role; It means If a member get this role, It will automatically get all those permissions.</p>
+                    <p class="mt8 mb4 gray bold fs12">• Permissions attached</p>
+                    <div class="typical-section-style border-box y-auto-overflow" style="margin: 2px 0 12px 0; max-height: 250px;">
+                        @if($role->permissions()->count())
+                        <div class="flex flex-wrap" style="gap: 6px;">
+                            @foreach($role->permissions->groupBy('scope') as $scope=>$permissions)
+                                <span class="flex bold blue fs12" style="flex-basis: 100%">{{ ucfirst($scope) }}</span>
+                                @foreach($permissions as $permission)
+                                <div class="button-style-1" style="padding: 6px 10px;">
+                                    <span class="permission-name fs11">{{ $permission->title }}</span>
+                                </div>
+                                @endforeach
+                            @endforeach
+                        </div>
+                        @else
+                        <div class="flex align-center">
+                            <svg class="size12 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                            <p class="fs12 no-margin gray">This role does not have any attached permission for the moment</p>
                         </div>
                         @endif
                     </div>

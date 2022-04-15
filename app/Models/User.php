@@ -66,7 +66,7 @@ class User extends Authenticatable
         return strlen($this->username) > 14 ? substr($this->username, 0, 14) . '..' : $this->username;
     }
     public function high_role() {
-        return $this->roles->sortBy('priority')->first();
+        return $this->roles()->orderBy('priority')->first();
     }
     public function has_role($slug) {
         return (bool) $this->roles()->where('slug', $slug)->count() > 0;

@@ -123,6 +123,68 @@ class RoleTest extends TestCase
     }
 
     /** @test */
+    public function attach_permissions_to_role_will_attach_them_to_all_role_owners() {
+        $authuser = User::factory()->create();
+        $this->actingAs($authuser);
+        $role = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description']);
+
+        $user0 = User::factory()->create();
+        $user1 = User::factory()->create();
+
+        $permission0 = Permission::create(['title'=>'P0 title','slug'=>'p-0','description'=>'p0 desc','scope'=>'p0']);
+        $permission1 = Permission::create(['title'=>'P1 title','slug'=>'p-1','description'=>'p1 desc','scope'=>'p1']);
+        $permission2 = Permission::create(['title'=>'P2 title','slug'=>'p-2','description'=>'p2 desc','scope'=>'p2']);
+
+        $this->post('/admin/roles/grant-to-users', [
+            'role'=>$role->id,
+            'users'=>[$user0->id,$user1->id]
+        ]);
+        $this->assertCount(0, $user0->refresh()->permissions);
+        $this->assertCount(0, $user1->refresh()->permissions);
+        /**
+         * By attaching the 3 permissions to the role, all role owners should get those permissions
+         */
+        $this->post('/admin/roles/attach-permissions', [
+            'role'=>$role->id,
+            'permissions'=>[$permission0->id, $permission1->id, $permission2->id]
+        ]);
+        $this->assertCount(3, $user0->refresh()->permissions);
+        $this->assertCount(3, $user1->refresh()->permissions);
+    }
+    /** @test */
+    public function detach_permissions_from_role_will_detach_them_from_all_role_owners() {
+        $authuser = User::factory()->create();
+        $this->actingAs($authuser);
+        $role = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description']);
+        $user0 = User::factory()->create();
+        $user1 = User::factory()->create();
+        $permission0 = Permission::create(['title'=>'P0 title','slug'=>'p-0','description'=>'p0 desc','scope'=>'p0']);
+        $permission1 = Permission::create(['title'=>'P1 title','slug'=>'p-1','description'=>'p1 desc','scope'=>'p1']);
+        $permission2 = Permission::create(['title'=>'P2 title','slug'=>'p-2','description'=>'p2 desc','scope'=>'p2']);
+        // Attach 3 permissions to role
+        $this->post('/admin/roles/attach-permissions', [
+            'role'=>$role->id,
+            'permissions'=>[$permission0->id, $permission1->id, $permission2->id]
+        ]);
+        // Then grant that role to users (they will get all permissions)
+        $this->post('/admin/roles/grant-to-users', [
+            'role'=>$role->id,
+            'users'=>[$user0->id,$user1->id]
+        ]);
+        $this->assertCount(3, $user0->permissions);
+        $this->assertCount(3, $user1->permissions);
+        /**
+         * By detaching the 3 permissions from the role, all role owners should lose those permissions
+         */
+        $this->post('/admin/roles/detach-permissions', [
+            'role'=>$role->id,
+            'permissions'=>[$permission0->id, $permission1->id, $permission2->id]
+        ]);
+        $this->assertCount(0, $user0->refresh()->permissions);
+        $this->assertCount(0, $user1->refresh()->permissions);
+    }
+
+    /** @test */
     public function grant_role_to_user() {
         $authuser = User::factory()->create();
         $this->actingAs($authuser);
