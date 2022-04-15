@@ -234,6 +234,16 @@ body {
     width: 48px;
 }
 
+.size60 {
+    height: 60px;
+    width: 60px;
+}
+
+.size28 {
+    width: 28px;
+    height: 28px;
+}
+
 .size24 {
     width: 24px;
     height: 24px;

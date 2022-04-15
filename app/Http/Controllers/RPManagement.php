@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\{Role,User};
+use App\View\Components\Admin\Role\RevokeViewer;
 
 class RPManagement extends Controller
 {
@@ -108,5 +109,18 @@ class RPManagement extends Controller
             'users'=>$users,
             'hasmore'=>$hasmore
         ];
+    }
+
+    public function get_role_revoke_viewer(Request $request) {
+        $data = $request->validate([
+            'role'=>'required|exists:roles,id',
+            'user'=>'required|exists:users,id'
+        ]);
+        $role = Role::find($data['role']);
+        $user = User::withoutGlobalScopes()->find($data['user']);
+        
+        $reviewviewer = (new RevokeViewer($role, $user));
+        $reviewviewer = $reviewviewer->render(get_object_vars($reviewviewer))->render();
+        return $reviewviewer;
     }
 }
