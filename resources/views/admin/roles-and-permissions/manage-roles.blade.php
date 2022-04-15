@@ -353,7 +353,7 @@
                     </div>
                 </div>
             </div>
-            <!-- attach permissions to role -->
+            <!-- attach permissions to role viewer -->
             <div id="attach-permissions-to-role-viewer" class="global-viewer full-center none">
                 <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
                 <div class="viewer-box-style-1">
@@ -446,7 +446,7 @@
                     </div>
                 </div>
             </div>
-            <!-- detach permissions from role -->
+            <!-- detach permissions from role viewer -->
             <div id="detach-permissions-from-role-viewer" class="global-viewer full-center none">
                 <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
                 <div class="viewer-box-style-1" style="width: 600px;">
@@ -536,6 +536,96 @@
                                         </svg>
                                     </div>
                                     <span class="bold">Detach permissions from role</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- delete role viewer -->
+            <div id="delete-role-viewer" class="global-viewer full-center">
+                <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
+                <div class="viewer-box-style-1" style="width: 600px;">
+                    <div class="flex align-center space-between light-gray-border-bottom" style="padding: 14px;">
+                        <div class="flex align-center">
+                            <svg class="size16 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M300,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H300a12,12,0,0,0-12,12V404A12,12,0,0,0,300,416ZM464,80H381.59l-34-56.7A48,48,0,0,0,306.41,0H205.59a48,48,0,0,0-41.16,23.3l-34,56.7H48A16,16,0,0,0,32,96v16a16,16,0,0,0,16,16H64V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48h0V128h16a16,16,0,0,0,16-16V96A16,16,0,0,0,464,80ZM203.84,50.91A6,6,0,0,1,209,48h94a6,6,0,0,1,5.15,2.91L325.61,80H186.39ZM400,464H112V128H400ZM188,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H188a12,12,0,0,0-12,12V404A12,12,0,0,0,188,416Z"/></svg>
+                            <span class="fs20 bold dark">Delete role</span>
+                        </div>
+                        <div class="pointer fs20 close-global-viewer unselectable">✖</div>
+                    </div>
+                    <div class="viewer-scrollable-box y-auto-overflow" style="padding: 14px; max-height: 430px">
+                        <input type="hidden" id="rum-at-least-one-selected-message" value="You need to select at least one member to attach role into" autocomplete="off">
+                        <h3 class="fs18 bold dark no-margin mb4">Delete "<span class="blue">{{ $role->title }}</span>" role</h3>
+                        <div class="typical-section-style fs13 dark mb8">
+                            <p class="no-margin">Here you can delete "<strong class="dark-blue">{{ $role->title }}</strong>" role thoroughly. Before proceding this process, please consider the following points :</p>
+                            <div class="ml8 mt8">
+                                <div class="flex mt4">
+                                    <div class="fs10 mr8 mt4 gray">•</div>
+                                    <p class="no-margin" style="line-height: 1.5">If the role is deleted, <strong>all its associated permissions will be detached from every member with that role</strong>.</p>
+                                </div>
+                                <div class="flex mt4">
+                                    <div class="fs10 mr8 mt4 gray">•</div>
+                                    <p class="no-margin" style="line-height: 1.5">However, if a member of this role has another role with <strong>higher priority than the deleted one</strong>, the permissions will not be detached in this case.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="simple-line-separator my4"></div>
+                        <div class="align-center" style="margin-top: 12px">
+                            <span class="fs12 gray bold mr8">Role to be <span class="red">deleted</span> :</span>
+                            <h3 class="no-margin dark fs18">{{ $role->title }}</h3>
+                        </div>
+                        <div class="mt8">
+                            <span class="block fs12 gray bold mb4">Role permissions :</span>
+                            <div class="flex flex-wrap typical-section-style y-auto-overflow" style="padding: 10px; max-height: 200px;">
+                                @foreach($scoped_permissions as $scope=>$permissions)
+                                    <span class="block bold blue fs11 mb4" style="flex-basis: 100%">{{ ucfirst($scope) }}</span>
+                                    @foreach($permissions as $permission)
+                                    <div class="button-style-1 mr4 mb4 fs11" style="padding: 7px 12px;">{{ $permission->title }}</div>
+                                    @endforeach
+                                @endforeach
+                                @if(!$scoped_permissions->count())
+                                <div class="flex align-center">
+                                    <svg class="size14 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                                    <p class="no-margin fs13 italic gray">This role has no permissions for the moment</p>
+                                </div>
+                                @endif
+                            </div>
+                        </div>
+                        <div style="margin-top: 12px">
+                            <span class="block fs12 gray bold mb4">Members already have this role :</span>
+                            <div class="flex flex-wrap typical-section-style border-box" style="max-height: 250px; overflow-y: auto; gap: 16px">
+                                @foreach($users as $user)
+                                <div class="flex align-center flex-column">
+                                    <img src="{{ $user->avatar(100) }}" class="rounded-entity-for-role" alt="">
+                                    <span class="bold blue fs11 mt4">{{ $user->username }}</span>
+                                    <span class="bold dark fs10">{{ $user->high_role()->title }}</span>
+                                </div>
+                                @endforeach
+                                @if(!$users->count())
+                                <div class="flex align-center">
+                                    <svg class="size12 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                                    <p class="fs12 no-margin gray">This role is not acquired by any user for the moment</p>
+                                </div>
+                                @endif
+                            </div>
+                        </div>
+                        <div style="margin-top: 12px">
+                            <p class="no-margin mb2 bold dark">Confirmation</p>
+                            <p class="no-margin mb4 dark">Please type <strong>{{ auth()->user()->username }}::delete-role::{{ $role->slug }}</strong> to confirm.</p>
+                            <div>
+                                <input type="text" autocomplete="off" class="full-width styled-input" id="delete-role-confirm-input" style="padding: 8px 10px" placeholder="role delete confirmation">
+                                <input type="hidden" id="delete-role-confirm-value" autocomplete="off" value="{{ auth()->user()->username }}::delete-role::{{ $role->slug }}">
+                            </div>
+                            <div class="flex" style="margin-top: 12px">
+                                <div id="delete-role-button" class="typical-button-style red-bs red-bs-disabled align-center">
+                                    <div class="relative size14 mr4">
+                                        <svg class="size12 icon-above-spinner" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M300,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H300a12,12,0,0,0-12,12V404A12,12,0,0,0,300,416ZM464,80H381.59l-34-56.7A48,48,0,0,0,306.41,0H205.59a48,48,0,0,0-41.16,23.3l-34,56.7H48A16,16,0,0,0,32,96v16a16,16,0,0,0,16,16H64V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48h0V128h16a16,16,0,0,0,16-16V96A16,16,0,0,0,464,80ZM203.84,50.91A6,6,0,0,1,209,48h94a6,6,0,0,1,5.15,2.91L325.61,80H186.39ZM400,464H112V128H400ZM188,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H188a12,12,0,0,0-12,12V404A12,12,0,0,0,188,416Z"/></svg>
+                                        <svg class="spinner size14 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
+                                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                            <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                        </svg>
+                                    </div>
+                                    <span class="bold">Delete role</span>
                                 </div>
                             </div>
                         </div>
@@ -677,8 +767,8 @@
                     </div>
                     <p class="my4 fs13 dark lh15">Deleting the role will revoke it from all members who have this role already.</p>
                     <div class="typical-section-style dark">
-                        <span class="block bold lblack mb8">Important</span>
-                        <p class="no-margin fs13 lblack lh15">Notice that when the role is deleted, all its associated permissions will be revoked from members with this role.</p>
+                        <span class="block bold dark mb8">Important</span>
+                        <p class="no-margin fs13 dark lh15">Notice that when the role is deleted, all its associated permissions will be revoked from members with this role.</p>
                     </div>
                     <div class="typical-button-style red-bs width-max-content flex align-center mt8 open-delete-role-dialog">
                         <svg class="size12 mr4" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M300,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H300a12,12,0,0,0-12,12V404A12,12,0,0,0,300,416ZM464,80H381.59l-34-56.7A48,48,0,0,0,306.41,0H205.59a48,48,0,0,0-41.16,23.3l-34,56.7H48A16,16,0,0,0,32,96v16a16,16,0,0,0,16,16H64V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48h0V128h16a16,16,0,0,0,16-16V96A16,16,0,0,0,464,80ZM203.84,50.91A6,6,0,0,1,209,48h94a6,6,0,0,1,5.15,2.91L325.61,80H186.39ZM400,464H112V128H400ZM188,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H188a12,12,0,0,0-12,12V404A12,12,0,0,0,188,416Z"/></svg>
