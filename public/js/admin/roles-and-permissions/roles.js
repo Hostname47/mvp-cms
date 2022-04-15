@@ -614,6 +614,7 @@ function handle_role_revoke_button() {
 	});
 }
 
+/** Attach permissions to role */
 $('.open-attach-permissions-to-role-dialog').on('click', function() {
 	$('#attach-permissions-to-role-viewer').removeClass('none');
     disable_page_scroll();
@@ -743,6 +744,143 @@ $('#attach-permissions-to-role-button').on('click', function() {
 			print_top_message(error, 'error');
 
 			attach_permissions_to_role_lock = true;
+		},
+	});
+});
+
+/** Detach permissions from role */
+$('.open-detach-permissions-from-role-dialog').on('click', function() {
+	$('#detach-permissions-from-role-viewer').removeClass('none');
+    disable_page_scroll();
+});
+
+$('.select-permission-to-detach-from-role').on('click', function() {
+	let button = $(this);
+	let pid = button.find('.pid').val();
+
+	let already_selected = false;
+	$('#role-permissions-to-detach-selected-box .selected-permission-to-detach-from-role').each(function() {
+		if($(this).find('.pid').val() == pid) {
+			already_selected = true;
+			return false; // Just break the loop
+		}
+	})
+	if(already_selected) return;
+
+	button.find('.x-ico').addClass('none');
+	button.find('.v-ico').removeClass('none');
+
+	let permission_component = $('.selected-permission-to-detach-from-role-factory').clone(true, true);
+	permission_component.find('.permission-title').text(button.find('.permission-title').text());
+	permission_component.find('.pid').val(pid);
+	permission_component.removeClass('none selected-permission-to-detach-from-role-factory');
+
+	$('#empty-role-permissions-to-detach-selected-box').addClass('none');
+	$('#role-permissions-to-detach-selected-box').removeClass('none');
+	$('#role-permissions-to-detach-selected-box').append(permission_component);
+});
+
+$('.remove-selected-permission-to-detach-from-role').on('click', function() {
+	let component = $(this);
+	while(!component.hasClass('selected-permission-to-detach-from-role')) {
+		component = component.parent();
+	}
+	let pid = component.find('.pid').val();
+	$('.select-permission-to-detach-from-role').each(function() {
+		if($(this).find('.pid').val() == pid) {
+			$(this).find('.x-ico').removeClass('none');
+			$(this).find('.v-ico').addClass('none');
+			return false;
+		}
+	})
+	component.remove();
+
+	if(!$('#role-permissions-to-detach-selected-box .selected-permission-to-detach-from-role').length) {
+		$('#empty-role-permissions-to-detach-selected-box').removeClass('none');
+		$('#role-permissions-to-detach-selected-box').addClass('none');
+		disable_detach_permissions_from_role_button();
+	}
+});
+
+let detach_permissions_from_role_confirmed = false;
+$('#detach-permissions-from-role-confirm-input').on('input', function() {
+    let confirmation_input = $(this);
+    let confirmation_value = $('#detach-permissions-from-role-confirm-value').val();
+	let button = $('#detach-permissions-from-role-button');
+    
+    detach_permissions_from_role_confirmed = false;
+    if(confirmation_input.val() == confirmation_value) {
+		// Check if at least one member selected
+		if(!$('#role-permissions-to-detach-selected-box .selected-permission-to-detach-from-role').length) {
+			disable_detach_permissions_from_role_button();
+			print_top_message('You need to select at least one permission to detach from role', 'warning');
+			return;
+		}
+
+		button.removeClass('red-bs-disabled');
+		detach_permissions_from_role_confirmed = true;
+    } else {
+		disable_detach_permissions_from_role_button();
+    }
+});
+
+function disable_detach_permissions_from_role_button() {
+	let button = $('#detach-permissions-from-role-button');
+	let input = $('#detach-permissions-from-role-confirm-input');
+	let conf = $('#detach-permissions-from-role-confirm-value').val();
+	if(input.val() == conf) {
+		input.val(conf + ' - x');
+	}
+	button.addClass('red-bs-disabled');
+	detach_permissions_from_role_confirmed = false;
+}
+
+let detach_permissions_from_role_lock = true;
+$('#detach-permissions-from-role-button').on('click', function() {
+	if(!detach_permissions_from_role_lock || !detach_permissions_from_role_confirmed) return;
+	detach_permissions_from_role_lock = false;
+	
+	let button = $(this);
+	let buttonicon = button.find('.icon-above-spinner');
+	let spinner = button.find('.spinner');
+	
+	let permissions = [];
+	$('#role-permissions-to-detach-selected-box .selected-permission-to-detach-from-role').each(function() {
+		permissions.push($(this).find('.pid').val());
+	});
+	
+	let data = {
+		role: $('#role-id').val(),
+		permissions: permissions
+	};
+
+	button.addClass('red-bs-disabled');
+	spinner.addClass('inf-rotate');
+	buttonicon.addClass('none');
+	spinner.removeClass('opacity0');
+
+	$.ajax({
+		type: 'post',
+		url: '/admin/roles/detach-permissions',
+		data: data,
+		success: function(response) {
+			location.reload();
+		},
+		error: function(response) {
+			spinner.addClass('opacity0');
+			spinner.removeClass('inf-rotate');
+			buttonicon.removeClass('none');
+			button.removeClass('red-bs-disabled');
+
+			let errorObject = JSON.parse(response.responseText);
+			let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+			if(errorObject.errors) {
+				let errors = errorObject.errors;
+				error = errors[Object.keys(errors)[0]][0];
+			}
+			print_top_message(error, 'error');
+
+			detach_permissions_from_role_lock = true;
 		},
 	});
 });
