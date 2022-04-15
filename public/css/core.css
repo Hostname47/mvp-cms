@@ -1023,8 +1023,8 @@ textarea {
 .x-close-container-style {
     position: absolute;
     z-index: 1;
-    right: 6px;
-    top: 6px;
+    right: 4px;
+    top: 4px;
     display: flex;
     align-items: center;
     justify-content: center;

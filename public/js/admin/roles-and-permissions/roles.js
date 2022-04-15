@@ -264,6 +264,62 @@ $('#role-search-for-member-to-grant').on('click', function(event) {
 	})
 });
 
+let role_user_search_fetch_more = $('#role-users-fetch-more-results');
+let role_user_search_results_box = $('#role-members-search-result-box');
+let role_user_search_fetch_more_lock = true;
+if(role_user_search_results_box.length) {
+    role_user_search_results_box.on('DOMContentLoaded scroll', function() {
+        if(role_user_search_results_box.scrollTop() + role_user_search_results_box.innerHeight() + 50 >= role_user_search_results_box[0].scrollHeight) {
+			// no-fetch class is attached to fetch_more loader when no more results are there to prevent fetch
+            if(!role_user_search_fetch_more_lock || role_user_search_fetch_more.hasClass('no-fetch')) return;
+            role_user_search_fetch_more_lock=false;
+            
+			let role_id = $('#role-id').val();
+			let results = $('#role-members-search-result-box .results-container');
+			let spinner = role_user_search_fetch_more.find('.spinner');
+			// Notice we don't count directly role members from scrollable because it will count factory components as well
+            let present_role_users = role_user_search_results_box.find('.results-container .role-member-search-user').length;
+
+			spinner.addClass('inf-rotate');
+            $.ajax({
+				url: '/admin/roles/users/search/fetchmore',
+				data: {
+					role: role_id,
+					skip: present_role_users,
+					k: $('#role-user-k').val()
+				},
+                success: function(response) {
+					let users = response.users;
+					let hasmore = response.hasmore;
+		
+					if(users.length) {
+						for(let i = 0; i < users.length; i++) {
+							let usercomponent = create_role_member_search_component(users[i]);
+							results.append(usercomponent);
+						}
+		
+						// After handling all users components we have to check if search has more results
+						if(hasmore) {
+							let loadmore = $('#role-users-fetch-more-results');
+							loadmore.removeClass('none no-fetch');
+						} else
+							// no-fetch prevent the scroll event from proceeding when no more results are there
+							$('#role-users-fetch-more-results').addClass('none no-fetch');
+					} else {
+						// Results not found
+						results.addClass('none');
+						no_results_box.removeClass('none');
+					}
+                },
+                complete: function() {
+                    role_user_search_fetch_more_lock = true;
+					spinner.removeClass('inf-rotate');
+                }
+            });
+        }
+    });
+}
+
 $('.role-select-member').on('click', function() {
 	let selected_user_component = $(this);
 	while(!selected_user_component.hasClass('role-member-search-user'))

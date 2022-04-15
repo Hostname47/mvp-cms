@@ -35,6 +35,9 @@ class RPManagement extends Controller
             ->with(compact('roleusers'));
     }
 
+    /**
+     * --- Roles management ---
+     */
     public function manage_roles(Request $request) {
         $role = null;
         $roles = Role::orderBy('priority', 'asc')->get();
@@ -53,7 +56,6 @@ class RPManagement extends Controller
             ->with(compact('users'))
             ->with(compact('scoped_permissions'));
     }
-
     public function role_users_search(Request $request ) {
         $data = $request->validate([
             'role'=>'required|exists:roles,id',
@@ -61,7 +63,34 @@ class RPManagement extends Controller
         ]);
 
         $role = Role::find($data['role']);
-        $users = User::where('username', 'like', "%" . $data['k'] . "%")->take(9)->get();
+        $users = User::withoutGlobalScopes()->where('username', 'like', "%" . $data['k'] . "%")->take(9)->get();
+        $hasmore = $users->count() > 8;
+        $users = $users->take(8)->map(function($user) use ($role) {
+            return [
+                'id'=>$user->id,
+                'fullname'=>$user->fullname,
+                'username'=>$user->username,
+                'avatar'=>$user->avatar(100),
+                'role'=>($high_role = $user->high_role()) ? $high_role->title : null,
+                'user_manage_link'=>'',
+                'already_has_this_role'=>$user->has_role($role->slug)
+            ];
+        });
+
+        return [
+            'users'=>$users,
+            'hasmore'=>$hasmore
+        ];
+    }
+    public function fetch_more_role_users_search(Request $request) {
+        $data = $request->validate([
+            'role'=>'required|exists:roles,id',
+            'skip'=>'required|numeric',
+            'k'=>'required|min:1|max:255'
+        ]);
+
+        $role = Role::find($data['role']);
+        $users = User::withoutGlobalScopes()->where('username', 'like', "%" . $data['k'] . "%")->skip($data['skip'])->take(9)->get();
         $hasmore = $users->count() > 8;
         $users = $users->take(8)->map(function($user) use ($role) {
             return [
