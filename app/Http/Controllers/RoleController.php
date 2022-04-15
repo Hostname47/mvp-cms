@@ -113,5 +113,6 @@ class RoleController extends Controller
         }
 
         $role->users()->detach($data['users']);
+        Session::flash('message', "Role '$role->title' has been revoked from user(s) successfully.");
     }
 }

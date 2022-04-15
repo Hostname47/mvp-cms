@@ -65,7 +65,7 @@
                                 <span class="fs13">see roles</span>
                                 <svg class="size7 ml8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"></path></svg>
                             </div>
-                            <div class="suboptions-container typical-suboptions-container width-max-content" style="left: 0; max-height: 260px">
+                            <div class="suboptions-container typical-suboptions-container width-max-content y-auto-overflow" style="left: 0; max-height: 240px; width: 170px;">
                                 @foreach($roles as $r)
                                 <div class="block suboption-style-2">
                                     <span class="fs14 bold dark-blue">{{ $r->title }}</span>
@@ -331,7 +331,8 @@
                     </div>
                 </div>
             </div>
-            <div id="revoke-role-from-users-viewer" class="global-viewer full-center">
+            <!-- revoke role from a user viewer -->
+            <div id="revoke-role-from-users-viewer" class="global-viewer full-center none">
                 <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
                 <div class="viewer-box-style-1" style="width: 600px;">
                     <div class="flex align-center space-between light-gray-border-bottom" style="padding: 14px;">
@@ -343,9 +344,9 @@
                     </div>
                     <div class="full-center relative">
                         <div class="global-viewer-content-box full-dimensions scrolly" style="padding: 14px; min-height: 200px; max-height: 450px">
-<x-admin.role.revoke-viewer :role="$role" :user="$users->first()"/>
+
                         </div>
-                        <svg class="loading-viewer-spinner size32 absolute black none" fill="none" viewBox="0 0 16 16">
+                        <svg class="loading-viewer-spinner size32 absolute black" fill="none" viewBox="0 0 16 16">
                             <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
                             <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
                         </svg>
@@ -427,7 +428,7 @@
                                 <img src="{{ $user->avatar(100) }}" class="rounded-entity-for-role" alt="">
                                 <div class="open-revoke-role-dialog">
                                     <span class="unselectable">✖</span>
-                                    <input type="hidden" class="uid" value="{{ $user->id }}" autocomplete="off">
+                                    <input type="hidden" class="user-id" value="{{ $user->id }}" autocomplete="off">
                                 </div>
                             </div>
                             <span class="bold dark-blue fs11 username">{{ $user->username }}</span>

@@ -154,6 +154,7 @@ function validate_role_input(condition, input, error_container, error_message) {
 }
 
 /** grant role to users */
+
 $('.open-grant-role-dialog').on('click', function() {
 	$('#grant-role-to-users-viewer').removeClass('none');
     disable_page_scroll();
@@ -256,7 +257,7 @@ $('#role-search-for-member-to-grant').on('click', function(event) {
 				let errors = errorObject.errors;
 				error = errors[Object.keys(errors)[0]][0];
 			}
-			display_top_informer_message(error, 'error');
+			print_top_message(error, 'error');
 		},
 		complete: function() {
 			role_member_search_lock = true;
@@ -502,3 +503,113 @@ $('#grant-role-button').on('click', function() {
 		}
 	});
 });
+
+/** revoke role from user */
+let last_user_to_revoke_role = null;
+let open_revoke_dialog_lock = true;
+$('.open-revoke-role-dialog').on('click', function() {
+	let viewer = $('#revoke-role-from-users-viewer');
+	let button = $(this);
+	let user_id = button.find('.user-id').val();
+	let role_id = $('#role-id').val();
+
+	if(user_id != last_user_to_revoke_role) {
+		if(!open_revoke_dialog_lock) return;
+		open_revoke_dialog_lock = false;
+
+		let spinner = viewer.find('.loading-viewer-spinner');
+		spinner.removeClass('opacity0');
+		spinner.addClass('inf-rotate');
+		viewer.find('.global-viewer-content-box').html('');
+
+		$.ajax({
+			type: 'get',
+			url: `/admin/roles/viewers/revoke-viewer?role=${role_id}&user=${user_id}`,
+			success: function(response) {
+				viewer.find('.global-viewer-content-box').html(response);
+				handle_role_revoke_confirmation_input();
+				handle_role_revoke_button();
+				last_user_to_revoke_role = user_id;
+			},
+			error: function(response) {
+				viewer.find('.close-global-viewer').trigger('click');
+				let errorObject = JSON.parse(response.responseText);
+				let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+				if(errorObject.errors) {
+					let errors = errorObject.errors;
+					error = errors[Object.keys(errors)[0]][0];
+				}
+				print_top_message(error, 'error');
+			},
+			complete: function() {
+				spinner.addClass('opacity0');
+				spinner.removeClass('inf-rotate');
+				open_revoke_dialog_lock = true;
+			}
+		});
+	}
+
+	disable_page_scroll();
+	viewer.removeClass('none');
+});
+
+let revoke_role_confirmed = false;
+function handle_role_revoke_confirmation_input() {
+	$('#revoke-role-confirm-input').on('input', function() {
+		let input_value = $(this).val();
+		let confirm_value = $('#revoke-role-confirm-value').val();
+		let revokebutton = $('#revoke-role-button');
+		
+		revoke_role_confirmed = false;
+		if(input_value == confirm_value) {
+			revokebutton.removeClass('red-bs-disabled');
+			revoke_role_confirmed = true;
+		} else
+			revokebutton.addClass('red-bs-disabled');
+	});
+}
+
+let revoke_role_lock = true;
+function handle_role_revoke_button() {
+	$('#revoke-role-button').on('click', function() {
+		if(!revoke_role_lock || !revoke_role_confirmed) return;
+		revoke_role_lock = false;
+	
+		let button = $(this);
+		let buttonicon = button.find('.icon-above-spinner');
+		let spinner = button.find('.spinner');
+
+		button.addClass('red-bs-disabled');
+		spinner.addClass('inf-rotate');
+		buttonicon.addClass('none');
+		spinner.removeClass('opacity0');
+		
+		$.ajax({
+			type: 'post',
+			url: '/admin/roles/revoke-from-users',
+			data: {
+				role: button.find('.role-id').val(),
+				users: [button.find('.user-id').val()],
+			},
+			success: function(response) {
+				location.reload();
+			},
+			error: function(response) {
+				spinner.addClass('opacity0');
+				spinner.removeClass('inf-rotate');
+				buttonicon.removeClass('none');
+				button.removeClass('red-bs-disabled');
+
+				let errorObject = JSON.parse(response.responseText);
+				let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+				if(errorObject.errors) {
+					let errors = errorObject.errors;
+					error = errors[Object.keys(errors)[0]][0];
+				}
+				print_top_message(error, 'error');
+
+				revoke_role_lock = true;
+			},
+		});
+	});
+}
