@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\{Role,User,Permission};
+use App\Models\{Role,User,Permission,PermissionRole};
 use App\View\Components\Admin\Role\RevokeViewer;
 
 class RPManagement extends Controller
@@ -134,14 +134,17 @@ class RPManagement extends Controller
     public function manage_permissions(Request $request) {
         $permission = null;
         $roles = collect([]);
+        $root_permissions = collect([]);
         if($request->has('permission')) {
             $permission_slug = $request->validate(['permission'=>'exists:permissions,slug'])['permission'];
             $permission = Permission::where('slug', $permission_slug)->first();
         } else {
             $roles = Role::orderBy('priority', 'asc')->get();
+            $root_permissions = Permission::whereNotIn('id', PermissionRole::pluck('permission_id')->toArray())->get();
         }
         return view('admin.roles-and-permissions.manage-permissions')
             ->with(compact('permission'))
+            ->with(compact('root_permissions'))
             ->with(compact('roles'));
     }
 }

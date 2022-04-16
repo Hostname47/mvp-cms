@@ -55,45 +55,54 @@
             </div>
             <h2 class="dark no-margin fs16 mb4" style="margin-top: 12px">Permissions</h2>
             <p class="dark no-margin lh15 mb8">Each permission represents the ability to perform a specific action in the system. If a user has a specific permission, that means he can perform the action attached to that permission. The following list, shows all the available permissions and their parent role, so you can select a particular permission to manage.</p>
-            <p class="dark no-margin lh15 mb8">The following diagram shows permissions by role, so that each role has a set of permissions attached to it.</p>
-            <div class="typical-section-style my8">
-                <p class="dark no-margin">If a permission does not have a parent role, It will be listed in orphaned permissions list in the bottom section.</p>
+            <div class="flex">
+                <div class="typical-section-style align-center">
+                    <svg class="size14 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                    <p class="fs13 light-gray no-margin">If a permission does not have a parent role, It will be listed in root permissions list in the bottom section.</p>
+                </div>
             </div>
-            <div>
-                <table class="full-width">
-                    <thead>
-                        <tr>
-                            <th class="diagram-role-part">
-                                <div class="full-center">
-                                    <span class="dark">Roles</span>
-                                </div>
-                            </th>
-                            <th class="diagram-permissions-part">
-                                <div class="full-center">
-                                    <span class="dark">Permissions</span>
-                                </div>
-                            </th>
-                        </tr>
-                    </thead>
-                    @foreach($roles as $role)
+            <h2 class="dark no-margin fs14" style="margin-top: 12px">Roles::Permissions Diagram</h2>
+            <p class="dark no-margin lh15 mb8">The following diagram shows permissions by role, so that each role has a set of permissions attached to it.</p>
+            <table class="full-width">
+                <thead>
                     <tr>
-                        <!-- role part -->
-                        <td class="diagram-role-part">
-                            <div class="diagram-role">
-                                <h3 class="no-margin fs14 dark no-wrap mb4">Role : <span class="dark-blue">{{ $role->title }}</span></h3>
-                                <div class="h-line"></div>
-                            </div>
-                        </td>
-                        <!-- permissions part -->
-                        <td class="diagram-permissions-part">
-                            @if($role->slug == 'site-owner')
+                        <th class="diagram-role-part">
                             <div class="full-center">
-                                <svg class="size20 mr8" fill="#2d2d2d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M256.44,172.34c-10.15,14.26-25.88,18.13-41.5,21.48-43.65,9.35-87.82,10-132.06,5.81-20.18-1.9-40.31-4.88-59.29-12.74-5-2.07-9.8-4.58-13.76-8.36-7.07-6.75-7-14.28.28-20.79s16.06-9.27,25-12c7.48-2.28,7.64-2.16,8.08,5.36.51,8.47,5.39,13.72,12.37,17.54,12.18,6.68,25.66,8.72,39.12,10.42a273.28,273.28,0,0,0,89-2.87c8.2-1.66,16.17-4,23.41-8.45s11.29-10.5,10.57-19c-.41-4.91,1.19-5.3,5.38-4,7.64,2.44,15.22,4.9,22.25,8.84,5.28,3,9.22,7,11.18,12.84Zm-88.5-.17c12-1.77,23.93-3.57,34.76-9.58,5.6-3.11,9.07-7.2,8.51-14.09-.58-7.18-.45-14.41-1.09-21.58-1.28-14.37-3.68-28.52-9.74-41.81-9.14-20-25.42-28.5-46.66-23.8-9.94,2.19-19.17,6.43-28,11.51a23.2,23.2,0,0,1-15.59,2.63,207,207,0,0,0-21.46-2.33c-11.61-.5-21.11,3.7-27.4,14A52.88,52.88,0,0,0,56,98.65c-5.58,17.25-5.48,35.16-5.91,53-.11,4.68,3.07,7.85,6.88,10.09a50.94,50.94,0,0,0,10.65,4.9c20.56,6.33,41.72,7.84,68,7.93A204.19,204.19,0,0,0,167.94,172.17Z"></path></svg>
-                                <em class="light-gray fs14">ABSOLUTE CONTROL.</em>
+                                <span class="dark">Roles</span>
                             </div>
-                            @else
-                            <div class="diagram-role-permissions-container">
-                                @foreach($role->permissions as $permission)
+                        </th>
+                        <th class="diagram-permissions-part">
+                            <div class="full-center">
+                                <span class="dark">Permissions</span>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                @foreach($roles as $role)
+                <tr>
+                    <!-- role part -->
+                    <td class="diagram-role-part">
+                        <div class="diagram-role mb4">
+                            <h3 class="no-margin fs14 dark no-wrap">Role : <span class="dark-blue">{{ $role->title }}</span></h3>
+                            <div class="h-line"></div>
+                        </div>
+                        <p class="fs13 light-gray no-margin">Members : <strong>{{ $role->users()->count() }}</strong></p>
+                        @if($role->slug != 'site-owner')
+                        <p class="fs13 light-gray no-margin">Permissions : <strong>{{ $role->permissions()->count() }}</strong></p>
+                        @endif
+                    </td>
+                    <!-- permissions part -->
+                    <td class="diagram-permissions-part">
+                        @if($role->slug == 'site-owner')
+                        <div class="full-center">
+                            <svg class="size20 mr8" fill="#2d2d2d" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M256.44,172.34c-10.15,14.26-25.88,18.13-41.5,21.48-43.65,9.35-87.82,10-132.06,5.81-20.18-1.9-40.31-4.88-59.29-12.74-5-2.07-9.8-4.58-13.76-8.36-7.07-6.75-7-14.28.28-20.79s16.06-9.27,25-12c7.48-2.28,7.64-2.16,8.08,5.36.51,8.47,5.39,13.72,12.37,17.54,12.18,6.68,25.66,8.72,39.12,10.42a273.28,273.28,0,0,0,89-2.87c8.2-1.66,16.17-4,23.41-8.45s11.29-10.5,10.57-19c-.41-4.91,1.19-5.3,5.38-4,7.64,2.44,15.22,4.9,22.25,8.84,5.28,3,9.22,7,11.18,12.84Zm-88.5-.17c12-1.77,23.93-3.57,34.76-9.58,5.6-3.11,9.07-7.2,8.51-14.09-.58-7.18-.45-14.41-1.09-21.58-1.28-14.37-3.68-28.52-9.74-41.81-9.14-20-25.42-28.5-46.66-23.8-9.94,2.19-19.17,6.43-28,11.51a23.2,23.2,0,0,1-15.59,2.63,207,207,0,0,0-21.46-2.33c-11.61-.5-21.11,3.7-27.4,14A52.88,52.88,0,0,0,56,98.65c-5.58,17.25-5.48,35.16-5.91,53-.11,4.68,3.07,7.85,6.88,10.09a50.94,50.94,0,0,0,10.65,4.9c20.56,6.33,41.72,7.84,68,7.93A204.19,204.19,0,0,0,167.94,172.17Z"></path></svg>
+                            <em class="light-gray fs14">ABSOLUTE CONTROL.</em>
+                        </div>
+                        @else
+                        <div class="diagram-role-permissions-container">
+                            @foreach($role->permissions->groupBy('scope') as $scope => $permissions)
+                                <h3 class="blue bold fs16 no-margin mt8 ml8">{{ $scope }} Permissions :</h3>
+                                @foreach($permissions as $permission)
                                 <div class="diagram-role-permission">
                                     <div class="h-line"></div>
                                     <div>
@@ -103,18 +112,69 @@
                                             <div class="light-gray fs8 mx8">•</div>
                                             <a href="?permission={{ $permission->slug }}" class="no-underline dark-blue bold fs12">manage</a>
                                         </div>
-                                        <p class="fs12 mt4 no-margin light-gray"><strong>Description</strong> : {{ $permission->description }}</p>
+                                        <p class="fs12 mt2 no-margin light-gray"><strong>Description</strong> : {{ $permission->description }}</p>
                                     </div>
                                 </div>
-                                <div class="simple-line-separator" style="background-color: #ced6dd;"></div>
+                                <div class="simple-line-separator"></div>
                                 @endforeach
-                            </div>
-                            @endif
-                        </td>
-                    </tr>
-                    @endforeach
-                </table>
+                            @endforeach
+                        </div>
+                        @endif
+                    </td>
+                </tr>
+                @endforeach
+            </table>
+            <h2 class="dark no-margin fs14" style="margin-top: 12px">Root permissions</h2>
+            <p class="dark no-margin lh15 mb8">The following diagram shows root permissions with no parent role.</p>
+            <div class="typical-section-style align-center my4">
+                <svg class="size14 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                <p class="dark no-margin">Notice that all the actions depend on these permissions are <strong>only permitted to site owners</strong>.</p>
             </div>
+            <table class="full-width">
+                <thead>
+                    <tr>
+                        <th class="diagram-role-part">
+                            <div class="full-center">
+                                <span class="dark">Roles</span>
+                            </div>
+                        </th>
+                        <th class="diagram-permissions-part">
+                            <div class="full-center">
+                                <span class="dark">Root Permissions</span>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tr>
+                    <!-- role part -->
+                    <td class="diagram-role-part">
+                        <h3 class="no-margin fs14 dark text-center">--</h3>
+                    </td>
+                    <!-- permissions part -->
+                    <td class="diagram-permissions-part">
+                        <div class="diagram-role-permissions-container">
+                            @foreach($root_permissions->groupBy('scope') as $scope => $permissions)
+                                <h3 class="blue bold fs16 no-margin mt8 ml8">{{ $scope }} Permissions :</h3>
+                                @foreach($permissions as $permission)
+                                <div class="diagram-role-permission">
+                                    <div class="h-line"></div>
+                                    <div>
+                                        <div class="align-center">
+                                            <p class="no-margin bold dark mr8">{{ $permission->title }}</p>
+                                            <p class="fs11 no-margin light-gray">- {{ $permission->slug }}</p>
+                                            <div class="light-gray fs8 mx8">•</div>
+                                            <a href="?permission={{ $permission->slug }}" class="no-underline dark-blue bold fs12">manage</a>
+                                        </div>
+                                        <p class="fs12 mt2 no-margin light-gray"><strong>Description</strong> : {{ $permission->description }}</p>
+                                    </div>
+                                </div>
+                                <div class="simple-line-separator"></div>
+                                @endforeach
+                            @endforeach
+                        </div>
+                    </td>
+                </tr>
+            </table>
         @else
         @endif
     </div>

@@ -1,10 +1,10 @@
-.diagram-role-part {
-    width: 180px;
-    padding: 14px;
+td {
+    padding: 0;
 }
 
-.diagram-permissions-part {
-    flex: 1;
+.diagram-role-part {
+    width: 180px;
+    padding: 10px;
 }
 
 .diagram-role {
@@ -20,14 +20,14 @@
 
 .diagram-role .h-line {
     width: 100%;
-    margin-right: -14px;
+    margin-right: -10px;
     height: 1px;
     background-color: rgb(208, 214, 218);
     margin-left: 4px;
 }
 
 .diagram-role-permission .h-line {
-    width: 20px;
+    width: 28px;
     margin-left: -18px;
     margin-right: 8px;
     height: 1px;
@@ -38,6 +38,8 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
+    max-height: 320px;
+    overflow-y: auto;
 }
 .diagram-role-permissions-container .simple-line-separator:last-of-type {
     display: none;
