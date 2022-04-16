@@ -6,15 +6,9 @@ use App\Http\Controllers\{IndexController, AdminController, PostController, Cate
 use App\Http\Controllers\Admin\{AdminSearchController};
 
 Route::get('/test', function() {
-    $role = \App\Models\Role::first();
-    $user0 = \App\Models\User::where('email', 'john@gmail.com')->first();
-    $user1 = \App\Models\User::where('email', 'rick@gmail.com')->first();
-
-    $arr = collect(['a'=>[], 'b'=>[]]);
-    $arr->get('a')->push($user0);
-    $arr->get('a')->push($user1);
-    
-    dd($arr);
+    $a = $b = $c = [];
+    array_push($a, 5);
+    dd($b);
 
     return 'hello';
 });

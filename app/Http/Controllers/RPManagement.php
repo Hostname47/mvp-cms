@@ -135,16 +135,22 @@ class RPManagement extends Controller
         $permission = null;
         $roles = collect([]);
         $root_permissions = collect([]);
+        $scopes = collect([]);
+
         if($request->has('permission')) {
             $permission_slug = $request->validate(['permission'=>'exists:permissions,slug'])['permission'];
             $permission = Permission::where('slug', $permission_slug)->first();
         } else {
             $roles = Role::orderBy('priority', 'asc')->get();
             $root_permissions = Permission::whereNotIn('id', PermissionRole::pluck('permission_id')->toArray())->get();
+            $scoped_permissions = Permission::orderBy('scope')->get()->groupBy('scope');
+            $scopes = $scoped_permissions->keys();
         }
         return view('admin.roles-and-permissions.manage-permissions')
             ->with(compact('permission'))
             ->with(compact('root_permissions'))
+            ->with(compact('scoped_permissions'))
+            ->with(compact('scopes'))
             ->with(compact('roles'));
     }
 }
