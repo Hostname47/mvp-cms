@@ -1,0 +1,44 @@
+.diagram-role-part {
+    width: 180px;
+    padding: 14px;
+}
+
+.diagram-permissions-part {
+    flex: 1;
+}
+
+.diagram-role {
+    display: flex;
+    align-items: center;
+}
+
+.diagram-role-permission {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+}
+
+.diagram-role .h-line {
+    width: 100%;
+    margin-right: -14px;
+    height: 1px;
+    background-color: rgb(208, 214, 218);
+    margin-left: 4px;
+}
+
+.diagram-role-permission .h-line {
+    width: 20px;
+    margin-left: -18px;
+    margin-right: 8px;
+    height: 1px;
+    background-color: rgb(208, 214, 218);
+}
+
+.diagram-role-permissions-container {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.diagram-role-permissions-container .simple-line-separator:last-of-type {
+    display: none;
+}

@@ -127,4 +127,21 @@ class RPManagement extends Controller
         $reviewviewer = $reviewviewer->render(get_object_vars($reviewviewer))->render();
         return $reviewviewer;
     }
+
+    /** 
+     * --- Permissions management ---
+     */
+    public function manage_permissions(Request $request) {
+        $permission = null;
+        $roles = collect([]);
+        if($request->has('permission')) {
+            $permission_slug = $request->validate(['permission'=>'exists:permissions,slug'])['permission'];
+            $permission = Permission::where('slug', $permission_slug)->first();
+        } else {
+            $roles = Role::orderBy('priority', 'asc')->get();
+        }
+        return view('admin.roles-and-permissions.manage-permissions')
+            ->with(compact('permission'))
+            ->with(compact('roles'));
+    }
 }
