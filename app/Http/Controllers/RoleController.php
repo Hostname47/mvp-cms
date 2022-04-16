@@ -50,7 +50,14 @@ class RoleController extends Controller
             abort(422, 'Site owner role could not be deleted');
 
         // Before deleting the role, we have to detach all its permissions from members who own this role         
-        foreach(User::findMany($role->users()->pluck('id')) as $user) $user->permissions()->detach($permissions);
+        foreach(User::findMany($role->users()->pluck('id')) as $user) {
+            /**
+             * Please read a description in RoleTest suite within the following test function:
+             *  -> detach_permission_from_role_will_not_be_detached_from_users_with_high_priority_role()
+             */
+            if($user->high_role()->priority >= $role->priority)
+                $user->permissions()->detach($permissions);
+        }
 
         $role->delete();
 
@@ -81,7 +88,14 @@ class RoleController extends Controller
 
         $role = Role::find($data['role']);
         // Before detach permissions from role, we need to detach them from role owners first
-        foreach($role->users as $user) $user->permissions()->detach($data['permissions']);
+        foreach($role->users as $user) {
+            /**
+             * Please read a description in RoleTest suite within the following test function:
+             *  -> detach_permission_from_role_will_not_be_detached_from_users_with_high_priority_role()
+             */
+            if($user->high_role()->priority >= $role->priority)
+                $user->permissions()->detach($data['permissions']);
+        }
         // Then we detach permissions from role
         $role->permissions()->detach($data['permissions']);
 
@@ -121,7 +135,12 @@ class RoleController extends Controller
          * detach them from user(s).
          */
         foreach(User::findMany($data['users']) as $user) {
-            $user->permissions()->detach($permissions);
+            /**
+             * Please read a description in RoleTest suite within the following test function:
+             *  -> detach_permission_from_role_will_not_be_detached_from_users_with_high_priority_role()
+             */
+            if($user->high_role()->priority >= $role->priority)
+                $user->permissions()->detach($permissions);
         }
 
         $role->users()->detach($data['users']);
