@@ -49,15 +49,11 @@ class RoleController extends Controller
         if($role->slug == 'site-owner')
             abort(422, 'Site owner role could not be deleted');
 
-        // Before deleting the role, we have to detach all its permissions from members who own this role         
-        foreach(User::findMany($role->users()->pluck('id')) as $user) {
-            /**
-             * Please read a description in RoleTest suite within the following test function:
-             *  -> detach_permission_from_role_will_not_be_detached_from_users_with_high_priority_role()
-             */
-            if($user->high_role()->priority >= $role->priority)
-                $user->permissions()->detach($permissions);
-        }
+        /* 
+         * Before deleting the role, we have to detach all its permissions from members who own this role
+         * IMPORTANT: Read a notice in the begining of RoleTest suite class
+         */ 
+        foreach(User::findMany($role->users()->pluck('id')) as $user) $user->permissions()->detach($permissions);
 
         $role->delete();
 
@@ -68,7 +64,7 @@ class RoleController extends Controller
         $data = $request->validate([
             'role'=>'required|exists:roles,id',
             'permissions'=>'required',
-            'permissions.*'=>'exists:permissions,id'
+            'permissions.*'=>'exists:permissions,id|unique:permission_role,permission_id'
         ]);
 
         $role = Role::find($data['role']);
@@ -87,15 +83,11 @@ class RoleController extends Controller
         ]);
 
         $role = Role::find($data['role']);
-        // Before detach permissions from role, we need to detach them from role owners first
-        foreach($role->users as $user) {
-            /**
-             * Please read a description in RoleTest suite within the following test function:
-             *  -> detach_permission_from_role_will_not_be_detached_from_users_with_high_priority_role()
-             */
-            if($user->high_role()->priority >= $role->priority)
-                $user->permissions()->detach($data['permissions']);
-        }
+        /* 
+         * Before detach permissions from role, we need to detach them from role member(s) first
+         * IMPORTANT: Read a notice in the begining of RoleTest suite class
+         */ 
+        foreach($role->users as $user) $user->permissions()->detach($data['permissions']);
         // Then we detach permissions from role
         $role->permissions()->detach($data['permissions']);
 
@@ -132,16 +124,11 @@ class RoleController extends Controller
         $permissions = $role->permissions()->pluck('id')->toArray();
         /**
          * Before revoke the role from user(s), we need to get all role permissions and
-         * detach them from user(s).
+         * detach them from role member(s).
+         * 
+         * IMPORTANT: Read a notice in the begining of RoleTest suite class
          */
-        foreach(User::findMany($data['users']) as $user) {
-            /**
-             * Please read a description in RoleTest suite within the following test function:
-             *  -> detach_permission_from_role_will_not_be_detached_from_users_with_high_priority_role()
-             */
-            if($user->high_role()->priority >= $role->priority)
-                $user->permissions()->detach($permissions);
-        }
+        foreach(User::findMany($data['users']) as $user) $user->permissions()->detach($permissions);
 
         $role->users()->detach($data['users']);
         Session::flash('message', "Role '$role->title' has been revoked from user(s) successfully.");

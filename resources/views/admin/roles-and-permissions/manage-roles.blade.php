@@ -393,11 +393,11 @@
                                 @foreach($all_permissions_scoped as $scope=>$permissions)
                                     <span class="block bold blue fs11 mb4" style="flex-basis: 100%">{{ ucfirst($scope) }}</span>
                                     @foreach($permissions as $permission)
-                                        @if($permission->already_attached_to_role($role->slug))
-                                        <div class="role-permission-switch-button already-attached-permission-button-style" title="Permission already attached to '{{ $role->title }}' role">
-                                            <span>{{ $permission->title }}</span>
-                                            <span class="block fs10 default-weight">(already atached)</span>
-                                        </div>
+                                        @if($permission_role = $permission->role())
+                                            <div class="role-permission-switch-button @if($role->slug == $permission_role->slug) already-attached-permission-button-style @else already-attached-permission-to-other-role @endif" title="Permission already attached to '{{ $permission_role->title }}' role">
+                                                <span>{{ $permission->title }}</span>
+                                                <span class="block fs10 default-weight">(already atached)</span>
+                                            </div>
                                         @else
                                         <div class="role-permission-switch-button align-center height-max-content select-permission-to-attach-to-role">
                                             <span class="permission-title">{{ $permission->title }}</span>

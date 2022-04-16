@@ -21,7 +21,7 @@ class Permission extends Model
         return $this->belongsToMany(User::class);
     }
 
-    public function already_attached_to_role($roleslug) {
-        return (bool) $this->roles->where('slug', $roleslug)->count() > 0;
+    public function role() {
+        return $this->roles()->first();
     }
 }

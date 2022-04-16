@@ -11,6 +11,35 @@ class RoleTest extends TestCase
 {
     use DatabaseTransactions;
 
+    /**
+     * The relation between roles-permissions-users could be messy if we start to attach
+     * permissions just randomely without paying care about some tiny details.
+     * 
+     * The following rules are required and are best practices that will let the flow
+     * much more performant and easier to handle.
+     * 
+     * • Permissions should be tied to one and only one role; means a permission should not belong to multiple
+     *   roles at the same time. If an admin want to update a post, he must have Author role.
+     *   By following that convention, we should not care about permissions cascading delete when a role
+     *   get deleted or revoked from a user that have a role with high priority. we just revoke the role permissions
+     *   from all role users. Let's take an example to understand
+     *   this point:
+     *   Let's say thomas has 2 roles : admin and author, and author role has create post permission.
+     *   Now if we detach create post permission from author role, all role owners (including thomas - admin)
+     *   will no longer has create post permission even if role users include site owners. 
+     *   If tomas want to create a post, he need to attach the permission to author again or attach it to admin 
+     *   which is not advisable to have a permission belong to multiple roles.
+     *   By following this rule, all permissions should be attached to at least one role; If a permission does not
+     *   belong to any role, it will be orphaned and the activity attached to it will not be possible to be performed.
+     *   For that reason site owners should pay much more care about this.
+     * 
+     * • Principle of least privilege : If a user is admin and not an author, just give him admin role; Meaning we
+     *   could have an admin that could not create posts. If a user is a good author, he should only have author 
+     *   role. But we can have a memeber with the two roles or more. 
+     *   The same concept applied to displaying views, sections and pages; An author should not have the right
+     *   to access the admin panel.
+     */
+
     /** @test */
     public function create_a_role() {
         $this->assertCount(0, Role::all());
@@ -95,48 +124,6 @@ class RoleTest extends TestCase
         $this->delete('/admin/roles', ['role_id'=>$role->id]);
         $this->assertCount(0, RoleUser::all());
         $this->assertCount(0, PermissionUser::all());
-    }
-    /** @test */
-    public function delete_role_will_not_detach_its_permissions_from_users_with_high_priority_role() {
-        /**
-         * Please read the explanation in 
-         * detach_permission_from_role_will_not_be_detached_from_users_with_high_priority_role funcion to
-         * understand the following.
-         */
-        $authuser = User::factory()->create();
-        $this->actingAs($authuser);
-        $admin_role = Role::create(['title'=>'Admin','slug'=>'admin','description'=>'admin description', 'priority'=>1]);
-        $author_role = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description', 'priority'=>2]);
-        $admin = User::factory()->create();
-        $author = User::factory()->create();
-        // Permissions
-        $permission0 = Permission::create(['title'=>'P0 title','slug'=>'p-0','description'=>'p0 desc','scope'=>'p0']);
-        $permission1 = Permission::create(['title'=>'P1 title','slug'=>'p-1','description'=>'p1 desc','scope'=>'p1']);
-        $permission2 = Permission::create(['title'=>'P2 title','slug'=>'p-2','description'=>'p2 desc','scope'=>'p2']);
-
-        $this->post('/admin/roles/attach-permissions', [
-            'role'=>$admin_role->id,
-            'permissions'=>[$permission0->id, $permission1->id, $permission2->id]
-        ]);
-        $this->post('/admin/roles/attach-permissions', [
-            'role'=>$author_role->id,
-            'permissions'=>[$permission1->id, $permission2->id]
-        ]);
-
-        $this->post('/admin/roles/grant-to-users', [
-            'role'=>$admin_role->id,
-            'users'=>[$admin->id]
-        ]);
-        $this->post('/admin/roles/grant-to-users', [
-            'role'=>$author_role->id,
-            'users'=>[$admin->id, $author->id]
-        ]);
-
-        $this->assertCount(3, $admin->refresh()->permissions);
-        $this->assertCount(2, $author->refresh()->permissions);
-        $this->delete('/admin/roles', ['role_id'=>$author_role->id,]);
-        $this->assertCount(3, $admin->refresh()->permissions);
-        $this->assertCount(0, $author->refresh()->permissions);
     }
 
     /** @test */
@@ -249,66 +236,6 @@ class RoleTest extends TestCase
         ]);
         $this->assertCount(0, $user0->refresh()->permissions);
         $this->assertCount(0, $user1->refresh()->permissions);
-    }
-    /** @test */
-    public function detach_permission_from_role_will_not_be_detached_from_users_with_high_priority_role() {
-        $authuser = User::factory()->create();
-        $this->actingAs($authuser);
-        // Admin - priority : 1
-        $admin_role = Role::create(['title'=>'Admin','slug'=>'admin','description'=>'admin description', 'priority'=>1]);
-        // Author - priority : 2
-        $author_role = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description', 'priority'=>2]);
-        // User
-        $admin = User::factory()->create();
-        $author = User::factory()->create();
-        // Permissions
-        $permission0 = Permission::create(['title'=>'P0 title','slug'=>'p-0','description'=>'p0 desc','scope'=>'p0']);
-        $permission1 = Permission::create(['title'=>'P1 title','slug'=>'p-1','description'=>'p1 desc','scope'=>'p1']);
-        $permission2 = Permission::create(['title'=>'P2 title','slug'=>'p-2','description'=>'p2 desc','scope'=>'p2']);
-
-        // Attach 3 permissions to admin
-        $this->post('/admin/roles/attach-permissions', [
-            'role'=>$admin_role->id,
-            'permissions'=>[$permission0->id, $permission1->id, $permission2->id]
-        ]);
-        // Attach only the last 2 permissions to author
-        $this->post('/admin/roles/attach-permissions', [
-            'role'=>$author_role->id,
-            'permissions'=>[$permission1->id, $permission2->id]
-        ]);
-
-        // Grant admin role to admin user
-        $this->post('/admin/roles/grant-to-users', [
-            'role'=>$admin_role->id,
-            'users'=>[$admin->id]
-        ]);
-        // Grant author role to both admin and author
-        $this->post('/admin/roles/grant-to-users', [
-            'role'=>$author_role->id,
-            'users'=>[$admin->id, $author->id]
-        ]);
-
-        $this->assertCount(3, $admin->refresh()->permissions);
-        $this->assertCount(2, $author->refresh()->permissions);
-        /**
-         * Now, here the admin has all the 3 permissions, but the author has only the last 2 permissions.
-         * When we revoke all permissions from author role, we don't want those revoked permissions from
-         * author role to be revoked from admin because admin user get them from admin role which is higher
-         * priority than author role.
-         * 
-         * So the role permissions, will be detached only from members who their high role is less priority
-         * than the deleted one. In this case only the members who are authors. Admin in the other hand will
-         * not be infected by this operation
-         * 
-         * Please notice that the role priority is integer, and the smaller it goes, the higher priority it gets.
-         *      e.g. site owner priority is 1, whereas admin is 2, so site owner is higher than admin.
-         */
-        $this->post('/admin/roles/detach-permissions', [
-            'role'=>$author_role->id,
-            'permissions'=>[$permission1->id, $permission2->id]
-        ]);
-        $this->assertCount(3, $admin->refresh()->permissions);
-        $this->assertCount(0, $author->refresh()->permissions);
     }
 
     /** @test */
@@ -436,52 +363,5 @@ class RoleTest extends TestCase
         $this->post('/admin/roles/revoke-from-users', ['role'=>$role->id,'users'=>[$user0->id, $user1->id]]);
         $this->assertCount(0, $user0->refresh()->permissions);
         $this->assertCount(0, $user1->refresh()->permissions);
-    }
-    /** @test */
-    public function revoke_role_will_not_detach_its_permissions_from_users_with_high_priority_role() {
-        /**
-         * Please read the explanation in 
-         * detach_permission_from_role_will_not_be_detached_from_users_with_high_priority_role funcion to
-         * understand the following.
-         */
-        $authuser = User::factory()->create();
-        $this->actingAs($authuser);
-        $admin_role = Role::create(['title'=>'Admin','slug'=>'admin','description'=>'admin description', 'priority'=>1]);
-        $author_role = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description', 'priority'=>2]);
-        $admin = User::factory()->create();
-        $author = User::factory()->create();
-        // Permissions
-        $permission0 = Permission::create(['title'=>'P0 title','slug'=>'p-0','description'=>'p0 desc','scope'=>'p0']);
-        $permission1 = Permission::create(['title'=>'P1 title','slug'=>'p-1','description'=>'p1 desc','scope'=>'p1']);
-        $permission2 = Permission::create(['title'=>'P2 title','slug'=>'p-2','description'=>'p2 desc','scope'=>'p2']);
-
-        $this->post('/admin/roles/attach-permissions', [
-            'role'=>$admin_role->id,
-            'permissions'=>[$permission0->id, $permission1->id, $permission2->id]
-        ]);
-        $this->post('/admin/roles/attach-permissions', [
-            'role'=>$author_role->id,
-            'permissions'=>[$permission1->id, $permission2->id]
-        ]);
-
-        $this->post('/admin/roles/grant-to-users', [
-            'role'=>$admin_role->id,
-            'users'=>[$admin->id]
-        ]);
-        $this->post('/admin/roles/grant-to-users', [
-            'role'=>$author_role->id,
-            'users'=>[$admin->id, $author->id]
-        ]);
-
-        /**
-         * Right now the admin user has 2 roles : admin and author; author role has 2 permissions.
-         * If author role is revoked from admin, author's permissions will not be detached from him
-         * because he has another role with high priority (admin role)
-         */
-        $this->assertCount(3, $admin->refresh()->permissions);
-        $this->assertCount(2, $author->refresh()->permissions);
-        $this->post('/admin/roles/revoke-from-users', ['role'=>$author_role->id,'users'=>[$admin->id, $author->id]]);
-        $this->assertCount(3, $admin->refresh()->permissions);
-        $this->assertCount(0, $author->refresh()->permissions);
     }
 }

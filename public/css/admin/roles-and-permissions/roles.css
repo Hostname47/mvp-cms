@@ -85,6 +85,13 @@
     color: #090a09;
 }
 
+.already-attached-permission-to-other-role {
+    background-color: #e5f9ff;
+    border: 1px solid #98b6bf;
+    cursor: default !important;
+    color: #12141a;
+}
+
 .already-attached-permission-button-style {
     background-color: #e6ffe5;
     border: 1px solid #99bf98;
