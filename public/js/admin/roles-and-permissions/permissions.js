@@ -1,3 +1,4 @@
+/** Create permission */
 $('.open-create-permission-dialog').on('click', function() {
 	let viewer = $('#create-permission-viewer');
 	let viewerbox = viewer.find('.global-viewer-content-box');
@@ -146,4 +147,72 @@ $('#create-permission-button').on('click', function() {
 			create_permission_lock = true;
 		}
 	});
+});
+
+/** Update permission */
+$('.select-scope').on('click', function() {
+    $('#update-permission-scope-input').val($(this).find('.scope').text());
+    $('body').trigger('click');
+});
+
+let update_permission_lock = true;
+$('#update-permission-button').on('click', function() {
+    let title = $('#update-permission-title-input');
+    let slug = $('#update-permission-slug-input');
+    let description = $('#update-permission-description-input');
+    let scope = $('#update-permission-scope-input');
+    let error_container = $('#update-permission-error-container');
+
+    if(!validate_permission_input(title.val()!='', title, error_container, 'Title field is required.')) return;
+    if(!validate_permission_input(slug.val()!='', slug, error_container, 'Slug field is required.')) return;
+    if(!validate_permission_input(description.val()!='', description, error_container, 'Description field is required.')) return;
+    if(!validate_permission_input(scope.val()!='', scope, error_container, 'Scope field is required.')) return;
+
+    $('#update-permission-section .error-asterisk').css('display', 'none');
+    error_container.addClass('none');
+
+    let button = $(this);
+    let buttonicon = button.find('.icon-above-spinner');
+    let spinner = button.find('.spinner');
+    
+    button.addClass('dark-bs-disabled');
+	spinner.addClass('inf-rotate');
+	buttonicon.addClass('none');
+	spinner.removeClass('opacity0');
+
+    if(!update_permission_lock) return;
+    update_permission_lock = false;
+
+    $.ajax({
+        type: 'patch',
+        url: '/admin/permissions',
+        data: {
+            permission_id: $('#permission-id').val(),
+            title: title.val(),
+            slug: slug.val(),
+            description: description.val(),
+            scope: scope.val(),
+        },
+        success: function() {
+            location.reload();
+        },
+        error: function(response) {
+            spinner.addClass('opacity0');
+            spinner.removeClass('inf-rotate');
+            buttonicon.removeClass('none');
+            button.removeClass('dark-bs-disabled');
+
+			let errorObject = JSON.parse(response.responseText);
+			let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+			if(errorObject.errors) {
+				let errors = errorObject.errors;
+				error = errors[Object.keys(errors)[0]][0];
+			}
+
+            let error_container = $('#update-permission-error-container');
+            validate_permission_input(false, null, error_container, error)
+
+			update_permission_lock = true;
+        }
+    })
 });

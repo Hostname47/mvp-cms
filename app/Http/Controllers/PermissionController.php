@@ -31,7 +31,7 @@ class PermissionController extends Controller
         $permission = Permission::find($permission_id);
         $permission->update($data);
 
-        Session::flash('message', 'Permission has been updated successfully.');
+        Session::flash('message', 'Permission informations have been updated successfully.');
     }
     public function delete(Request $request) {
         $permission_id = $request->validate(['permission_id'=>'required|exists:permissions,id'])['permission_id'];
