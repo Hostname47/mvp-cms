@@ -288,7 +288,7 @@
             <input type="hidden" id="permission-id" value="{{ $permission->id }}" autocomplete="off">
 
             <!-- attach permission to users viewer -->
-            <div id="attach-permission-to-users-viewer" class="global-viewer full-center">
+            <div id="attach-permission-to-users-viewer" class="global-viewer full-center none">
                 <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
                 <div class="viewer-box-style-1" style="width: 600px;">
                     <div class="align-center space-between light-gray-border-bottom" style="padding: 14px;">
@@ -336,7 +336,7 @@
                                     </div>
                                 </div>
                                 <div class="relative">
-                                    <div id="permission-members-search-result-box" class="full-width y-auto-overflow none" style="max-height: 250px;">
+                                    <div id="permission-members-search-result-box" class="full-width y-auto-overflow none" style="max-height: 205px;">
                                         <input type="hidden" id="permission-user-k" autocomplete="off">
                                         <div class="results-container none">
                                             results
@@ -537,7 +537,11 @@
                                     </div>
                                 </div>
                                 <span class="bold dark-blue fs11 username">{{ $user->username }}</span>
-                                <span class="bold dark fs10">{{ $user->high_role()->title }}</span>
+                                @if($hr = $user->high_role())
+                                <span class="bold dark fs10">{{ $hr->title }}</span>
+                                @else
+                                <em class="light-gray fs10">normal user</em>
+                                @endif
                             </div>
                             @endforeach
                             @if(!$permission->users->count())

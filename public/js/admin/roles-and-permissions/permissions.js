@@ -339,7 +339,7 @@ function create_permission_member_search_component(user) {
 	if(role == null) {
 		usercomponent.find('.permission-user-role').text('normal user');
 		usercomponent.find('.permission-user-role').removeClass('blue bold');
-		usercomponent.find('.permission-user-role').addClass('gray italic');
+		usercomponent.find('.permission-user-role').addClass('light-gray italic');
 	} else
 		usercomponent.find('.permission-user-role').text(role);
 
@@ -360,13 +360,11 @@ let permission_user_search_fetch_more_lock = true;
 if(permission_user_search_results_box.length) {
     permission_user_search_results_box.on('DOMContentLoaded scroll', function() {
         if(permission_user_search_results_box.scrollTop() + permission_user_search_results_box.innerHeight() + 50 >= permission_user_search_results_box[0].scrollHeight) {
-			// no-fetch class is attached to fetch_more loader when no more results are there to prevent fetch
             if(!permission_user_search_fetch_more_lock || permission_user_search_fetch_more.hasClass('no-fetch')) return;
-            permission_user_search_fetch_more_lock=false;
+                permission_user_search_fetch_more_lock=false;
             
 			let results = $('#permission-members-search-result-box .results-container');
 			let spinner = permission_user_search_fetch_more.find('.spinner');
-			// Notice we don't count directly role members from scrollable because it will count factory components as well
             let present_permission_users = permission_user_search_results_box.find('.results-container .permission-member-search-user').length;
 
 			spinner.addClass('inf-rotate');
@@ -408,3 +406,144 @@ if(permission_user_search_results_box.length) {
         }
     });
 }
+
+$('.permission-select-member').on('click', function() {
+	let selected_user_component = $(this);
+	while(!selected_user_component.hasClass('permission-member-search-user'))
+		selected_user_component = selected_user_component.parent();
+
+	let selected_members_box = $('#permission-members-selected-box');
+	let empty_selected_members_box = $('#empty-permission-members-selected-box');
+
+	let user_component = $('.selected-permission-member-to-get-permission-factory').clone(true, true);
+	let uid = selected_user_component.find('.permission-user-id').val();
+	user_component.find('.selected-user-id').val(uid);
+	user_component.find('.selected-user-avatar').attr('src', selected_user_component.find('.permission-user-avatar').attr('src'));
+	user_component.find('.selected-user-fullname').text(selected_user_component.find('.permission-user-fullname').text());
+	user_component.find('.selected-user-profilelink').attr('href', selected_user_component.find('.permission-user-profilelink').attr('href'));
+	user_component.find('.selected-user-username').text(selected_user_component.find('.permission-user-username').text());
+	user_component.find('.selected-user-role').text(selected_user_component.find('.permission-user-role').text());
+
+	user_component.removeClass('none selected-permission-member-to-get-permission-factory');
+
+	if(!permission_user_already_selected(uid))
+		selected_members_box.append(user_component);
+
+	if(selected_members_box.hasClass('none')) {
+		selected_members_box.removeClass('none');
+		empty_selected_members_box.addClass('none');
+	}
+});
+
+function permission_user_already_selected(uid) {
+	let already_selected = false;
+	$('.selected-permission-member-to-get-permission').each(function() {
+		if($(this).find('.selected-user-id').val() == uid) {
+			already_selected = true;
+			return false;
+		}
+	});
+
+	return already_selected;
+}
+
+$('.remove-selected-user-from-selection').on('click', function() {
+	let selected_user_component = $(this);
+	while(!selected_user_component.hasClass('selected-permission-member-to-get-permission')) {
+		selected_user_component = selected_user_component.parent();
+	}
+
+	selected_user_component.remove();
+
+	if(!$('#permission-members-selected-box .selected-permission-member-to-get-permission').length) {
+		$('#permission-members-selected-box').addClass('none');
+		$('#empty-permission-members-selected-box').removeClass('none');
+		disable_attach_permission_button();
+	}
+});
+
+function disable_attach_permission_button() {
+	let confirmation_input = $('#attach-permission-confirm-input');
+	let confirmation_value = $('#attach-permission-confirm-value').val();
+	if(confirmation_input.val() == confirmation_value)
+		confirmation_input.val(confirmation_value + ' - x');
+
+	$('#attach-permission-button').addClass('green-bs-disabled');
+	attach_permission_confirmed = false;
+}
+
+$('#attach-permission-confirm-input').on('input', function() {
+    let confirmation_input = $(this);
+    let confirmation_value = $('#attach-permission-confirm-value').val();
+	let attachbutton = $('#attach-permission-button');
+    
+    attach_permission_confirmed = false;
+    if(confirmation_input.val() == confirmation_value) {
+		// Check if at least one member selected
+		if(!$('#permission-members-selected-box .selected-permission-member-to-get-permission').length) {
+			if(confirmation_input.val() == confirmation_value)
+				confirmation_input.val(confirmation_value + ' - x');
+
+            print_top_message('You need to select at least one member to attach the permission into', 'error');
+			attachbutton.addClass('green-bs-disabled');
+			attach_permission_confirmed = false;
+			return;
+		}
+        attachbutton.removeClass('green-bs-disabled');
+        attach_permission_confirmed = true;
+    } else {
+		attachbutton.addClass('green-bs-disabled');
+		attach_permission_confirmed = false;
+    }
+});
+
+let attach_permission_confirmed = false;
+let attach_permission_lock = true;
+$('#attach-permission-button').on('click', function() {
+    if(!attach_permission_lock || !attach_permission_confirmed) return;
+	attach_permission_lock = false;
+
+	let button = $(this);
+	let buttonicon = button.find('.icon-above-spinner');
+	let spinner = button.find('.spinner');
+
+	let selected_members = [];
+	$('#permission-members-selected-box .selected-permission-member-to-get-permission').each(function() {
+		selected_members.push($(this).find('.selected-user-id').val());
+	});
+
+	let data = {
+		permissions: [$('#permission-id').val()],
+		users: selected_members,
+	};
+
+	button.addClass('green-bs-disabled');
+	spinner.addClass('inf-rotate');
+	buttonicon.addClass('none');
+	spinner.removeClass('opacity0');
+
+	$.ajax({
+		type: 'post',
+		url: '/admin/users/attach-permissions',
+		data: data,
+		success: function(response) {
+			location.reload();
+		},
+		error: function(response) {
+			spinner.addClass('opacity0');
+            spinner.removeClass('inf-rotate');
+            buttonicon.removeClass('none');
+            button.removeClass('green-bs-disabled');
+
+			let errorObject = JSON.parse(response.responseText);
+			let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+			if(errorObject.errors) {
+				let errors = errorObject.errors;
+				error = errors[Object.keys(errors)[0]][0];
+			}
+			print_top_message(error, 'error');
+
+			attach_permission_lock = true;
+		}
+	});
+});
