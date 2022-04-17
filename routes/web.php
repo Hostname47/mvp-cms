@@ -25,6 +25,8 @@ Route::post('/admin/roles/revoke-from-users', [RoleController::class, 'revoke'])
 Route::post('/admin/permissions', [PermissionController::class, 'store']);
 Route::patch('/admin/permissions', [PermissionController::class, 'update']);
 Route::delete('/admin/permissions', [PermissionController::class, 'delete']);
+Route::post('/admin/users/attach-permissions', [PermissionController::class, 'attach_permissions_to_users']);
+Route::post('/admin/users/detach-permissions', [PermissionController::class, 'detach_permissions_from_users']);
 // Roles & Permissions
 Route::get('/admin/roles-and-permissions/overview', [RPManagement::class, 'overview'])->name('admin.rp.overview');
 Route::get('/admin/roles-and-permissions/roles', [RPManagement::class, 'manage_roles'])->name('admin.rp.manage.roles');

@@ -40,4 +40,30 @@ class PermissionController extends Controller
 
         Session::flash('message', 'Permission has been deleted successfully.');
     }
+    public function attach_permissions_to_users(Request $request) {
+        $data = $request->validate([
+            'permissions'=>'required',
+            'permissions.*'=>'exists:permissions,id',
+            'users'=>'required',
+            'users.*'=>'exists:users,id'
+        ]);
+
+        foreach(Permission::findMany($data['permissions']) as $permission)
+            $permission->users()->syncWithoutDetaching($data['users']);
+
+        Session::flash('message', 'Permissions have been attached to users successfully.');
+    }
+    public function detach_permissions_from_users(Request $request) {
+        $data = $request->validate([
+            'permissions'=>'required',
+            'permissions.*'=>'exists:permissions,id',
+            'users'=>'required',
+            'users.*'=>'exists:users,id'
+        ]);
+
+        foreach(Permission::findMany($data['permissions']) as $permission)
+            $permission->users()->detach($data['users']);
+
+        Session::flash('message', 'Permissions has been detached from users successfully.');
+    }
 }

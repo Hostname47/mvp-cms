@@ -5,12 +5,21 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Models\Permission;
+use App\Models\{User,Permission};
 
 class PermissionTest extends TestCase
 {
     use DatabaseTransactions;
     
+    protected $authuser;
+
+    public function setUp(): void {
+        parent::setUp();
+
+        $user = $this->authuser = User::factory()->create();
+        $this->actingAs($user);
+    }
+
     /** @test */
     public function create_a_permission() {
         $this->assertCount(0, Permission::all());
@@ -72,5 +81,48 @@ class PermissionTest extends TestCase
         $this->assertCount(1, Permission::all());
         $this->delete('/admin/permissions', ['permission_id'=>$permission->id]);
         $this->assertCount(0, Permission::all());
+    }
+
+    /** @test */
+    public function attach_permissions_to_users() {
+        $user0 = User::factory()->create();
+        $user1 = User::factory()->create();
+        $permission0 = Permission::create(['title'=>'P0 title','slug'=>'p-0','description'=>'p0 desc','scope'=>'p0']);
+        $permission1 = Permission::create(['title'=>'P1 title','slug'=>'p-1','description'=>'p1 desc','scope'=>'p1']);
+
+        $this->assertCount(0, $user0->permissions);
+        $this->assertCount(0, $user1->permissions);
+        $this->post('/admin/users/attach-permissions', [
+            'permissions'=>[$permission0->id, $permission1->id],
+            'users'=>[$user0->id,$user1->id]
+        ]);
+        $this->assertCount(2, $user0->refresh()->permissions);
+        $this->assertCount(2, $user1->refresh()->permissions);
+        // Validation
+        $this->post('/admin/roles/attach-permissions', [
+            'users'=>[$user0->id,$user1->id],
+            'permissions'=>[$permission0->id, -85]
+        ])->assertRedirect()->assertSessionHasErrors(['permissions.*']);
+    }
+
+    /** @test */
+    public function detach_permissions_from_users() {
+        $this->withoutExceptionHandling();
+        $user0 = User::factory()->create();
+        $user1 = User::factory()->create();
+        $permission0 = Permission::create(['title'=>'P0 title','slug'=>'p-0','description'=>'p0 desc','scope'=>'p0']);
+        $permission1 = Permission::create(['title'=>'P1 title','slug'=>'p-1','description'=>'p1 desc','scope'=>'p1']);
+
+        $user0->permissions()->attach([$permission0->id,$permission1->id]);
+        $user1->permissions()->attach([$permission0->id,$permission1->id]);
+
+        $this->assertCount(2, $user0->refresh()->permissions);
+        $this->assertCount(2, $user1->refresh()->permissions);
+        $this->post('/admin/users/detach-permissions', [
+            'permissions'=>[$permission0->id, $permission1->id],
+            'users'=>[$user0->id,$user1->id]
+        ]);
+        $this->assertCount(0, $user0->refresh()->permissions);
+        $this->assertCount(0, $user1->refresh()->permissions);
     }
 }
