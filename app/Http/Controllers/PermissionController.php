@@ -17,7 +17,7 @@ class PermissionController extends Controller
         ]);
 
         $permission = Permission::create($data);
-        Session::flash('message', 'Permission "' . $permission->title . '" has been created successfully. Now you can attach it to a role or grant it directly to users');
+        Session::flash('message', 'Permission "' . $permission->title . '" has been created successfully.');
     }
     public function update(Request $request) {
         $permission_id = $request->validate(['permission_id'=>'required|exists:permissions,id'])['permission_id'];

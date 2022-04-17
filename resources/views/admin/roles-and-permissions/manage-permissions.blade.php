@@ -44,7 +44,7 @@
         @endif
 
         <!-- create permission viewer -->
-        <div id="create-permission-viewer" class="global-viewer full-center">
+        <div id="create-permission-viewer" class="global-viewer full-center none">
             <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
             <div class="global-viewer-content-box viewer-box-style-1" style="width: 600px;">
                 <div class="flex align-center space-between light-gray-border-bottom" style="padding: 14px;">
@@ -54,7 +54,7 @@
                     </div>
                     <div class="pointer fs20 close-global-viewer unselectable">✖</div>
                 </div>
-                <div class="viewer-scrollable-box y-auto-overflow" style="padding: 14px; max-height: 430px">
+                <div id="create-permission-viewer-scrollable" class="viewer-scrollable-box y-auto-overflow" style="padding: 14px; max-height: 430px">
                     <p class="no-margin dark mb8 fs13">The flow of creating permissions is simple; First create the permission, then attach it to a role, then all role members will acquire this permission.</p>
                     <div class="simple-line-separator my4"></div>
                     <div>
@@ -63,34 +63,46 @@
                             <p class="my8 bold dark fs16">Permission Informations</p>
                         </div>
                         <!-- error container -->
-                        <div class="mb8">
-                            <label for="create-permission-name-input" class="flex align-center bold dark">{{ __('Name') }}<span class="ml4 err red none fs12">*</span></label>
-                            <p class="no-margin fs12 mb4 gray">Permission name should not contain commas(,) because we use it as separator for existing names</p>
-                            <input type="text" autocomplete="off" class="styled-input full-width" id="create-permission-name-input" placeholder="permission name" style="padding: 8px 10px">
+                        <div id="create-permission-error-container" class="informative-message-container align-center relative my8 none">
+                            <div class="informative-message-container-left-stripe imcls-red"></div>
+                            <p class="no-margin fs13 red bold message-text">Title field is required.</p>
+                            <div class="close-parent close-informative-message-style">✖</div>
                         </div>
-                        <div class="mb8">
-                            <label for="create-permission-slug-input" class="flex align-center bold dark">{{ __('Slug') }}<span class="ml4 err red none fs12">*</span></label>
-                            <p class="no-margin fs12 mb4 gray">Permission slug also should not contain commas(,) for the same reason as names</p>
-                            <input type="text" autocomplete="off" class="styled-input full-width" id="create-permission-slug-input" placeholder="permission slug" style="padding: 8px 10px">
+                        <div class="mb8 input-wrapper">
+                            <label for="create-permission-title-input" class="flex align-center bold dark">{{ __('Title') }}<span class="error-asterisk ml4">*</span></label>
+                            <p class="no-margin fs12 mb4 gray">Permission title should only contain characters.</p>
+                            <input type="text" autocomplete="off" class="styled-input full-width title" id="create-permission-title-input" placeholder="permission name" style="padding: 8px 10px">
                         </div>
-                        <div class="mb8">
-                            <label for="create-permission-description-input" class="flex align-center bold dark mb4">{{ __('Description') }}<span class="ml4 err red none fs12">*</span></label>
-                            <textarea id="create-permission-description-input" class="styled-input no-textarea-x-resize fs14"
+                        <div class="mb8 input-wrapper">
+                            <label for="create-permission-slug-input" class="flex align-center bold dark">{{ __('Slug') }}<span class="error-asterisk ml4">*</span></label>
+                            <p class="no-margin fs12 mb4 gray">Permission slug should be dash separated version of title.</p>
+                            <input type="text" autocomplete="off" class="styled-input full-width slug" id="create-permission-slug-input" placeholder="permission slug" style="padding: 8px 10px">
+                        </div>
+                        <div class="mb8 input-wrapper">
+                            <label for="create-permission-description-input" class="flex align-center bold dark mb4">{{ __('Description') }}<span class="error-asterisk ml4">*</span></label>
+                            <textarea id="create-permission-description-input" class="styled-input no-textarea-x-resize fs14 description"
                                 style="margin: 0; padding: 8px; min-height: 110px; max-height: 200px;"
                                 maxlength="2000"
                                 spellcheck="false"
                                 autocomplete="off"
                                 placeholder="Permission description here"></textarea>
                         </div>
-                        <div class="mb8">
-                            <label for="create-permission-scope-input" class="flex align-center bold dark">Scope<span class="ml4 err red none fs12">*</span></label>
+                        <div class="mb8 input-wrapper">
+                            <label for="create-permission-scope-input" class="flex align-center bold dark">Scope<span class="error-asterisk ml4">*</span></label>
                             <p class="no-margin fs12 mb4 gray">Specify the scope where the permission will belong to, or create a new scope</p>
-                            <div>
+                            <div style="padding: 8px;">
+                                <style>
+                                    .permission-scope-switch {
+                                        height: max-content;
+                                        margin-top: 1px;
+                                        margin-right: 8px;
+                                    }
+                                </style>
                                 <div class="flex">
-                                    <input type="radio" class="permission-scope-switch mr8 height-max-content" name="scope-switch" autocomplete="off" checked>
+                                    <input type="radio" class="permission-scope-switch" name="scope-switch" autocomplete="off" value="existing" checked>
                                     <div>
                                         <p class="fs13 no-margin gray mb4">Choose an existing scope</p>
-                                        <select name="create-permission-scope-input" id="create-permission-scope-input" class="styled-input">
+                                        <select name="create-permission-scope-input" id="create-permission-scope-input" class="styled-input existing-scope" autocomplete="off">
                                             @foreach($scopes as $scope)
                                             <option value="{{ $scope }}">{{ $scope }}</option>
                                             @endforeach
@@ -99,28 +111,21 @@
                                 </div>
                                 <div class="simple-line-separator half-width my8"></div>
                                 <div class="flex">
-                                    <input type="radio" class="permission-scope-switch mr8 height-max-content" name="scope-switch" autocomplete="off">
+                                    <input type="radio" class="permission-scope-switch" name="scope-switch" autocomplete="off" value="fresh">
                                     <div>
                                         <div class="flex align-center my4 none" id="scope-already-exists">
                                             <svg class="size12 mr4" fill="#8e3c23" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
                                             <span class="fs12" style="color: #8e3c23;">this scope already exists in the existings. Its better to choose it from there</span>
                                         </div>
-                                        <p class="fs13 no-margin gray mb4">Create a new scope (should be lower-case & space between words & not already exists)</p>
-                                        <input type="text" autocomplete="off" class="styled-input full-width" id="create-permission-new-scope-input" placeholder="New scope" style="padding: 8px 10px" disabled>
+                                        <p class="fs13 no-margin gray mb4">Define a new scope (should be lower-case & space between words)</p>
+                                        <input type="text" autocomplete="off" class="styled-input full-width fresh-scope" id="create-permission-new-scope-input" placeholder="New scope" style="padding: 8px 10px" disabled>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="simple-line-separator my8"></div>
-                    <p class="no-margin mb2 fs15 bold dark">Confirmation</p>
-                    <p class="no-margin mb4 dark">Please type <strong>{{ auth()->user()->username }}::create-permission</strong> to confirm.</p>
-                    <div>
-                        <input type="text" autocomplete="off" class="full-width styled-input" id="create-permission-confirm-input" style="padding: 8px 10px" placeholder="confirmation">
-                        <input type="hidden" id="create-permission-confirm-value" autocomplete="off" value="{{ auth()->user()->username }}::create-permission">
-                    </div>
                     <div class="flex" style="margin-top: 12px">
-                        <div id="create-permission-button" class="typical-button-style green-bs green-bs-disabled align-center">
+                        <div id="create-permission-button" class="typical-button-style green-bs align-center">
                             <div class="relative size14 mr4">
                                 <svg class="size12 icon-above-spinner" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M156.22,3.31c3.07,2.55,4.08,5.71,4.06,9.78-.17,27.07,0,54.14-.18,81.21,0,3.57.69,4.66,4.49,4.63,27.24-.19,54.47-.11,81.71-.1,7.36,0,9.39,2,9.4,9.25q0,21.4,0,42.82c0,7-2.1,9.06-9.09,9.06-27.24,0-54.48.09-81.71-.09-3.85,0-4.83.95-4.8,4.81.17,27.07.1,54.14.09,81.21,0,7.65-1.94,9.59-9.56,9.6q-21.4,0-42.82,0c-6.62,0-8.75-2.19-8.75-8.91,0-27.4-.1-54.8.09-82.2,0-3.8-1.06-4.51-4.62-4.49-27.08.16-54.15,0-81.22.18-4.07,0-7.23-1-9.78-4.06V102.8c2.55-3.08,5.72-4.08,9.79-4.06,27.09.17,54.18,0,81.27.18,3.68,0,4.58-.87,4.55-4.56-.17-27.09,0-54.18-.18-81.27,0-4.06,1-7.23,4.06-9.78Z"/></svg>
                                 <svg class="spinner size14 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
@@ -193,7 +198,13 @@
                         @else
                         <div class="diagram-role-permissions-container">
                             @foreach($role->permissions->groupBy('scope') as $scope => $permissions)
-                                <h3 class="blue bold fs16 no-margin mt8 ml8">{{ $scope }} Permissions :</h3>
+                                <div class="align-center mt8 ml8">
+                                    <h3 class="blue bold fs16 no-margin">Scope : {{ $scope }}</h3>
+                                    <div class="pointer fs12 ml8 open-create-permission-dialog">
+                                        <span class="dark bold">+ new permission</span>
+                                        <input type="hidden" class="scope" value="{{ $scope }}" autocomplete="off">
+                                    </div>
+                                </div>
                                 @foreach($permissions as $permission)
                                 <div class="diagram-role-permission">
                                     <div class="h-line"></div>
@@ -246,7 +257,13 @@
                     <td class="diagram-permissions-part">
                         <div class="diagram-role-permissions-container">
                             @foreach($root_permissions->groupBy('scope') as $scope => $permissions)
-                                <h3 class="blue bold fs16 no-margin mt8 ml8">{{ $scope }} Permissions :</h3>
+                                <div class="align-center mt8 ml8">
+                                    <h3 class="blue bold fs16 no-margin">Scope : {{ $scope }}</h3>
+                                    <div class="pointer ml8 fs12 open-create-permission-dialog">
+                                        <span class="dark bold">+ new permission</span>
+                                        <input type="hidden" class="scope" value="{{ $scope }}" autocomplete="off">
+                                    </div>
+                                </div>
                                 @foreach($permissions as $permission)
                                 <div class="diagram-role-permission">
                                     <div class="h-line"></div>
