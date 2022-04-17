@@ -32,6 +32,10 @@ body {
     overflow: hidden;
 }
 
+.scrolly {
+    overflow-y: scroll;
+}
+
 .y-auto-overflow {
     overflow-y: auto;
 }

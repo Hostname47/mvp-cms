@@ -43,7 +43,7 @@ $('.permission-scope-switch').on('change', function() {
     }
 });
 
-function validate_create_permission_inputs() {
+function validate_permission_input_inputs() {
     let viewer = $('#create-permission-viewer');
     let vscrollable = $('#create-permission-viewer-scrollable');
     let error_container = $('#create-permission-error-container');
@@ -57,20 +57,20 @@ function validate_create_permission_inputs() {
     viewer.find('.error-asterisk').css('display', 'none');
     error_container.addClass('none');
 
-    if(!validate_create_permission(title.val() != '', title, error_container, 'Title field is required.', vscrollable)) return false;
-    if(!validate_create_permission(slug.val() != '', slug, error_container, 'Slug field is required.', vscrollable)) return false;
-    if(!validate_create_permission(description.val() != '', description, error_container, 'Description field is required.', vscrollable)) return false;
+    if(!validate_permission_input(title.val() != '', title, error_container, 'Title field is required.', vscrollable)) return false;
+    if(!validate_permission_input(slug.val() != '', slug, error_container, 'Slug field is required.', vscrollable)) return false;
+    if(!validate_permission_input(description.val() != '', description, error_container, 'Description field is required.', vscrollable)) return false;
 
     // Validate scope
     if($('.permission-scope-switch:checked').val() == 'fresh')
-        if(!validate_create_permission(fresh_scope.val() != '', fresh_scope, error_container, 'Permission scope field is required', vscrollable)) return false;
+        if(!validate_permission_input(fresh_scope.val() != '', fresh_scope, error_container, 'Permission scope field is required', vscrollable)) return false;
     else
-        if(!validate_create_permission(!existing_scope.val(), null, error_container, 'Permission scope field is required', vscrollable)) return false;
+        if(!validate_permission_input(!existing_scope.val(), null, error_container, 'Permission scope field is required', vscrollable)) return false;
 
     return true;
 }
 
-function validate_create_permission(condition, input, error_container, error_message, scrollable=null) {
+function validate_permission_input(condition, input, error_container, error_message, scrollable=null) {
     if(!condition) {
         error_container.find('.message-text').text(error_message);
         error_container.removeClass('none');
@@ -93,7 +93,7 @@ function validate_create_permission(condition, input, error_container, error_mes
 
 let create_permission_lock = true;
 $('#create-permission-button').on('click', function() {
-    if(!validate_create_permission_inputs()) return;
+    if(!validate_permission_input_inputs()) return;
     let viewer = $('#create-permission-viewer');
 	let data = {
         title: viewer.find('.title').val(),
@@ -141,7 +141,7 @@ $('#create-permission-button').on('click', function() {
 
             let error_container = $('#create-permission-error-container');
             let vscrollable = $('#create-permission-viewer-scrollable');
-            validate_create_permission(false, null, error_container, error, vscrollable)
+            validate_permission_input(false, null, error_container, error, vscrollable)
 
 			create_permission_lock = true;
 		}

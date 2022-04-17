@@ -671,7 +671,7 @@
                     <div class="mb8">
                         <label for="update-role-description-input" class="align-center bold dark mb4">{{ __('Description') }}<span class="error-asterisk ml4">*</span></label>
                         <textarea id="update-role-description-input" class="styled-input no-textarea-x-resize fs14"
-                            style="margin: 0; padding: 8px; min-height: 110px; max-height: 110px;"
+                            style="margin: 0; padding: 8px; min-height: 110px;"
                             maxlength="800"
                             spellcheck="false"
                             autocomplete="off"
