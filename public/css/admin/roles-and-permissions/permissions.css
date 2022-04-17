@@ -61,3 +61,31 @@ td {
 #update-permission-settings-section {
     flex: 1;
 }
+
+.permission-user-box {
+    width: 80px;
+}
+.rounded-entity-for-permission {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 4px solid #52affb;
+}
+
+.open-revoke-permission-dialog {
+    right: -11px;
+    top: -9px;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e3e3e3;
+    border-radius: 50%;
+    font-size: 10px;
+    cursor: pointer;
+}
+.open-revoke-permission-dialog:hover {
+    background-color: #d9d9d9;
+}
