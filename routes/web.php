@@ -32,7 +32,9 @@ Route::get('/admin/roles-and-permissions/overview', [RPManagement::class, 'overv
 Route::get('/admin/roles-and-permissions/roles', [RPManagement::class, 'manage_roles'])->name('admin.rp.manage.roles');
 Route::get('/admin/roles-and-permissions/permissions', [RPManagement::class, 'manage_permissions'])->name('admin.rp.manage.permissions');
 Route::get('/admin/roles/users/search', [RPManagement::class, 'role_users_search']);
+Route::get('/admin/permissions/users/search', [RPManagement::class, 'permission_users_search']);
 Route::get('/admin/roles/users/search/fetchmore', [RPManagement::class, 'fetch_more_role_users_search']);
+Route::get('/admin/permissions/users/search/fetchmore', [RPManagement::class, 'fetch_more_permission_users_search']);
 Route::get('/admin/roles/viewers/revoke-viewer', [RPManagement::class, 'get_role_revoke_viewer']);
 
 Route::get('/admin/categories', [CategoryController::class, 'manage'])->name('admin.categories.management');

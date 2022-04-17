@@ -216,3 +216,195 @@ $('#update-permission-button').on('click', function() {
         }
     })
 });
+
+/** attach permission to users */
+$('.open-attach-permission-dialog').on('click', function() {
+	$('#attach-permission-to-users-viewer').removeClass('none');
+    disable_page_scroll();
+});
+
+$('body').on('click', (event) => $('#permission-members-search-result-box').addClass('none'));
+$('#permission-members-search-result-box,#permission-member-search-input').on('click', (event) => event.stopPropagation());
+$('#permission-member-search-input').on('keyup', function(event) {
+    if(event.key === 'Enter' || event.keyCode === 13)
+		$('#permission-search-for-member-to-attach').trigger('click');
+});
+
+let permission_last_member_search_query = '';
+let permission_member_search_lock = true;
+$('#permission-search-for-member-to-attach').on('click', function(event) {
+	event.stopPropagation();
+
+	let resultbox = $('#permission-members-search-result-box');
+	let results = resultbox.find('.results-container');
+	let loading_block = resultbox.find('.search-loading');
+	let no_results_box = resultbox.find('.no-results-found-box')
+	let spinner = loading_block.find('.spinner');
+
+	let query = $('#permission-member-search-input').val();
+	let permission = $('#permission-id').val();
+
+	if(query == '') return;
+	if(query == permission_last_member_search_query) {
+		if(permission_member_search_lock)
+			loading_block.addClass('none');
+
+		resultbox.removeClass('none');
+		results.removeClass('none');
+		return;
+	}
+
+	// Here if the flow reaches here and the lock is false meaning admin should wait until he get results from previous search
+	if(!permission_member_search_lock) return;
+	permission_member_search_lock = false;
+
+	$('#permission-users-fetch-more-results').addClass('none no-fetch');
+
+	results.html('');
+	no_results_box.addClass('none'); // Hide no results box if it is displayed before
+	spinner.addClass('inf-rotate');
+	loading_block.removeClass('none');
+	loading_block.removeClass('none'); // Display loading annimation
+
+	resultbox.removeClass('none'); // Display parent
+
+	$.ajax({
+		type: 'get',
+		url: `/admin/permissions/users/search?permission=${permission}&k=${query}`,
+		success: function(response) {
+			// Emptying old results
+			results.html('');
+			resultbox.removeClass('none');
+
+			let users = response.users;
+			let hasmore = response.hasmore;
+
+			if(users.length) {
+				for(let i = 0; i < users.length; i++) {
+					let usercomponent = create_permission_member_search_component(users[i]);
+					results.append(usercomponent);
+				}
+
+				// After handling all users components we have to check if search has more results
+				if(hasmore) {
+					let loadmore = $('#permission-users-fetch-more-results');
+					loadmore.removeClass('none no-fetch')
+				} else {
+					// no-fetch prevent the scroll event from proceeding when no more results are there
+					$('#permission-users-fetch-more-results').addClass('none no-fetch');
+				}
+			} else {
+				// Results not found
+				results.addClass('none');
+				no_results_box.removeClass('none');
+			}
+			loading_block.addClass('none');
+
+			results.removeClass('none');
+			resultbox.removeClass('none');
+			permission_last_member_search_query = query;
+			$('#permission-user-k').val(query); // This is used in fetch more
+		},
+		error: function(response) {
+			spinner.addClass('opacity0');
+            spinner.removeClass('inf-rotate');
+
+			let errorObject = JSON.parse(response.responseText);
+			let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+			if(errorObject.errors) {
+				let errors = errorObject.errors;
+				error = errors[Object.keys(errors)[0]][0];
+			}
+			print_top_message(error, 'error');
+		},
+		complete: function() {
+			permission_member_search_lock = true;
+		}
+	})
+});
+
+function create_permission_member_search_component(user) {
+	let usercomponent = $('#permission-members-search-result-box .permission-member-search-user-factory').clone(true, true);
+	usercomponent.removeClass('none permission-member-search-user-factory');
+
+	let role = user.role;
+	let already_has_permission = user.already_has_this_permission;
+
+	usercomponent.find('.permission-user-id').val(user.id);
+	usercomponent.find('.permission-user-avatar').attr('src', user.avatar);
+	usercomponent.find('.permission-user-fullname').text(user.fullname);
+	usercomponent.find('.permission-user-username').text(user.username);
+	usercomponent.find('.permission-user-user-manage-link').attr('href', user.user_manage_link);
+	
+	if(role == null) {
+		usercomponent.find('.permission-user-role').text('normal user');
+		usercomponent.find('.permission-user-role').removeClass('blue bold');
+		usercomponent.find('.permission-user-role').addClass('gray italic');
+	} else
+		usercomponent.find('.permission-user-role').text(role);
+
+	if(already_has_permission) {
+		usercomponent.find('.permission-select-member').remove();
+		usercomponent.find('.already-has-permission').removeClass('none');
+	} else {
+		usercomponent.find('.already-has-permission').remove();
+		usercomponent.find('.permission-select-member').removeClass('none');
+	}
+
+	return usercomponent;
+}
+
+let permission_user_search_fetch_more = $('#permission-users-fetch-more-results');
+let permission_user_search_results_box = $('#permission-members-search-result-box');
+let permission_user_search_fetch_more_lock = true;
+if(permission_user_search_results_box.length) {
+    permission_user_search_results_box.on('DOMContentLoaded scroll', function() {
+        if(permission_user_search_results_box.scrollTop() + permission_user_search_results_box.innerHeight() + 50 >= permission_user_search_results_box[0].scrollHeight) {
+			// no-fetch class is attached to fetch_more loader when no more results are there to prevent fetch
+            if(!permission_user_search_fetch_more_lock || permission_user_search_fetch_more.hasClass('no-fetch')) return;
+            permission_user_search_fetch_more_lock=false;
+            
+			let results = $('#permission-members-search-result-box .results-container');
+			let spinner = permission_user_search_fetch_more.find('.spinner');
+			// Notice we don't count directly role members from scrollable because it will count factory components as well
+            let present_permission_users = permission_user_search_results_box.find('.results-container .permission-member-search-user').length;
+
+			spinner.addClass('inf-rotate');
+            $.ajax({
+				url: '/admin/permissions/users/search/fetchmore',
+				data: {
+					permission: $('#permission-id').val(),
+					skip: present_permission_users,
+					k: $('#permission-user-k').val()
+				},
+                success: function(response) {
+					let users = response.users;
+					let hasmore = response.hasmore;
+		
+					if(users.length) {
+						for(let i = 0; i < users.length; i++) {
+							let usercomponent = create_permission_member_search_component(users[i]);
+							results.append(usercomponent);
+						}
+		
+						// After handling all users components we have to check if search has more results
+						if(hasmore) {
+							let loadmore = $('#permission-users-fetch-more-results');
+							loadmore.removeClass('none no-fetch');
+						} else
+							// no-fetch prevent the scroll event from proceeding when no more results are there
+							$('#permission-users-fetch-more-results').addClass('none no-fetch');
+					} else {
+						// Results not found
+						results.addClass('none');
+						no_results_box.removeClass('none');
+					}
+                },
+                complete: function() {
+                    permission_user_search_fetch_more_lock = true;
+					spinner.removeClass('inf-rotate');
+                }
+            });
+        }
+    });
+}

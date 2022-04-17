@@ -298,7 +298,7 @@
                         </div>
                         <div class="pointer fs20 close-global-viewer unselectable">✖</div>
                     </div>
-                    <div class="viewer-scrollable-box y-auto-overflow" style="padding: 14px; max-height: 430px">
+                    <div class="viewer-scrollable-box" style="padding: 14px;">
                         <div class="section-style fs13 dark mb8">
                             <p class="no-margin dark lh15">Here you can attach "<strong>{{ $permission->title }}</strong>" permission directly to members.</p>
                         </div>
@@ -309,7 +309,7 @@
                             @if($role = $permission->role())
                             <div class="align-center mb4">
                                 <svg class="size14 mr4" fill="#202224" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M256.24,200.3v3.32a30.82,30.82,0,0,0-.39,4.31,28.06,28.06,0,0,0-.5,3.18,32.86,32.86,0,0,0-1.24,4.14c-1.07,2.69-1.61,5.62-3.06,8.2-8.93,15.9-27.56,24.79-45.09,21.09-18.44-3.89-32.36-19.5-33.59-37.66-1.32-19.48,9.32-36.23,27.33-42.73,2.82-1,4.28-2.17,4.06-5.48a143.06,143.06,0,0,1,0-14.79c.1-2.7-.61-3.71-3.53-3.7q-70.3.12-140.61,0c-3,0-3.75,1.12-3.44,3.75a24.35,24.35,0,0,1,0,3c0,4.77-1.07,9.89.33,14.21s7.51,4.19,11.31,6.51C87.92,179.85,94,207.87,80.35,227.12,66.16,247.18,38.07,251.33,19.58,236,7,225.65,1.71,212.22,4.43,196.22c2.69-15.82,12.12-26.6,27.21-32.14,2.79-1,3.74-2.32,3.61-5.23-.24-5.42-.08-10.85-.07-16.28,0-14.93,8.56-23.47,23.61-23.52,18.75-.07,37.5-.11,56.24.06,3.39,0,4.62-.71,4.37-4.27a104.84,104.84,0,0,1,0-14.29c.22-3.28-1.14-4.45-4-5.48C96.38,88.29,86,70.25,88.5,48.87c2-16.92,18.8-32.94,36.25-34.57,20.93-2,38.93,9.59,45.07,28.89a41.39,41.39,0,0,1-25.35,51.88c-2.87,1-4.24,2.2-4,5.47a119.65,119.65,0,0,1,0,14.79c-.18,3.16.91,3.79,3.87,3.77,18.42-.14,36.84-.08,55.26-.07,17,0,25.08,8.07,25.09,25a28.75,28.75,0,0,1,0,3.94c-1.28,9.39.4,15.76,11,19.93,10.87,4.27,16.79,14.73,19.56,26.33.16.71-.08,1.6.48,2.15.07.44.15.88.23,1.32C256,198.59,256.11,199.45,256.24,200.3Z"></path></svg>
-                                <p class="fs12 dark bold no-margin">Parent role : <span class="blue fs14 ml4">{{ $role->title }}</span></p>
+                                <p class="fs12 dark bold no-margin">Parent role : <span class="fs14 ml4">{{ $role->title }}</span></p>
                             </div>
                             @else
                             <div class="align-center mb4">
@@ -329,14 +329,14 @@
                                     <div class="relative flex">
                                         <svg class="absolute size14" fill="#5b5b5b" style="top: 10px; left: 12px;" enable-background="new 0 0 515.558 515.558" viewBox="0 0 515.558 515.558" xmlns="http://www.w3.org/2000/svg"><path d="m378.344 332.78c25.37-34.645 40.545-77.2 40.545-123.333 0-115.484-93.961-209.445-209.445-209.445s-209.444 93.961-209.444 209.445 93.961 209.445 209.445 209.445c46.133 0 88.692-15.177 123.337-40.547l137.212 137.212 45.564-45.564c0-.001-137.214-137.213-137.214-137.213zm-168.899 21.667c-79.958 0-145-65.042-145-145s65.042-145 145-145 145 65.042 145 145-65.043 145-145 145z"></path></svg>
                                         <input type="text" class="search-input-style-1" id="permission-member-search-input" autocomplete="off" placeholder="find member by username">
-                                        <div class="search-button-style-1 align-center" id="permission-search-for-member-to-grant">
+                                        <div class="search-button-style-1 align-center" id="permission-search-for-member-to-attach">
                                             <svg class="size14 mr4" fill="#5b5b5b" enable-background="new 0 0 515.558 515.558" viewBox="0 0 515.558 515.558" xmlns="http://www.w3.org/2000/svg"><path d="m378.344 332.78c25.37-34.645 40.545-77.2 40.545-123.333 0-115.484-93.961-209.445-209.445-209.445s-209.444 93.961-209.444 209.445 93.961 209.445 209.445 209.445c46.133 0 88.692-15.177 123.337-40.547l137.212 137.212 45.564-45.564c0-.001-137.214-137.213-137.214-137.213zm-168.899 21.667c-79.958 0-145-65.042-145-145s65.042-145 145-145 145 65.042 145 145-65.043 145-145 145z"></path></svg>
                                             <span class="bold dark">search</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="relative">
-                                    <div id="permission-members-search-result-box" class="full-width y-auto-overflow none" style="max-height: 234px;">
+                                    <div id="permission-members-search-result-box" class="full-width y-auto-overflow none" style="max-height: 250px;">
                                         <input type="hidden" id="permission-user-k" autocomplete="off">
                                         <div class="results-container none">
                                             results
@@ -522,7 +522,7 @@
                         <p class="my4 fs12 dark lh15">The following members already have this permissions. Normally members get permissions from roles; where a member acquire a role, he gets all permissions attached to that role. But you can attach permissions to users directly as well as revoking.</p>
                         <div class="typical-section-style flex flex-wrap" style="padding: 20px; max-height: 250px; overflow-y: auto; gap: 15px;">
                             <div class="flex justify-center permission-user-box">
-                                <div class="rounded-entity-for-permission full-center pointer open-grant-permission-dialog">
+                                <div class="rounded-entity-for-permission full-center pointer open-attach-permission-dialog">
                                     <svg class="size10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M156.22,3.31c3.07,2.55,4.08,5.71,4.06,9.78-.17,27.07,0,54.14-.18,81.21,0,3.57.69,4.66,4.49,4.63,27.24-.19,54.47-.11,81.71-.1,7.36,0,9.39,2,9.4,9.25q0,21.4,0,42.82c0,7-2.1,9.06-9.09,9.06-27.24,0-54.48.09-81.71-.09-3.85,0-4.83.95-4.8,4.81.17,27.07.1,54.14.09,81.21,0,7.65-1.94,9.59-9.56,9.6q-21.4,0-42.82,0c-6.62,0-8.75-2.19-8.75-8.91,0-27.4-.1-54.8.09-82.2,0-3.8-1.06-4.51-4.62-4.49-27.08.16-54.15,0-81.22.18-4.07,0-7.23-1-9.78-4.06V102.8c2.55-3.08,5.72-4.08,9.79-4.06,27.09.17,54.18,0,81.27.18,3.68,0,4.58-.87,4.55-4.56-.17-27.09,0-54.18-.18-81.27,0-4.06,1-7.23,4.06-9.78Z"></path></svg>
                                 </div>
                             </div>

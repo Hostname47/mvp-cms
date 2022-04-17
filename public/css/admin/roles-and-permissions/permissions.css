@@ -89,3 +89,38 @@ td {
 .open-revoke-permission-dialog:hover {
     background-color: #d9d9d9;
 }
+
+#permission-members-search-result-box {
+    padding: 12px 10px 10px 10px;
+    background-color: white;
+    border: 1px solid #bdbdbd;
+    border-radius: 4px 4px 0 0;
+    position: absolute;
+    bottom: calc(100% + 35px);
+}
+
+.permission-member-search-user, .selected-permission-member-to-get-permission {
+    padding: 8px;
+    background-color: #ecf0f0;
+    border: 1px solid #c3ced0;
+    border-radius: 3px;
+}
+
+.permission-user-box .username {
+    inline-size: 80px;
+    overflow-wrap: break-word;
+    text-align: center;
+}
+
+.permission-switch-button {
+    font-size: 11px;
+    border-radius: 4px;
+    padding: 7px 12px;
+    background-color: #fbfbfb;
+    cursor: pointer;
+    text-decoration: none;
+    border: 1px solid #dadada;
+    transition: all 0.2s ease;
+    font-weight: bold;
+    color: #090a09;
+}

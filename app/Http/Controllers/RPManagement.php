@@ -155,4 +155,57 @@ class RPManagement extends Controller
             ->with(compact('scopes'))
             ->with(compact('roles'));
     }
+    public function permission_users_search(Request $request) {
+        $data = $request->validate([
+            'permission'=>'required|exists:permissions,id',
+            'k'=>'required|min:1|max:255'
+        ]);
+
+        $permission = Permission::find($data['permission']);
+        $users = User::withoutGlobalScopes()->where('username', 'like', "%" . $data['k'] . "%")->take(9)->get();
+        $hasmore = $users->count() > 8;
+        $users = $users->take(8)->map(function($user) use ($permission) {
+            return [
+                'id'=>$user->id,
+                'fullname'=>$user->fullname,
+                'username'=>$user->username,
+                'avatar'=>$user->avatar(100),
+                'role'=>($high_role = $user->high_role()) ? $high_role->title : null,
+                'user_manage_link'=>'',
+                'already_has_this_permission'=>$user->has_permission($permission->slug)
+            ];
+        });
+
+        return [
+            'users'=>$users,
+            'hasmore'=>$hasmore
+        ];
+    }
+    public function fetch_more_permission_users_search(Request $request) {
+        $data = $request->validate([
+            'permission'=>'required|exists:permissions,id',
+            'skip'=>'required|numeric',
+            'k'=>'required|min:1|max:255'
+        ]);
+
+        $permission = Permission::find($data['permission']);
+        $users = User::withoutGlobalScopes()->where('username', 'like', "%" . $data['k'] . "%")->skip($data['skip'])->take(9)->get();
+        $hasmore = $users->count() > 8;
+        $users = $users->take(8)->map(function($user) use ($permission) {
+            return [
+                'id'=>$user->id,
+                'fullname'=>$user->fullname,
+                'username'=>$user->username,
+                'avatar'=>$user->avatar(100),
+                'role'=>($high_role = $user->high_role()) ? $high_role->title : null,
+                'user_manage_link'=>'',
+                'already_has_this_permission'=>$user->has_permission($permission->slug)
+            ];
+        });
+
+        return [
+            'users'=>$users,
+            'hasmore'=>$hasmore
+        ];
+    }
 }
