@@ -133,6 +133,7 @@ class RPManagement extends Controller
      */
     public function manage_permissions(Request $request) {
         $permission = null;
+        $prole = null;
         $roles = collect([]);
         $root_permissions = collect([]);
         $scoped_permissions = collect([]);
@@ -142,6 +143,7 @@ class RPManagement extends Controller
             $permission_slug = $request->validate(['permission'=>'exists:permissions,slug'])['permission'];
             $permission = Permission::where('slug', $permission_slug)->first();
             $scopes = Permission::select('scope')->distinct()->pluck('scope');
+            $prole = $permission->role();
         } else {
             $roles = Role::orderBy('priority', 'asc')->get();
             $root_permissions = Permission::whereNotIn('id', PermissionRole::pluck('permission_id')->toArray())->get();
@@ -153,6 +155,7 @@ class RPManagement extends Controller
             ->with(compact('root_permissions'))
             ->with(compact('scoped_permissions'))
             ->with(compact('scopes'))
+            ->with(compact('prole'))
             ->with(compact('roles'));
     }
     public function permission_users_search(Request $request) {

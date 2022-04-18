@@ -56,10 +56,12 @@ td {
 #update-permission-section {
     flex: 0.75;
     margin-right: 8px;
+    height: max-content;
 }
 
 #update-permission-settings-section {
     flex: 1;
+    height: max-content;
 }
 
 .permission-user-box {

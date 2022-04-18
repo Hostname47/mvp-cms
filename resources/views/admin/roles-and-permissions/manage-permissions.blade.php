@@ -306,10 +306,10 @@
                         <p class="fs12 gray bold my4"  style="margin-top: 12px">Permission : <span class="blue fs14 ml4">{{ $permission->title }}</span></p>
                         <!-- parent role -->
                         <div style="margin-top: 12px">
-                            @if($role = $permission->role())
+                            @if($prole)
                             <div class="align-center mb4">
                                 <svg class="size14 mr4" fill="#202224" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M256.24,200.3v3.32a30.82,30.82,0,0,0-.39,4.31,28.06,28.06,0,0,0-.5,3.18,32.86,32.86,0,0,0-1.24,4.14c-1.07,2.69-1.61,5.62-3.06,8.2-8.93,15.9-27.56,24.79-45.09,21.09-18.44-3.89-32.36-19.5-33.59-37.66-1.32-19.48,9.32-36.23,27.33-42.73,2.82-1,4.28-2.17,4.06-5.48a143.06,143.06,0,0,1,0-14.79c.1-2.7-.61-3.71-3.53-3.7q-70.3.12-140.61,0c-3,0-3.75,1.12-3.44,3.75a24.35,24.35,0,0,1,0,3c0,4.77-1.07,9.89.33,14.21s7.51,4.19,11.31,6.51C87.92,179.85,94,207.87,80.35,227.12,66.16,247.18,38.07,251.33,19.58,236,7,225.65,1.71,212.22,4.43,196.22c2.69-15.82,12.12-26.6,27.21-32.14,2.79-1,3.74-2.32,3.61-5.23-.24-5.42-.08-10.85-.07-16.28,0-14.93,8.56-23.47,23.61-23.52,18.75-.07,37.5-.11,56.24.06,3.39,0,4.62-.71,4.37-4.27a104.84,104.84,0,0,1,0-14.29c.22-3.28-1.14-4.45-4-5.48C96.38,88.29,86,70.25,88.5,48.87c2-16.92,18.8-32.94,36.25-34.57,20.93-2,38.93,9.59,45.07,28.89a41.39,41.39,0,0,1-25.35,51.88c-2.87,1-4.24,2.2-4,5.47a119.65,119.65,0,0,1,0,14.79c-.18,3.16.91,3.79,3.87,3.77,18.42-.14,36.84-.08,55.26-.07,17,0,25.08,8.07,25.09,25a28.75,28.75,0,0,1,0,3.94c-1.28,9.39.4,15.76,11,19.93,10.87,4.27,16.79,14.73,19.56,26.33.16.71-.08,1.6.48,2.15.07.44.15.88.23,1.32C256,198.59,256.11,199.45,256.24,200.3Z"></path></svg>
-                                <p class="fs12 dark bold no-margin">Parent role : <span class="fs14 ml4">{{ $role->title }}</span></p>
+                                <p class="fs12 dark bold no-margin">Parent role : <span class="fs14 ml4">{{ $prole->title }}</span></p>
                             </div>
                             @else
                             <div class="align-center mb4">
@@ -470,27 +470,32 @@
                             <span class="block fs12 dark bold">Select members to detach permission from :</span>
                             <span class="block fs12 gray my4 lh15">The following list is for members who are already have this permission. Choose only members that you want to detach permission from.</span>
                             <div class="typical-section-style flex flex-wrap y-auto-overflow" style="max-height: 180px">
-                                @foreach($permission->users as $user)
-                                <label for="{{ $user->id }}" class="flex align-center flex-column mx8 my8">
-                                    <div class="relative custom-checkbox-button user-to-detach-permission-from-select pointer">
-                                        <img src="{{ $user->avatar(100) }}" class="rounded-entity-for-permission" alt="">
-                                        <div class="mr4 absolute" style="top: -10px; right: -14px;">
-                                            <div class="custom-checkbox size14" style="border-radius: 2px">
-                                                <svg class="size10 custom-checkbox-tick none" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M173.9,439.4,7.5,273a25.59,25.59,0,0,1,0-36.2l36.2-36.2a25.59,25.59,0,0,1,36.2,0L192,312.69,432.1,72.6a25.59,25.59,0,0,1,36.2,0l36.2,36.2a25.59,25.59,0,0,1,0,36.2L210.1,439.4a25.59,25.59,0,0,1-36.2,0Z"/></svg>
-                                                <input type="hidden" class="checkbox-status" autocomplete="off" value="0">
-                                                <input type="hidden" class="uid" value="{{ $user->id }}" autocomplete="off">
+                                @if($permission->users->count())
+                                    @foreach($permission->users as $user)
+                                    <label for="{{ $user->id }}" class="flex align-center flex-column mx8 my8">
+                                        <div class="relative custom-checkbox-button user-to-detach-permission-from-select pointer">
+                                            <img src="{{ $user->avatar(100) }}" class="rounded-entity-for-permission" alt="">
+                                            <div class="mr4 absolute" style="top: -10px; right: -14px;">
+                                                <div class="custom-checkbox size14" style="border-radius: 2px">
+                                                    <svg class="size10 custom-checkbox-tick none" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M173.9,439.4,7.5,273a25.59,25.59,0,0,1,0-36.2l36.2-36.2a25.59,25.59,0,0,1,36.2,0L192,312.69,432.1,72.6a25.59,25.59,0,0,1,36.2,0l36.2,36.2a25.59,25.59,0,0,1,0,36.2L210.1,439.4a25.59,25.59,0,0,1-36.2,0Z"/></svg>
+                                                    <input type="hidden" class="checkbox-status" autocomplete="off" value="0">
+                                                    <input type="hidden" class="uid" value="{{ $user->id }}" autocomplete="off">
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <input type="checkbox" id="{{ $user->id }}" class="detach-permission-input" value="{{ $user->id }}" autocomplete="off">
-                                    <span class="bold blue fs11 mt4">{{ $user->username }}</span>
-                                    @if($hr = $user->high_role())
-                                    <span class="bold dark fs10">{{ $hr->title }}</span>
-                                    @else
-                                    <em class="light-gray fs10">normal user</em>
-                                    @endif
-                                </label>
-                                @endforeach
+                                        <input type="checkbox" id="{{ $user->id }}" class="detach-permission-input" value="{{ $user->id }}" autocomplete="off">
+                                        <span class="bold blue fs11 mt4">{{ $user->username }}</span>
+                                        @if($hr = $user->high_role())
+                                        <span class="bold dark fs10">{{ $hr->title }}</span>
+                                        @else
+                                        <em class="light-gray fs10">normal user</em>
+                                        @endif
+                                    </label>
+                                    @endforeach
+                                @else
+                                    <svg class="size14 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                                    <p class="no-margin fs12 italic gray">This permission is not acquired by any user for the moment.</p>
+                                @endif
                             </div>
                         </div>
                         
@@ -511,6 +516,96 @@
                                         </svg>
                                     </div>
                                     <span class="bold">Detach permission from users</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="delete-permission-viewer" class="global-viewer full-center">
+                <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
+                <div class="viewer-box-style-1" style="width: 600px;">
+                    <div class="flex align-center space-between light-gray-border-bottom" style="padding: 14px;">
+                        <div class="flex align-center">
+                            <svg class="size16 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M300,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H300a12,12,0,0,0-12,12V404A12,12,0,0,0,300,416ZM464,80H381.59l-34-56.7A48,48,0,0,0,306.41,0H205.59a48,48,0,0,0-41.16,23.3l-34,56.7H48A16,16,0,0,0,32,96v16a16,16,0,0,0,16,16H64V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48h0V128h16a16,16,0,0,0,16-16V96A16,16,0,0,0,464,80ZM203.84,50.91A6,6,0,0,1,209,48h94a6,6,0,0,1,5.15,2.91L325.61,80H186.39ZM400,464H112V128H400ZM188,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H188a12,12,0,0,0-12,12V404A12,12,0,0,0,188,416Z"/></svg>
+                            <span class="fs20 bold dark">Delete permission</span>
+                        </div>
+                        <div class="pointer fs20 close-global-viewer unselectable">✖</div>
+                    </div>
+                    <div class="viewer-scrollable-box scrolly" style="padding: 14px; max-height: 430px">
+                        <div class="section-style fs13 lblack mb8">
+                            <h3 class="fs18 dark no-margin mb8">Delete "<span class="blue">{{ $permission->title }}</span>" permission</h3>
+                            <p class="no-margin mb4 dark">Delete "<strong>{{ $permission->title }}</strong>" permission. Before proceding this process, consider the following points</p>
+                            <div class="typical-section-style" style="padding: 10px">
+                                <p class="no-margin dark lh15">• Once the permission gets deleted, <strong>it will be detached from users as well as from its parent role if it has a parent role</strong>.</p>
+                                <p class="no-margin dark mt8 lh15">• Keep in mind that all the actions attached to that permission will be blocked from all members except from site owners. Be careful, and only delete permission If you are 100% sure about it.</p>
+                            </div>
+                        </div>
+                        <div class="simple-line-separator my4"></div>
+                        <p class="no-margin align-center fs12 dark bold mt8">• Permission to <span class="red mx4">delete</span> :<span class="dark fs16 ml4">{{ $permission->title }}</span></p>
+                        <div class="mt8">
+                            <span class="block fs12 gray bold mb4">• Roles where this permission attached to :</span>
+                            @if($prole)
+                            <div style="padding: 8px 16px;">
+                                <div class="align-center">
+                                    <svg class="size13 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M256.24,200.3v3.32a30.82,30.82,0,0,0-.39,4.31,28.06,28.06,0,0,0-.5,3.18,32.86,32.86,0,0,0-1.24,4.14c-1.07,2.69-1.61,5.62-3.06,8.2-8.93,15.9-27.56,24.79-45.09,21.09-18.44-3.89-32.36-19.5-33.59-37.66-1.32-19.48,9.32-36.23,27.33-42.73,2.82-1,4.28-2.17,4.06-5.48a143.06,143.06,0,0,1,0-14.79c.1-2.7-.61-3.71-3.53-3.7q-70.3.12-140.61,0c-3,0-3.75,1.12-3.44,3.75a24.35,24.35,0,0,1,0,3c0,4.77-1.07,9.89.33,14.21s7.51,4.19,11.31,6.51C87.92,179.85,94,207.87,80.35,227.12,66.16,247.18,38.07,251.33,19.58,236,7,225.65,1.71,212.22,4.43,196.22c2.69-15.82,12.12-26.6,27.21-32.14,2.79-1,3.74-2.32,3.61-5.23-.24-5.42-.08-10.85-.07-16.28,0-14.93,8.56-23.47,23.61-23.52,18.75-.07,37.5-.11,56.24.06,3.39,0,4.62-.71,4.37-4.27a104.84,104.84,0,0,1,0-14.29c.22-3.28-1.14-4.45-4-5.48C96.38,88.29,86,70.25,88.5,48.87c2-16.92,18.8-32.94,36.25-34.57,20.93-2,38.93,9.59,45.07,28.89a41.39,41.39,0,0,1-25.35,51.88c-2.87,1-4.24,2.2-4,5.47a119.65,119.65,0,0,1,0,14.79c-.18,3.16.91,3.79,3.87,3.77,18.42-.14,36.84-.08,55.26-.07,17,0,25.08,8.07,25.09,25a28.75,28.75,0,0,1,0,3.94c-1.28,9.39.4,15.76,11,19.93,10.87,4.27,16.79,14.73,19.56,26.33.16.71-.08,1.6.48,2.15.07.44.15.88.23,1.32C256,198.59,256.11,199.45,256.24,200.3Z"></path></svg>
+                                    <span class="dark">Role : "<strong>{{ $prole->title }}</strong>"</span>
+                                </div>
+                                <div class="flex mt8" style="margin-left: 7px;">
+                                    <svg class="size14 mr8" fill="#202224" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 284.93 284.93"><polygon points="281.33 281.49 281.33 246.99 38.25 246.99 38.25 4.75 3.75 4.75 3.75 281.5 38.25 281.5 38.25 281.49 281.33 281.49"></polygon></svg>
+                                    <div class="align-center mt2">
+                                        <svg class="size14 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M130.34,245.7q-40.65,0-81.31,0c-10.29,0-13.65-3.39-13.65-13.66q0-60.49,0-121c0-9.82,3.61-13.39,13.47-13.41,5,0,9.93-.19,14.87.07,3,.15,3.43-1,3.47-3.63C67.32,83.05,66.29,72,69,61c7.38-29.7,34.36-49.32,66.07-47.81,28.86,1.38,53.84,24.47,58.24,53.66,1.36,9.06.6,18.15.71,27.22,0,2.69.58,3.73,3.49,3.61,5.61-.24,11.24-.14,16.86,0,7.2.11,11.43,4.23,11.44,11.43q.09,62.47,0,125c0,7.7-4.13,11.62-12.18,11.63Q172,245.76,130.34,245.7Zm-.09-148c13,0,26.09-.07,39.13,0,2.67,0,3.83-.49,3.71-3.47-.24-5.94.09-11.9-.12-17.83-.79-22.48-16.7-39.91-38.29-42.1-20.86-2.12-40.25,11.75-45.25,32.56-2.11,8.77-.85,17.76-1.32,26.65-.19,3.69,1.22,4.26,4.49,4.21C105.15,97.54,117.7,97.65,130.25,97.65Zm.37,42.41a31.73,31.73,0,0,0-.29,63.46,32,32,0,0,0,32-31.67A31.61,31.61,0,0,0,130.62,140.06Z"></path></svg>
+                                        <span class="dark">Permission : "<strong>{{ $permission->title }}</strong>"</span>
+                                    </div>
+                                </div>
+                            </div>
+                            @else
+                            <div class="align-center typical-section-style" style="padding: 10px;">
+                                <svg class="size14 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                                <p class="no-margin fs12 italic gray">This permission is not attached to any role for the moment.</p>
+                            </div>
+                            @endif
+                        </div>
+                        <div style="margin-top: 14px">
+                            <span class="block fs12 gray bold mb4">• Members already have this permission :</span>
+                            <div class="flex flex-wrap typical-section-style border-box" style="padding: 10px; max-height: 200px; overflow-y: auto;">
+                                @foreach($permission->users as $user)
+                                <div class="flex align-center flex-column mx8 my8">
+                                    <img src="{{ $user->avatar(100) }}" class="rounded-entity-for-permission" alt="">
+                                    <span class="bold lblack mt4">{{ $user->fullname }}</span>
+                                    <span class="bold blue fs11">{{ $user->username }}</span>
+                                    @if($hr = $user->high_role())
+                                    <span class="bold lblack fs10">{{ $hr->title }}</span>
+                                    @else
+                                    <em class="fs10 gray">Normal user</em>
+                                    @endif
+                                </div>
+                                @endforeach
+                                @if(!$permission->users->count())
+                                <div class="flex align-center">
+                                    <svg class="size12 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                                    <p class="fs12 italic no-margin gray">This permission is not acquired by any user for the moment</p>
+                                </div>
+                                @endif
+                            </div>
+                        </div>
+                        <div style="margin-top: 12px">
+                            <p class="no-margin mb2 fs15 bold dark">Confirmation</p>
+                            <p class="no-margin mb4 dark">Please type <strong>{{ auth()->user()->username }}::delete-permission::{{ $permission->slug }}</strong> to confirm.</p>
+                            <div>
+                                <input type="text" autocomplete="off" class="full-width styled-input" id="delete-permission-confirm-input" style="padding: 8px 10px" placeholder="role delete confirmation">
+                                <input type="hidden" id="delete-permission-confirm-value" autocomplete="off" value="{{ auth()->user()->username }}::delete-permission::{{ $permission->slug }}">
+                            </div>
+                            <div class="flex align-center" style="margin-top: 12px">
+                                <div id="delete-permission-button" class="typical-button-style red-bs red-bs-disabled align-center">
+                                    <div class="relative size14 mr4">
+                                        <svg class="size12 icon-above-spinner" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M300,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H300a12,12,0,0,0-12,12V404A12,12,0,0,0,300,416ZM464,80H381.59l-34-56.7A48,48,0,0,0,306.41,0H205.59a48,48,0,0,0-41.16,23.3l-34,56.7H48A16,16,0,0,0,32,96v16a16,16,0,0,0,16,16H64V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48h0V128h16a16,16,0,0,0,16-16V96A16,16,0,0,0,464,80ZM203.84,50.91A6,6,0,0,1,209,48h94a6,6,0,0,1,5.15,2.91L325.61,80H186.39ZM400,464H112V128H400ZM188,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H188a12,12,0,0,0-12,12V404A12,12,0,0,0,188,416Z"/></svg>
+                                        <svg class="spinner size14 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
+                                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                            <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                        </svg>
+                                    </div>
+                                    <span class="bold">Delete permission</span>
                                 </div>
                             </div>
                         </div>
@@ -628,6 +723,55 @@
                                 <p class="fs12 no-margin gray">This permission is not attached to any user for the moment.</p>
                             </div>
                             @endif
+                        </div>
+                    </div>
+                    <!-- roles that this permission attached to -->
+                    <div style="margin-top: 12px;">
+                        <div class="flex align-center mb4">
+                            <svg class="size15 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M256.24,200.3v3.32a30.82,30.82,0,0,0-.39,4.31,28.06,28.06,0,0,0-.5,3.18,32.86,32.86,0,0,0-1.24,4.14c-1.07,2.69-1.61,5.62-3.06,8.2-8.93,15.9-27.56,24.79-45.09,21.09-18.44-3.89-32.36-19.5-33.59-37.66-1.32-19.48,9.32-36.23,27.33-42.73,2.82-1,4.28-2.17,4.06-5.48a143.06,143.06,0,0,1,0-14.79c.1-2.7-.61-3.71-3.53-3.7q-70.3.12-140.61,0c-3,0-3.75,1.12-3.44,3.75a24.35,24.35,0,0,1,0,3c0,4.77-1.07,9.89.33,14.21s7.51,4.19,11.31,6.51C87.92,179.85,94,207.87,80.35,227.12,66.16,247.18,38.07,251.33,19.58,236,7,225.65,1.71,212.22,4.43,196.22c2.69-15.82,12.12-26.6,27.21-32.14,2.79-1,3.74-2.32,3.61-5.23-.24-5.42-.08-10.85-.07-16.28,0-14.93,8.56-23.47,23.61-23.52,18.75-.07,37.5-.11,56.24.06,3.39,0,4.62-.71,4.37-4.27a104.84,104.84,0,0,1,0-14.29c.22-3.28-1.14-4.45-4-5.48C96.38,88.29,86,70.25,88.5,48.87c2-16.92,18.8-32.94,36.25-34.57,20.93-2,38.93,9.59,45.07,28.89a41.39,41.39,0,0,1-25.35,51.88c-2.87,1-4.24,2.2-4,5.47a119.65,119.65,0,0,1,0,14.79c-.18,3.16.91,3.79,3.87,3.77,18.42-.14,36.84-.08,55.26-.07,17,0,25.08,8.07,25.09,25a28.75,28.75,0,0,1,0,3.94c-1.28,9.39.4,15.76,11,19.93,10.87,4.27,16.79,14.73,19.56,26.33.16.71-.08,1.6.48,2.15.07.44.15.88.23,1.32C256,198.59,256.11,199.45,256.24,200.3Z"></path></svg>
+                            <p class="no-margin bold dark fs16">Permission-Role attachement</p>
+                            <a href="{{ route('admin.rp.manage.roles') }}" class="bold fs12 no-underline dark-blue move-to-right">• Roles Management</a>
+                        </div>
+
+                        <div class="typical-section-style my8">
+                            <p class="no-margin fs13 dark">If you want to attach this permission to a specific role or detach it from its currently attached role, you have to do it from role management page.</p>
+                        </div>
+                        @if($prole)
+                        <p class="mt4 mb4 dark">"<strong class="blue">{{ $permission->title }}</strong>" permission is currently attached to "<strong class="blue">{{ $prole->title }}</strong>" role.</p>
+                        <div style="padding: 8px 16px;">
+                            <div class="align-center">
+                                <svg class="size13 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M256.24,200.3v3.32a30.82,30.82,0,0,0-.39,4.31,28.06,28.06,0,0,0-.5,3.18,32.86,32.86,0,0,0-1.24,4.14c-1.07,2.69-1.61,5.62-3.06,8.2-8.93,15.9-27.56,24.79-45.09,21.09-18.44-3.89-32.36-19.5-33.59-37.66-1.32-19.48,9.32-36.23,27.33-42.73,2.82-1,4.28-2.17,4.06-5.48a143.06,143.06,0,0,1,0-14.79c.1-2.7-.61-3.71-3.53-3.7q-70.3.12-140.61,0c-3,0-3.75,1.12-3.44,3.75a24.35,24.35,0,0,1,0,3c0,4.77-1.07,9.89.33,14.21s7.51,4.19,11.31,6.51C87.92,179.85,94,207.87,80.35,227.12,66.16,247.18,38.07,251.33,19.58,236,7,225.65,1.71,212.22,4.43,196.22c2.69-15.82,12.12-26.6,27.21-32.14,2.79-1,3.74-2.32,3.61-5.23-.24-5.42-.08-10.85-.07-16.28,0-14.93,8.56-23.47,23.61-23.52,18.75-.07,37.5-.11,56.24.06,3.39,0,4.62-.71,4.37-4.27a104.84,104.84,0,0,1,0-14.29c.22-3.28-1.14-4.45-4-5.48C96.38,88.29,86,70.25,88.5,48.87c2-16.92,18.8-32.94,36.25-34.57,20.93-2,38.93,9.59,45.07,28.89a41.39,41.39,0,0,1-25.35,51.88c-2.87,1-4.24,2.2-4,5.47a119.65,119.65,0,0,1,0,14.79c-.18,3.16.91,3.79,3.87,3.77,18.42-.14,36.84-.08,55.26-.07,17,0,25.08,8.07,25.09,25a28.75,28.75,0,0,1,0,3.94c-1.28,9.39.4,15.76,11,19.93,10.87,4.27,16.79,14.73,19.56,26.33.16.71-.08,1.6.48,2.15.07.44.15.88.23,1.32C256,198.59,256.11,199.45,256.24,200.3Z"></path></svg>
+                                <span class="dark">Role : "<strong>{{ $prole->title }}</strong>"</span>
+                            </div>
+                            <div class="flex mt8" style="margin-left: 7px;">
+                                <svg class="size14 mr8" fill="#202224" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 284.93 284.93"><polygon points="281.33 281.49 281.33 246.99 38.25 246.99 38.25 4.75 3.75 4.75 3.75 281.5 38.25 281.5 38.25 281.49 281.33 281.49"></polygon></svg>
+                                <div class="align-center mt2">
+                                    <svg class="size14 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M130.34,245.7q-40.65,0-81.31,0c-10.29,0-13.65-3.39-13.65-13.66q0-60.49,0-121c0-9.82,3.61-13.39,13.47-13.41,5,0,9.93-.19,14.87.07,3,.15,3.43-1,3.47-3.63C67.32,83.05,66.29,72,69,61c7.38-29.7,34.36-49.32,66.07-47.81,28.86,1.38,53.84,24.47,58.24,53.66,1.36,9.06.6,18.15.71,27.22,0,2.69.58,3.73,3.49,3.61,5.61-.24,11.24-.14,16.86,0,7.2.11,11.43,4.23,11.44,11.43q.09,62.47,0,125c0,7.7-4.13,11.62-12.18,11.63Q172,245.76,130.34,245.7Zm-.09-148c13,0,26.09-.07,39.13,0,2.67,0,3.83-.49,3.71-3.47-.24-5.94.09-11.9-.12-17.83-.79-22.48-16.7-39.91-38.29-42.1-20.86-2.12-40.25,11.75-45.25,32.56-2.11,8.77-.85,17.76-1.32,26.65-.19,3.69,1.22,4.26,4.49,4.21C105.15,97.54,117.7,97.65,130.25,97.65Zm.37,42.41a31.73,31.73,0,0,0-.29,63.46,32,32,0,0,0,32-31.67A31.61,31.61,0,0,0,130.62,140.06Z"></path></svg>
+                                    <span class="dark">Permission : "<strong>{{ $permission->title }}</strong>"</span>
+                                </div>
+                            </div>
+                        </div>
+                        @else
+                        <div class="align-center mt8" style="padding: 8px;">
+                            <svg class="size14 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                            <p class="no-margin fs12 italic gray">This permission is not attached to any role for the moment.</p>
+                        </div>
+                        @endif
+                    </div>
+                    <!-- delete permission -->
+                    <div>
+                        <div class="flex align-center mb4" style="margin-top: 14px">
+                            <svg class="size14 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M300,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H300a12,12,0,0,0-12,12V404A12,12,0,0,0,300,416ZM464,80H381.59l-34-56.7A48,48,0,0,0,306.41,0H205.59a48,48,0,0,0-41.16,23.3l-34,56.7H48A16,16,0,0,0,32,96v16a16,16,0,0,0,16,16H64V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48h0V128h16a16,16,0,0,0,16-16V96A16,16,0,0,0,464,80ZM203.84,50.91A6,6,0,0,1,209,48h94a6,6,0,0,1,5.15,2.91L325.61,80H186.39ZM400,464H112V128H400ZM188,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H188a12,12,0,0,0-12,12V404A12,12,0,0,0,188,416Z"/></svg>
+                            <p class="no-margin bold dark fs16">Delete permission</p>
+                        </div>
+                        <p class="my4 fs13 dark lh15">Be careful about deleting permissions; Read the following notice.</p>
+                        <div class="typical-section-style">
+                            <span class="block bold dark mb8">Important</span>
+                            <p class="no-margin fs13 dark">Once the permission gets deleted, it will be detached from all its associated roles and users, and any activity based on this permission will be blocked.</p>
+                        </div>
+                        <div class="typical-button-style red-bs width-max-content align-center mt8 open-delete-permission-dialog">
+                            <svg class="size12 mr4" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M300,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H300a12,12,0,0,0-12,12V404A12,12,0,0,0,300,416ZM464,80H381.59l-34-56.7A48,48,0,0,0,306.41,0H205.59a48,48,0,0,0-41.16,23.3l-34,56.7H48A16,16,0,0,0,32,96v16a16,16,0,0,0,16,16H64V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48h0V128h16a16,16,0,0,0,16-16V96A16,16,0,0,0,464,80ZM203.84,50.91A6,6,0,0,1,209,48h94a6,6,0,0,1,5.15,2.91L325.61,80H186.39ZM400,464H112V128H400ZM188,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H188a12,12,0,0,0-12,12V404A12,12,0,0,0,188,416Z"/></svg>
+                            <span class="fs11 bold">Delete permission</span>
                         </div>
                     </div>
                 </div>
