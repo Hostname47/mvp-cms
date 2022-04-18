@@ -152,11 +152,9 @@
             </div>
             <h2 class="dark no-margin fs16 mb4" style="margin-top: 12px">Permissions</h2>
             <p class="dark no-margin lh15 mb8">Each permission represents the ability to perform a specific action in the system. If a user has a specific permission, that means he can perform the action attached to that permission. The following list, shows all the available permissions and their parent role, so you can select a particular permission to manage.</p>
-            <div class="flex">
-                <div class="typical-section-style align-center">
-                    <svg class="size14 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
-                    <p class="fs13 light-gray no-margin">If a permission does not have a parent role, It will be listed in root permissions list in the bottom section.</p>
-                </div>
+            <div class="typical-section-style align-center">
+                <svg class="size14 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                <p class="fs13 light-gray no-margin">If a permission does not have a parent role, It will be listed in root permissions list in the bottom section.</p>
             </div>
             <h2 class="dark no-margin fs14" style="margin-top: 12px">Roles::Permissions Diagram</h2>
             <p class="dark no-margin lh15 mb8">The following diagram shows permissions by role, so that each role has a set of permissions attached to it.</p>
@@ -437,7 +435,7 @@
                     </div>
                 </div>
             </div>
-            <!-- detach permission from user(s) -->
+            <!-- detach permission from user(s) viewer -->
             <div id="detach-permission-from-users-viewer" class="global-viewer full-center none">
                 <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
                 <div class="viewer-box-style-1" style="width: 600px;">
@@ -522,7 +520,8 @@
                     </div>
                 </div>
             </div>
-            <div id="delete-permission-viewer" class="global-viewer full-center">
+            <!-- delete permission viewer -->
+            <div id="delete-permission-viewer" class="global-viewer full-center none">
                 <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
                 <div class="viewer-box-style-1" style="width: 600px;">
                     <div class="flex align-center space-between light-gray-border-bottom" style="padding: 14px;">

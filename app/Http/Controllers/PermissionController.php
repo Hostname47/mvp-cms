@@ -36,9 +36,11 @@ class PermissionController extends Controller
     public function delete(Request $request) {
         $permission_id = $request->validate(['permission_id'=>'required|exists:permissions,id'])['permission_id'];
         // Get role and delete it as well
-        Permission::find($permission_id)->delete();
+        $permission = Permission::find($permission_id);
+        $permission->delete();
 
-        Session::flash('message', 'Permission has been deleted successfully.');
+        Session::flash('message', 'Permission "' . $permission->title . '" has been deleted successfully.');
+        return route('admin.rp.manage.permissions');
     }
     public function attach_permissions_to_users(Request $request) {
         $data = $request->validate([
