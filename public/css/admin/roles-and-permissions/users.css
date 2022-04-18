@@ -58,3 +58,25 @@
 .open-revoke-role-dialog:hover {
     background-color: #d9d9d9;
 }
+
+.select-role-to-grant-button {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 15px;
+    height: max-content;
+    background-color: #f3f7f9;
+    border: 1px solid #c4ced2;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.select-role-to-grant-button:hover {
+    background-color: #dfe7eb;
+}
+
+.role-already-granted {
+    background-color: #f2f2f2 !important;
+    border-color: #d7d7d7 !important;
+    cursor: default !important;
+}

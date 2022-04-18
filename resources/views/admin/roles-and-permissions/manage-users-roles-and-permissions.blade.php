@@ -102,6 +102,60 @@
         @else
             <input type="hidden" id="user-id" value="{{ $user->id }}" autocomplete="off">
 
+            <!-- grant role to user -->
+            <div id="grant-role-to-user-viewer" class="global-viewer full-center none">
+                <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
+                <div class="viewer-box-style-1" style="width: 600px;">
+                    <div class="flex align-center space-between light-gray-border-bottom" style="padding: 14px;">
+                        <div class="flex align-center">
+                            <svg class="size16 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M256.69,169.38a27,27,0,0,1-5.88,5.8q-34.91,27.48-69.75,55.06a14.94,14.94,0,0,1-9.89,3.47c-35.2-.18-69.89-4.6-104.24-12.07-2.74-.6-3.6-1.72-3.59-4.61q.21-38.29,0-76.58c0-2.65.72-4.14,3.09-5.4,11.29-6,23-7.36,34.58-1.79,14.76,7.07,30,11.26,46.44,11.65,13.83.32,25.22,12,27.06,25.75.44,3.24-.64,3.76-3.6,3.73-17.78-.13-35.57-.07-53.36-.06-6.18,0-9.58,2.68-9.56,7.43s3.41,7.38,9.61,7.38c16.8,0,33.6-.15,50.39.07a41,41,0,0,0,28.06-10.14c6.9-5.86,13.95-11.55,21.05-17.16s15-8.07,24-6.61c6.41,1,11.74,3.82,15.61,9.14ZM94.61,40.87c-6.3.1-8.86,2.69-8.93,9.09,0,3.13-.2,6.27,0,9.38.22,2.92-.49,4.19-3.7,3.89a88,88,0,0,0-9.88,0C66,63.31,63.6,65.73,63.44,72c-.09,3.29,0,6.59,0,9.88,0,9,2,11,11.15,11,19.94,0,39.87.1,59.8-.07,3.9,0,5.94.79,7.55,4.82,9.06,22.68,31.87,35.3,56,31.43,23-3.68,41.3-23.08,43.06-45.69,2-25.31-12.1-47-35.48-54.7-22.74-7.47-47.27,1.72-60.1,22.15-2.54,4-2.47,10.5-7.18,12s-10.11.34-15.21.34c-7.69,0-7.69,0-7.69-7.68,0-14-.62-14.61-14.79-14.61C98.57,40.87,96.59,40.84,94.61,40.87Zm72.66,37a22.2,22.2,0,1,1,22.27,22.29A22.18,22.18,0,0,1,167.27,77.88ZM48.69,149c.05-3.29-.57-4.55-4.22-4.46-10.52.26-21,.07-31.58.1-6.68,0-9.25,2.58-9.26,9.24q0,35.28,0,70.58c0,6.59,2.63,9.12,9.36,9.14q12.82.06,25.66,0c7.55,0,9.93-2.39,10-10.08,0-12.34,0-24.68,0-37C48.62,174,48.51,161.53,48.69,149ZM182.17,78.39a7.31,7.31,0,1,0,7.08-7.84A7.33,7.33,0,0,0,182.17,78.39Z"/></svg>
+                            <span class="fs20 bold dark">Grant role to "{{ $user->username }}"</span>
+                        </div>
+                        <div class="pointer fs20 close-global-viewer unselectable">✖</div>
+                    </div>
+                    <div class="full-center relative">
+                        <div class="flex full-dimensions y-auto-overflow" style="padding: 14px; min-height: 200px; max-height: 450px">
+                            <div class="global-viewer-content-box height-max-content none">
+                                
+                            </div>
+                            <div class="role-selection-box flex flex-column full-width none" style='min-height: 200px'>
+                                <h3 class="no-margin mb4 dark">Select role</h3>
+                                <p class="no-margin fs13">Select from the following list the role you want to attach to "<span class="bold blue">{{ $user->username }}</span>"</p>
+                                <div class="flex align-center" style="flex: 1">
+                                    <div class="flex flex-wrap space-around full-width">
+                                        @foreach($roles as $role)
+                                            @php $hasrole = $user->has_role($role->slug); @endphp
+                                            <div class="select-role-to-grant-button @if($hasrole) role-already-granted @endif">
+                                                <div>
+                                                    @if(!$hasrole)    
+                                                    <span class="fs11 italic">select :</span>
+                                                    @endif
+                                                    <span class="fs12 bold text-center unselectable" style="max-width: 60px;">{{ $role->title }}</span>
+                                                    <input type="hidden" class="role-id" value="{{ $role->id }}" autocomplete="off">
+                                                </div>
+                                                @if($hasrole)
+                                                <span class="block italic text-center gray fs11">(has already)</span>
+                                                @endif
+                                            </div>
+                                            @if(!$loop->last)
+                                            <div class="simple-line-separator" style="width: 30px; align-self: center;"></div>
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="loading-box flex flex-column align-center absolute" style="margin-top: -20px">
+                            <svg class="spinner size24 black" fill="none" viewBox="0 0 16 16">
+                                <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                            </svg>
+                            <span class="fs12 bold gray mt8 loading-text">opening "<span class="role-name">admin</span>" role granting viewer..</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- revoke role from a user viewer -->
             <div id="revoke-role-from-users-viewer" class="global-viewer full-center none">
                 <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
