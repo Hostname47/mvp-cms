@@ -21,3 +21,21 @@
     flex-direction: column;
     gap: 4px;
 }
+
+.user-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: rgb(202, 209, 212);
+}
+
+.user-informations-part {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.main-part {
+    flex: 1;
+    margin-left: 20px;
+}
