@@ -5,6 +5,8 @@
     border-radius: 0 0 4px 4px;
     position: absolute;
     top: calc(100% - 1px);
+    overflow-y: auto;
+    max-height: 270px;
 }
 
 .search-user {

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\{Post};
+use App\Models\{Post,User};
 use Carbon\Carbon;
 
 class AdminSearchController extends Controller
@@ -40,6 +40,40 @@ class AdminSearchController extends Controller
 
         return [
             'posts'=>$result,
+            'hasmore'=>$hasmore,
+        ];
+    }
+
+    public function users_search(Request $request) {
+        $data = $request->validate([
+            'k'=>'required|max:2000',
+            'skip'=>'sometimes|numeric',
+            'take'=>'sometimes|numeric',
+        ]);
+        
+        $query = $data['k'];
+        $skip = isset($data['skip']) ? $data['skip'] : 0;
+        $take = isset($data['take']) ? $data['take'] : 10;
+
+        $result = User::withoutGlobalScopes()
+            ->where('username', 'LIKE', "%$query%")
+            ->orderBy('username', 'asc')
+            ->take($take+1)->skip($skip)->get();
+
+        $hasmore = $result->count() > $take;
+        $result = $result->take($take)->map(function($user) {
+            return [
+                'id'=>$user->id,
+                'fullname'=>$user->fullname,
+                'username'=>$user->username,
+                'avatar'=>$user->avatar(36),
+                'role'=>($hr = $user->high_role()) ? $hr->title : null,
+                'rp_management_link'=>route('admin.rp.manage.users', ['user'=>$user->username])
+            ];
+        });
+
+        return [
+            'users'=>$result,
             'hasmore'=>$hasmore,
         ];
     }

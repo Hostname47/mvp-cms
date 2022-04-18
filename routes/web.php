@@ -69,6 +69,9 @@ Route::post('/admin/posts/trash', [PostController::class, 'delete']);
 Route::post('/admin/posts/untrash', [PostController::class, 'restore']);
 Route::delete('/admin/posts', [PostController::class, 'destroy']);
 
+Route::get('/admin/users/search', [AdminSearchController::class, 'users_search']);
+Route::get('/admin/users/search/fetchmore', [AdminSearchController::class, 'users_search_fetchmore']);
+
 Route::get('/admin/tags', [TagController::class, 'manage'])->name('admin.tags.management');
 Route::post('/admin/tags', [TagController::class, 'store']);
 Route::get('/admin/tags/data', [TagController::class, 'data']);

@@ -57,7 +57,7 @@
                     </div>
                 </div>
                 <div class="relative">
-                    <div id="users-search-result-box" class="full-width scrolly none">
+                    <div id="users-search-result-box" class="full-width none">
                         <input type="hidden" id="k" autocomplete="off">
                         <div class="results-container none">
                             
