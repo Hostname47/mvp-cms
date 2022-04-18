@@ -438,7 +438,7 @@
                 </div>
             </div>
             <!-- detach permission from user(s) -->
-            <div id="detach-permission-from-users-viewer" class="global-viewer full-center">
+            <div id="detach-permission-from-users-viewer" class="global-viewer full-center none">
                 <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
                 <div class="viewer-box-style-1" style="width: 600px;">
                     <div class="flex align-center space-between light-gray-border-bottom" style="padding: 14px;">
@@ -449,7 +449,6 @@
                         <div class="pointer fs20 close-global-viewer unselectable">✖</div>
                     </div>
                     <div class="viewer-scrollable-box scrolly" style="padding: 14px; max-height: 430px">
-                        <input type="hidden" id="at-least-one-selected-user-to-detach-permission-from-message" value="You need to select at least one user to detach the permission from" autocomplete="off">
                         <h3 class="fs15 no-margin mb4 dark">Detach "<span class="blue">{{ $permission->title }}</span>" permission from user(s)</h3>
                         <div class="typical-section-style fs13 dark mb8">
                             <p class="no-margin">Here you can detach "<strong>{{ $permission->title }}</strong>" permission from members who already have this permission. Before proceding this process, consider the following points</p>
@@ -483,7 +482,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <input type="checkbox" id="{{ $user->id }}" class="selected-user" autocomplete="off">
+                                    <input type="checkbox" id="{{ $user->id }}" class="detach-permission-input" value="{{ $user->id }}" autocomplete="off">
                                     <span class="bold blue fs11 mt4">{{ $user->username }}</span>
                                     @if($hr = $user->high_role())
                                     <span class="bold dark fs10">{{ $hr->title }}</span>
@@ -599,7 +598,7 @@
                         <div class="align-center mb4">
                             <svg class="size15 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><path d="M39.46,17.57a2.76,2.76,0,0,1-.11-.7v0c0-.12,0-.23,0-.35C37.5,9.91,33.86,4.78,27.19,2.22A19.23,19.23,0,1,0,14,38.35c.63.22,1.38.21,2,.49l5,.39c.26,0,.51,0,.78,0l.49,0,.17,0A4.16,4.16,0,0,1,23.6,39c.11,0,.21,0,.32,0a10.41,10.41,0,0,1,1.53-.24c6.86-2.22,11.31-6.94,13.7-13.8a4,4,0,0,1,.16-1.09c.06-1.81.14-4.08.21-5.89C39.49,17.87,39.48,17.72,39.46,17.57Zm-20,18.79A16.2,16.2,0,1,1,36.53,20.14,16.34,16.34,0,0,1,19.42,36.36Zm.85-14.83a7.05,7.05,0,0,1-7.18-7.19A7.21,7.21,0,0,1,20.4,7.19a7.32,7.32,0,0,1,7.08,7.12A7.18,7.18,0,0,1,20.27,21.53Zm3.9-8.69a4.11,4.11,0,0,0-2.44-2.37,4.19,4.19,0,0,0-5.63,3.95,4,4,0,0,0,4.18,4.09A4.14,4.14,0,0,0,24.17,12.84ZM21.1,24.18a10.65,10.65,0,0,1,8.35,3.49c.64.68,1.24,1.47.48,2.36s-1.67.52-2.56-.16c-4.84-3.68-9-3.7-13.73-.06-.87.68-1.72,1.23-2.58.27s-.1-1.83.57-2.58C13.59,25.3,16.68,24.16,21.1,24.18Z"></path></svg>
                             <p class="no-margin bold dark fs18">Permission members</p>
-                            <div class="typical-button-style red-bs align-center move-to-right open-revoke-permission-dialog" style="padding: 5px 10px;">
+                            <div class="typical-button-style red-bs align-center move-to-right open-detach-permission-dialog" style="padding: 6px 10px;">
                                 <svg class="size12 mr4" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M167.69,256.92c-4.4-51.22,37.26-92.87,89-89,0,28.5-.05,57,.09,85.51,0,3-.6,3.55-3.55,3.54C224.71,256.86,196.2,256.92,167.69,256.92ZM19.86,3.86c-16.27,0-16.31.05-16.31,16.07q0,94.91,0,189.79c0,7.15,2.26,9.84,8.61,9.85,38.23.05,76.47,0,114.7.08,2.56,0,3.43-.63,3.3-3.27a77.64,77.64,0,0,1,1.45-19.65c8.29-39.74,41.06-66.4,81.87-66.2,5.11,0,6-1.32,6-6.12-.22-36.58-.11-73.15-.12-109.73,0-8.73-2.06-10.81-10.65-10.81H19.86Zm49.8,76.56c-4.07-4.07-4-4.72.84-9.54s5.56-5,9.55-1C90.24,80,100.39,90.26,111.43,101.34c0-5.58,0-10,0-14.31,0-3.5,1.63-5.17,5.14-5,1.64,0,3.29,0,4.94,0,3.26-.07,4.84,1.45,4.82,4.76,0,10.7.07,21.4-.06,32.1-.05,5-2.7,7.64-7.66,7.71-10.7.15-21.41,0-32.11.07-3.27,0-4.87-1.54-4.8-4.82,0-1.48.07-3,0-4.44-.24-3.94,1.48-5.8,5.52-5.66,4.21.14,8.44,0,13.87,0C89.94,100.65,79.78,90.55,69.66,80.42Z"/></svg>
                                 <span class="bold fs12">Detach permission from members</span>
                             </div>

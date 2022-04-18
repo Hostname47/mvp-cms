@@ -547,3 +547,96 @@ $('#attach-permission-button').on('click', function() {
 		}
 	});
 });
+
+/** revoke permission from users */
+$('.open-detach-permission-dialog').on('click', function() {
+	$('#detach-permission-from-users-viewer').removeClass('none');
+    disable_page_scroll();
+});
+
+$('#detach-permission-from-users-confirm-input').on('input', function() {
+    let confirmation_input = $(this);
+    let confirmation_value = $('#detach-permission-from-users-confirm-value').val();
+	let detachbutton = $('#detach-permission-from-users-button');
+    
+    revoke_permission_from_users_confirmed = false;
+    if(confirmation_input.val() == confirmation_value) {
+		// Check if at least one member selected
+		if(!$('.detach-permission-input:checked').length) {
+			print_top_message('You need to select at least one user to detach the permission from', 'warning');
+			disable_revoke_permission_from_users_button();
+
+			return;
+		}
+        detachbutton.removeClass('red-bs-disabled');
+        revoke_permission_from_users_confirmed = true;
+    } else
+		disable_revoke_permission_from_users_button();
+});
+
+function disable_revoke_permission_from_users_button() {
+	let confirmation_input = $('#detach-permission-from-users-confirm-input');
+	let confirmation_value = $('#detach-permission-from-users-confirm-value').val();
+	if(confirmation_input.val() == confirmation_value) {
+		confirmation_input.val(confirmation_input.val() + ' - x');
+        print_top_message('You need to select at least one user to detach the permission from', 'warning');
+    }
+
+	let button = $('#detach-permission-from-users-button');
+	button.addClass('red-bs-disabled');
+	revoke_permission_from_users_confirmed = false;
+}
+
+$('.detach-permission-input').on('change', function() {
+	if(!$('.detach-permission-input:checked').length)
+        disable_revoke_permission_from_users_button();
+});
+
+let revoke_permission_from_users_confirmed = false;
+let revoke_permission_from_users_lock = true;
+$('#detach-permission-from-users-button').on('click', function() {
+	if(!revoke_permission_from_users_lock || !revoke_permission_from_users_confirmed) return;
+	revoke_permission_from_users_lock = false;
+
+	let button = $(this);
+	let buttonicon = button.find('.icon-above-spinner');
+	let spinner = button.find('.spinner');
+
+	let selected_members = [];
+	$('.detach-permission-input:checked').each(function() { selected_members.push($(this).val()); });
+
+	let data = {
+		permissions: [$('#permission-id').val()],
+		users: selected_members,
+	};
+
+	button.addClass('red-bs-disabled');
+	spinner.addClass('inf-rotate');
+	buttonicon.addClass('none');
+	spinner.removeClass('opacity0');
+
+	$.ajax({
+		type: 'post',
+		url: '/admin/users/detach-permissions',
+		data: data,
+		success: function(response) {
+			location.reload();
+		},
+		error: function(response) {
+			spinner.addClass('opacity0');
+            spinner.removeClass('inf-rotate');
+            buttonicon.removeClass('none');
+            button.removeClass('red-bs-disabled');
+
+            let errorObject = JSON.parse(response.responseText);
+			let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+			if(errorObject.errors) {
+				let errors = errorObject.errors;
+				error = errors[Object.keys(errors)[0]][0];
+			}
+			print_top_message(error, 'error');
+
+			revoke_permission_from_users_lock = true;
+		},
+	});
+});
