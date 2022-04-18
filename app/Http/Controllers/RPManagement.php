@@ -217,11 +217,15 @@ class RPManagement extends Controller
      */
     public function manage_users(Request $request) {
         $user = null;
+        $roles = collect([]);
+
         if($request->has('user')) {
             $user = User::withoutGlobalScopes()->where('username', $request->get('user'))->first();
+            $roles = Role::orderBy('priority')->get();
         }
 
         return view('admin.roles-and-permissions.manage-users-roles-and-permissions')
-            ->with(compact('user'));
+            ->with(compact('user'))
+            ->with(compact('roles'));
     }
 }

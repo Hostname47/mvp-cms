@@ -7,6 +7,7 @@
 @endpush
 
 @push('scripts')
+    <script src="{{ asset('js/admin/roles-and-permissions/roles.js') }}" defer></script>
     <script src="{{ asset('js/admin/roles-and-permissions/users.js') }}" defer></script>
 @endpush
 
@@ -100,6 +101,30 @@
         </div>
         @else
             <input type="hidden" id="user-id" value="{{ $user->id }}" autocomplete="off">
+
+            <!-- revoke role from a user viewer -->
+            <div id="revoke-role-from-users-viewer" class="global-viewer full-center none">
+                <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
+                <div class="viewer-box-style-1" style="width: 600px;">
+                    <div class="flex align-center space-between light-gray-border-bottom" style="padding: 14px;">
+                        <div class="flex align-center">
+                            <svg class="size16 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M2.19,144V114.32c2.06-1.67,1.35-4.2,1.78-6.3Q19.81,30.91,94.83,7.28c6.61-2.07,13.5-3.26,20.26-4.86h26.73c1.44,1.93,3.6.92,5.39,1.2C215,14.2,261.83,74.5,254.91,142.49c-6.25,61.48-57.27,110-119,113.3A127.13,127.13,0,0,1,4.9,155.18C4.09,151.45,4.42,147.42,2.19,144Zm126.75-30.7c-19.8,0-39.6.08-59.4-.08-3.24,0-4.14.82-4.05,4,.24,8.08.21,16.17,0,24.25-.07,2.83.77,3.53,3.55,3.53q59.89-.14,119.8,0c2.8,0,3.6-.74,3.53-3.54-.18-8.08-.23-16.17,0-24.25.1-3.27-.85-4.06-4.06-4C168.55,113.4,148.75,113.33,128.94,113.33Z"/></svg>
+                            <span class="fs20 bold dark">Revoke role from user</span>
+                        </div>
+                        <div class="pointer fs20 close-global-viewer unselectable">✖</div>
+                    </div>
+                    <div class="full-center relative">
+                        <div class="global-viewer-content-box full-dimensions y-auto-overflow" style="padding: 14px; min-height: 200px; max-height: 450px">
+
+                        </div>
+                        <svg class="loading-viewer-spinner size32 absolute black" fill="none" viewBox="0 0 16 16">
+                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                            <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
             <div class="flex">
                 <div class="user-informations-part">
                     <img src="{{ $user->avatar(400) }}" class="user-avatar pointer open-image-on-image-viewer" alt="">
@@ -114,29 +139,31 @@
                         </div>
                         <div class="align-center">
                             <h4 class="fs14 dark my8 mx8">• Roles</h4>
-                            <div class="align-center">
-                                <div class="typical-button-style green-bs align-center open-grant-role-to-user-dialog" style="padding: 6px 10px">
-                                    <svg class="size14 mr4" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M256.69,169.38a27,27,0,0,1-5.88,5.8q-34.91,27.48-69.75,55.06a14.94,14.94,0,0,1-9.89,3.47c-35.2-.18-69.89-4.6-104.24-12.07-2.74-.6-3.6-1.72-3.59-4.61q.21-38.29,0-76.58c0-2.65.72-4.14,3.09-5.4,11.29-6,23-7.36,34.58-1.79,14.76,7.07,30,11.26,46.44,11.65,13.83.32,25.22,12,27.06,25.75.44,3.24-.64,3.76-3.6,3.73-17.78-.13-35.57-.07-53.36-.06-6.18,0-9.58,2.68-9.56,7.43s3.41,7.38,9.61,7.38c16.8,0,33.6-.15,50.39.07a41,41,0,0,0,28.06-10.14c6.9-5.86,13.95-11.55,21.05-17.16s15-8.07,24-6.61c6.41,1,11.74,3.82,15.61,9.14ZM94.61,40.87c-6.3.1-8.86,2.69-8.93,9.09,0,3.13-.2,6.27,0,9.38.22,2.92-.49,4.19-3.7,3.89a88,88,0,0,0-9.88,0C66,63.31,63.6,65.73,63.44,72c-.09,3.29,0,6.59,0,9.88,0,9,2,11,11.15,11,19.94,0,39.87.1,59.8-.07,3.9,0,5.94.79,7.55,4.82,9.06,22.68,31.87,35.3,56,31.43,23-3.68,41.3-23.08,43.06-45.69,2-25.31-12.1-47-35.48-54.7-22.74-7.47-47.27,1.72-60.1,22.15-2.54,4-2.47,10.5-7.18,12s-10.11.34-15.21.34c-7.69,0-7.69,0-7.69-7.68,0-14-.62-14.61-14.79-14.61C98.57,40.87,96.59,40.84,94.61,40.87Zm72.66,37a22.2,22.2,0,1,1,22.27,22.29A22.18,22.18,0,0,1,167.27,77.88ZM48.69,149c.05-3.29-.57-4.55-4.22-4.46-10.52.26-21,.07-31.58.1-6.68,0-9.25,2.58-9.26,9.24q0,35.28,0,70.58c0,6.59,2.63,9.12,9.36,9.14q12.82.06,25.66,0c7.55,0,9.93-2.39,10-10.08,0-12.34,0-24.68,0-37C48.62,174,48.51,161.53,48.69,149ZM182.17,78.39a7.31,7.31,0,1,0,7.08-7.84A7.33,7.33,0,0,0,182.17,78.39Z"/></svg>
-                                    <span class="fs11 bold">grant role</span>
-                                </div>
-                                <span class="fs10 dark mx8">•</span>
-                                <div class="typical-button-style red-bs align-center open-revoke-role-from-user-dialog" style="padding: 6px 10px">
-                                    <svg class="size14 mr4" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M167.69,256.92c-4.4-51.22,37.26-92.87,89-89,0,28.5-.05,57,.09,85.51,0,3-.6,3.55-3.55,3.54C224.71,256.86,196.2,256.92,167.69,256.92ZM19.86,3.86c-16.27,0-16.31.05-16.31,16.07q0,94.91,0,189.79c0,7.15,2.26,9.84,8.61,9.85,38.23.05,76.47,0,114.7.08,2.56,0,3.43-.63,3.3-3.27a77.64,77.64,0,0,1,1.45-19.65c8.29-39.74,41.06-66.4,81.87-66.2,5.11,0,6-1.32,6-6.12-.22-36.58-.11-73.15-.12-109.73,0-8.73-2.06-10.81-10.65-10.81H19.86Zm49.8,76.56c-4.07-4.07-4-4.72.84-9.54s5.56-5,9.55-1C90.24,80,100.39,90.26,111.43,101.34c0-5.58,0-10,0-14.31,0-3.5,1.63-5.17,5.14-5,1.64,0,3.29,0,4.94,0,3.26-.07,4.84,1.45,4.82,4.76,0,10.7.07,21.4-.06,32.1-.05,5-2.7,7.64-7.66,7.71-10.7.15-21.41,0-32.11.07-3.27,0-4.87-1.54-4.8-4.82,0-1.48.07-3,0-4.44-.24-3.94,1.48-5.8,5.52-5.66,4.21.14,8.44,0,13.87,0C89.94,100.65,79.78,90.55,69.66,80.42Z"></path></svg>
-                                    <span class="bold fs11">Revoke role</span>
-                                </div>
+                            <div class="typical-button-style green-bs align-center open-grant-role-to-user-dialog" style="padding: 6px 10px">
+                                <svg class="size14 mr4" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M256.69,169.38a27,27,0,0,1-5.88,5.8q-34.91,27.48-69.75,55.06a14.94,14.94,0,0,1-9.89,3.47c-35.2-.18-69.89-4.6-104.24-12.07-2.74-.6-3.6-1.72-3.59-4.61q.21-38.29,0-76.58c0-2.65.72-4.14,3.09-5.4,11.29-6,23-7.36,34.58-1.79,14.76,7.07,30,11.26,46.44,11.65,13.83.32,25.22,12,27.06,25.75.44,3.24-.64,3.76-3.6,3.73-17.78-.13-35.57-.07-53.36-.06-6.18,0-9.58,2.68-9.56,7.43s3.41,7.38,9.61,7.38c16.8,0,33.6-.15,50.39.07a41,41,0,0,0,28.06-10.14c6.9-5.86,13.95-11.55,21.05-17.16s15-8.07,24-6.61c6.41,1,11.74,3.82,15.61,9.14ZM94.61,40.87c-6.3.1-8.86,2.69-8.93,9.09,0,3.13-.2,6.27,0,9.38.22,2.92-.49,4.19-3.7,3.89a88,88,0,0,0-9.88,0C66,63.31,63.6,65.73,63.44,72c-.09,3.29,0,6.59,0,9.88,0,9,2,11,11.15,11,19.94,0,39.87.1,59.8-.07,3.9,0,5.94.79,7.55,4.82,9.06,22.68,31.87,35.3,56,31.43,23-3.68,41.3-23.08,43.06-45.69,2-25.31-12.1-47-35.48-54.7-22.74-7.47-47.27,1.72-60.1,22.15-2.54,4-2.47,10.5-7.18,12s-10.11.34-15.21.34c-7.69,0-7.69,0-7.69-7.68,0-14-.62-14.61-14.79-14.61C98.57,40.87,96.59,40.84,94.61,40.87Zm72.66,37a22.2,22.2,0,1,1,22.27,22.29A22.18,22.18,0,0,1,167.27,77.88ZM48.69,149c.05-3.29-.57-4.55-4.22-4.46-10.52.26-21,.07-31.58.1-6.68,0-9.25,2.58-9.26,9.24q0,35.28,0,70.58c0,6.59,2.63,9.12,9.36,9.14q12.82.06,25.66,0c7.55,0,9.93-2.39,10-10.08,0-12.34,0-24.68,0-37C48.62,174,48.51,161.53,48.69,149ZM182.17,78.39a7.31,7.31,0,1,0,7.08-7.84A7.33,7.33,0,0,0,182.17,78.39Z"/></svg>
+                                <span class="fs11 bold">grant role</span>
                             </div>
                         </div>
-                        <div class="ml8 align-center my8" style="gap: 6px;">
-                            @if($user->roles->count())
+                        @if($user->roles->count())
+                            <div class="align-center" style="gap: 18px; margin: 10px 0 10px 10px">
                                 @foreach($user->roles->sortBy('priority') as $role)
-                                    <div class="typical-button-style white-bs">
-                                        <span class="fs12 bold">{{ $role->title }}</span>
+                                    <div class="relative">
+                                        <div class="typical-button-style white-bs" style="background-color: white !important;">
+                                            <span class="fs12 bold">{{ $role->title }}</span>
+                                        </div>
+                                        <div class="open-revoke-role-dialog">
+                                            <span class="unselectable">✖</span>
+                                            <input type="hidden" class="user-id" value="{{ $user->id }}" autocomplete="off">
+                                            <input type="hidden" class="role-id" value="{{ $role->id }}" autocomplete="off">
+                                        </div>
                                     </div>
                                 @endforeach
-                            @else
+                            </div>
+                        @else
+                            <div class="typical-section-style my8">
                                 <span class="italic light-gray fs13">normal user</span>
-                            @endif
-                        </div>
+                            </div>
+                        @endif
                     </div>
                     <div>
                         <div class="align-center">
@@ -151,25 +178,28 @@
                                 <span class="fs11 bold">direct revoke</span>
                             </div>
                         </div>
+                        @if($user->permissions->count())
                         <div class="ml8 typical-section-style my8 y-auto-overflow" style="max-height: 200px;">
                             <div class="ml8 my8">
-                                @if($user->permissions->count())
-                                    @foreach($user->permissions->groupBy('scope') as $scope => $permissions)
-                                    <h4 class="fs13 blue no-margin">{{ $scope }}:</h4>
-                                    <div class="flex flex-wrap" style="gap: 6px; padding: 10px;">
-                                        @foreach($permissions as $permission)
-                                            <span class="bold fs11 dark">{{ $permission->title }}</span>
-                                            @if(!$loop->last)
-                                            <span class="fs10 dark mx4">•</span>
-                                            @endif
-                                        @endforeach
-                                    </div>
+                                @foreach($user->permissions->groupBy('scope') as $scope => $permissions)
+                                <h4 class="fs13 blue no-margin">{{ $scope }}:</h4>
+                                <div class="flex flex-wrap" style="gap: 6px; padding: 10px;">
+                                    @foreach($permissions as $permission)
+                                        <span class="bold fs11 dark">{{ $permission->title }}</span>
+                                        @if(!$loop->last)
+                                        <span class="fs10 dark mx4">•</span>
+                                        @endif
                                     @endforeach
-                                @else
-                                    <span class="italic light-gray fs13">This user does not have any attached permissions for the moment.</span>
-                                @endif
+                                </div>
+                                @endforeach
                             </div>
                         </div>
+                        @else
+                            <div class="typical-section-style my8 align-center">
+                                <svg class="size14 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                                <span class="italic light-gray fs13">This user does not have any attached permissions for the moment.</span>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>

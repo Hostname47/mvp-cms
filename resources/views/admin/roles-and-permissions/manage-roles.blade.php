@@ -711,6 +711,7 @@
                                 <div class="open-revoke-role-dialog">
                                     <span class="unselectable">✖</span>
                                     <input type="hidden" class="user-id" value="{{ $user->id }}" autocomplete="off">
+                                    <input type="hidden" class="role-id" value="{{ $role->id }}" autocomplete="off">
                                 </div>
                             </div>
                             <span class="bold dark-blue fs11 username">{{ $user->username }}</span>

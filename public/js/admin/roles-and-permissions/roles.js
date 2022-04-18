@@ -506,14 +506,15 @@ $('#grant-role-button').on('click', function() {
 
 /** revoke role from user */
 let last_user_to_revoke_role = null;
+let last_role_to_revoke = null;
 let open_revoke_dialog_lock = true;
 $('.open-revoke-role-dialog').on('click', function() {
 	let viewer = $('#revoke-role-from-users-viewer');
 	let button = $(this);
 	let user_id = button.find('.user-id').val();
-	let role_id = $('#role-id').val();
+	let role_id = button.find('.role-id').val();
 
-	if(user_id != last_user_to_revoke_role) {
+	if(user_id != last_user_to_revoke_role || role_id != last_role_to_revoke) {
 		if(!open_revoke_dialog_lock) return;
 		open_revoke_dialog_lock = false;
 
@@ -530,6 +531,7 @@ $('.open-revoke-role-dialog').on('click', function() {
 				handle_role_revoke_confirmation_input();
 				handle_role_revoke_button();
 				last_user_to_revoke_role = user_id;
+				last_role_to_revoke = role_id;
 			},
 			error: function(response) {
 				viewer.find('.close-global-viewer').trigger('click');
