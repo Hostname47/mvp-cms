@@ -118,7 +118,7 @@
                             <div class="global-viewer-content-box height-max-content none">
                                 
                             </div>
-                            <div class="role-selection-box flex flex-column full-width none" style='min-height: 200px'>
+                            <div class="role-selection-box flex flex-column full-width" style='min-height: 200px'>
                                 <h3 class="no-margin mb4 dark">Select role</h3>
                                 <p class="no-margin fs13">Select from the following list the role you want to attach to "<span class="bold blue">{{ $user->username }}</span>"</p>
                                 <div class="flex align-center" style="flex: 1">
@@ -132,6 +132,7 @@
                                                     @endif
                                                     <span class="fs12 bold text-center unselectable" style="max-width: 60px;">{{ $role->title }}</span>
                                                     <input type="hidden" class="role-id" value="{{ $role->id }}" autocomplete="off">
+                                                    <input type="hidden" class="user-id" value="{{ $user->id }}" autocomplete="off">
                                                 </div>
                                                 @if($hasrole)
                                                 <span class="block italic text-center gray fs11">(has already)</span>
@@ -145,7 +146,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="loading-box flex flex-column align-center absolute" style="margin-top: -20px">
+                        <div class="loading-box flex flex-column align-center absolute none" style="margin-top: -20px">
                             <svg class="spinner size24 black" fill="none" viewBox="0 0 16 16">
                                 <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
                                 <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>

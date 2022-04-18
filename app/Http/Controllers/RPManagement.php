@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\{Role,User,Permission,PermissionRole};
-use App\View\Components\Admin\Role\RevokeViewer;
+use App\View\Components\Admin\Role\{RevokeViewer,GrantViewer};
 
 class RPManagement extends Controller
 {
@@ -123,9 +123,21 @@ class RPManagement extends Controller
         $role = Role::find($data['role']);
         $user = User::withoutGlobalScopes()->find($data['user']);
         
-        $reviewviewer = (new RevokeViewer($role, $user));
-        $reviewviewer = $reviewviewer->render(get_object_vars($reviewviewer))->render();
-        return $reviewviewer;
+        $revokeviewer = (new RevokeViewer($role, $user));
+        $revokeviewer = $revokeviewer->render(get_object_vars($revokeviewer))->render();
+        return $revokeviewer;
+    }
+    public function get_role_grant_viewer(Request $request) {
+        $data = $request->validate([
+            'role'=>'required|exists:roles,id',
+            'user'=>'required|exists:users,id'
+        ]);
+        $role = Role::find($data['role']);
+        $user = User::withoutGlobalScopes()->find($data['user']);
+        
+        $grantviewer = (new GrantViewer($role, $user));
+        $grantviewer = $grantviewer->render(get_object_vars($grantviewer))->render();
+        return $grantviewer;
     }
 
     /** 

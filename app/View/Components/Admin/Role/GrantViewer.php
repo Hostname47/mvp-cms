@@ -7,13 +7,13 @@ use App\Models\{User,Role};
 
 class GrantViewer extends Component
 {
-    public $user;
     public $role;
+    public $user;
 
-    public function __construct(User $user, Role $role)
+    public function __construct(Role $role, User $user)
     {
-        $this->user = $user;
         $this->role = $role;
+        $this->user = $user;
     }
 
     /**

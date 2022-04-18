@@ -81,7 +81,7 @@
             </svg>
         </div>
         <span class="bold">Grant role</span>
-        <input type="hidden" class="rid" value="{{ $role->id }}" autocomplete="off">
-        <input type="hidden" class="uid" value="{{ $user->id }}" autocomplete="off">
+        <input type="hidden" class="role-id" value="{{ $role->id }}" autocomplete="off">
+        <input type="hidden" class="user-id" value="{{ $user->id }}" autocomplete="off">
     </div>
 </div>

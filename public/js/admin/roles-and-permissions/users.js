@@ -164,3 +164,135 @@ if(users_search_results_box.length) {
         }
     });
 }
+
+/** grant role to user */
+$('.open-grant-role-to-user-dialog').on('click', function() {
+	$('#grant-role-to-user-viewer').removeClass('none');
+    disable_page_scroll();
+});
+
+$('.select-role-to-grant-button').on('click', function() {
+	if($(this).hasClass('role-already-granted')) return;
+	let button = $(this);
+	let viewer = button;
+	while(!viewer.hasClass('global-viewer')) {
+		viewer = viewer.parent();
+	}
+	let role = button.find('.role-id').val();
+	let user = button.find('.user-id').val();
+
+	let loadingbox = viewer.find('.loading-box');
+	let selectionbox = viewer.find('.role-selection-box');
+	let contentbox = viewer.find('.global-viewer-content-box');
+
+	contentbox.html('');
+	selectionbox.addClass('none');
+
+	let spinner = loadingbox.find('.spinner');
+	loadingbox.find('.role-name').text(button.find('.role-name').val());
+	loadingbox.removeClass('none');
+	spinner.addClass('inf-rotate');
+	
+	$.ajax({
+		url: '/admin/roles/viewers/grant-viewer',
+		data: {
+			role: role,
+			user: user
+		},
+		success: function(response) {
+			contentbox.html(response);
+			loadingbox.addClass('none');
+			selectionbox.addClass('none');
+			contentbox.removeClass('none');
+
+			handle_back_to_role_grant_to_user_button(viewer);
+			handle_grant_role_to_user_confirmation();
+			handle_grant_role_to_user_button();
+		},
+		error: function(response) {
+			let errorObject = JSON.parse(response.responseText);
+			let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+			if(errorObject.errors) {
+				let errors = errorObject.errors;
+				error = errors[Object.keys(errors)[0]][0];
+			}
+			display_top_informer_message(error, 'error');
+
+			loadingbox.addClass('none');
+			selectionbox.removeClass('none');
+		},
+		complete: function() {
+			spinner.removeClass('inf-rotate');
+		}
+	})
+});
+
+function handle_back_to_role_grant_to_user_button(viewer) {
+	$('.back-to-role-grant-to-user-selection').on('click', function() {
+		viewer.find('.loading-box').addClass('none');
+		viewer.find('.role-selection-box').removeClass('none');
+		viewer.find('.global-viewer-content-box').addClass('none');
+	});
+}
+
+function handle_grant_role_to_user_confirmation() {
+	$('#grant-role-to-user-confirm-input').on('input', function() {
+		let confirmation_input = $(this);
+		let confirmation_value = $('#grant-role-to-user-confirm-value').val();
+		let button = $('#grant-role-to-user-button');
+		
+		if(confirmation_input.val() == confirmation_value) {
+			grant_role_to_user_confirmed = true;
+			button.removeClass('green-bs-disabled');
+		} else {
+			grant_role_to_user_confirmed = false;
+			button.addClass('green-bs-disabled');
+		}
+	});
+}
+
+let grant_role_to_user_confirmed = false;
+let grant_role_to_user_lock = true;
+function handle_grant_role_to_user_button() {
+	$('#grant-role-to-user-button').on('click', function() {
+		if(!grant_role_to_user_confirmed || !grant_role_to_user_lock) return;
+		grant_role_to_user_lock = false;
+
+		let button = $(this);
+		let buttonicon = button.find('.icon-above-spinner');
+		let spinner = button.find('.spinner');
+
+		button.addClass('green-bs-disabled');
+		spinner.addClass('inf-rotate');
+		buttonicon.addClass('none');
+		spinner.removeClass('opacity0');
+
+		$.ajax({
+			type: 'post',
+			url: '/admin/roles/grant-to-users',
+			data: {
+				role: button.find('.role-id').val(),
+				users: [button.find('.user-id').val()],
+			},
+			success: function(response) {
+				location.reload();
+			},
+			error: function(response) {
+				spinner.addClass('opacity0');
+				spinner.removeClass('inf-rotate');
+				buttonicon.removeClass('none');
+				button.removeClass('green-bs-disabled');
+
+				let errorObject = JSON.parse(response.responseText);
+				let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+				if(errorObject.errors) {
+					let errors = errorObject.errors;
+					error = errors[Object.keys(errors)[0]][0];
+				}
+				print_top_message(error, 'error');
+
+				grant_role_to_user_lock = true;
+			},
+		});
+	});
+}
