@@ -31,6 +31,7 @@ Route::post('/admin/users/detach-permissions', [PermissionController::class, 'de
 Route::get('/admin/roles-and-permissions/overview', [RPManagement::class, 'overview'])->name('admin.rp.overview');
 Route::get('/admin/roles-and-permissions/roles', [RPManagement::class, 'manage_roles'])->name('admin.rp.manage.roles');
 Route::get('/admin/roles-and-permissions/permissions', [RPManagement::class, 'manage_permissions'])->name('admin.rp.manage.permissions');
+Route::get('/admin/roles-and-permissions/users', [RPManagement::class, 'manage_users'])->name('admin.rp.manage.users');
 Route::get('/admin/roles/users/search', [RPManagement::class, 'role_users_search']);
 Route::get('/admin/permissions/users/search', [RPManagement::class, 'permission_users_search']);
 Route::get('/admin/roles/users/search/fetchmore', [RPManagement::class, 'fetch_more_role_users_search']);

@@ -211,4 +211,17 @@ class RPManagement extends Controller
             'hasmore'=>$hasmore
         ];
     }
+
+    /**
+     * --- User roles and permissions management
+     */
+    public function manage_users(Request $request) {
+        $user = null;
+        if($request->has('user')) {
+            $user = User::withoutGlobalScopes()->find($request->get('user'));
+        }
+
+        return view('admin.roles-and-permissions.manage-users-roles-and-permissions')
+            ->with(compact('user'));
+    }
 }

@@ -1,0 +1,21 @@
+#users-search-result-box {
+    padding: 12px 10px 10px 10px;
+    background-color: white;
+    border: 1px solid #bdbdbd;
+    border-radius: 0 0 4px 4px;
+    position: absolute;
+    top: calc(100% - 1px);
+}
+
+.search-user {
+    padding: 8px;
+    background-color: #ecf0f0;
+    border: 1px solid #c3ced0;
+    border-radius: 3px;
+}
+
+.results-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
