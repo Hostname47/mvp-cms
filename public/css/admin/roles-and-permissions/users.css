@@ -80,3 +80,30 @@
     border-color: #d7d7d7 !important;
     cursor: default !important;
 }
+
+.already-attached-permission-button-style {
+    font-size: 11px;
+    border-radius: 4px;
+    padding: 7px 12px;
+    background-color: #e6ffe5;
+    cursor: default;
+    text-decoration: none;
+    border: 1px solid #99bf98;
+    transition: all 0.2s ease;
+    font-weight: bold;
+    color: #0d460d;
+}
+
+.permission-button-style {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 11px;
+    border-radius: 4px;
+    padding: 4px 8px;
+    background-color: #f3f3f3;
+    border: 1px solid #ced5d8;
+    transition: all 0.2s ease;
+    font-weight: bold;
+    color: #121314;
+}

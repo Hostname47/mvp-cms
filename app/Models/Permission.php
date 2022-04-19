@@ -24,4 +24,8 @@ class Permission extends Model
     public function role() {
         return $this->roles()->first();
     }
+
+    public function already_attached_to_user($username) {
+        return (bool) $this->users()->where('username', $username)->count() > 0;
+    }
 }

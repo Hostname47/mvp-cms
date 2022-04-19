@@ -156,7 +156,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- revoke role from a user viewer -->
             <div id="revoke-role-from-users-viewer" class="global-viewer full-center none">
                 <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
@@ -176,6 +175,93 @@
                             <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
                             <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
                         </svg>
+                    </div>
+                </div>
+            </div>
+            <!-- direct-attach permissions to user viewer -->
+            <div id="attach-permissions-to-user-viewer" class="global-viewer full-center">
+                <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
+                <div class="viewer-box-style-1" style="width: 600px;">
+                    <div class="flex align-center space-between light-gray-border-bottom" style="padding: 14px;">
+                        <div class="flex align-center">
+                            <svg class="size16 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M147,2.42h18.91c1.35,2,3.59,1,5.36,1.5C195.88,10.2,212.71,25.18,220,49.5s1.76,46.27-15.55,64.88c-9,9.71-18.69,18.84-28.07,28.23q-24.8,24.81-49.61,49.62C117,202,105.42,206.8,91.67,204.94c-16.76-2.27-28.49-11.59-33.88-27.58S56.28,146.94,68,134.82c7.74-8,15.69-15.74,23.54-23.6q26.58-26.56,53.16-53.11c5.57-5.53,12.73-6.59,19.14-3.16,6.25,3.36,9.28,9.85,8,17.21-.7,4.17-3.3,7.1-6.15,10q-37.34,37.27-74.6,74.6c-4.71,4.73-5,10.11-1.08,14.06,3.72,3.73,9.14,3.82,13.33-.36,26.32-26.22,52.79-52.3,78.68-78.95,13-13.34,11.8-34.73-1.36-47.5a34,34,0,0,0-48,.15q-40.71,40.23-80.92,81c-18.81,19.13-21.72,49.17-7.67,72.05,20.19,32.87,65.31,38.12,93,10.62,30.73-30.5,61.25-61.21,91.88-91.81,11.22-11.22,23.46-8.73,29.38,6v8c-1.76,2.32-3.27,4.88-5.31,6.93-31.6,31.69-63,63.58-95,94.86-21.81,21.31-48.64,29.56-78.53,24.23-35.29-6.3-59.88-27-71.14-61.12s-4.36-65.49,20.47-91.53c26.76-28.07,54.65-55,82.14-82.42,8.27-8.24,18.31-13.47,29.58-16.47C142.77,3.76,145.25,4.28,147,2.42Z"/></svg>
+                            <span class="fs20 bold dark">Attach permissions to user</span>
+                        </div>
+                        <div class="pointer fs20 close-global-viewer unselectable">✖</div>
+                    </div>
+                    <div class="viewer-scrollable-box scrolly" style="padding: 14px; max-height: 430px">
+                        <input type="hidden" id="at-least-one-selected-permission-to-user-attach-message" value="You need to select at least one permission to attach to user" autocomplete="off">
+                        <h3 class="fs18 bold dark no-margin mb4">Attach permissions to "<span class="blue">{{ $user->username }}</span>" user</h3>
+                        <div class="typical-section-style fs13 dark mb8">
+                            <p class="no-margin">Here you can attach permissions directly to "<strong>{{ $user->username }}</strong>".</p>
+                            <p class="no-margin mt4">Once the selected permissions get attached to the user, he will be able to <strong>perform all actions</strong> allowed by the selected permissions.</p>
+                        </div>
+                        <div class="simple-line-separator my4"></div>
+                        <div style="margin-top: 14px;">
+                            <span class="block fs12 dark bold mb4">Attach permissions to :</span>
+                            <div class="typical-section-style width-max-content" style="padding: 6px">
+                                <div class="flex">
+                                    <img src="{{ $user->avatar(100) }}" class="size48 rounded" style="border: 1px solid #ddd;" alt="">
+                                    <div class="ml8">
+                                        <h3 class="no-margin">{{ $user->fullname }}</h3>
+                                        <span class="fs12 dark bold block">{{ $user->username }}</span>
+                                        @if($user_high_role)
+                                        <span class="fs11 blue bold block">{{ $user_high_role->title }}</span>
+                                        @else
+                                        <em class="fs11 gray block">normal user</em>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 14px">
+                            <div>
+                                <span class="block fs12 dark bold">Select permissions to attach :</span>
+                                <p class="fs13 gray no-margin mb4">Select at least one permission that you want to attach to this user</p>
+                                <div id="all-permissions-box" class="flex flex-wrap typical-section-style y-auto-overflow" style="max-height: 240px; gap: 4px;">
+                                    @foreach($spermissions->groupBy('scope') as $scope=>$permissions)
+                                        <span class="block bold blue fs11 mb4" style="flex-basis: 100%">{{ ucfirst($scope) }}</span>
+                                        @foreach($permissions as $permission)
+                                            @if($permission->already_attached_to_user($user->username))
+                                            <div class="already-attached-permission-button-style fs11" title="Permission already attached to '{{ $user->username }}'">
+                                                <span>{{ $permission->title }}</span>
+                                                <span class="block fs10 default-weight">(already atached)</span>
+                                            </div>
+                                            @else
+                                            <label for="permission-{{ $permission->id }}">
+                                                <div class="permission-button-style align-center height-max-content permission-to-attach-to-user">
+                                                    <input type="checkbox" class="size14 mr4" id="permission-{{ $permission->id }}" autocomplete="off">
+                                                    <span class="bold unselectable permission-name">{{ $permission->title }}</span>
+                                                    <input type="hidden" class="permission-id-to-attach" value="{{ $permission->id }}" autocomplete="off" >
+                                                </div>
+                                            </label>
+                                            @endif
+                                        @endforeach
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                        <div class="simple-line-separator mt8 mb4"></div>
+                        <div style="margin-top: 12px">
+                            <p class="no-margin mb2 fs15 bold dark">Confirmation</p>
+                            <p class="no-margin mb4 dark">Please type <strong>{{ auth()->user()->username }}::attach-permissions-to::{{ $user->username }}</strong> to confirm.</p>
+                            <div>
+                                <input type="text" autocomplete="off" class="full-width styled-input" id="attach-permissions-to-user-confirm-input" style="padding: 8px 10px" placeholder="attach permission(s) to user confirmation">
+                                <input type="hidden" id="attach-permissions-to-user-confirm-value" autocomplete="off" value="{{ auth()->user()->username }}::attach-permissions-to::{{ $user->username }}">
+                            </div>
+                            <div class="flex" style="margin-top: 12px">
+                                <div id="attach-permissions-to-user-button" class="typical-button-style green-bs green-bs-disabled align-center">
+                                    <div class="relative size14 mr4">
+                                        <svg class="size12 icon-above-spinner" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M147,2.42h18.91c1.35,2,3.59,1,5.36,1.5C195.88,10.2,212.71,25.18,220,49.5s1.76,46.27-15.55,64.88c-9,9.71-18.69,18.84-28.07,28.23q-24.8,24.81-49.61,49.62C117,202,105.42,206.8,91.67,204.94c-16.76-2.27-28.49-11.59-33.88-27.58S56.28,146.94,68,134.82c7.74-8,15.69-15.74,23.54-23.6q26.58-26.56,53.16-53.11c5.57-5.53,12.73-6.59,19.14-3.16,6.25,3.36,9.28,9.85,8,17.21-.7,4.17-3.3,7.1-6.15,10q-37.34,37.27-74.6,74.6c-4.71,4.73-5,10.11-1.08,14.06,3.72,3.73,9.14,3.82,13.33-.36,26.32-26.22,52.79-52.3,78.68-78.95,13-13.34,11.8-34.73-1.36-47.5a34,34,0,0,0-48,.15q-40.71,40.23-80.92,81c-18.81,19.13-21.72,49.17-7.67,72.05,20.19,32.87,65.31,38.12,93,10.62,30.73-30.5,61.25-61.21,91.88-91.81,11.22-11.22,23.46-8.73,29.38,6v8c-1.76,2.32-3.27,4.88-5.31,6.93-31.6,31.69-63,63.58-95,94.86-21.81,21.31-48.64,29.56-78.53,24.23-35.29-6.3-59.88-27-71.14-61.12s-4.36-65.49,20.47-91.53c26.76-28.07,54.65-55,82.14-82.42,8.27-8.24,18.31-13.47,29.58-16.47C142.77,3.76,145.25,4.28,147,2.42Z"/></svg>
+                                        <svg class="spinner size14 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
+                                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                            <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                        </svg>
+                                    </div>
+                                    <span class="bold">Attach permissions to user</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -296,3 +296,6 @@ function handle_grant_role_to_user_button() {
 		});
 	});
 }
+
+/** Direct-Attach permissions to user */
+

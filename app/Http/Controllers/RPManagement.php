@@ -229,15 +229,21 @@ class RPManagement extends Controller
      */
     public function manage_users(Request $request) {
         $user = null;
+        $user_high_role = null;
         $roles = collect([]);
+        $spermissions = collect([]);
 
         if($request->has('user')) {
             $user = User::withoutGlobalScopes()->where('username', $request->get('user'))->first();
+            $user_high_role = $user->high_role();
             $roles = Role::orderBy('priority')->get();
+            $spermissions = Permission::all();
         }
 
         return view('admin.roles-and-permissions.manage-users-roles-and-permissions')
             ->with(compact('user'))
-            ->with(compact('roles'));
+            ->with(compact('user_high_role'))
+            ->with(compact('roles'))
+            ->with(compact('spermissions'));
     }
 }
