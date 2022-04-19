@@ -364,4 +364,25 @@ class RoleTest extends TestCase
         $this->assertCount(0, $user0->refresh()->permissions);
         $this->assertCount(0, $user1->refresh()->permissions);
     }
+
+    /** @test */
+    public function update_roles_priority() {
+        $this->withoutExceptionHandling();
+        $admin = Role::create(['title'=>'Admin','slug'=>'admin','description'=>'admin description', 'priority'=>1]);
+        $moderator = Role::create(['title'=>'Moderator','slug'=>'moderator','description'=>'moderator description', 'priority'=>2]);
+        $author = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description', 'priority'=>3]);
+
+        $this->assertTrue($admin->priority == 1);
+        $this->assertTrue($moderator->priority == 2);
+        $this->assertTrue($author->priority == 3);
+
+        $this->patch('/admin/roles/priorities', [
+            'roles'=>[$admin->id, $moderator->id, $author->id],
+            'priorities'=>[3, 2, 1]
+        ]);
+
+        $this->assertTrue($admin->refresh()->priority == 3);
+        $this->assertTrue($moderator->refresh()->priority == 2);
+        $this->assertTrue($author->refresh()->priority == 1);
+    }
 }

@@ -21,6 +21,7 @@ Route::post('/admin/roles/attach-permissions', [RoleController::class, 'attach_p
 Route::post('/admin/roles/detach-permissions', [RoleController::class, 'detach_permissions']);
 Route::post('/admin/roles/grant-to-users', [RoleController::class, 'grant']);
 Route::post('/admin/roles/revoke-from-users', [RoleController::class, 'revoke']);
+Route::patch('/admin/roles/priorities', [RoleController::class, 'update_priorities']);
 // Permissions managemet
 Route::post('/admin/permissions', [PermissionController::class, 'store']);
 Route::patch('/admin/permissions', [PermissionController::class, 'update']);
@@ -83,7 +84,7 @@ Route::get('/login/{provider}', [OAuthController::class, 'redirectToProvider']);
 Route::get('/{provider}/callback', [OAuthController::class, 'handleProviderCallback']);
 
 Route::middleware('client.scopes')->group(function() {
-    Route::get('/{category:slug}/{post:slug}', [PostController::class, 'view'])->name('view.post');
     Route::get('/', [IndexController::class, 'index']);
     Route::get('/home', [IndexController::class, 'index'])->name('home');
+    Route::get('/{category:slug}/{post:slug}', [PostController::class, 'view'])->name('view.post');
 });

@@ -948,3 +948,5 @@ $('#delete-role-button').on('click', function() {
 		},
 	});
 });
+
+/** roles priorities */

@@ -138,6 +138,23 @@
                     <svg class="size10 flex mr8" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M156.22,3.31c3.07,2.55,4.08,5.71,4.06,9.78-.17,27.07,0,54.14-.18,81.21,0,3.57.69,4.66,4.49,4.63,27.24-.19,54.47-.11,81.71-.1,7.36,0,9.39,2,9.4,9.25q0,21.4,0,42.82c0,7-2.1,9.06-9.09,9.06-27.24,0-54.48.09-81.71-.09-3.85,0-4.83.95-4.8,4.81.17,27.07.1,54.14.09,81.21,0,7.65-1.94,9.59-9.56,9.6q-21.4,0-42.82,0c-6.62,0-8.75-2.19-8.75-8.91,0-27.4-.1-54.8.09-82.2,0-3.8-1.06-4.51-4.62-4.49-27.08.16-54.15,0-81.22.18-4.07,0-7.23-1-9.78-4.06V102.8c2.55-3.08,5.72-4.08,9.79-4.06,27.09.17,54.18,0,81.27.18,3.68,0,4.58-.87,4.55-4.56-.17-27.09,0-54.18-.18-81.27,0-4.06,1-7.23,4.06-9.78Z"></path></svg>
                     <span class="fs12 flex bold">create new role</span>
                 </div>
+                
+                <div class="flex align-center move-to-right">
+                    <div id="sort-roles-components-by-priority" class="typical-button-style white-bs flex align-center" style="padding: 4px 8px;">
+                        <svg class="size12 mr4" style="min-width: 12px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><path d="M158.72,140.8c4.15-4.28,8.25-8.63,12.48-12.85,5.68-5.67,12.6-6.18,17.5-1.41s4.6,11.89-1,17.52q-16.15,16.31-32.48,32.46c-5.85,5.79-12.26,5.71-18.15-.13q-16.45-16.33-32.78-32.8c-5.26-5.31-5.52-12-.84-16.81s11.83-4.65,17.18.61c4.38,4.3,8.63,8.74,13.16,13.34,1.25-1.69.76-3.35.77-4.84,0-19.06,0-38.12,0-57.18,0-8,4.33-12.94,11.1-13.18,6.95-.23,12,4.74,12,12.21.07,19.36,0,38.72,0,58.08v4.41ZM114.88,42.33c10.51,0,21,.12,31.53-.07a11.33,11.33,0,0,0,11.32-11.12c.19-6-4-10.81-10.21-11.72a31.93,31.93,0,0,0-4.49-.23q-60.36,0-120.74,0a27.88,27.88,0,0,0-4.92.34A11.32,11.32,0,0,0,8.16,33.59c1.22,5.37,5.95,8.72,12.56,8.73q31.08,0,62.17,0Q98.88,42.33,114.88,42.33ZM98.71,88.4c7.69,0,12.88-4.66,12.93-11.39s-5.13-11.5-12.79-11.52q-39.19-.1-78.38,0c-7.79,0-12.67,4.68-12.59,11.61s5.06,11.27,12.9,11.3c13.06,0,26.13,0,39.19,0C72.88,88.41,85.8,88.45,98.71,88.4ZM20.34,111.64c-7.45.07-12.36,4.56-12.46,11.24s4.65,11.58,12,11.64q22.48.19,45,0c7.38-.07,12.13-4.89,12-11.68-.12-6.54-4.93-11.1-12-11.2-7.49-.09-15,0-22.47,0C35,111.62,27.68,111.57,20.34,111.64Z"/></svg>
+                        <span class="fs12 bold dark unselectable">{{ __('order by priority') }}</span>
+                    </div>
+                    <div id="update-roles-priorities" class="typical-button-style dark-bs flex align-center ml8" style="padding: 4px 8px;">
+                        <div class="relative size12 mr4">
+                            <svg class="size12 icon-above-spinner" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M3.53,137.79a8.46,8.46,0,0,1,8.7-4c2.1.23,4.28-.18,6.37.09,3.6.47,4.61-.68,4.57-4.46-.28-24.91,7.59-47.12,23-66.65C82.8,16.35,151.92,9.31,197.09,47.21c3,2.53,3.53,4,.63,7.08-5.71,6.06-11,12.5-16.28,19-2.13,2.63-3.37,3.21-6.4.73-42.11-34.47-103.77-13.24-116,39.81a72.6,72.6,0,0,0-1.61,17c0,2.36.76,3.09,3.09,3,4.25-.17,8.51-.19,12.75,0,5.46.25,8.39,5.55,4.94,9.66-12,14.24-24.29,28.18-36.62,42.39L4.91,143.69c-.37-.43-.5-1.24-1.38-1Z"/><path d="M216.78,81.86l35.71,41c1.93,2.21,3.13,4.58,1.66,7.58s-3.91,3.54-6.9,3.58c-3.89.06-8.91-1.65-11.33.71-2.1,2-1.29,7-1.8,10.73-6.35,45.41-45.13,83.19-90.81,88.73-28.18,3.41-53.76-3-76.88-19.47-2.81-2-3.61-3.23-.85-6.18,6-6.45,11.66-13.26,17.26-20.09,1.79-2.19,2.87-2.46,5.39-.74,42.83,29.26,99.8,6.7,111.17-43.93,2.2-9.8,2.2-9.8-7.9-9.8-1.63,0-3.27-.08-4.9,0-3.2.18-5.94-.6-7.29-3.75s.13-5.61,2.21-8c7.15-8.08,14.21-16.24,21.31-24.37C207.43,92.59,212,87.31,216.78,81.86Z"/></svg>
+                            <svg class="spinner size12 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
+                                <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                            </svg>
+                        </div>
+                        <div class="fs12 bold white unselectable">{{ __('update roles priorities') }}</div>
+                    </div>
+                </div>
             </div>
             <p class="dark my8">From the following roles, select a role to manage.</p>
             <style>
@@ -147,37 +164,24 @@
                     display: flex;
                     flex-wrap: wrap;
                 }
-
-                .role-to-manage {
-                    padding: 20px;
-                    background-color: #eef1f2;
-                    border: 1px solid #d4dcdf;
-                    border-radius: 3px;
-                    width: 20%;
-                    height: 80px;
-                    user-select: none;
-                    text-decoration: none;
-
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                }
-                .role-to-manage:hover {
-                    background-color: #ecedee;
-                }
             </style>
-            <div id="roles-to-manage-wrapper" class="full-center">
+            <div id="roles-to-manage-wrapper" class="full-center flex-wrap">
                 @foreach($roles as $role)
-                <a href="?role={{ $role->slug }}" class="role-to-manage">
-                    <h3 class="fs20 dark no-margin">{{ $role->title }}</h3>
-                    @if($role->slug == 'site-owner')
-                    <em class="fs13 light-gray mt4">Absolute Control</em>
-                    @else
-                    <p class="dark fs13 no-margin mt4">Permissions : <strong class='fs14 black'>{{ $role->permissions()->count() }}</strong></p>
-                    @endif
-                    <p class="dark fs13 no-margin mt4">Role members : <strong class="fs14 black">{{ $role->users()->count() }}</strong></p>
-                </a>
+                <div class="role-to-manage">
+                    <a href="?role={{ $role->slug }}" class="no-underline full-center flex-column">    
+                        <h3 class="fs20 dark no-margin">{{ $role->title }}</h3>
+                        @if($role->slug == 'site-owner')
+                        <em class="fs13 light-gray mt4">Absolute Control</em>
+                        @else
+                        <p class="dark fs13 no-margin mt4">Permissions : <strong class='fs14 black'>{{ $role->permissions()->count() }}</strong></p>
+                        @endif
+                        <p class="dark fs13 no-margin mt4">Role members : <strong class="fs14 black">{{ $role->users()->count() }}</strong></p>
+                    </a>
+                    <div class="role-priority-box">
+                        <label for="{{ $role->id }}-priority" class="fs12 bold mr4 dark">priority :</label>
+                        <input type="text" class="role-priority" id="{{ $role->id }}-priority" value="{{ $role->priority }}" autocomplete="off">
+                    </div>
+                </div>
                 @endforeach
             </div>
         @else

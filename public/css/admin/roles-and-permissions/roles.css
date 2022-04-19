@@ -98,3 +98,36 @@
     cursor: default !important;
     color: #0d460d;
 }
+
+.role-to-manage {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-top: 32px;
+    background-color: #eef1f2;
+    border: 1px solid #d4dcdf;
+    border-radius: 3px;
+    width: 20%;
+    user-select: none;
+    text-decoration: none;
+}
+.role-to-manage:hover {
+    background-color: #ecedee;
+}
+
+.role-to-manage a {
+    padding: 20px;
+}
+
+.role-priority-box {
+    position: absolute;
+    top: -28px;
+    display: flex;
+    align-items: center;
+}
+
+.role-priority {
+    width: 15px;
+    font-size: 11px;
+    padding: 3px;
+}

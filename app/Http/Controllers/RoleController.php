@@ -40,6 +40,22 @@ class RoleController extends Controller
         Session::flash('message', 'Role informations have been updated successfully.');
         return route('admin.rp.manage.roles', ['role'=>$role->refresh()->slug]);
     }
+    public function update_priorities(Request $request) {
+        $data = $request->validate([
+            'roles'=>'required',
+            'roles.*'=>'exists:roles,id',
+            'priorities'=>'required',
+            'priorities.*'=>'numeric',
+        ]);
+
+        if(count($data['roles']) != count($data['priorities']))
+            abort(422, 'Number of roles should be equal to the number of priorities');
+
+        $i = 0;
+        foreach($data['roles'] as $role) Role::find($role)->update(['priority'=>$data['priorities'][$i++]]);
+
+        Session::flash('message', 'Roles priorities have been updated successfully.');
+    }
     public function delete(Request $request) {
         $role_id = $request->validate(['role_id'=>'required|exists:roles,id'])['role_id'];
         // Get role and its permissions (ids)
