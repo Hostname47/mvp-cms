@@ -239,7 +239,7 @@
                                     </div>
                                 </div>
                                 <div class="relative">
-                                    <div id="role-members-search-result-box" class="full-width y-auto-overflow none" style="max-height: 234px;">
+                                    <div id="role-members-search-result-box" class="full-width y-auto-overflow none" style="max-height: 200px;">
                                         <input type="hidden" id="role-user-k" autocomplete="off">
                                         <div class="results-container none">
                                             results
