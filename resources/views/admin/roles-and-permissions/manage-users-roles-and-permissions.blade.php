@@ -263,6 +263,85 @@
                     </div>
                 </div>
             </div>
+            <!-- direct-detach permissions from user viewer -->
+            <div id="detach-permissions-from-user-viewer" class="global-viewer full-center none">
+                <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
+                <div class="viewer-box-style-1" style="width: 600px;">
+                    <div class="flex align-center space-between light-gray-border-bottom" style="padding: 14px;">
+                        <div class="flex align-center">
+                            <svg class="size16 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M167.69,256.92c-4.4-51.22,37.26-92.87,89-89,0,28.5-.05,57,.09,85.51,0,3-.6,3.55-3.55,3.54C224.71,256.86,196.2,256.92,167.69,256.92ZM19.86,3.86c-16.27,0-16.31.05-16.31,16.07q0,94.91,0,189.79c0,7.15,2.26,9.84,8.61,9.85,38.23.05,76.47,0,114.7.08,2.56,0,3.43-.63,3.3-3.27a77.64,77.64,0,0,1,1.45-19.65c8.29-39.74,41.06-66.4,81.87-66.2,5.11,0,6-1.32,6-6.12-.22-36.58-.11-73.15-.12-109.73,0-8.73-2.06-10.81-10.65-10.81H19.86Zm49.8,76.56c-4.07-4.07-4-4.72.84-9.54s5.56-5,9.55-1C90.24,80,100.39,90.26,111.43,101.34c0-5.58,0-10,0-14.31,0-3.5,1.63-5.17,5.14-5,1.64,0,3.29,0,4.94,0,3.26-.07,4.84,1.45,4.82,4.76,0,10.7.07,21.4-.06,32.1-.05,5-2.7,7.64-7.66,7.71-10.7.15-21.41,0-32.11.07-3.27,0-4.87-1.54-4.8-4.82,0-1.48.07-3,0-4.44-.24-3.94,1.48-5.8,5.52-5.66,4.21.14,8.44,0,13.87,0C89.94,100.65,79.78,90.55,69.66,80.42Z"/></svg>
+                            <span class="fs20 bold dark">Detach permissions from user</span>
+                        </div>
+                        <div class="pointer fs20 close-global-viewer unselectable">✖</div>
+                    </div>
+                    <div class="viewer-scrollable-box scrolly" style="padding: 14px; max-height: 430px">
+                        <input type="hidden" id="at-least-one-selected-permission-to-user-detach-message" value="You need to select at least one permission to fetach from user" autocomplete="off">
+                        <h3 class="fs15 bold dark no-margin mb4">Detach permissions from "<span class="blue">{{ $user->username }}</span>".</h3>
+                        <div class="typical-section-style fs13 dark mb8">
+                            <p class="no-margin">Here you can directtly detach permissions from "{{ $user->username }}".</p>
+                            <p class="no-margin mt4">Once the selected permissions get detached from this user, he will not be able to <strong>perform any activity</strong> associated with the selected permissions.</p>
+                        </div>
+                        <div class="simple-line-separator my4"></div>
+                        <div class="mt8">
+                            <span class="block fs12 dark bold mb4">Detach permissions from :</span>
+                            <div class="typical-section-style width-max-content">
+                                <div class="flex">
+                                    <img src="{{ $user->avatar(100) }}" class="size48 rounded" style="border: 1px solid #ddd;" alt="">
+                                    <div class="ml8">
+                                        <h3 class="no-margin dark">{{ $user->fullname }}</h3>
+                                        <span class="fs12 dark bold block">{{ $user->username }}</span>
+                                        @if($user_high_role)
+                                        <span class="fs11 blue bold block">{{ $user_high_role->title }}</span>
+                                        @else
+                                        <em class="fs11 gray block">normal user</em>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 12px;">
+                            <div>
+                                <span class="block fs12 dark bold">Select permissions to detach :</span>
+                                <p class="fs13 gray no-margin mb4">The following permissions are already attached to this user. You need to select at least one permission that you want to detach from this user.</p>
+                                <div id="all-permissions-box" class="flex flex-wrap typical-section-style y-auto-overflow" style="max-height: 260px; gap: 4px;">
+                                    @foreach($user->permissions->groupBy('scope') as $scope=>$permissions)
+                                        <span class="block bold blue fs11 mb4" style="flex-basis: 100%">{{ $scope }}</span>
+                                        @foreach($permissions as $permission)
+                                        <label for="permission-{{ $permission->id }}">
+                                            <div class="permission-button-style align-center mr4 mb4 fs11 height-max-content">
+                                                <input type="checkbox" class="permission-id-to-detach-select-input size14 mr4" id="permission-{{ $permission->id }}" autocomplete="off" value="{{ $permission->id }}">
+                                                <span class="fs12 bold">{{ $permission->title }}</span>
+                                            </div>
+                                        </label>
+                                        @endforeach
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                        <div class="simple-line-separator mt8 mb4"></div>
+                        <div style="margin-top: 12px">
+                            <p class="no-margin mb2 fs15 bold dark">Confirmation</p>
+                            <p class="no-margin mb4 dark">Please type <strong>{{ auth()->user()->username }}::detach-permissions-from::{{ $user->username }}</strong> to confirm.</p>
+                            <div>
+                                <input type="text" autocomplete="off" class="full-width styled-input" id="detach-permissions-from-user-confirm-input" style="padding: 8px 10px" placeholder="attach permission(s) to user confirmation">
+                                <input type="hidden" id="detach-permissions-from-user-confirm-value" autocomplete="off" value="{{ auth()->user()->username }}::detach-permissions-from::{{ $user->username }}">
+                            </div>
+                            <div class="flex" style="margin-top: 12px">
+                                <div id="detach-permissions-from-user-button" class="typical-button-style red-bs red-bs-disabled full-center">
+                                    <div class="relative size14 mr4">
+                                        <svg class="size12 icon-above-spinner" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M167.69,256.92c-4.4-51.22,37.26-92.87,89-89,0,28.5-.05,57,.09,85.51,0,3-.6,3.55-3.55,3.54C224.71,256.86,196.2,256.92,167.69,256.92ZM19.86,3.86c-16.27,0-16.31.05-16.31,16.07q0,94.91,0,189.79c0,7.15,2.26,9.84,8.61,9.85,38.23.05,76.47,0,114.7.08,2.56,0,3.43-.63,3.3-3.27a77.64,77.64,0,0,1,1.45-19.65c8.29-39.74,41.06-66.4,81.87-66.2,5.11,0,6-1.32,6-6.12-.22-36.58-.11-73.15-.12-109.73,0-8.73-2.06-10.81-10.65-10.81H19.86Zm49.8,76.56c-4.07-4.07-4-4.72.84-9.54s5.56-5,9.55-1C90.24,80,100.39,90.26,111.43,101.34c0-5.58,0-10,0-14.31,0-3.5,1.63-5.17,5.14-5,1.64,0,3.29,0,4.94,0,3.26-.07,4.84,1.45,4.82,4.76,0,10.7.07,21.4-.06,32.1-.05,5-2.7,7.64-7.66,7.71-10.7.15-21.41,0-32.11.07-3.27,0-4.87-1.54-4.8-4.82,0-1.48.07-3,0-4.44-.24-3.94,1.48-5.8,5.52-5.66,4.21.14,8.44,0,13.87,0C89.94,100.65,79.78,90.55,69.66,80.42Z"/></svg>
+                                        <svg class="spinner size14 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
+                                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                            <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                        </svg>
+                                    </div>
+                                    <span class="bold">Detach permissions from user</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="flex">
                 <div class="user-informations-part">
@@ -277,12 +356,13 @@
                             <h3 class="no-margin fs16 dark">User roles and permissions :</h3>
                         </div>
                         <div class="align-center">
-                            <h4 class="fs14 dark my8 mx8">• Roles</h4>
+                            <h4 class="fs14 dark my8 mr8">• Roles</h4>
                             <div class="typical-button-style green-bs align-center open-grant-role-to-user-dialog" style="padding: 6px 10px">
                                 <svg class="size14 mr4" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M256.69,169.38a27,27,0,0,1-5.88,5.8q-34.91,27.48-69.75,55.06a14.94,14.94,0,0,1-9.89,3.47c-35.2-.18-69.89-4.6-104.24-12.07-2.74-.6-3.6-1.72-3.59-4.61q.21-38.29,0-76.58c0-2.65.72-4.14,3.09-5.4,11.29-6,23-7.36,34.58-1.79,14.76,7.07,30,11.26,46.44,11.65,13.83.32,25.22,12,27.06,25.75.44,3.24-.64,3.76-3.6,3.73-17.78-.13-35.57-.07-53.36-.06-6.18,0-9.58,2.68-9.56,7.43s3.41,7.38,9.61,7.38c16.8,0,33.6-.15,50.39.07a41,41,0,0,0,28.06-10.14c6.9-5.86,13.95-11.55,21.05-17.16s15-8.07,24-6.61c6.41,1,11.74,3.82,15.61,9.14ZM94.61,40.87c-6.3.1-8.86,2.69-8.93,9.09,0,3.13-.2,6.27,0,9.38.22,2.92-.49,4.19-3.7,3.89a88,88,0,0,0-9.88,0C66,63.31,63.6,65.73,63.44,72c-.09,3.29,0,6.59,0,9.88,0,9,2,11,11.15,11,19.94,0,39.87.1,59.8-.07,3.9,0,5.94.79,7.55,4.82,9.06,22.68,31.87,35.3,56,31.43,23-3.68,41.3-23.08,43.06-45.69,2-25.31-12.1-47-35.48-54.7-22.74-7.47-47.27,1.72-60.1,22.15-2.54,4-2.47,10.5-7.18,12s-10.11.34-15.21.34c-7.69,0-7.69,0-7.69-7.68,0-14-.62-14.61-14.79-14.61C98.57,40.87,96.59,40.84,94.61,40.87Zm72.66,37a22.2,22.2,0,1,1,22.27,22.29A22.18,22.18,0,0,1,167.27,77.88ZM48.69,149c.05-3.29-.57-4.55-4.22-4.46-10.52.26-21,.07-31.58.1-6.68,0-9.25,2.58-9.26,9.24q0,35.28,0,70.58c0,6.59,2.63,9.12,9.36,9.14q12.82.06,25.66,0c7.55,0,9.93-2.39,10-10.08,0-12.34,0-24.68,0-37C48.62,174,48.51,161.53,48.69,149ZM182.17,78.39a7.31,7.31,0,1,0,7.08-7.84A7.33,7.33,0,0,0,182.17,78.39Z"/></svg>
                                 <span class="fs11 bold">grant role</span>
                             </div>
                         </div>
+                        <p class="my4 fs13 dark">The following section lists the roles owned by this user. (normal user will be displayed if the user has no roles)</p>
                         @if($user->roles->count())
                             <div class="align-center" style="gap: 18px; margin: 10px 0 10px 10px">
                                 @foreach($user->roles->sortBy('priority') as $role)
@@ -306,7 +386,7 @@
                     </div>
                     <div>
                         <div class="align-center">
-                            <h4 class="fs14 dark my8 mx8">• Permissions</h4>
+                            <h4 class="fs14 dark my8 mr8">• Permissions</h4>
                             <div class="typical-button-style green-bs align-center open-attach-permissions-to-user-dialog" style="padding: 7px 10px">
                                 <svg class="size10 mr4" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M156.22,3.31c3.07,2.55,4.08,5.71,4.06,9.78-.17,27.07,0,54.14-.18,81.21,0,3.57.69,4.66,4.49,4.63,27.24-.19,54.47-.11,81.71-.1,7.36,0,9.39,2,9.4,9.25q0,21.4,0,42.82c0,7-2.1,9.06-9.09,9.06-27.24,0-54.48.09-81.71-.09-3.85,0-4.83.95-4.8,4.81.17,27.07.1,54.14.09,81.21,0,7.65-1.94,9.59-9.56,9.6q-21.4,0-42.82,0c-6.62,0-8.75-2.19-8.75-8.91,0-27.4-.1-54.8.09-82.2,0-3.8-1.06-4.51-4.62-4.49-27.08.16-54.15,0-81.22.18-4.07,0-7.23-1-9.78-4.06V102.8c2.55-3.08,5.72-4.08,9.79-4.06,27.09.17,54.18,0,81.27.18,3.68,0,4.58-.87,4.55-4.56-.17-27.09,0-54.18-.18-81.27,0-4.06,1-7.23,4.06-9.78Z"></path></svg>
                                 <span class="fs11 bold">direct attach</span>
@@ -317,8 +397,9 @@
                                 <span class="fs11 bold">direct revoke</span>
                             </div>
                         </div>
+                        <p class="my4 fs13 dark">The following section lists the permissions attached to this user.</p>
                         @if($user->permissions->count())
-                        <div class="ml8 typical-section-style my8 y-auto-overflow" style="max-height: 200px;">
+                        <div class="typical-section-style my8 y-auto-overflow" style="max-height: 200px;">
                             <div class="ml8 my8">
                                 @foreach($user->permissions->groupBy('scope') as $scope => $permissions)
                                 <h4 class="fs13 blue no-margin">{{ $scope }}:</h4>
