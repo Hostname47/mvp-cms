@@ -179,7 +179,7 @@
                 </div>
             </div>
             <!-- direct-attach permissions to user viewer -->
-            <div id="attach-permissions-to-user-viewer" class="global-viewer full-center">
+            <div id="attach-permissions-to-user-viewer" class="global-viewer full-center none">
                 <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
                 <div class="viewer-box-style-1" style="width: 600px;">
                     <div class="flex align-center space-between light-gray-border-bottom" style="padding: 14px;">
@@ -190,7 +190,6 @@
                         <div class="pointer fs20 close-global-viewer unselectable">✖</div>
                     </div>
                     <div class="viewer-scrollable-box scrolly" style="padding: 14px; max-height: 430px">
-                        <input type="hidden" id="at-least-one-selected-permission-to-user-attach-message" value="You need to select at least one permission to attach to user" autocomplete="off">
                         <h3 class="fs18 bold dark no-margin mb4">Attach permissions to "<span class="blue">{{ $user->username }}</span>" user</h3>
                         <div class="typical-section-style fs13 dark mb8">
                             <p class="no-margin">Here you can attach permissions directly to "<strong>{{ $user->username }}</strong>".</p>
@@ -230,9 +229,8 @@
                                             @else
                                             <label for="permission-{{ $permission->id }}">
                                                 <div class="permission-button-style align-center height-max-content permission-to-attach-to-user">
-                                                    <input type="checkbox" class="size14 mr4" id="permission-{{ $permission->id }}" autocomplete="off">
+                                                    <input type="checkbox" class="permission-id-to-attach-select-input size14 mr4" id="permission-{{ $permission->id }}" autocomplete="off" value="{{ $permission->id }}">
                                                     <span class="bold unselectable permission-name">{{ $permission->title }}</span>
-                                                    <input type="hidden" class="permission-id-to-attach" value="{{ $permission->id }}" autocomplete="off" >
                                                 </div>
                                             </label>
                                             @endif

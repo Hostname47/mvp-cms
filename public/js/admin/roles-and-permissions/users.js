@@ -216,7 +216,7 @@ $('.select-role-to-grant-button').on('click', function() {
 				let errors = errorObject.errors;
 				error = errors[Object.keys(errors)[0]][0];
 			}
-			display_top_informer_message(error, 'error');
+			print_top_message(error, 'error');
 
 			loadingbox.addClass('none');
 			selectionbox.removeClass('none');
@@ -298,4 +298,88 @@ function handle_grant_role_to_user_button() {
 }
 
 /** Direct-Attach permissions to user */
+$('.open-attach-permissions-to-user-dialog').on('click', function() {
+	$('#attach-permissions-to-user-viewer').removeClass('none');
+    disable_page_scroll();
+});
 
+$('#attach-permissions-to-user-confirm-input').on('input', function() {
+    let confirmation_input = $(this);
+    let confirmation_value = $('#attach-permissions-to-user-confirm-value').val();
+	let button = $('#attach-permissions-to-user-button');
+    
+	attach_permissions_to_user_confirmed = false;
+    if(confirmation_input.val() == confirmation_value) {
+		if(!$('.permission-id-to-attach-select-input:checked').length) {
+			print_top_message('You need to select at least one permission to attach to user', 'warning');
+			disable_attach_permissions_to_user_button();
+			return;
+		}
+
+		attach_permissions_to_user_confirmed = true;
+		button.removeClass('green-bs-disabled');
+    } else
+		disable_attach_permissions_to_user_button();
+});
+
+function disable_attach_permissions_to_user_button() {
+	let button = $('#attach-permissions-to-user-button');
+	let confirmation_input = $('#attach-permissions-to-user-confirm-input');
+    let confirmation_value = $('#attach-permissions-to-user-confirm-value').val();
+	if(confirmation_input.val() == confirmation_value)
+		confirmation_input.val(confirmation_value + ' - x');
+
+	button.addClass('green-bs-disabled');
+	attach_permissions_to_user_confirmed = false;
+}
+
+let attach_permissions_to_user_confirmed = false;
+let attach_permissions_to_user_lock = true;
+$('#attach-permissions-to-user-button').on('click', function() {
+	if(!attach_permissions_to_user_confirmed || !attach_permissions_to_user_lock) return;
+	attach_permissions_to_user_lock = false;
+
+	let button = $(this);
+	let buttonicon = button.find('.icon-above-spinner');
+	let spinner = button.find('.spinner');
+	
+	let permissions = [];
+	$('.permission-id-to-attach-select-input:checked').each(function() {
+		permissions.push($(this).val());	
+	});
+	
+	let data = {
+		users: [$('#user-id').val()],
+		permissions: permissions
+	};
+
+	button.addClass('green-bs-disabled');
+	spinner.addClass('inf-rotate');
+	buttonicon.addClass('none');
+	spinner.removeClass('opacity0');
+
+	$.ajax({
+		type: 'post',
+		url: '/admin/users/attach-permissions',
+		data: data,
+		success: function(response) {
+			location.reload();
+		},
+		error: function(response) {
+			button.removeClass('green-bs-disabled');
+			spinner.removeClass('inf-rotate');
+			buttonicon.removeClass('none');
+			spinner.addClass('opacity0');
+
+			let errorObject = JSON.parse(response.responseText);
+			let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+			if(errorObject.errors) {
+				let errors = errorObject.errors;
+				error = errors[Object.keys(errors)[0]][0];
+			}
+			print_top_message(error, 'error');
+
+			attach_permissions_to_user_lock = true;
+		},
+	});
+});
