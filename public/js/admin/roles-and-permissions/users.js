@@ -383,3 +383,89 @@ $('#attach-permissions-to-user-button').on('click', function() {
 		},
 	});
 });
+
+/** detach permissions from user */
+$('.open-detach-permissions-from-user-dialog').on('click', function() {
+	$('#detach-permissions-from-user-viewer').removeClass('none');
+    disable_page_scroll();
+});
+
+$('#detach-permissions-from-user-confirm-input').on('input', function() {
+    let confirmation_input = $(this);
+    let confirmation_value = $('#detach-permissions-from-user-confirm-value').val();
+	let button = $('#detach-permissions-from-user-button');
+    
+	detach_permissions_from_user_confirmed = false;
+    if(confirmation_input.val() == confirmation_value) {
+		if(!$('.permission-id-to-detach-select-input:checked').length) {
+			print_top_message('You need to select at least one permission to detach from user', 'warning');
+			disable_detach_permissions_from_user_button();
+		} else {
+			detach_permissions_from_user_confirmed = true;
+			button.removeClass('red-bs-disabled');
+		}
+    } else
+		disable_detach_permissions_from_user_button();
+});
+
+function disable_detach_permissions_from_user_button() {
+	let confirmation_input = $('#detach-permissions-from-user-confirm-input');
+    let confirmation_value = $('#detach-permissions-from-user-confirm-value').val();
+	let button = $('#detach-permissions-from-user-button');
+	if(confirmation_input.val() == confirmation_value)
+		confirmation_input.val(confirmation_value + ' - x');
+
+	button.addClass('red-bs-disabled');
+	detach_permissions_from_user_confirmed = false;
+}
+
+let detach_permissions_from_user_confirmed = false;
+let detach_permissions_from_user_lock = true;
+$('#detach-permissions-from-user-button').on('click', function() {
+	if(!detach_permissions_from_user_confirmed || !detach_permissions_from_user_lock) return;
+	detach_permissions_from_user_lock = false;
+
+	let button = $(this);
+	let buttonicon = button.find('.icon-above-spinner');
+	let spinner = button.find('.spinner');
+	
+	let permissions = [];
+	$('.permission-id-to-detach-select-input:checked').each(function() {
+		permissions.push($(this).val());	
+	});
+	
+	let data = {
+		users: [$('#user-id').val()],
+		permissions: permissions
+	};
+
+	spinner.removeClass('opacity0');
+	spinner.addClass('inf-rotate');
+	buttonicon.addClass('none');
+	button.addClass('red-bs-disabled');
+
+	$.ajax({
+		type: 'post',
+		url: '/admin/users/detach-permissions',
+		data: data,
+		success: function(response) {
+			location.reload();
+		},
+		error: function(response) {
+			spinner.addClass('opacity0');
+			spinner.removeClass('inf-rotate');
+			buttonicon.removeClass('none');
+			button.removeClass('red-bs-disabled');
+
+			let errorObject = JSON.parse(response.responseText);
+			let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+			if(errorObject.errors) {
+				let errors = errorObject.errors;
+				error = errors[Object.keys(errors)[0]][0];
+			}
+			print_top_message(error, 'error');
+
+			detach_permissions_from_user_lock = true;
+		},
+	});
+});

@@ -122,7 +122,7 @@
                                 <h3 class="no-margin mb4 dark">Select role</h3>
                                 <p class="no-margin fs13">Select from the following list the role you want to attach to "<span class="bold blue">{{ $user->username }}</span>"</p>
                                 <div class="flex align-center" style="flex: 1">
-                                    <div class="flex flex-wrap space-around full-width">
+                                    <div class="flex flex-wrap space-around full-width" style="gap: 12px;">
                                         @foreach($roles as $role)
                                             @php $hasrole = $user->has_role($role->slug); @endphp
                                             <div class="select-role-to-grant-button @if($hasrole) role-already-granted @endif">
@@ -138,9 +138,6 @@
                                                 <span class="block italic text-center gray fs11">(has already)</span>
                                                 @endif
                                             </div>
-                                            @if(!$loop->last)
-                                            <div class="simple-line-separator" style="width: 30px; align-self: center;"></div>
-                                            @endif
                                         @endforeach
                                     </div>
                                 </div>
@@ -275,7 +272,6 @@
                         <div class="pointer fs20 close-global-viewer unselectable">✖</div>
                     </div>
                     <div class="viewer-scrollable-box scrolly" style="padding: 14px; max-height: 430px">
-                        <input type="hidden" id="at-least-one-selected-permission-to-user-detach-message" value="You need to select at least one permission to fetach from user" autocomplete="off">
                         <h3 class="fs15 bold dark no-margin mb4">Detach permissions from "<span class="blue">{{ $user->username }}</span>".</h3>
                         <div class="typical-section-style fs13 dark mb8">
                             <p class="no-margin">Here you can directtly detach permissions from "{{ $user->username }}".</p>
