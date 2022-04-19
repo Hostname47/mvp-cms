@@ -950,3 +950,98 @@ $('#delete-role-button').on('click', function() {
 });
 
 /** roles priorities */
+$('#sort-roles-components-by-priority').on('click', function() {
+    $('.role-to-manage').each(function() {
+        if(!validate_roles_priorities()) return;
+        let roles = $('#roles-to-manage-wrapper .role-to-manage');
+    
+        // Reorder roles based on priority value in ascending order (using bubble sort)
+        let count = roles.length;
+        let i, j;
+        for (i = 0; i < count-1; i++) {
+            roles = $('#roles-to-manage-wrapper .role-to-manage');
+            // (count-i-1) because last i elements will be in the right place
+            for (j = 0; j < count-i-1; j++) {
+                let rolea = $(roles[j]);
+                let roleb = $(roles[j+1]);
+                let ra = parseInt(rolea.find('.role-priority').first().val());
+                let rb = parseInt(roleb.find('.role-priority').first().val());
+    
+                if(ra > rb) {
+                    rolea.insertAfter(roleb);
+                    roles = $('#roles-to-manage-wrapper .role-to-manage');
+                }
+            }
+        }
+    });
+});
+
+let update_roles_priorities_lock = true;
+$('#update-roles-priorities').on('click', function() {
+    if(!validate_roles_priorities()) return;
+    let roles = $('#roles-to-manage-wrapper .role-to-manage');
+
+    if(!update_roles_priorities_lock) return;
+    update_roles_priorities_lock = false;
+
+    let button = $(this);
+	let spinner = button.find('.spinner');
+	let buttonicon = button.find('.icon-above-spinner');
+
+	let roles_ids=[];
+	let roles_priorities=[];
+	roles.each(function() {
+		roles_ids.push($(this).find('.role-id').first().val());
+		roles_priorities.push($(this).find('.role-priority').first().val());
+	});
+
+	spinner.addClass('inf-rotate');
+	spinner.removeClass('opacity0');
+	buttonicon.addClass('none');
+	button.addClass('dark-bs-disabled');
+
+    $.ajax({
+        type: 'patch',
+        url: '/admin/roles/priorities',
+        data: {
+            roles: roles_ids,
+            priorities: roles_priorities
+        },
+        success: function() {
+            location.reload();
+        },
+        error: function(response) {
+            spinner.removeClass('inf-rotate');
+            spinner.addClass('opacity0');
+            buttonicon.removeClass('none');
+            button.removeClass('dark-bs-disabled');
+
+            let errorObject = JSON.parse(response.responseText);
+			let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+			if(errorObject.errors) {
+				let errors = errorObject.errors;
+				error = errors[Object.keys(errors)[0]][0];
+			}
+			print_top_message(error, 'error');
+            update_roles_priorities_lock = true;
+        }
+    })
+});
+
+function validate_roles_priorities() {
+	let invalid_priority = false;
+	let roles = $('#roles-to-manage-wrapper .role-to-manage');
+	roles.each(function() {
+		if(!parseInt($(this).find('.role-priority').first().val())) {
+			invalid_priority = true;
+			return false;
+		}
+	});
+
+	if(invalid_priority) {
+		print_top_message('A priority value of one of roles is invalid. (priority should be a number)', 'error');
+		return false;
+	}
+
+	return true;
+}

@@ -180,6 +180,7 @@
                     <div class="role-priority-box">
                         <label for="{{ $role->id }}-priority" class="fs12 bold mr4 dark">priority :</label>
                         <input type="text" class="role-priority" id="{{ $role->id }}-priority" value="{{ $role->priority }}" autocomplete="off">
+                        <input type="hidden" class="role-id" value="{{ $role->id }}" autocomplete="off">
                     </div>
                 </div>
                 @endforeach
