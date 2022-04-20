@@ -4,7 +4,7 @@ $.ajaxSetup({
     }
 });
 
-$(window).on('unload', function() { $(window).scrollTop(0); });
+// $(window).on('unload', function() { $(window).scrollTop(0); });
 
 $('.toggle-box').each(function() { handle_toggling($(this)); });
 function handle_toggling(component) {

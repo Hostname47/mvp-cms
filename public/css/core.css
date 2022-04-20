@@ -1067,3 +1067,52 @@ textarea {
 .x-close {
     font-size: 10px;
 }
+
+footer {
+    padding: 16px;
+    height: 400px;
+    box-sizing: border-box;
+    background-color: #1C1D1E;
+    color: white;
+}
+
+footer .logo {
+    fill: white;
+    width: 260px;
+}
+
+footer .footer-content {
+    margin-left: 11px;
+}
+
+footer .paragraph-after-logo {
+    font-size: 14px;
+    letter-spacing: 2px;
+    margin: 0 0 12px 0;
+}
+
+footer .follow-us-container {
+    display: flex;
+    align-items: center;
+    margin-top: 16px;
+}
+
+footer .follow-us-container svg {
+    fill: white;
+}
+
+.youtube-svg:hover {
+    fill:rgb(255, 53, 53);
+}
+
+.linkedin-svg:hover {
+    fill:#179bdd;
+}
+
+.facebook-svg:hover {
+    fill:#7bc0fd;
+}
+
+.twitter-svg:hover {
+    fill:#56BBFF;
+}

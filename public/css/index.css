@@ -8,6 +8,7 @@
 
 #welcome-image {
     position: absolute;
+    z-index: 1;
     width: 100%;
     height: fit-content;
 }
@@ -61,40 +62,51 @@
     background-color: rgba(255, 255, 255, 0.05);
 }
 
-.discover-button {
+#discover-button {
+    position: relative;
     display: flex;
     align-items: center;
     padding: 12px 20px;
+    margin-top: 16px;
     color: white;
+    fill: white;
     text-decoration: none;
     border: 2px solid white;
+    background-color: #ffffff05;
     border-radius: 2px;
     letter-spacing: 1.8px;
+    transition: all 0.2s ease;
 }
-.discover-button svg {
+#discover-button:hover {
+    color: #2ca0ff;
+    border-color: #2ca0ff;
+    fill: #2ca0ff;
+}
+#discover-button .compass {
     width: 20px;
     height: 20px;
-    fill: white;
+    transition: all 0.4s ease;
 }
 
-#second-section {
+#features-section {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 30px;
 }
 
-#second-section .title {
+.section-title {
     margin-bottom: 0;
     color: #1b1d1e;
-    font-size: 29px;
+    font-size: 30px;
     letter-spacing: 2.5px;
 }
 
-#second-section .title-text {
-    font-size: 18px;
-    letter-spacing: 2px;
+.section-brief-title {
+    font-size: 17px;
+    letter-spacing: 4px;
     color: #282828;
+    margin: 10px 0;
 }
 
 .features-box {
@@ -105,7 +117,7 @@
 
 .feature-box {
     width: 20%;
-    margin: 0 30px;
+    margin: 0 40px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -113,8 +125,8 @@
 
 .feature-icon {
     fill: #101213;
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
 }
 
 .feature-title {
@@ -129,4 +141,9 @@
     letter-spacing: 1.4px;
     margin: 0;
     font-size: 13px;
+}
+
+#featured-posts-section {
+    height: 350px;
+    background-color: #eceff0;
 }
