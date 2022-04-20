@@ -86,7 +86,8 @@ Route::get('/login/{provider}', [OAuthController::class, 'redirectToProvider']);
 Route::get('/{provider}/callback', [OAuthController::class, 'handleProviderCallback']);
 
 Route::middleware('client.scopes')->group(function() {
-    Route::get('/', [IndexController::class, 'index']);
+    Route::get('/', [IndexController::class, 'index'])->name('root.slash');
     Route::get('/home', [IndexController::class, 'index'])->name('home');
+    Route::get('/discover', [IndexController::class, 'discover'])->name('discover');
     Route::get('/{category:slug}/{post:slug}', [PostController::class, 'view'])->name('view.post');
 });

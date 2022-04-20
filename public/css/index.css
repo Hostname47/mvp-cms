@@ -55,7 +55,7 @@
     cursor: pointer;
     width: 34px;
     height: 34px;
-    bottom: 36px;
+    bottom: 20px;
     transition: all 0.2s ease;
 }
 #move-down-button:hover {
