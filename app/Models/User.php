@@ -65,7 +65,10 @@ class User extends Authenticatable
     public function getLightusernameAttribute() {
         return strlen($this->username) > 14 ? substr($this->username, 0, 14) . '..' : $this->username;
     }
-    public function high_role() {
+    public function high_role($eager=false) {
+        if($eager)
+            return $this->roles->sortBy('priority')->first();
+            
         return $this->roles()->orderBy('priority')->first();
     }
     public function has_role($slug) {

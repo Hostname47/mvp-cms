@@ -64,6 +64,13 @@ class Post extends Model
                 return asset('media-library/'.$metadata->data['file']);
         }
 
-        return '';
+        return false;
+    }
+
+    function get_tag_content($tagname) {
+        // Create DOM from string
+        $html = \str_get_html($this->content);
+    
+        return $html->find($tagname);
     }
 }

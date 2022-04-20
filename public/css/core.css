@@ -1195,3 +1195,31 @@ footer .newsletter-section {
     margin-right: 20px;
     max-width: 400px;
 }
+
+.page-padding {
+    padding: 14px 16px;
+}
+
+.title-style {
+    font-size: 25px;
+    color: #15171a;
+    margin: 0;
+}
+
+.page-path-wrapper {
+    display: flex;
+    margin-bottom: 12px;
+}
+
+.page-path {
+    color: #111;
+    font-weight: bold;
+    font-size: 13px;
+}
+.page-path:hover {
+    color: #007cff;
+}
+
+.page-path-wrapper a {
+    text-decoration: none;
+}

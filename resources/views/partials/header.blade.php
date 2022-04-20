@@ -15,7 +15,7 @@
                 <div class="header-menu-button-strip"></div>
             </div>
         </a>
-        <a href="{{ route('discover') }}" id="header-discover-button" class="header-menu-button header-menu-button-with-subcontainers">
+        <a href="{{ route('discover') }}" id="header-discover-button" class="header-menu-button">
             <svg class="size17 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M129.93,253.53c-68-.07-123.6-55.81-123.42-123.74C6.69,61.7,62.5,6.13,130.34,6.48S253.4,62.05,253.49,129.91,197.89,253.6,129.93,253.53Zm.26-24.9A98.63,98.63,0,1,0,31.4,130.47,98.39,98.39,0,0,0,130.19,228.63ZM114.3,110.34a5.81,5.81,0,0,0-3.74,3.27C102.8,133.15,95,152.69,86.88,173.13l59.63-23.74a5.33,5.33,0,0,0,3-3.26c7.72-19.42,15.46-38.83,23.61-59.25C152.81,95,133.57,102.69,114.3,110.34Z"/></svg>
             <div class="relative">
                 <span>{{__('Discover')}}</span>
