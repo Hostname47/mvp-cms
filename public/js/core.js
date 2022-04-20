@@ -6,6 +6,32 @@ $.ajaxSetup({
 
 // $(window).on('unload', function() { $(window).scrollTop(0); });
 
+let discover_opening_timeout;
+$('#header-discover-button').on({
+    mouseenter: function() {
+        clearTimeout(discover_opening_timeout);
+        $('#header-discover-box').css('display', 'block');
+    },
+    mouseleave: function() {
+        close_header_discover_section();
+    }
+});
+
+$('#header-discover-box').on({
+    mouseenter: function() {
+        clearTimeout(discover_opening_timeout);
+    },
+    mouseleave: function() {
+        close_header_discover_section();
+    }
+});
+
+function close_header_discover_section() {
+    discover_opening_timeout = setTimeout(function() {
+        $('#header-discover-box').css('display', 'none');
+    }, 60);
+}
+
 $('.toggle-box').each(function() { handle_toggling($(this)); });
 function handle_toggling(component) {
     component.find('.toggle-button').each(function() {

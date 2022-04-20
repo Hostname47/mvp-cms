@@ -6,7 +6,7 @@
             <path d="M181.08,20.32c-9.69,3.53-15.69,10.52-18.35,20.46-3.77-2.83-3.8-3.37-.3-5.44a2.42,2.42,0,0,0,1.31-2.86c-.36-1.48-1.47-1.87-2.88-1.76-5.36.43-7.91,5.35-5.15,10a17.25,17.25,0,0,0,4.63,5,4.38,4.38,0,0,1,2,3.61,28.07,28.07,0,0,0,21,25.12,28.32,28.32,0,1,0-2.22-54.15Zm32.61,28.36c-.29,10.83-10.23,20.89-21.45,21.6-12,.75-22.93-7.55-24.41-18.61.12-.13.25-.25.38-.38-.16-.2-.33-.33-.51-.23.18-.1.35,0,.51.23h0c3.18,1.53,6.34,3.1,9.55,4.56a2.66,2.66,0,0,1,1.63,2c1.23,4.24,4,6.4,7.76,6.42a8,8,0,0,0,7.66-5.37,8.21,8.21,0,0,0-3.07-9.14c-3.1-2.14-6.72-1.94-10,.86a2,2,0,0,1-2.7.34c-2.95-1.54-5.89-3.09-8.91-4.49-2.69-1.25-3.52-3-1.78-5.87,2.36,1.33,4.77,2.69,7.17,4.07,1.48.85,3.06,1.31,4.09-.42s0-3.08-1.67-4c-1.92-1-3.73-2.3-5.7-3.21-2.19-1-1.94-2.07-.67-3.71,5.77-7.39,13.36-10.66,22.52-9.2,8.89,1.4,15.1,6.55,18.17,15.19l-.63.51.67.29-.67-.29h0l-4.93-2.66c-1.38-.76-2.71-.66-3.55.7s-.37,2.8,1.11,3.67c2.61,1.52,5.21,3,7.86,4.49A2.59,2.59,0,0,1,213.69,48.68Zm-26.47,4.1c4.51,0,4.5,7,0,7S182.71,52.78,187.22,52.78Z" stroke-miterlimit="10"/>
         </svg>
     </a>
-    <div class="align-center header-menu-container">
+    <div class="header-menu-container">
         <span class="logo-menu-separator">•</span>
         <a href="" class="header-menu-button">
             <svg class="size15 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M130,249.63q-38.79,0-77.56,0c-24.86,0-42.06-17.09-42.09-41.82,0-27.88.07-55.77,0-83.65-.05-12.75,4.55-23.27,14-31.81Q63.44,56.93,102.51,21.4C119,6.5,140.94,6.45,157.42,21.34c26,23.5,51.85,47.15,77.89,70.59,9.77,8.79,14.43,19.5,14.37,32.59-.13,27.41-.22,54.83,0,82.25.19,21.92-15.28,43.78-43.09,43C181.09,249.07,155.53,249.63,130,249.63Zm-.63-23.08q39,0,78,0c10.76,0,17.06-6.35,17.08-17.13,0-28,0-56.06,0-84.09a21.06,21.06,0,0,0-7.4-16.42q-37.51-34.07-75-68.13c-8.69-7.89-16.76-7.78-25.51.18C91.79,63.47,67.14,86.11,42.11,108.33c-5.52,4.91-7.92,10.11-7.86,17.36.22,27.72.06,55.44.1,83.16,0,11.64,6.2,17.69,17.95,17.7Z"/></svg>
@@ -15,7 +15,7 @@
                 <div class="header-menu-button-strip"></div>
             </div>
         </a>
-        <a href="" class="header-menu-button header-menu-button-with-subcontainers">
+        <a href="" id="header-discover-button" class="header-menu-button header-menu-button-with-subcontainers">
             <svg class="size17 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M129.93,253.53c-68-.07-123.6-55.81-123.42-123.74C6.69,61.7,62.5,6.13,130.34,6.48S253.4,62.05,253.49,129.91,197.89,253.6,129.93,253.53Zm.26-24.9A98.63,98.63,0,1,0,31.4,130.47,98.39,98.39,0,0,0,130.19,228.63ZM114.3,110.34a5.81,5.81,0,0,0-3.74,3.27C102.8,133.15,95,152.69,86.88,173.13l59.63-23.74a5.33,5.33,0,0,0,3-3.26c7.72-19.42,15.46-38.83,23.61-59.25C152.81,95,133.57,102.69,114.3,110.34Z"/></svg>
             <span>Discover</span>
         </a>
@@ -58,9 +58,12 @@
             </div>
             <div id="header-auth-user-options-container" class="suboptions-container">
                 <div id="header-auth-user-options-header" class="flex">
-                    <div class="mr4">
+                    <div class="mr8">
+                        @if(auth()->user()->has_avatar)
                         <svg class="header-auth-user-options-header-avatar" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M126.22,254.33C56.67,251.16,2.8,193.84,5.67,126.07,8.61,56.79,66.47,2.52,134.05,5.67c69.5,3.25,123.55,61,120.24,128.52C250.9,203.54,193.48,257.4,126.22,254.33Zm103.14-124c.12-55-43.67-99.72-98.69-99.57-41.23.12-72.2,19.27-90,56.19C22.91,123.69,27.83,159.3,52.23,192.09c2.1,2.83,3.41,3.47,6.66.88,43-34.33,99.26-34.38,142.05-.14,3.43,2.74,4.75,2,7.06-1C222,173.66,229.26,153.28,229.36,130.35Zm-49.58-24.73c.48-27-21.92-49.93-49.13-50.21a50,50,0,0,0-50.46,49.48c-.23,27.17,22.06,49.65,49.44,49.84A49.71,49.71,0,0,0,179.78,105.62Z"/></svg>
-                        <img src="" class="header-auth-user-avatar" alt="">
+                        @else
+                        <img src="{{ auth()->user()->avatar(100) }}" class="header-auth-user-options-header-avatar" alt="">
+                        @endif
                     </div>
                     <div>
                         <h3 class="no-margin white">Mouad Nassri</h3>
@@ -91,6 +94,60 @@
         <span class="mx8 white unselectable">•</span>
         <div class="header-round-button mr8 pointer">
             <svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M119.28,176.71H89.72c-2.15-10-4.24-19.8-6.36-29.72H50.06c-2.09,9.84-4.17,19.62-6.33,29.77H13.47C17.31,157.17,21,138,24.84,118.88,30.61,90,36.67,61.18,42.12,32.24c1.12-5.93,3.25-8,9.21-7.72,10.7.42,21.46-.21,32.15.37,2.5.13,6.54,3,7,5.23,9.85,47.47,19.29,95,28.77,142.57A22.86,22.86,0,0,1,119.28,176.71ZM67.47,66.57l-1.59.25c-3.2,16.15-6.39,32.3-9.67,48.88h21C73.9,98.88,70.69,82.72,67.47,66.57ZM140.4,144.4h60.18c-.2,15-4.74,27.32-13.46,38.08-11.93,14.71-27.82,21.77-46.67,23v29.86c23.78.34,43.28-8.73,61.76-23.88l22.25,24,22.07-22.28c-7.14-6.88-14.54-13.74-21.55-21-1.75-1.8-3.58-5.22-3-7.28,3.54-13.37,7.74-26.56,12.07-41h11.9V113.43H208.23V83.8h-30.6v29.85H140.4Z"/></svg>
+        </div>
+    </div>
+
+    <div id="header-discover-box">
+        <div class="flex space-between">
+            <div class="align-center discover-header">
+                <svg class="size22 mr8" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M129.93,253.53c-68-.07-123.6-55.81-123.42-123.74C6.69,61.7,62.5,6.13,130.34,6.48S253.4,62.05,253.49,129.91,197.89,253.6,129.93,253.53Zm.26-24.9A98.63,98.63,0,1,0,31.4,130.47,98.39,98.39,0,0,0,130.19,228.63ZM114.3,110.34a5.81,5.81,0,0,0-3.74,3.27C102.8,133.15,95,152.69,86.88,173.13l59.63-23.74a5.33,5.33,0,0,0,3-3.26c7.72-19.42,15.46-38.83,23.61-59.25C152.81,95,133.57,102.69,114.3,110.34Z"/></svg>
+                <span id="header-discover-title">DISCOVER FIBONASHI</span>
+            </div>
+            <form class="relative flex">
+                <svg class="absolute size12" fill="#5b5b5b" style="top: 11px; left: 11px;" enable-background="new 0 0 515.558 515.558" viewBox="0 0 515.558 515.558" xmlns="http://www.w3.org/2000/svg"><path d="m378.344 332.78c25.37-34.645 40.545-77.2 40.545-123.333 0-115.484-93.961-209.445-209.445-209.445s-209.444 93.961-209.444 209.445 93.961 209.445 209.445 209.445c46.133 0 88.692-15.177 123.337-40.547l137.212 137.212 45.564-45.564c0-.001-137.214-137.213-137.214-137.213zm-168.899 21.667c-79.958 0-145-65.042-145-145s65.042-145 145-145 145 65.042 145 145-65.043 145-145 145z"></path></svg>
+                <input type="text" name="k" class="search-input-style-2 border-box" id="posts-search-input" placeholder="{{ __('search for everything') }}.." required>
+                <button class="search-button-style-2 align-center" id="search-for-posts-button">
+                    <span class="bold dark fs11">search</span>
+                </button>
+            </form>
+        </div>
+        <div class="flex" style="margin-top: 16px;">
+            <div class="header-discover-section header-discover-categories-section">
+                <div class="align-center">
+                    <svg class="size14 mr8" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M250.29,9.76V250.24H9.71V9.76ZM116,116.17V36.55H36.37v79.62Zm27.87-.09h79.62V36.48H143.83ZM36.3,223.56h79.76V144.14H36.3Zm107.43-.05h79.75V144.13H143.73Z"></path></svg>
+                    <span class="header-discover-section-title no-margin">DISCOVER CATEGORIES</span>
+                </div>
+                <span class="header-discover-section-title fs11 default-weight">explore all categories and subcategories available</span>
+                <div class="flex flex-column">
+                    <a href="" class="link">● Sports Categories</a>
+                    <a href="" class="link">● Lifestyle Categories</a>
+                    <a href="" class="link">● Music Categories</a>
+                    <a href="" class="link">● Tech Categories</a>
+                    <a href="" class="link">● Travel Categories</a>
+                    <a href="" class="link">● Science Categories</a>
+                </div>
+            </div>
+            <div class="header-discover-section">
+                <div class="align-center">
+                    <svg class="size20 mx8" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M128,132,57.22,238.11,256,470,454.78,238.11,384,132Zm83,90H104l35.65-53.49Zm-30-60H331l-75,56.25Zm60,90V406.43L108.61,252Zm30,0H403.39L271,406.43Zm30-30,71.32-53.49L408,222ZM482,72V42H452V72H422v30h30v30h30V102h30V72ZM60,372H30v30H0v30H30v30H60V432H90V402H60ZM0,282H30v30H0Zm482-90h30v30H482Z"/></svg>
+                    <span class="header-discover-section-title no-margin">FEATURED POSTS</span>
+                </div>
+                <div>
+                    <!-- here we need to display 5 posts (one at the time with previous-next buttons) -->
+                </div>
+            </div>
+            <div class="header-discover-section move-to-right">
+                <div class="align-center">
+                    <svg class="size18 mr8" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M255,158.92c-2.53,8.79-5.95,17-13.33,23.09a37.56,37.56,0,0,1-24.16,8.85c-24,.22-48,.08-72,.07a14.67,14.67,0,0,1-2.07-.34V165.92H149q33.11,0,66.2,0c10.16,0,14.79-4.67,14.82-14.87q.06-22.39,0-44.78c0-10.17-4.67-14.82-14.87-14.84q-32.87-.06-65.72,0h-6v-25h5.07c21.91,0,43.82.3,65.72-.09,21-.38,37,12.59,40.25,31.44.05.28.36.51.55.76ZM45.36,66.54c-23.77.1-39.53,16-39.6,39.78q-.06,22.14,0,44.27c0,24.73,15.69,40.4,40.42,40.44q33.08,0,66.16,0h5v-25h-6q-32.85,0-65.68,0c-10.21,0-14.85-4.66-14.88-14.81q-.08-22.14,0-44.28c0-10.86,4.5-15.39,15.25-15.4q33.07,0,66.16,0h5.26v-25C93,66.51,69.19,66.43,45.36,66.54Zm134.48,74.4V116.53h-99v24.41Z"/></svg>
+                    <span class="no-margin header-discover-section-title">OTHER LINKS</span>
+                </div>
+                <div class="flex flex-column" style="margin-top: 12px;">
+                    <a href="" class="link">FAQs</a>
+                    <a href="" class="link">Privacy Policy</a>
+                    <a href="" class="link">Terms of use</a>
+                    <a href="" class="link">Credits</a>
+                </div>
+            </div>
         </div>
     </div>
 </header>

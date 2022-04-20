@@ -1043,6 +1043,29 @@ textarea {
     left: 12px;
 }
 
+.search-input-style-2 {
+    padding: 5px 5px 5px 30px;
+    display: block;
+    width: 300px;
+    box-sizing: border-box;
+    border-radius: 2px;
+    color: white;
+    background-color: #0f0f0f;
+    border: 1px solid #373737;
+}
+
+.search-button-style-2 {
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 0 10px;
+    margin-left: -3px;
+    height: 32px;
+    border: 1px solid #b9b9b9;
+    background-color: #f1f3f4;
+    color: #171717;
+    border-radius: 0 3px 3px 0;
+    cursor: pointer;
+}
+
 .input-style-1 {
     padding: 8px;
     display: block;

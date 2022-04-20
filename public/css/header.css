@@ -9,8 +9,9 @@ header {
     display: flex;
     align-items: center;
     height: 54px;
-    background-color: rgb(28, 29, 30);
+    background-color: rgb(23, 24, 26);
     padding: 0 10px;
+    border-bottom: 1px solid #121313;
 }
 
 body {
@@ -36,6 +37,12 @@ body {
     margin: 0 16px;
 }
 
+.header-menu-container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
 .header-menu-button {
     font-size: 13px;
     display: flex;
@@ -45,6 +52,9 @@ body {
     padding: 6px 14px;
     text-decoration: none;
     cursor: pointer;
+
+    height: 100%;
+    box-sizing: border-box;
 }
 .header-menu-button:hover {
     color: #55bfff;
@@ -79,7 +89,7 @@ body {
     height: 18px;
 }
 .header-round-button:hover {
-    background-color: rgb(17, 18, 19);
+    background-color: rgb(12, 13, 14);
 }
 
 .header-login-wrapper {
@@ -96,7 +106,7 @@ body {
     transition: all 0.4s ease;
 }
 .header-login-button-style:hover {
-    background-color: rgb(23, 24, 26);   
+    background-color: rgb(15, 16, 17);   
 }
 
 .header-auth-user-avatar-container {
@@ -113,6 +123,7 @@ body {
 .header-auth-user-options-header-avatar {
     width: 36px;
     height: 36px;
+    border-radius: 50%;
     fill: #e7e7e7;
 }
 .header-auth-username {
@@ -140,4 +151,47 @@ body {
     left: 0;
     height: 100%;
     width: 100%;
+}
+
+#header-discover-box {
+    position: absolute;
+    display: none;
+    left: 0;
+    top: 54px;
+    width: 100%;
+    padding: 18px;
+    box-sizing: border-box;
+    background-color: rgb(23, 24, 26);
+    color: white;
+}
+
+#header-discover-title {
+    font-size: 20px;
+    letter-spacing: 2px;
+}
+
+.header-discover-section {
+    margin: 0 30px;
+}
+
+.header-discover-section-title {
+    display: block;
+    user-select: none;
+    cursor: default;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    color: #dde4ea;
+    margin-bottom: 12px;
+}
+
+header .link {
+    display: flex;
+    color: #ececec;
+    text-decoration: none;
+    margin: 8px;
+    font-size: 14px;
+}
+header .link:hover {
+    color: white;
 }
