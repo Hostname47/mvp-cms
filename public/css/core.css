@@ -1043,6 +1043,32 @@ textarea {
     left: 12px;
 }
 
+.input-style-1 {
+    padding: 8px;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 3px;
+    border: 1px solid #b9b9b9;
+}
+
+.input-button-style-1 {
+    display: flex;
+    font-size: 12px;
+    font-weight: bold;
+    background-color: rgb(247, 247, 247);
+    padding: 8px;
+    margin-left: -2px;
+    height: 16px;;
+    color: #111;
+    border-radius: 0 3px 3px 0;
+    border: 1px solid #b9b9b9;
+    cursor: pointer;
+}
+.input-button-style-1:hover {
+    background-color: white;
+}
+
 .x-close-container-style {
     position: absolute;
     z-index: 1;
@@ -1070,9 +1096,8 @@ textarea {
 
 footer {
     padding: 16px;
-    height: 400px;
     box-sizing: border-box;
-    background-color: #1C1D1E;
+    background-color: #151617;
     color: white;
 }
 
@@ -1115,4 +1140,35 @@ footer .follow-us-container svg {
 
 .twitter-svg:hover {
     fill:#56BBFF;
+}
+
+footer .links-wrapper {
+    margin: 12px 0;
+    display: flex;
+}
+
+footer .links-container {
+    margin: 0 30px;
+}
+
+footer .links-wrapper .links-title {
+    font-weight: bold;
+    cursor: default;
+}
+
+footer .links-wrapper .link {
+    color: rgb(212, 212, 212);
+    display: flex;
+    margin: 8px 0;
+    text-decoration: none;
+}
+
+footer .links-wrapper .link:hover {
+    color: white;
+}
+
+footer .newsletter-section {
+    margin-left: auto;
+    margin-right: 20px;
+    max-width: 400px;
 }
