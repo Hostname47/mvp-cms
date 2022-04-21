@@ -371,7 +371,7 @@ class PostController extends Controller
                 $sortby = 'published_at';
         }
 
-        $posts = Post::with(['categories', 'author', 'author.roles'])->orderBy($sortby)->skip($data['skip'])->take($data['take']+1)->get();
+        $posts = Post::with(['categories', 'author', 'author.roles', 'tags'])->orderBy($sortby, 'desc')->skip($data['skip'])->take($data['take']+1)->get();
         $hasmore = $posts->count() > $data['take'];
         $posts = $posts->take($data['take']);
         $payload;

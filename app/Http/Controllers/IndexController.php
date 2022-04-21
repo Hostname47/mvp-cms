@@ -13,7 +13,7 @@ class IndexController extends Controller
 
     public function discover() {
         $perpage = 10;
-        $posts = Post::orderBy('published_at', 'desc')->with(['categories', 'author','author.roles'])->take($perpage+1)->get();
+        $posts = Post::orderBy('published_at', 'desc')->with(['categories', 'author','author.roles', 'tags'])->take($perpage+1)->get();
         $hasmore = $posts->count() > $perpage;
         $posts = $posts->take($perpage);
 

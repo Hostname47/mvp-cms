@@ -1,7 +1,7 @@
 <div class="post-component">
     <a href="{{ $post->link }}" class="featured-image-container">
         @if($fimage = $post->featured_image)
-            <img data-src="{{ $post->featured_image }}" data-stretch="fill-parent-dims" class="featured-image lazy-image with-fade" alt=""> <!-- lazy loaded -->
+            <img data-src="{{ $fimage }}" data-stretch="fill-parent-dims" class="featured-image lazy-image with-fade" alt=""> <!-- lazy loaded -->
             <div class="fade-box full-dimensions"></div>
         @else
             <svg class="f" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M252.93,253.89V5.74H4.78c2.76-.69,5.51-2,8.27-2q121-.17,242-.09,0,121-.09,242C254.91,248.38,253.62,251.13,252.93,253.89Z" style="fill:#fff"/><path d="M56.69,31H205.78C204.5,44.71,203.3,57.53,202,71.37L191.28,72c-.83-1.56-1.44-2.25-1.57-3-4-24.39,1.61-21.18-25.79-24.67a135.39,135.39,0,0,0-14.38-.91c-7.85-.15-15.71,0-25,0V120.8c13.22,0,27.24,1.45,40.65-.77,4.86-.81,8.27-10.4,10.27-18.34l12.17-.62v59.62H176.14c-.54-.81-1.35-1.48-1.44-2.24-2.6-21.54-2.58-21.67-25-22.86-8.2-.43-16.44-.07-25.59-.07,0,24.42-.31,48.26.15,72.08.19,9.88,8.6,9,15.49,10,6.07.88,15.59-1.06,11.61,11.47h-94c-1.32-9.18-1.36-10,6.22-10.34,12.28-.49,16.17-6.13,16-18.13-.53-46.73-.38-93.46-.16-140.19C79.57,49.29,77.39,41.71,64,41.63c-3.26,0-6.5-4.93-9.74-7.6Z"/></svg>
@@ -19,7 +19,18 @@
         </div>
         <a href="{{ $post->link }}" class="title">{{ $post->html_title }}</a>
         <p class="excerpt">{{ $post->excerpt }} <a href="{{ $post->link }}" class="dark-blue no-underline fs12 bold ml4">{{__('read more')}}</a></p>
+        @if($post->tags->count())
+        <div class="tags-box">
+            <span class="fs12 bold dark no-wrap mt2 mr8">{{ __('Tags') }} :</span>
+            <div class="tags-container">
+                @foreach($post->tags->take(5) as $tag)
+                <a href="" class="tag">#{{ $tag->title }}</a>
+                @endforeach
+            </div>
+        </div>
+        @else
         <div class="simple-line-separator half-width my4"></div>
+        @endif
         <div class="post-bottom-section">
             <img src="{{ $post->author->avatar(36) }}" class="author-avatar" alt="">
             <div>

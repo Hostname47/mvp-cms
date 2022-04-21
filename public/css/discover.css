@@ -1,8 +1,10 @@
 #discover-left-panel {
     position: fixed;
     left: 0;
+    padding: 10px;
     height: calc(100% - 54px);
     width: 270px;
+    box-sizing: border-box;
     background-color: #f3f6f9;
     border-right: 1px solid #dde5ec;
 }
@@ -26,67 +28,4 @@ main {
 
 #posts-box {
     margin-top: 12px;
-}
-
-.post-component {
-    display: flex;
-    border: 1px solid #c6d0d9;
-    border-radius: 3px;
-    margin-top: 10px;
-}
-
-.post-component .featured-image-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 280px;
-    height: 200px;
-    border-right: 1px solid #c6d0d9;
-    background-color: #fafafb;
-    overflow: hidden;
-}
-
-.post-component .content-container {
-    display: flex;
-    flex-direction: column;
-    padding: 12px;
-    flex: 1;
-}
-
-.post-component .title {
-    display: block;
-    margin: 0 0 5px 0;
-    font-size: 17px;
-    font-weight: bold;
-    text-decoration: none;
-    color: #2ca0ff;
-}
-
-.post-component .excerpt {
-    color: #15171a;
-    margin: 0;
-}
-
-.post-component .category {
-    text-decoration: none;
-    font-size: 12px;
-    color: #0b395f;
-}
-
-.post-component .f {
-    height: 60px;
-    width: 60px;
-    fill: #899baa;
-}
-
-.post-component .post-bottom-section {
-    display: flex;
-    margin-top: auto;
-}
-
-.post-component .author-avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    margin-right: 6px;
 }

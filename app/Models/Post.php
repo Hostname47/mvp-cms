@@ -93,7 +93,7 @@ class Post extends Model
             $excerpt = $html_dom->getElementsByTagName('p')->item(0)->nodeValue;
         }
 
-        return Str::of($excerpt)->words(30, '..');
+        return Str::of($excerpt)->words(26, '..');
     }
 
     public function getLinkAttribute() {
