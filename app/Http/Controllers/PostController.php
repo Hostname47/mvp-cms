@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Models\{Post,Category,Tag};
+use App\View\Components\Post\PostCard;
 use Carbon\Carbon;
 
 class PostController extends Controller
@@ -352,5 +353,51 @@ class PostController extends Controller
 
         $post->forceDelete();
         Session::flash('message', 'Post has been permanently deleted successfully');
+    }
+
+    /** client */
+
+    public function fetch(Request $request) {
+        $data = $request->validate([
+            'skip'=>'required|numeric',
+            'take'=>'required|numeric',
+            'sort'=>['required', Rule::in(['publish-date'])],
+            'form'=>['required', Rule::in(['raw','card-component'])],
+        ]);
+
+        $sortby = '';
+        switch($data['sort']) {
+            case 'publish-date':
+                $sortby = 'published_at';
+        }
+
+        $posts = Post::orderBy($sortby)->skip($data['skip'])->take($data['take']+1)->get();
+        $hasmore = $posts->count() > $data['take'];
+        $posts = $posts->take($data['take']);
+        $payload;
+        switch($data['form']) {
+            case 'raw':
+                $payload = $posts->map(function($post) {
+                    return [
+                        'id'=>$post->id,
+                        // The other neccessary columns
+                    ];
+                });
+                break;
+            case 'card-component':
+                $payload = "";
+                $posts->map(function($post) use (&$payload) {
+                    $postcard = (new PostCard($post));
+                    $postcard = $postcard->render(get_object_vars($postcard))->render();
+                    $payload .= $postcard;
+                });
+                break;
+        }
+
+        return [
+            'posts'=>$payload,
+            'count'=>$posts->count(),
+            'hasmore'=>$hasmore
+        ];
     }
 }

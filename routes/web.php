@@ -93,5 +93,8 @@ Route::middleware('client.scopes')->group(function() {
     Route::get('/', [IndexController::class, 'index'])->name('root.slash');
     Route::get('/home', [IndexController::class, 'index'])->name('home');
     Route::get('/discover', [IndexController::class, 'discover'])->name('discover');
-    Route::get('/{category:slug}/{post:slug}', [PostController::class, 'view'])->name('view.post');
+
+    Route::get('/posts/fetch', [PostController::class, 'fetch']);
+
+    Route::get('/{category:slug}/{post:slug}/v', [PostController::class, 'view'])->name('view.post');
 });
