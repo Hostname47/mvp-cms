@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\{Category,Tag, Metadata};
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
@@ -67,10 +68,35 @@ class Post extends Model
         return false;
     }
 
-    function get_tag_content($tagname) {
-        // Create DOM from string
-        $html = \str_get_html($this->content);
-    
-        return $html->find($tagname);
+    public function getHtmlTitleAttribute() {
+        // DOM Parser Object
+        $html_dom = new \DOMDocument();
+        @$html_dom->loadHTML($this->content);
+
+        $title = $html_dom->getElementsByTagName('h1')[0];
+
+        if($title)
+            return $title->nodeValue;
+
+        return $this->title;
+    }
+
+    public function getExcerptAttribute() {
+        $excerpt = "";
+
+        if($this->summary)
+            $excerpt = $this->summary;
+        else {
+            // DOM Parser Object
+            $html_dom = new \DOMDocument();
+            @$html_dom->loadHTML($this->content);
+            $excerpt = $html_dom->getElementsByTagName('p')->item(0)->nodeValue;
+        }
+
+        return Str::of($excerpt)->words(30, '..');
+    }
+
+    public function getLinkAttribute() {
+        return route('view.post', ['category'=>$this->categories->first()->slug, 'post'=>$this->slug]);
     }
 }
