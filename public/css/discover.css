@@ -36,6 +36,9 @@ main {
 }
 
 .post-component .featured-image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 280px;
     height: 200px;
     border-right: 1px solid #c6d0d9;
@@ -70,8 +73,10 @@ main {
     color: #0b395f;
 }
 
-.post-component .featured-image {
-    
+.post-component .f {
+    height: 60px;
+    width: 60px;
+    fill: #899baa;
 }
 
 .post-component .post-bottom-section {

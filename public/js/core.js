@@ -295,7 +295,8 @@ function handle_image_center_based_on_higher_dim(image) {
     load_image(image.attr('src'), function() {
         let width = image.width();
         let height = image.height();
-
+        console.log(width);
+        console.log(height);
         if(width > height)
             image.width('100%');
         else
@@ -321,12 +322,9 @@ function handle_image_center_fill(image) {
 }
 function load_image(src, callback) {
     let image = new Image();
-    image.onload = callback(image);
-    image.src = src;
-}
-function get_image_dimensions(src) {
-    let image = new Image();
-    image.onload = callback(image);
+    $(image).on('load', function() {
+        callback(image);
+    });
     image.src = src;
 }
 
@@ -441,4 +439,75 @@ function handle_login_required_actions(section) {
             event.preventDefault();
         });
     });
+}
+
+function stretch_image_to_parent_dimensions(image, has_fade) {
+    let container = image.parent();
+    let image_w = image[0].naturalWidth;
+    let image_h = image[0].naturalHeight;
+    let container_w = container.width();
+    let container_h = container.height();
+
+    image.on({
+        load: function() {
+            if(image_w > image_h) {
+                image.height(container_h);
+                if(container_w > image.width()) {
+                    image.width(container_w);
+                    image.css('height', 'auto');
+                }
+            }
+            else {
+                image.width(container_w);
+                if(container_h > image.height()) {
+                    image.height(container_h);
+                    image.css('width', 'auto');
+                }
+            }
+            // Remove fade if exists once the image finish loading
+            if(has_fade)
+                image.parent().find('.fade-box').remove();
+        },
+        error: function() {
+            if(has_fade)
+                image.parent().find('.fade-box').remove();
+            
+            console.log('error');
+        },
+        complete: function() {
+            console.log('fisnish');
+        }
+    });
+}
+
+$(window).on('DOMContentLoaded load resize scroll', function() {
+    handle_lazy_images();
+});
+
+function handle_lazy_images() {
+    $('.lazy-image').each(function() {
+        let image = $(this);
+        if(is_visible_in_viewport(image[0])) {
+            let src = image.attr('data-src');
+            let stretch = image.attr('data-stretch');
+            image.attr('src', src);
+            image.removeAttr('data-src');
+            image.removeAttr('stretch');
+            image.removeClass('lazy-image');
+
+            switch(stretch) {
+                case 'fill-parent-dims':
+                    stretch_image_to_parent_dimensions(image, image.hasClass('with-fade'));
+                    break;
+            }
+        }
+    });
+}
+
+function is_visible_in_viewport(element) {
+    let rect = element.getBoundingClientRect();
+    var top = rect.top;
+    var bottom = rect.bottom;
+
+    return top < window.innerHeight && bottom >= 0;
 }
