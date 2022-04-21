@@ -69,6 +69,31 @@
                     </div>
                 </div>
                 @endforeach
+                @if($hasmore)
+                <div class="post-component posts-fetch-more fetch-more-style">
+                    <div class="featured-image-container">
+                        <div class="fade-box full-dimensions"></div>
+                    </div>
+                    <div class="content-container">
+                        <div class="flex mb4">
+                            <div class="fade-box br2 mr4" style="height: 14px; width: 20%"></div>
+                            <div class="fade-box br2" style="height: 14px; width: 20%"></div>
+                        </div>
+                        <div class="fade-box br2 mb8" style="height: 22px; width: 80%"></div>
+                        <div class="fade-box br2 mb4" style="height: 16px; width: 100%"></div>
+                        <div class="fade-box br2 mb4" style="height: 16px; width: 100%"></div>
+                        <div class="fade-box br2 mb4" style="height: 16px; width: 80%"></div>
+                        <div class="flex move-to-bottom mt8">
+                            <div class="fade-box rounded size36 mr8"></div>
+                            <div class="fade-box br3 mb4" style="height: 34px; width: 40%"></div>
+                            <div class="align-center move-to-right" style="width: 30%">
+                                <div class="fade-box br2 mr4" style="height: 20px; width: 50%"></div>
+                                <div class="fade-box br2" style="height: 20px; width: 50%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endif
             </div>
         </div>
         <div id="discover-right-panel">

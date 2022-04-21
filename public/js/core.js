@@ -6,6 +6,21 @@ $.ajaxSetup({
 
 // $(window).on('unload', function() { $(window).scrollTop(0); });
 
+$('.fade-box').each(function() {
+    let box = $(this);
+    window.setInterval(function(){
+        let target_color;
+        if(box.css('background-color') == "rgb(214, 218, 225)") {
+            target_color = "rgb(233, 236, 240)";
+        } else {
+            target_color = "rgb(214, 218, 225)";
+        }
+        box.css({
+            backgroundColor: target_color,
+        });
+    }, 800);
+})
+
 let discover_opening_timeout;
 $('#header-discover-button').on({
     mouseenter: function() {

@@ -48,6 +48,16 @@ body {
     word-break: break-all;
 }
 
+.br2 {
+    border-radius: 2px;
+}
+.br3 {
+    border-radius: 3px;
+}
+.br4 {
+    border-radius: 4px;
+}
+
 .no-wrap {
     white-space: nowrap;
 }
@@ -1197,7 +1207,7 @@ footer .newsletter-section {
 }
 
 .page-padding {
-    padding: 14px 16px;
+    padding: 14px 16px 0 16px;
 }
 
 .title-style {
@@ -1222,4 +1232,15 @@ footer .newsletter-section {
 
 .page-path-wrapper a {
     text-decoration: none;
+}
+
+.fade-box {
+    background-color: rgb(233, 236, 240);
+    transition: background-color 0.8s ease;
+}
+
+.fetch-more-style {
+    border-bottom: unset !important;
+    border-bottom-left-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
 }
