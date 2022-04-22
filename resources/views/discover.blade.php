@@ -28,7 +28,41 @@
                 <svg class="size22 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M129.93,253.53c-68-.07-123.6-55.81-123.42-123.74C6.69,61.7,62.5,6.13,130.34,6.48S253.4,62.05,253.49,129.91,197.89,253.6,129.93,253.53Zm.26-24.9A98.63,98.63,0,1,0,31.4,130.47,98.39,98.39,0,0,0,130.19,228.63ZM114.3,110.34a5.81,5.81,0,0,0-3.74,3.27C102.8,133.15,95,152.69,86.88,173.13l59.63-23.74a5.33,5.33,0,0,0,3-3.26c7.72-19.42,15.46-38.83,23.61-59.25C152.81,95,133.57,102.69,114.3,110.34Z"></path></svg>
                 <h1 class="title-style">Discover</h1>
             </div>
-            <p class="dark my4">Discover latest articles and posts written by our artisans writers</p>
+            @if(Session::has('message'))
+                <div class="informative-message-container align-center relative my8">
+                    <div class="informative-message-container-left-stripe imcls-green"></div>
+                    <div class="no-margin fs13 message-text">{!! Session::get('message') !!}</div>
+                    <div class="close-parent close-informative-message-style">✖</div>
+                </div>
+            @endif
+            @if(Session::has('errors'))
+                <div class="informative-message-container align-center relative my8">
+                    <div class="informative-message-container-left-stripe imcls-red"></div>
+                    <div class="no-margin fs13 message-text">{!! Session::get('errors')->first() !!}</div>
+                    <div class="close-parent close-informative-message-style">✖</div>
+                </div>
+            @endif
+            @if(Session::has('error'))
+                <div class="informative-message-container align-center relative my8">
+                    <div class="informative-message-container-left-stripe imcls-red"></div>
+                    <div class="no-margin fs13 message-text">{!! Session::get('error') !!}</div>
+                    <div class="close-parent close-informative-message-style">✖</div>
+                </div>
+            @endif
+            <div class="flex space-between my4">
+                <p class="dark no-margin">{{ __('Find out what has been recently written') }}.</p>
+                <div>
+                    <div class="align-center">
+                        <label for="discover-posts-count" class="fs12 bold dark mr4">{{ __('posts') }} :</label>
+                        <select name="count" id="discover-posts-count" autocomplete="off">
+                            <option @if($count == 8) selected @endif value="8">8</option>
+                            <option @if($count == 14) selected @endif value="14">14</option>
+                            <option @if($count == 20) selected @endif value="20">20</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
             <div id="posts-box">
                 @foreach($posts as $post)
                 <x-post.post-card :post="$post" />

@@ -2,7 +2,7 @@
     display: flex;
     border: 1px solid #c6d0d9;
     border-radius: 3px;
-    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .post-component .featured-image-container {

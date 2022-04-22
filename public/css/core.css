@@ -1259,6 +1259,7 @@ footer .newsletter-section {
     border-bottom: unset !important;
     border-bottom-left-radius: 0px !important;
     border-bottom-right-radius: 0px !important;
+    margin-bottom: 0 !important;
 }
 
 #left-panel {

@@ -39,3 +39,7 @@ if(posts_fetch_more.length) {
         }
     });
 }
+
+$('#discover-posts-count').on('change', function() {
+    window.location.href = updateQueryStringParameter(window.location.href, 'count', $(this).val());
+});
