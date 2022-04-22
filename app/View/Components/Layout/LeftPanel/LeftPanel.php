@@ -3,15 +3,20 @@
 namespace App\View\Components\Layout\LeftPanel;
 
 use Illuminate\View\Component;
-use App\Models\{Category};
+use App\Models\{Category,Tag};
 
 class LeftPanel extends Component
 {
     public $categories;
+    public $tags;
 
     public function __construct()
     {
         $this->categories = Category::tree()->get()->toTree();
+        $this->tags = Tag::withCount('posts')
+            ->withCount('posts as posts_count')
+            ->orderByRaw('posts_count DESC')
+            ->take(12)->get();
     }
 
     /**

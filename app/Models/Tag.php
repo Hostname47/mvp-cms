@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Post;
 
 class Tag extends Model
 {
@@ -20,5 +21,9 @@ class Tag extends Model
         $search = Tag::query();
         foreach($conditions as $key=>$value) $search = $search->orWhere($key, $value);
         return ($tag = $search->first()) ? $tag : Tag::create($data);
+    }
+
+    public function posts() {
+        return $this->belongsToMany(Post::class);
     }
 }

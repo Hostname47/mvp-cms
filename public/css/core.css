@@ -409,8 +409,16 @@ figure {
     margin: 2px 0;
 }
 
+.mr10 {
+    margin-right: 10px !important;
+}
+
 .mr8 {
     margin-right: 8px !important;
+}
+
+.mr6 {
+    margin-right: 6px !important;
 }
 
 .mr4 {
@@ -1257,6 +1265,10 @@ footer .newsletter-section {
     border-right: 1px solid #dde5ec;
 }
 
+#left-panel .categories-wrapper {
+    margin: 10px 0;
+}
+
 #left-panel .category-container {
     position: relative;
     margin: 6px 0;
@@ -1304,4 +1316,28 @@ footer .newsletter-section {
     height: 8px;
     fill: #a6b1bf;
     margin: 0 4px;
+}
+
+#left-panel .section {
+    margin: 14px 0;
+}
+
+#left-panel .tags-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding-right: 4px;
+    margin: 12px 0;
+}
+
+#left-panel .tag {
+    color: #101214;
+    text-decoration: none;
+    font-size: 12px;
+    background-color: #d8dee6;
+    border-radius: 3px;
+    padding: 3px 8px;
+}
+#left-panel .tag:hover {
+    background-color: #c6cdd6;
 }
