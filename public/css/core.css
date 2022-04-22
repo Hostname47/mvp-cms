@@ -1413,3 +1413,23 @@ footer .newsletter-section {
 #left-panel-search-button:hover {
     background-color: #3391e4;
 }
+
+#left-panel .quote-section {
+    display: flex;
+    justify-content: center;
+    margin-left: -24px;
+}
+#left-panel .quote-section .start-quotation {
+    width: 24px;
+    height: 24px;
+}
+#left-panel .quote-section .quote {
+    margin: 10px 10px 0 10px;
+    color: #232B33;
+    user-select: none;
+}
+#left-panel .quote-section .end-quotation {
+    width: 16px;
+    height: 16px;
+    margin-top: 25px;
+}
