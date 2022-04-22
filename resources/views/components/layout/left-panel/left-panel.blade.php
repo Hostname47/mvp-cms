@@ -1,4 +1,61 @@
 <div id="left-panel">
+    <a href="{{ route('home') }}" class="align-center my8 link">
+        <svg class="size13" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M130,249.63q-38.79,0-77.56,0c-24.86,0-42.06-17.09-42.09-41.82,0-27.88.07-55.77,0-83.65-.05-12.75,4.55-23.27,14-31.81Q63.44,56.93,102.51,21.4C119,6.5,140.94,6.45,157.42,21.34c26,23.5,51.85,47.15,77.89,70.59,9.77,8.79,14.43,19.5,14.37,32.59-.13,27.41-.22,54.83,0,82.25.19,21.92-15.28,43.78-43.09,43C181.09,249.07,155.53,249.63,130,249.63Zm-.63-23.08q39,0,78,0c10.76,0,17.06-6.35,17.08-17.13,0-28,0-56.06,0-84.09a21.06,21.06,0,0,0-7.4-16.42q-37.51-34.07-75-68.13c-8.69-7.89-16.76-7.78-25.51.18C91.79,63.47,67.14,86.11,42.11,108.33c-5.52,4.91-7.92,10.11-7.86,17.36.22,27.72.06,55.44.1,83.16,0,11.64,6.2,17.69,17.95,17.7Z"/></svg>
+        <span class="ml8">{{__('Home')}}</span>
+    </a>
+    <a href="{{ route('discover') }}" class="align-center my8 link">
+        <svg class="size13" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M129.93,253.53c-68-.07-123.6-55.81-123.42-123.74C6.69,61.7,62.5,6.13,130.34,6.48S253.4,62.05,253.49,129.91,197.89,253.6,129.93,253.53Zm.26-24.9A98.63,98.63,0,1,0,31.4,130.47,98.39,98.39,0,0,0,130.19,228.63ZM114.3,110.34a5.81,5.81,0,0,0-3.74,3.27C102.8,133.15,95,152.69,86.88,173.13l59.63-23.74a5.33,5.33,0,0,0,3-3.26c7.72-19.42,15.46-38.83,23.61-59.25C152.81,95,133.57,102.69,114.3,110.34Z"/></svg>
+        <span class="ml8">{{__('Discover')}}</span>
+    </a>
+    <!-- auth user section -->
+    @auth
+    <div class="auth-section">
+        <div class="flex">
+            <a href="" class="size32 mr8">
+                <img src="{{ auth()->user()->avatar(36) }}" class="rounded size32" alt="">
+            </a>
+            <div class="toggle-box">
+                <div class="align-center pointer toggle-button">
+                    <p class="no-margin dark bold">{{ auth()->user()->fullname }}</p>
+                    <svg class="size7 ml8 mt2 toggle-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02"><path d="M13.4,1.43l9.35,11a4,4,0,0,1,0,5.18l-9.35,11a4,4,0,1,1-6.1-5.18L14.46,15,7.3,6.61a4,4,0,0,1,6.1-5.18Z"/></svg>
+                </div>
+                <p class="no-margin fs12 light-gray">{{ auth()->user()->username }}</p>
+                <div class="mt8 toggle-container none">
+                    <a href="" class="my8 link">{{__('profile')}}</a>
+                    <a href="" class="my8 link">{{__('activities')}}</a>
+                    <a href="" class="my8 link">{{__('settings')}}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    @else
+    <div class="auth-button align-center login-required auth-section">
+        <svg class="size17 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M130,254C61.82,254.05,5.93,198.12,6,129.89S62.07,5.77,130.23,6A124.29,124.29,0,0,1,254,129.79C254.18,198,198.32,254,130,254Zm99-123.86c.06-54.55-43.36-98.92-98-99C89.94,31.1,59,50.08,41.12,86.79,23.34,123.28,28,158.8,52.29,191.58c2.25,3,3.58,3.77,7,1,43-34.12,98.77-34.07,141.52.13,3.24,2.59,4.48,1.9,6.63-.87C221.6,173.69,229,153.2,229,130.14ZM74.91,212c32.78,23.76,81.48,21.67,110.05-.06C155.36,185.48,105.73,185.4,74.91,212Zm54.77-57.31c-27.29-.17-49.5-22.52-49.31-49.63a49.79,49.79,0,0,1,50.24-49.34c27.12.25,49.43,23,49,50A49.53,49.53,0,0,1,129.68,154.65Zm25-49.32A24.65,24.65,0,1,0,130,130,24.71,24.71,0,0,0,154.65,105.33Z"/></svg>
+        <span class="fs12 bold">{{__('Login ● Register')}}</span>
+    </div>
+    @endauth
+    <span class="section-title">PUBLIC</span>
+    <!-- search -->
+    <div class="search-box toggle-box section">
+        <div class="align-center">
+            <svg class="size14 mr6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M173.51,206.37a4,4,0,0,1,4.71.52c.53.49,1.06,1,1.58,1.51l31.93,31.92a12.14,12.14,0,0,0,16.88.27q5.79-5.42,11.39-11a12.9,12.9,0,0,0,0-18.26q-15.63-15.52-31.31-31c-.29-.28-1.11-1-1.43-1.28a4,4,0,0,1-1-5.25,110.15,110.15,0,0,0,14.58-38.92C229.44,85,195.67,32.54,146.6,20c-6.25-1.59-12.65-2.62-19-3.89L110,16.32c-9.55,2.24-19.51,3.5-28.44,7.22C43,39.57,20.4,68.72,16.72,110.23c-3.59,40.5,12.55,73.32,46.85,95.2,35.87,22.89,73.09,22.32,109.92.95Zm-55-24.64c-35.1-.71-62.94-29.43-62.06-64,.86-34.23,29.56-62,63.37-61.24,34.61.74,62.59,29.41,61.78,63.29C180.72,154.6,152.4,182.42,118.46,181.73Z"/></svg>
+            <label for="left-panel-search" class="no-margin unselectable fs14 bold dark">{{__('Search')}}</label>
+            <a href="" class="align-center no-underline fs12 blue bold move-to-right mr4">
+                <svg class="size12 mr4" fill="#2ca0ff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M129.94,20.56c29.51,0,59,.13,88.54-.06,11.44-.08,20.42,3.77,25.2,14.52s1.34,20-6.35,28.39q-37.17,40.53-73.93,81.44a14.13,14.13,0,0,0-3.25,8.42c-.34,13.59-.26,27.19-.1,40.78a12.25,12.25,0,0,1-4.91,10.65c-13.35,10.5-26.59,21.15-39.84,31.79-3.11,2.49-6.31,4.06-10.32,2.18-4.18-2-5.13-5.49-5.12-9.74.06-25,0-50.08.11-75.12a12.83,12.83,0,0,0-3.65-9.52q-37.87-41.35-75.47-83C7.63,46.63,14.86,24.7,33.92,21a39.63,39.63,0,0,1,7.48-.41Q85.67,20.54,129.94,20.56Z"/></svg>
+                <span>{{__('adv. search')}}</span>
+            </a>
+        </div>
+        <form class="flex1">
+            <p class="fs11 no-margin light-gray">{{__('Search for everything')}}..</p>
+            <div class="align-center mt4">
+                <input type="text" name="k" id="left-panel-search-input" required class="flex1" placeholder="{{ __('Search keywords') }}">
+                <button id="left-panel-search-button">
+                    <svg class="size12" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M173.51,206.37a4,4,0,0,1,4.71.52c.53.49,1.06,1,1.58,1.51l31.93,31.92a12.14,12.14,0,0,0,16.88.27q5.79-5.42,11.39-11a12.9,12.9,0,0,0,0-18.26q-15.63-15.52-31.31-31c-.29-.28-1.11-1-1.43-1.28a4,4,0,0,1-1-5.25,110.15,110.15,0,0,0,14.58-38.92C229.44,85,195.67,32.54,146.6,20c-6.25-1.59-12.65-2.62-19-3.89L110,16.32c-9.55,2.24-19.51,3.5-28.44,7.22C43,39.57,20.4,68.72,16.72,110.23c-3.59,40.5,12.55,73.32,46.85,95.2,35.87,22.89,73.09,22.32,109.92.95Zm-55-24.64c-35.1-.71-62.94-29.43-62.06-64,.86-34.23,29.56-62,63.37-61.24,34.61.74,62.59,29.41,61.78,63.29C180.72,154.6,152.4,182.42,118.46,181.73Z"/></svg>
+                </button>
+            </div>
+        </form>
+    </div>
+    <!-- categories -->
     <div class="categories-box toggle-box section">
         <div class="align-center">
             <div class="align-center toggle-button pointer">
@@ -15,6 +72,7 @@
             @endforeach
         </div>
     </div>
+    <!-- tags -->
     <div class="tags-box toggle-box section">
         <div class="align-center">
             <div class="align-center toggle-button pointer">
@@ -28,6 +86,21 @@
             @foreach($tags as $tag)
                 <a href="" class="tag">#{{ $tag->slug }}</a>
             @endforeach
+        </div>
+    </div>
+    <span class="section-title">MORE</span>
+    <div class="section">
+        <a href="" class="link my12" style="margin-top: 0;">{{__('FAQs')}}</a>
+        <a href="" class="link my12">{{__('Guidelines')}}</a>
+        <a href="" class="link my12">{{__('Privacy Policy')}}</a>
+    </div>
+    <div class="move-to-bottom mr8">
+        <div class="flex align-center dark fs13" style="letter-spacing: 1.2px;">
+            <p class="unselectable fs12 bold no-margin">Designed with</p>
+            <div style="max-height: 19px; height: 19px; max-width: 19px; width: 19px" class="full-center mx4" title="LOVE">
+                <svg class="heart-beating" fill="#FF0000" style="width: 16px; stroke: #331010; stroke-width: 5px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 94.5"><path d="M86.82,26.63v-7.3H78.64V12H62.27v7.29H54.09v7.3H45.91v-7.3H37.73V12H21.36v7.29H13.18v7.3H5V48.5h8.18v7.29h8.18v7.29h8.19v7.29h8.18v7.3h8.18V85h8.18V77.67h8.18v-7.3h8.18V63.08h8.19V55.79h8.18V48.5H95V26.63Z"/></svg>
+            </div>
+            <p class="unselectable fs12 bold">by<a href="https://www.mouad-nassri.freecluster.eu" target="_blank" class="no-underline mx4" style="color: rgb(58, 186, 236)">Mouad</a></p>
         </div>
     </div>
 </div>

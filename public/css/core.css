@@ -102,6 +102,10 @@ body {
     justify-content: center;
 }
 
+.flex1 {
+    flex: 1;
+}
+
 .white {
     color: white;
 }
@@ -395,6 +399,10 @@ figure {
     padding: 0;
     border: none;
     background: none;
+}
+
+.my12 {
+    margin: 12px 0;
 }
 
 .my8 {
@@ -1254,9 +1262,11 @@ footer .newsletter-section {
 }
 
 #left-panel {
+    display: flex;
+    flex-direction: column;
     position: fixed;
     left: 0;
-    padding: 20px 0 20px 16px;
+    padding: 20px 0 20px 24px;
     height: calc(100% - 54px);
     width: 270px;
     overflow-y: auto;
@@ -1271,8 +1281,7 @@ footer .newsletter-section {
 
 #left-panel .category-container {
     position: relative;
-    margin: 6px 0;
-    margin-left: 12px;
+    margin: 8px 0 8px 8px;
 }
 
 #left-panel .category {
@@ -1319,13 +1328,13 @@ footer .newsletter-section {
 }
 
 #left-panel .section {
-    margin: 14px 0;
+    margin-left: 12px;
 }
 
 #left-panel .tags-wrapper {
     display: flex;
     flex-wrap: wrap;
-    gap: 4px;
+    gap: 6px;
     padding-right: 4px;
     margin: 12px 0;
 }
@@ -1340,4 +1349,67 @@ footer .newsletter-section {
 }
 #left-panel .tag:hover {
     background-color: #c6cdd6;
+}
+
+#left-panel .section-title {
+    display: block;
+    margin: 12px 0;
+    color: #52585e;
+    font-weight: bold;
+    font-size: 11px;
+}
+
+#left-panel .link {
+    font-size: 13px;
+    text-decoration: none;
+    color: #24282d;
+    display: flex;
+}
+#left-panel .link:hover {
+    color: #2ca0ff;
+    fill: #2ca0ff;
+}
+
+#left-panel .auth-section {
+    background-color: #e0e6ee;
+    padding: 10px;
+    margin-top: 8px;
+}
+
+#left-panel .auth-button {
+    cursor: pointer;
+}
+#left-panel .auth-button:hover {
+    cursor: pointer;
+    background-color: #d0d8e2;
+}
+
+#left-panel .search-box, #left-panel .categories-box, #left-panel .tags-box {
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+#left-panel-search-input {
+    padding: 5px 8px;
+    font-size: 12px;
+    border-radius: 3px 0 0 3px;
+    border: 1px solid #BECAD9;
+    color: #1f2426;
+}
+
+#left-panel-search-button {
+    border: unset;
+    background-color: #3ca4ff;
+    height: 26px;
+    width: 36px;
+    fill: white;
+    border-radius: 0 3px 3px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-right: 4px;
+}
+#left-panel-search-button:hover {
+    background-color: #3391e4;
 }
