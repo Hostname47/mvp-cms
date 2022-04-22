@@ -48,42 +48,39 @@ function close_header_discover_section() {
 }
 
 $('.toggle-box').each(function() { handle_toggling($(this)); });
-function handle_toggling(component) {
-    component.find('.toggle-button').each(function() {
-        $(this).on('click', function() {
-            let box = $(this);
-            while(!box.hasClass('toggle-box')) box = box.parent();
-            let container = box.find('.toggle-container').first();
-            let arrow = box.find('.toggle-arrow').first();
+function handle_toggling(box) {
+    box.find('.toggle-button').first().on('click', function() {
+        while(!box.hasClass('toggle-box')) box = box.parent();
+        let container = box.find('.toggle-container').first();
+        let arrow = box.find('.toggle-arrow').first();
 
-            if(container.hasClass('none')) {
-                container.removeClass('none');
-                container.addClass('block');
+        if(container.hasClass('none')) {
+            container.removeClass('none');
+            container.addClass('block');
 
-                if(arrow.length) {
-                    arrow.css({
-                        transform:'rotate(90deg)',
-                        '-ms-transform':'rotate(90deg)',
-                        '-moz-transform':'rotate(90deg)',
-                        '-webkit-transform':'rotate(90deg)',
-                        '-o-transform':'rotate(90deg)'
-                    });
-                }
-            } else {
-                container.removeClass('block');
-                container.addClass('none');
-
-                if(arrow.length) {
-                    arrow.css({
-                        transform:'rotate(0deg)',
-                        '-ms-transform':'rotate(0deg)',
-                        '-moz-transform':'rotate(0deg)',
-                        '-webkit-transform':'rotate(0deg)',
-                        '-o-transform':'rotate(0deg)'
-                    });
-                }
+            if(arrow.length) {
+                arrow.css({
+                    transform:'rotate(90deg)',
+                    '-ms-transform':'rotate(90deg)',
+                    '-moz-transform':'rotate(90deg)',
+                    '-webkit-transform':'rotate(90deg)',
+                    '-o-transform':'rotate(90deg)'
+                });
             }
-        });
+        } else {
+            container.removeClass('block');
+            container.addClass('none');
+
+            if(arrow.length) {
+                arrow.css({
+                    transform:'rotate(0deg)',
+                    '-ms-transform':'rotate(0deg)',
+                    '-moz-transform':'rotate(0deg)',
+                    '-webkit-transform':'rotate(0deg)',
+                    '-o-transform':'rotate(0deg)'
+                });
+            }
+        }
     });
 }
 

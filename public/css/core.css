@@ -1257,24 +1257,51 @@ footer .newsletter-section {
     border-right: 1px solid #dde5ec;
 }
 
-#left-panel .categories-box {
-    padding-right: 12px;
-}
-
 #left-panel .category-container {
     position: relative;
+    margin: 6px 0;
     margin-left: 12px;
 }
 
 #left-panel .category {
     display: block;
-    margin: 8px 0;
     color: #24292f;
     text-decoration: none;
     font-size: 13px;
 }
 #left-panel .category:hover {
     color: #101214;
+    text-decoration: underline;
 }
 
+#left-panel .category-toggle-button {
+    display: flex;
+    margin-left: 4px;
+    padding: 4px;
+    border-radius: 2px;
+    background-color: #dce4ec;
+    border: 1px solid #c0ccd9;
+    cursor: pointer;
+}
+#left-panel .category-toggle-button:hover {
+    background-color: #cad2da;
+}
 
+#left-panel .category-toggle-arrow {
+    width: 7px;
+    height: 7px;
+    fill: #4f5660;
+}
+
+#left-panel .category-children-container {
+    flex: 1;
+    background-color: #aeb9ca2e;
+    border-radius: 4px 0 4px 4px;
+}
+
+#left-panel .category-children-angle {
+    width: 8px;
+    height: 8px;
+    fill: #a6b1bf;
+    margin: 0 4px;
+}
