@@ -1244,3 +1244,37 @@ footer .newsletter-section {
     border-bottom-left-radius: 0px !important;
     border-bottom-right-radius: 0px !important;
 }
+
+#left-panel {
+    position: fixed;
+    left: 0;
+    padding: 20px 0 20px 16px;
+    height: calc(100% - 54px);
+    width: 270px;
+    overflow-y: auto;
+    box-sizing: border-box;
+    background-color: #f3f6f9;
+    border-right: 1px solid #dde5ec;
+}
+
+#left-panel .categories-box {
+    padding-right: 12px;
+}
+
+#left-panel .category-container {
+    position: relative;
+    margin-left: 12px;
+}
+
+#left-panel .category {
+    display: block;
+    margin: 8px 0;
+    color: #24292f;
+    text-decoration: none;
+    font-size: 13px;
+}
+#left-panel .category:hover {
+    color: #101214;
+}
+
+
