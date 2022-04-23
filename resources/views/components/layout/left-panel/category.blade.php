@@ -1,7 +1,7 @@
 <div class="category-container toggle-box">
     @if($category->children->count())
         <div class="align-center">
-            <a class="category" href="">{{ __($category->title) }}</a>
+            <a class="category" href="{{ route('discover', ['category'=>$category->slug]) }}">{{ __($category->title) }}</a>
             <div class="toggle-button category-toggle-button">
                 <svg class="category-toggle-arrow toggle-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02"><path d="M13.4,1.43l9.35,11a4,4,0,0,1,0,5.18l-9.35,11a4,4,0,1,1-6.1-5.18L14.46,15,7.3,6.61a4,4,0,0,1,6.1-5.18Z"/></svg>
             </div>
@@ -17,6 +17,6 @@
             </div>
         </div>
     @else
-        <a class="category" href="">{{ __($category->title) }}</a>
+        <a class="category" href="{{ route('discover', ['category'=>$category->slug]) }}">{{ __($category->title) }}</a>
     @endif
 </div>

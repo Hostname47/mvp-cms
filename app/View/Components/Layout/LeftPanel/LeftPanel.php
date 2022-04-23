@@ -2,21 +2,25 @@
 
 namespace App\View\Components\Layout\LeftPanel;
 
+use Illuminate\Http\Request;
 use Illuminate\View\Component;
 use App\Models\{Category,Tag};
 
 class LeftPanel extends Component
 {
     public $categories;
+    public $a_category_selected = false;
     public $tags;
 
-    public function __construct()
+    public function __construct(Request $request)
     {
         $this->categories = Category::tree()->get()->toTree();
         $this->tags = Tag::withCount('posts')
             ->withCount('posts as posts_count')
             ->orderByRaw('posts_count DESC')
             ->take(12)->get();
+
+        $this->a_category_selected = $request->has('category');
     }
 
     /**

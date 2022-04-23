@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\Models\{Post};
+use App\Models\{Post,Category};
 
 class IndexController extends Controller
 {
@@ -15,8 +15,22 @@ class IndexController extends Controller
     public function discover(Request $request) {
         $count = 8;
         $sort = 'publish-date';
+        $category = null;
 
-        $posts = Post::with(['categories', 'author','author.roles', 'tags']);
+        // Handle category if selected
+        if($request->has('category')) {
+            $slug = $request->validate(['category'=>'exists:categories,slug'])['category'];
+            $category = Category::where('slug',$slug)->first();
+        }
+        /**
+         * If the user select a category (valid one), then we need to get posts
+         * that belong to that category. Otherwise, we fetch posts normally using
+         * post model.
+         */
+        if(is_null($category))
+            $posts = Post::with(['categories', 'author','author.roles', 'tags']);
+        else
+            $posts = $category->posts()->with(['categories', 'author','author.roles', 'tags']);
         
         // Handle posts per page
         if($request->has('count')) {
@@ -53,6 +67,7 @@ class IndexController extends Controller
             ->with(compact('posts'))
             ->with(compact('count'))
             ->with(compact('sort'))
+            ->with(compact('category'))
             ->with(compact('hasmore'));
     }
 }
