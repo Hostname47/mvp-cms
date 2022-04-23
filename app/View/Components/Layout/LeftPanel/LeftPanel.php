@@ -10,6 +10,7 @@ class LeftPanel extends Component
 {
     public $categories;
     public $a_category_selected = false;
+    public $k;
     public $tags;
 
     public function __construct(Request $request)
@@ -21,6 +22,7 @@ class LeftPanel extends Component
             ->take(12)->get();
 
         $this->a_category_selected = $request->has('category');
+        $this->k = ($request->has('k')) ? $request->get('k') : '';
     }
 
     /**

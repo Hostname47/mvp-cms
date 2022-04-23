@@ -53,7 +53,7 @@
         <form class="flex1">
             <p class="fs11 no-margin light-gray">{{__('Search for everything')}}..</p>
             <div class="align-center mt4">
-                <input type="text" name="k" id="left-panel-search-input" required class="flex1" placeholder="{{ __('Search keywords') }}">
+                <input type="text" name="k" id="left-panel-search-input" required class="flex1" placeholder="{{ __('Search keywords') }}" @if($k) value="{{ $k }}" @endif>
                 <button id="left-panel-search-button">
                     <svg class="size12" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M173.51,206.37a4,4,0,0,1,4.71.52c.53.49,1.06,1,1.58,1.51l31.93,31.92a12.14,12.14,0,0,0,16.88.27q5.79-5.42,11.39-11a12.9,12.9,0,0,0,0-18.26q-15.63-15.52-31.31-31c-.29-.28-1.11-1-1.43-1.28a4,4,0,0,1-1-5.25,110.15,110.15,0,0,0,14.58-38.92C229.44,85,195.67,32.54,146.6,20c-6.25-1.59-12.65-2.62-19-3.89L110,16.32c-9.55,2.24-19.51,3.5-28.44,7.22C43,39.57,20.4,68.72,16.72,110.23c-3.59,40.5,12.55,73.32,46.85,95.2,35.87,22.89,73.09,22.32,109.92.95Zm-55-24.64c-35.1-.71-62.94-29.43-62.06-64,.86-34.23,29.56-62,63.37-61.24,34.61.74,62.59,29.41,61.78,63.29C180.72,154.6,152.4,182.42,118.46,181.73Z"/></svg>
                 </button>
