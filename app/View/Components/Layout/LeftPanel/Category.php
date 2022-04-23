@@ -3,15 +3,18 @@
 namespace App\View\Components\Layout\LeftPanel;
 
 use Illuminate\View\Component;
+use Illuminate\Http\Request;
 use App\Models\Category as C;
 
 class Category extends Component
 {
     public $category;
+    public $selected; // If a category is selected
     
-    public function __construct(C $category)
+    public function __construct(Request $request, C $category)
     {
         $this->category = $category;
+        $this->selected = $request->has('category') && $request->get('category') == $category->slug;
     }
 
     /**

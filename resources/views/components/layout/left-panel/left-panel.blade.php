@@ -66,12 +66,12 @@
             <div class="align-center toggle-button pointer">
                 <svg class="size14 mr6" style="margin-top: -2px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M156.49,146.2q-32.57,0-65.12,0c-7.57,0-10.44-2.8-10.46-10.22q-.06-23.25,0-46.51c0-7.21,2.85-10,10.12-10q65.1,0,130.22,0c7.16,0,10,2.85,10,10.17q.1,23.27,0,46.51c0,7.21-3,10.07-10.13,10.08Q188.8,146.24,156.49,146.2Zm64.63,83.56c7.26,0,10.09-2.83,10.12-10.07q.1-23.25,0-46.5c0-7.23-3-10.26-10-10.27q-65.1-.06-130.21,0c-7.11,0-10.09,3-10.11,10.16,0,15,0,30,0,45,0,9.24,2.36,11.65,11.48,11.66q31.82,0,63.64,0C177.71,229.78,199.41,229.82,221.12,229.76ZM30.64,200c0,3.73.86,5.17,4.86,5,6.67-.33,13.38-.09,20.07-.09,13.45,0,13.37,0,12.78-13.5-.12-2.65-1-3.33-3.45-3.25-4.41.14-8.83-.11-13.22.08-3,.14-4.32-.63-4.29-4q.21-29.62,0-59.26c0-3.11,1.16-3.91,4-3.81,4.57.17,9.14.06,13.71,0,1.42,0,3.19.27,3.12-2-.14-4.7,1.63-10.14-.75-13.87-1.65-2.59-7-.58-10.72-.85a17.62,17.62,0,0,0-3.91,0c-4.17.61-5.58-.77-5.52-5.25.27-19.58.12-39.17.12-58.76,0-11.19,0-10.92-11.31-11.26-4.75-.15-5.55,1.58-5.52,5.81.16,27.26.08,54.52.08,81.79C30.71,144.46,30.78,172.21,30.64,200Z"/></svg>
                 <h3 class="no-margin unselectable fs14 dark">Categories</h3>
-                <svg class="size7 ml8 mt2 toggle-arrow" style="@if($a_category_selected) transform: rotate(90deg); @endif" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02"><path d="M13.4,1.43l9.35,11a4,4,0,0,1,0,5.18l-9.35,11a4,4,0,1,1-6.1-5.18L14.46,15,7.3,6.61a4,4,0,0,1,6.1-5.18Z"/></svg>
+                <svg class="size7 ml8 mt2 toggle-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02"><path d="M13.4,1.43l9.35,11a4,4,0,0,1,0,5.18l-9.35,11a4,4,0,1,1-6.1-5.18L14.46,15,7.3,6.61a4,4,0,0,1,6.1-5.18Z"/></svg>
             </div>
 
             <a href="{{ route('discover') }}" class="fs12 bold blue no-underline ml8">{{ __('explore') }}</a>
         </div>
-        <div class="categories-wrapper toggle-container @if(!$a_category_selected) none @endif">
+        <div class="categories-wrapper toggle-container none">
             @foreach($categories as $category)
                 <x-layout.left-panel.category :category="$category" />
             @endforeach
@@ -105,7 +105,7 @@
             <div style="max-height: 19px; height: 19px; max-width: 19px; width: 19px" class="full-center mx4" title="LOVE">
                 <svg class="heart-beating" fill="#FF0000" style="width: 16px; stroke: #331010; stroke-width: 5px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 94.5"><path d="M86.82,26.63v-7.3H78.64V12H62.27v7.29H54.09v7.3H45.91v-7.3H37.73V12H21.36v7.29H13.18v7.3H5V48.5h8.18v7.29h8.18v7.29h8.19v7.29h8.18v7.3h8.18V85h8.18V77.67h8.18v-7.3h8.18V63.08h8.19V55.79h8.18V48.5H95V26.63Z"/></svg>
             </div>
-            <p class="unselectable fs12 bold">by<a href="https://www.mouad-nassri.freecluster.eu" target="_blank" class="no-underline mx4" style="color: rgb(58, 186, 236)">Mouad</a></p>
+            <p class="unselectable fs12 bold">by<a href="http://mouad-nassri.freecluster.eu" target="_blank" class="no-underline mx4" style="color: rgb(58, 186, 236)">Mouad</a></p>
         </div>
     </div>
 </div>

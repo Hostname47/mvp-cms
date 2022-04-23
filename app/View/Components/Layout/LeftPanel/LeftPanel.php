@@ -21,7 +21,7 @@ class LeftPanel extends Component
             ->orderByRaw('posts_count DESC')
             ->take(12)->get();
 
-        $this->a_category_selected = $request->has('category');
+        // Search query
         $this->k = ($request->has('k')) ? $request->get('k') : '';
     }
 

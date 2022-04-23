@@ -63,8 +63,11 @@
             <div id="search-box" class="mb8">
                 <form action="{{ route('discover') }}" method="get" class="flex1 align-center relative">
                     <svg class="search-input-icon-1" fill="#5b5b5b" enable-background="new 0 0 515.558 515.558" viewBox="0 0 515.558 515.558" xmlns="http://www.w3.org/2000/svg"><path d="m378.344 332.78c25.37-34.645 40.545-77.2 40.545-123.333 0-115.484-93.961-209.445-209.445-209.445s-209.444 93.961-209.444 209.445 93.961 209.445 209.445 209.445c46.133 0 88.692-15.177 123.337-40.547l137.212 137.212 45.564-45.564c0-.001-137.214-137.213-137.214-137.213zm-168.899 21.667c-79.958 0-145-65.042-145-145s65.042-145 145-145 145 65.042 145 145-65.043 145-145 145z"></path></svg>
+                    @if(Request::has('category'))
+                    <input type="hidden" name="category" value="{{ Request::get('category') }}">
+                    @endif
                     <input type="text" name="q" required class="search-input-style-1" placeholder="{{ __('Search for posts') }}" @if($q) value="{{ $q }}" @endif>
-                    <button class="search-button-style-1 align-center">
+                    <button type="submit" class="search-button-style-1 align-center">
                         <svg class="size14 mr4" fill="#5b5b5b" enable-background="new 0 0 515.558 515.558" viewBox="0 0 515.558 515.558" xmlns="http://www.w3.org/2000/svg"><path d="m378.344 332.78c25.37-34.645 40.545-77.2 40.545-123.333 0-115.484-93.961-209.445-209.445-209.445s-209.444 93.961-209.444 209.445 93.961 209.445 209.445 209.445c46.133 0 88.692-15.177 123.337-40.547l137.212 137.212 45.564-45.564c0-.001-137.214-137.213-137.214-137.213zm-168.899 21.667c-79.958 0-145-65.042-145-145s65.042-145 145-145 145 65.042 145 145-65.043 145-145 145z"></path></svg>
                         <span class="bold dark fs12">search</span>
                     </button>

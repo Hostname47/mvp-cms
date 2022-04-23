@@ -520,3 +520,27 @@ function updateQueryStringParameter(uri, key, value) {
         return uri + separator + key + "=" + value;
     }
 }
+
+/**
+ * The follwing code will expend all the toggles of selected category's ancestors.
+ * e.g. If we have the following hierarchy:
+ *  Tech
+ *  ---Back-end
+ *  ------PHP
+ * If the user select the php we need to expend tech and backend toggle containers
+ */
+$('#left-panel .category.bold').each(function() {
+    let category = $(this);
+    let has_children = category.parent().find('.category-toggle-button').length;
+    let categories_box = category;
+    while(!categories_box.hasClass('categories-box')) {
+        if(categories_box.hasClass('toggle-box'))
+            if(has_children)
+                has_children = false;
+            else
+                categories_box.find('.toggle-button').first().trigger('click');
+        categories_box = categories_box.parent();
+    }
+    // The follwing line open categories box
+    categories_box.find('.toggle-button').first().trigger('click');
+});
