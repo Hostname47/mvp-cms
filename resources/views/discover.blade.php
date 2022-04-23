@@ -49,18 +49,27 @@
                     <div class="close-parent close-informative-message-style">✖</div>
                 </div>
             @endif
-            <div class="flex space-between my4">
-                <p class="dark no-margin">{{ __('Find out what has been recently written') }}.</p>
-                <div>
+            <div id="filters-wrapper">
+                <p id="text-with-filters" class="dark no-margin">{{ __('Find out what has been recently written') }}.</p>
+                <div class="align-center">
+                    <div class="align-center">
+                        <label for="discover-posts-sort" class="fs12 bold dark mr4">{{ __('sort by') }} :</label>
+                        <select name="count" id="discover-posts-sort" class="dropdown-style-1" autocomplete="off">
+                            <option @if($sort == 'publish-date') selected @endif value="publish-date">{{ __('Publish date') }}</option>
+                            <option @if($sort == 'views') selected @endif value="views">{{ __('Views') }}</option>
+                            <option @if($sort == 'reactions') selected @endif value="reactions">{{ __('Number of clapps') }}</option>
+                            <option @if($sort == 'comments') selected @endif value="comments">{{ __('Number of comments') }}</option>
+                        </select>
+                    </div>
+                    <span class="fs12 unselectable light-gray mx4">〡</span>
                     <div class="align-center">
                         <label for="discover-posts-count" class="fs12 bold dark mr4">{{ __('posts') }} :</label>
-                        <select name="count" id="discover-posts-count" autocomplete="off">
+                        <select name="count" id="discover-posts-count" class="dropdown-style-1" autocomplete="off">
                             <option @if($count == 8) selected @endif value="8">8</option>
                             <option @if($count == 14) selected @endif value="14">14</option>
                             <option @if($count == 20) selected @endif value="20">20</option>
                         </select>
                     </div>
-
                 </div>
             </div>
             <div id="posts-box">
