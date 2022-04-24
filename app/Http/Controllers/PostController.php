@@ -73,7 +73,6 @@ class PostController extends Controller
     }
 
     public function view(Request $request, Category $category, Post $post) {
-        $p = Post::first();
         return view('view-post')
             ->with(compact('post'));
     }

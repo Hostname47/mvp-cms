@@ -1,15 +1,16 @@
+
 #post-box {
-    width: 54%;
-    padding: 60px 0;
-    max-width: 960px;
+    width: 84%;
 }
 
 h1 {
     color: #2777b9;
     font-size: 28px;
+    margin: 0 0 36px 0;
 }
 
 p {
-    font-size: 16px;
-    color: #1a1a1a;
+    font-size: 18px;
+    line-height: 1.4;
+    margin-bottom: 16px;
 }
