@@ -11,7 +11,7 @@
                 </svg>
             </div>
         </div>
-        <p class="fs12 my2 light-gray no-margin">This title is not displayed in blod post; It is title used to identify the blog post in th adin section only</p>
+        <p class="fs12 my2 light-gray no-margin">This title is not displayed in blod post; It is title used to identify the blog post in th admin section only</p>
     </div>
     <input type="text" id="post-title" class="styled-input" maxlength="400" autocomplete="off" placeholder='{{ __("Enter post title here") }}' value="@if($post){{ $post->title }}@endif">
 </div>
