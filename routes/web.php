@@ -2,7 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{IndexController, AdminController, PostController, CategoryController,
-    MediaController, OAuthController, TagController, RoleController, PermissionController, RPManagement};
+    MediaController, OAuthController, TagController, RoleController, PermissionController, RPManagement,
+    NewsletterController};
 use App\Http\Controllers\Admin\{AdminSearchController};
 
 Route::get('/test', function() {
@@ -95,6 +96,8 @@ Route::middleware('client.scopes')->group(function() {
     Route::get('/discover', [IndexController::class, 'discover'])->name('discover');
 
     Route::get('/posts/fetch', [PostController::class, 'fetch']);
+
+    Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe']);
 
     Route::get('/{category:slug}/{post:slug}/v', [PostController::class, 'view'])->name('view.post');
 });
