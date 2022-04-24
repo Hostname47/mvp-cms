@@ -1143,6 +1143,17 @@ textarea {
     background-color: white;
 }
 
+.input-style-2 {
+    padding: 10px 14px;
+    display: block;
+    box-sizing: border-box;
+    border-radius: 3px;
+    border: unset;
+}
+.input-style-2:focus {
+    outline: 2px solid #21b6ff;
+}
+
 .x-close-container-style {
     position: absolute;
     z-index: 1;
@@ -1169,7 +1180,8 @@ textarea {
 }
 
 footer {
-    padding: 16px;
+    width: 100%;
+    padding: 26px;
     box-sizing: border-box;
     background-color: #151617;
     color: white;

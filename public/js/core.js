@@ -555,12 +555,23 @@ $('#left-panel .category.bold').each(function() {
  */
 let newsletter_subscription_lock = true;
 $('#newsletter-subscribe-button').on('click', function() {
-    let error = $('#newsletter-viewer .error');
+    let viewer = $('#newsletter-viewer');
+    let error_container = viewer.find('.error-container');
+    let error = error_container.find('.error');
+    let name = $('#newsletter-subscribe-name-input').val().trim();
     let email = $('#newsletter-subscribe-email-input').val().trim();
     
-    error.addClass('none');
+    error_container.addClass('none');
+    // Verify name
+    if(name == '') {
+        error.text(viewer.find('.name-error').val());
+        error_container.removeClass('none');
+        return;
+    }
+    // Verify email
     if(email == "" || !validateEmail(email)) {
-        error.removeClass('none');
+        error.text(viewer.find('.email-error').val());
+        error_container.removeClass('none');
         return;
     }
 
