@@ -8,7 +8,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Fibonashi')</title>
     <!-- Scripts -->
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
+    <script type="text/javascript" src="{{ asset('js/jquery.min.js') }}" defer></script> <!-- internet was lost, so I have to use file instead of CDN -->
     <script type="text/javascript" src="{{ asset('js/core.js') }}" defer></script>
     <!-- Styles -->
     <link href="{{ asset('css/header.css') }}" rel="stylesheet">
