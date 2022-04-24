@@ -158,6 +158,12 @@ body {
     font-style: italic;
 }
 
+input.disabled {
+    pointer-events:none;
+    color: #2F2F2F;
+    background: #F0F0F0;
+}
+
 .border-box {
     box-sizing: border-box;
 }
@@ -793,7 +799,7 @@ textarea {
 
 #top-message-box {
     position: fixed;
-    z-index: 55555;
+    z-index: 555556;
     display: flex;
     justify-content: center;
     left: 0;

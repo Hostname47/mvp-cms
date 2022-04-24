@@ -140,6 +140,11 @@ $('.remove-parent').on('click', function() {
 $('.close-parent').on('click', function() {
     $(this).parent().addClass('none');
 });
+function handle_close_parent(section) {
+    section.find('.close-parent').on('click', function() {
+        $(this).parent().addClass('none');
+    });
+}
 
 let top_message_timeout;
 function print_top_message(message, type) {
@@ -550,41 +555,113 @@ $('#left-panel .category.bold').each(function() {
     categories_box.find('.toggle-button').first().trigger('click');
 });
 
+let newsletter_viewer_opening_lock = true;
+let newsletter_viewer_opened = false;
+$('#newsletter-subscribe-opener-button').on('click', function() {
+    let viewer = $('#newsletter-viewer');
+    if(newsletter_viewer_opening_lock && !newsletter_viewer_opened) {
+        newsletter_viewer_opening_lock = false;
+
+        let loading = $('#newsletter-loading-section');
+        loading.find('.spinner').addClass('inf-rotate');
+
+        $.ajax({
+            type: 'get',
+            url: '/newsletter/subscribe/viewer',
+            success: function(response) {
+                newsletter_viewer_opened = true;
+                $('#newsletter-loading-section').remove();
+                $('#newsletter-viewer-container').append(response);
+                handle_newsletter_subscribe_button();
+                handle_close_parent(viewer);
+            },
+            error: function(response) {
+                let errorObject = JSON.parse(response.responseText);
+                let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+                if(errorObject.errors) {
+                    let errors = errorObject.errors;
+                    error = errors[Object.keys(errors)[0]][0];
+                }
+                print_top_message(error, 'error');
+            },
+            complete: function(response) {
+                newsletter_viewer_opening_lock = true;
+            }
+        });
+    }
+    viewer.removeClass('none');
+    disable_page_scroll();
+});
+
 /**
  * Newsletter subscription
  */
 let newsletter_subscription_lock = true;
-$('#newsletter-subscribe-button').on('click', function() {
-    let viewer = $('#newsletter-viewer');
-    let error_container = viewer.find('.error-container');
-    let error = error_container.find('.error');
-    let name = $('#newsletter-subscribe-name-input').val().trim();
-    let email = $('#newsletter-subscribe-email-input').val().trim();
+function handle_newsletter_subscribe_button() {
+    $('#newsletter-subscribe-button').on('click', function() {
+        let viewer = $('#newsletter-viewer');
+        let error_container = viewer.find('.error-container');
+        let error = error_container.find('.error');
+        let name = $('#newsletter-subscribe-name-input');
+        let email = $('#newsletter-subscribe-email-input');
+        
+        error_container.addClass('none');
+        // Verify name
+        if(name.val().trim() == '') {
+            error.text(viewer.find('.name-error').val());
+            error_container.removeClass('none');
+            return;
+        }
+        // Verify email
+        if(email.val().trim() == "" || !validateEmail(email.val().trim())) {
+            error.text(viewer.find('.email-error').val());
+            error_container.removeClass('none');
+            return;
+        }
     
-    error_container.addClass('none');
-    // Verify name
-    if(name == '') {
-        error.text(viewer.find('.name-error').val());
-        error_container.removeClass('none');
-        return;
-    }
-    // Verify email
-    if(email == "" || !validateEmail(email)) {
-        error.text(viewer.find('.email-error').val());
-        error_container.removeClass('none');
-        return;
-    }
-
-    let button = $(this);
-    let spinner = button.find('.spinner');
-    let buttonicon = button.find('.icon-above-spinner');
-
-    button.addClass('newsletter-subscribe-button-disabled');
-    buttonicon.addClass('none');
-    spinner.removeClass('opacity0');
-    spinner.addClass('inf-rotate');
-
-    if(!newsletter_subscription_lock) return;
-    newsletter_subscription_lock = false;
-});
+        let button = $(this);
+        let spinner = button.find('.spinner');
+        let buttonicon = button.find('.icon-above-spinner');
+    
+        button.addClass('newsletter-subscribe-button-disabled');
+        buttonicon.addClass('none');
+        spinner.removeClass('opacity0');
+        spinner.addClass('inf-rotate');
+    
+        if(!newsletter_subscription_lock) return;
+        newsletter_subscription_lock = false;
+    
+        $.ajax({
+            type: 'post',
+            url: '/newsletter/subscribe',
+            data: {
+                name: name.val().trim(),
+                email: email.val().trim(),
+            },
+            success: function() {
+                $('#newsletter-submission-section').addClass('none');
+                $('#newsletter-thankyou-section').removeClass('none');
+            },
+            error: function(response) {
+                newsletter_subscription_lock = true;
+                button.removeClass('newsletter-subscribe-button-disabled');
+    
+                buttonicon.removeClass('none');
+                spinner.addClass('opacity0');
+                spinner.removeClass('inf-rotate');
+    
+                let errorObject = JSON.parse(response.responseText);
+                let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+                if(errorObject.errors) {
+                    let errors = errorObject.errors;
+                    error = errors[Object.keys(errors)[0]][0];
+                }
+                print_top_message(error, 'error');
+            },
+            complete: function() {
+    
+            }
+        })
+    });
+}
 

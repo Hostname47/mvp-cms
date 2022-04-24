@@ -28,6 +28,7 @@
     @endguest
     <main class="relative">
         @yield('content')
+        @include('partials.shared-things')
     </main>
 </body>
 </html>

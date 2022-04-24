@@ -97,6 +97,7 @@ Route::middleware('client.scopes')->group(function() {
 
     Route::get('/posts/fetch', [PostController::class, 'fetch']);
 
+    Route::get('/newsletter/subscribe/viewer', [NewsletterController::class, 'newsletter_subscribe_viewer']);
     Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe']);
 
     Route::get('/{category:slug}/{post:slug}/v', [PostController::class, 'view'])->name('view.post');

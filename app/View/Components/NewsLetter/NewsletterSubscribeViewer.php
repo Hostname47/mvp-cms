@@ -3,6 +3,7 @@
 namespace App\View\Components\NewsLetter;
 
 use Illuminate\View\Component;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Subscriber;
 
 class NewsletterSubscribeViewer extends Component
@@ -11,8 +12,9 @@ class NewsletterSubscribeViewer extends Component
     
     public function __construct()
     {
+        $this->authenticated = Auth::check();
         $this->subscribed = auth()->user() 
-            && ($subscribe = Subscriber::where('email', auth()->user()->id)->first()) 
+            && ($subscribe = Subscriber::where('email', auth()->user()->email)->first()) 
             && ($subscribe && $subscribe->status == 1);
     }
 
@@ -21,8 +23,8 @@ class NewsletterSubscribeViewer extends Component
      *
      * @return \Illuminate\Contracts\View\View|\Closure|string
      */
-    public function render()
+    public function render($data=[])
     {
-        return view('components.news-letter.newsletter-subscribe-viewer');
+        return view('components.news-letter.newsletter-subscribe-viewer', $data);
     }
 }

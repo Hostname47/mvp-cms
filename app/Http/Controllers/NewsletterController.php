@@ -5,10 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Subscriber;
+use App\View\Components\NewsLetter\NewsletterSubscribeViewer;
 
 class NewsletterController extends Controller
 {
     const MAXIMUM = 10;
+
+    public function newsletter_subscribe_viewer(Request $request) {
+        $viewer = (new NewsletterSubscribeViewer());
+        $viewer = $viewer->render(get_object_vars($viewer))->render();
+        return $viewer;
+    }
 
     public function subscribe(Request $request) {
         if(Auth::check()) {
@@ -29,8 +36,9 @@ class NewsletterController extends Controller
                 'name'=>'required|max:255',
                 'email'=>'required|email|unique:subscribers,email|max:300',
             ], [
-                'name.max'=>__('Please enter a valid name'),
-                'email'=>__('Please enter a valid email address')
+                'name.*'=>__('Please enter a valid name'),
+                'email.unique'=>__('Email has lready been taken'),
+                'email.*'=>__('Please enter a valid email address')
             ]);
             $data['email'] = $d['email'];
             $data['name'] = $d['name'];
