@@ -151,3 +151,77 @@ main {
 #newsletter-subscribe-opener-button:hover {
     background-color: #e5ebf3;
 }
+
+#newsletter-viewer-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    box-sizing: border-box;
+    padding: 56px 40px;
+    background-color: #2e3842;
+    border-radius: 3px;
+    margin-top: -20px;
+    text-align: center;
+}
+#newsletter-viewer-container .title {
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 1.4px;
+}
+#newsletter-viewer-container .description {
+    color: #ccd3df;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin: 12px 0;
+    line-height: 1.6;
+}
+#newsletter-subscribe-email-input {
+    padding: 10px 14px;
+    margin: 12px 0;
+    display: block;
+    width: 80%;
+    box-sizing: border-box;
+    border-radius: 3px;
+    border: unset;
+}
+#newsletter-viewer-container .error {
+    color: #ffab00;
+    font-weight: bold;
+    font-size: 13px;
+    margin: 4px;
+}
+#newsletter-subscribe-button {
+    display: flex;
+    align-items: center;
+    padding: 12px 18px;
+    margin-top: 12px;
+    background-color: #45525e;
+    border-radius: 3px;
+    color: #c0d1e3;
+    fill: #c0d1e3;
+    font-weight: bold;
+    font-size: 13px;
+    letter-spacing: 1.2px;
+    cursor: pointer;
+    user-select: none;
+}
+.newsletter-subscribe-button-disabled {
+    background-color: #4a5764 !important;
+    color: #d5e6f8 !important;
+    fill: #d1e0f0 !important;
+    cursor: default;
+}
+#newsletter-subscribe-button:hover {
+    background-color: #4a5764;
+    color: #d5e6f8;
+    fill: #d1e0f0;
+}
+#newsletter-viewer .v-icon {
+    width: 26px;
+    margin-bottom: 14px;
+}

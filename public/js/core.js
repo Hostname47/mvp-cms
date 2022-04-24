@@ -521,6 +521,11 @@ function updateQueryStringParameter(uri, key, value) {
     }
 }
 
+function validateEmail(email) {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
+
 /**
  * The follwing code will expend all the toggles of selected category's ancestors.
  * e.g. If we have the following hierarchy:
@@ -541,6 +546,34 @@ $('#left-panel .category.bold').each(function() {
                 categories_box.find('.toggle-button').first().trigger('click');
         categories_box = categories_box.parent();
     }
-    // The follwing line open categories box
+    // The following line open categories box
     categories_box.find('.toggle-button').first().trigger('click');
 });
+
+/**
+ * Newsletter subscription
+ */
+let newsletter_subscription_lock = true;
+$('#newsletter-subscribe-button').on('click', function() {
+    let error = $('#newsletter-viewer .error');
+    let email = $('#newsletter-subscribe-email-input').val().trim();
+    
+    error.addClass('none');
+    if(email == "" || !validateEmail(email)) {
+        error.removeClass('none');
+        return;
+    }
+
+    let button = $(this);
+    let spinner = button.find('.spinner');
+    let buttonicon = button.find('.icon-above-spinner');
+
+    button.addClass('newsletter-subscribe-button-disabled');
+    buttonicon.addClass('none');
+    spinner.removeClass('opacity0');
+    spinner.addClass('inf-rotate');
+
+    if(!newsletter_subscription_lock) return;
+    newsletter_subscription_lock = false;
+});
+
