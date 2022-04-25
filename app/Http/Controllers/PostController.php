@@ -74,6 +74,7 @@ class PostController extends Controller
 
     public function view(Request $request, Category $category, Post $post) {
         return view('view-post')
+            ->with(compact('category'))
             ->with(compact('post'));
     }
 

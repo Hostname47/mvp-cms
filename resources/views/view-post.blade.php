@@ -8,6 +8,7 @@
 @endpush
 
 @section('content')
+    <!-- newsletter viewer -->
     <div id="newsletter-viewer" class="global-viewer full-center none" style="background-color: #16171cf0; z-index: 555555">
         <div id="newsletter-viewer-container">
             <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
@@ -19,10 +20,30 @@
             </div>
         </div>
     </div>
+
+    
     <div id="post-box">
+        <!-- nav links -->
+        <div id="post-nav-links-container">
+            <a href="{{ route('root.slash') }}" class="post-nav-link">
+                <span>{{__('Home')}}</span>
+            </a>
+            <svg class="post-nav-link-separator" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"></path></svg>
+            <a href="{{ route('discover') }}" class="post-nav-link">
+                <span>{{__('Discover')}}</span>
+            </a>
+            <svg class="post-nav-link-separator" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"></path></svg>
+            <a href="{{ route('discover', ['category'=>$category->slug]) }}" class="post-nav-link">
+                <span>{{ $category->title }}</span>
+            </a>
+            <svg class="post-nav-link-separator" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"></path></svg>
+            <a href="{{ route('view.post', ['category'=>$category->slug, 'post'=>$post->slug]) }}" class="post-nav-link">
+                <span>{{ $post->slug }}</span>
+            </a>
+        </div>
         @if($fimage = $post->featured_image)
         <div id="feature-image-container">
-            <img src="{{ $fimage }}" id="feature-image" alt="">
+            <img src="{{ $fimage }}" id="feature-image" class="pointer open-image-on-image-viewer" alt="">
         </div>
         @endif
         <div id="body-box">
