@@ -10,13 +10,17 @@ class CommentPolicy
 {
     use HandlesAuthorization;
 
-    const COMMENTS_PER_DAY = 180;
+    const COMMENTS_PER_DAY = 160;
     
-    public function store(User $user, $data) {
+    public function store(User $user, $data, $post) {
+        // If the post is null (not found), then we simply stop the execution
+        if(is_null($post)) {
+            return $this->deny(__('Post not found.'));
+        }
         /**
          * First we check if user exceed the limit of comments per day
          */
-        if($user->comments()->count() > self::COMMENTS_PER_DAY) {
+        if($user->comments()->count() >= self::COMMENTS_PER_DAY) {
             /** Log this authorization break */
             return $this->deny(__('You have reached the maximum comments allowed per day.'));
         }
@@ -27,6 +31,13 @@ class CommentPolicy
         if(!$post->allow_comments) {
             /** Log this authorization break */
             return $this->deny(__('The author is not currently accepting comments on this post.'));
+        }
+        /**
+         * Then we check if the post is not private
+         */
+        if($post->visibility == 'private' && $user->id != $post->user_id) {
+            /** Log this authorization break */
+            return $this->deny(__('Oops something went wrong.'));
         }
         /**
          * Then check if user is banned (we'll implement this step later)

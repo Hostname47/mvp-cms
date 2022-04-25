@@ -30,6 +30,10 @@ class Post extends Model
         return $this->belongsToMany(Tag::class);
     }
 
+    public function comments() {
+        return $this->hasMany(Comment::class);
+    }
+
     public function getCreationDateHumansAttribute() {
         return (new Carbon($this->created_at))->diffForHumans();
     }
