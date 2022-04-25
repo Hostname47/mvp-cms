@@ -1006,6 +1006,35 @@ textarea {
     background-color: #ecf2f7;
 }
 
+.button-style-2 {
+    font-size: 14px;
+    cursor: pointer;
+    color: #4b5155;
+    transition: all 0.3s ease;
+}
+.button-style-2:hover {
+    color: #1e2022;
+}
+
+.button-style-3 {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    color: white;
+    background-color: #32373c;
+    border-radius: 2px;
+    padding: 6px 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.button-style-3:hover {
+    background-color: #222529;
+}
+.bs3-disabled {
+    background-color: #8c8d8e !important;
+    cursor: default !important;
+}
+
 #basic-bottom-left-notification-container {
     position: fixed;
     display: flex;

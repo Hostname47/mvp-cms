@@ -30,7 +30,7 @@ class CommentPolicy
         $post = Post::find($data['post_id']);
         if(!$post->allow_comments) {
             /** Log this authorization break */
-            return $this->deny(__('The author is not currently accepting comments on this post.'));
+            return $this->deny(__('The author is not currently accepting comments on this post'));
         }
         /**
          * Then we check if the post is not private

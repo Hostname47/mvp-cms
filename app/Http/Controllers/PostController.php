@@ -225,6 +225,9 @@ class PostController extends Controller
             'password'=>'required_if:visibility,password-protected|min:8|max:450',
         ]);
 
+        if(!isset($postdata['summary']))
+            $postdata['summary'] = null;
+
         // Update post content and other rlated inputs
         $post->update($postdata);
 
