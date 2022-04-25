@@ -117,7 +117,7 @@ main {
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 20px;
+    padding: 28px 20px;
     border: 1px solid #d9e1ea;
     border-radius: 4px;
     line-height: 1.5;
@@ -250,4 +250,13 @@ main {
 #newsletter-viewer .v-icon {
     width: 26px;
     margin-bottom: 14px;
+}
+
+#post-square-advertisement-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #2c3237;
+    margin: 22px 0;
 }

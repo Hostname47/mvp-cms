@@ -1477,3 +1477,10 @@ footer .newsletter-section {
     height: 16px;
     margin-top: 25px;
 }
+
+/* ads */
+.square-advertisement-box {
+    width: 340px;
+    height: 340px;
+    background-color: #f1f4f7;
+}

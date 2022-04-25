@@ -18,46 +18,87 @@
     fill: #2d363e;
     width: 8px;
     height: 8px;
+    margin: 0 6px;
+}
+
+.post-share-section {
+    padding: 16px 8px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #e1e6eb;
+    border-left: unset;
+    border-right: unset;
+}
+.post-share-section .share-container {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #4c5357;
+    margin-right: 6px;
+}
+
+.share-anchor {
+    margin: 0 6px;
+    width: 20px;
+    height: 20px;
+}
+
+.share-anchor-icon {
+    width: 20px;
+    height: 20px;
+    fill: #212526;
+}
+
+.share-anchor-icon.facebook:hover { fill: rgb(67, 133, 196); }
+.share-anchor-icon.linkedin:hover { fill: rgb(47, 138, 225); }
+.share-anchor-icon.twitter:hover { fill: rgb(0, 171, 255); }
+
+.post-share-stats-section {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
 }
 
 #post-box {
     width: 84%;
 }
 
-#post-content-box h1 {
+#post-content h1 {
     color: #1f2326;
     font-size: 32px;
     margin: 0 0 36px 0;
     padding-right: 18px;
 }
 
-#post-content-box h2 {
+#post-content h2 {
     font-size: 26px;
     margin: 30px 0 20px 0;
 }
 
-#post-content-box h3 {
+#post-content h3 {
     font-size: 22px;
     margin: 30px 0 16px 0;
 }
 
-#post-content-box h4 {
+#post-content h4 {
     font-size: 18px;
     margin: 26px 0 12px 0;
 }
 
-#post-content-box p {
+#post-content p {
     font-size: 18px;
     line-height: 1.4;
     margin-bottom: 16px;
 }
 
-#post-content-box a {
+#post-content a {
     text-decoration: none;
     font-size: 18px;
     line-height: 1.4;
     margin-bottom: 16px;
 }
-#post-content-box a:hover {
+#post-content a:hover {
     text-decoration: underline;
 }
