@@ -1023,16 +1023,12 @@ textarea {
     color: white;
     background-color: #32373c;
     border-radius: 2px;
-    padding: 6px 10px;
+    padding: 6px 12px;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 .button-style-3:hover {
     background-color: #222529;
-}
-.bs3-disabled {
-    background-color: #8c8d8e !important;
-    cursor: default !important;
 }
 
 #basic-bottom-left-notification-container {

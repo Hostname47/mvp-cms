@@ -6,6 +6,10 @@
     display: flex;
 }
 
+.comment-input-box .error-container {
+    margin: 8px;
+}
+
 .commenter-profile-link {
     margin-right: 12px;
 }
@@ -20,6 +24,7 @@
 .commenter-profile-link .f {
     height: 26px;
     width: 26px;
+    fill: #f8fbff;
 }
 
 .comment-input-container {
@@ -57,4 +62,10 @@
 
 .comment-bottom-section .cancel {
     margin: 0 12px;
+}
+
+.share-comment-disabled {
+    background-color: #7c8288 !important;
+    cursor: default !important;
+    transition: all 0.3s ease;
 }
