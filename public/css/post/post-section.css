@@ -27,9 +27,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border: 1px solid #e1e6eb;
-    border-left: unset;
-    border-right: unset;
+    border-bottom: 1px solid #e1e6eb;
 }
 .post-share-section .share-container {
     display: flex;

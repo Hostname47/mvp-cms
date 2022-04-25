@@ -10,7 +10,7 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    max-height: 365px;
+    max-height: 390px;
     overflow: hidden;
     border-radius: 4px;
 }
@@ -259,4 +259,14 @@ main {
     justify-content: center;
     color: #2c3237;
     margin: 22px 0;
+}
+
+/* comments-section */
+#comments-section {
+    margin: 36px 0;
+}
+
+#comments-title {
+    font-size: 22px;
+    font-weight: bold;
 }
