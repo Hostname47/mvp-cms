@@ -1210,6 +1210,25 @@ textarea {
     font-size: 10px;
 }
 
+.tooltip-box {
+    position: relative;
+}
+
+.tooltip {
+    display: none;
+}
+
+.tooltip-style-1 {
+    position: absolute;
+    top: calc(100% + 3px);
+    padding: 10px 14px;
+    background-color: rgb(48, 53, 60);
+    color: white;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
 footer {
     width: 100%;
     padding: 26px;

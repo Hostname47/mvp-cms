@@ -80,9 +80,9 @@
                 <!-- comments section -->
                 <div id="comments-section">
                     <input type="hidden" id="comment-content-required" value="{{ __('Comment content is required') }}" autocomplete="off">
-
+                    <!-- comment sorting -->
                     <div id="comment-title-and-sort-container" class="align-center space-between">
-                        <span id="comments-title">{{ __('Comments') }} ({{ $post->comments_count }})</span>
+                        <span id="comments-title">{{ __('Comments') }} (<span class="post-comments-count">{{ $post->comments_count }}</span>)</span>
                         <div class="relative">
                             <div class="align-center fs13">
                                 <span id="comments-sortby">{{ __('sort by') }} :</span>
@@ -138,6 +138,48 @@
                         </div>
                     @else
                         <p class="light-gray text-center fs13">{{ __('The author is not currently accepting comments on this post') }}.</p>
+                    @endif
+                    <div id="comment-input-comments-separator"></div>
+                    <div id="post-comments-box">
+                        @foreach($post->comments as $comment)
+                        <div class="comment-component">
+                            <a href="" class="commenter-profile-link">
+                                <img src="{{ $comment->user->avatar(100) }}" class="commenter-avatar" alt="">
+                            </a>
+                            <div class="comment-section">
+                                <!-- commenter name -->
+                                <span class="commenter-name">{{ $comment->user->fullname }}</span>
+                                <!-- comment date -->
+                                <div class="relative tooltip-box">
+                                    <div class="align-center comment-date tooltip-pointer">
+                                        <span class="mt2">{{ $comment->date_humans }}</span>
+                                        <span class="mt2 edited none ml4">- ({{ __('edited') }})</span>
+                                    </div>
+                                    <div class="tooltip tooltip-style-1">
+                                        <span class="mt2">{{ $comment->date }}</span>
+                                    </div>
+                                </div>
+                                <div class="comment-body">
+                                    <div class="comment-content">
+                                        {{ $comment->content }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                    <!-- 
+                        if post has comments then we display loading section to fetch comments only if visitor
+                        scroll down to the comments section
+                    -->
+                    @if($post->comments_count > 0)
+                    <!-- <div id="post-comments-loading-box">
+                        <svg class="spinner size24" fill="none" viewBox="0 0 16 16">
+                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                            <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                        </svg>
+                        <span class="fs12 mt8 dark bold">{{ __('loading comments') }}</span>
+                    </div> -->
                     @endif
                 </div>
             </article>

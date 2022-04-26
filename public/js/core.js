@@ -531,6 +531,22 @@ function validateEmail(email) {
     return re.test(String(email).toLowerCase());
 }
 
+$('.tooltip-box').each(function() {
+    handle_tooltip($(this));
+    console.log('hello');
+})
+
+function handle_tooltip(tooltip_box) {
+    tooltip_box.find('.tooltip-pointer').first().on({
+        'mouseenter': function() {
+            tooltip_box.find('.tooltip').first().css('display', 'block');
+        },
+        'mouseleave': function() {
+            tooltip_box.find('.tooltip').first().css('display', 'none');
+        }
+    });
+}
+
 /**
  * The follwing code will expend all the toggles of selected category's ancestors.
  * e.g. If we have the following hierarchy:
