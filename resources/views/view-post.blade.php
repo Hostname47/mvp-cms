@@ -80,6 +80,7 @@
                 <!-- comments section -->
                 <div id="comments-section">
                     <input type="hidden" id="comment-content-required" value="{{ __('Comment content is required') }}" autocomplete="off">
+                    <input type="hidden" id="comment-shared-successfully" value="{{ __('Comment shared successfully') }}" autocomplete="off">
                     <!-- comment sorting -->
                     <div id="comment-title-and-sort-container" class="align-center space-between">
                         <span id="comments-title">{{ __('Comments') }} (<span class="post-comments-count">{{ $post->comments_count }}</span>)</span>

@@ -27,7 +27,7 @@
                 @else
                 <span class="button-style-2 comment-display-switch">{{ __('cancel') }}</span>
                 @endif
-                <div class="button-style-3 @guest login-required @endguest share-comment share-comment-disabled">
+                <div class="button-style-3 @guest login-required @endguest share-comment share-comment-disabled @if($is_root) root @endif">
                     <div class="relative size13 mr4">
                         <svg class="size13 icon-above-spinner" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M242.59,126.87c.39,68.29-60.46,121.59-128.32,112.48a123.89,123.89,0,0,1-36.32-11,11.92,11.92,0,0,0-7.61-.65c-13.33,3.71-26.56,7.76-39.79,11.8-4.5,1.37-8.67,1.27-12.1-2.23s-3.32-7.43-2-11.73c4-13.23,8.11-26.45,11.8-39.78a12.35,12.35,0,0,0-.77-8.06C-4.8,113.42,30.65,35.22,100.35,17.13,172.34-1.55,242.17,52.33,242.59,126.87ZM41.27,214.68c9.75-2.93,18.41-5.28,26.89-8.16,5.92-2,11-1.41,16.51,1.68,18.92,10.6,39.31,14.16,60.63,10.06,49.8-9.58,81.33-52.89,75.62-103.31-5.77-50.85-56-88.36-106.48-79.54C49.89,46.69,16.77,115.7,48.52,172.9a15.29,15.29,0,0,1,1.38,12.91C47,195,44.37,204.23,41.27,214.68Z"></path></svg>
                         <svg class="spinner size13 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
@@ -36,7 +36,7 @@
                         </svg>
                     </div>
                     <span>share comment</span>
-                    <input type="hidden" class="parent-comment" value="" autocomplete="off">
+                    <input type="hidden" class="parent-comment" value="{{ $parent_comment_id }}" autocomplete="off">
                 </div>
             </div>
         </div>

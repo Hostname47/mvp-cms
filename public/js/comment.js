@@ -59,10 +59,21 @@ function handle_share_comment(comment_input_section) {
             url: '/comments',
             data: {
                 content: content,
-                post_id: post_id
+                post_id: post_id,
+                form: 'component'
             },
             success: function(response) {
                 comment_input.val('');
+                if(button.hasClass('root')) {
+                    $('#post-comments-box').prepend(response);
+                    let comment = $('#post-comments-box .comment-component').first();
+                    handle_comment_events(comment);
+                    $('#post-comments-box .comment-component').removeClass('highlighted-comment');
+                    comment.addClass('highlighted-comment');
+                    left_bottom_notification($('#comment-shared-successfully').val());
+                } else {
+
+                }
             },
             error: function(response) {
                 let errorObject = JSON.parse(response.responseText);
@@ -83,6 +94,10 @@ function handle_share_comment(comment_input_section) {
         })
     });
 }
+
+$('body').on('click', function() {
+    $('#post-comments-box .comment-component').removeClass('highlighted-comment');
+});
 
 let loading_comments = $('#post-comments-loading-box');
 if(loading_comments.length) {

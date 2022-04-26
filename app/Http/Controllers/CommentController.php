@@ -12,8 +12,9 @@ class CommentController extends Controller
     public function store(Request $request) {
         $data = $request->validate([
             'content'=>'required|max:4000',
-            'post_id'=>'required|exists:posts,id'
+            'post_id'=>'required|exists:posts,id',
         ]);
+        $return = $request->validate(['form'=>['sometimes',Rule::in(['component'])]]);
         /**
          * Here we get the post here because we need it here and in policy. Simply get the post and
          * pass it to the policy for checks
@@ -24,11 +25,19 @@ class CommentController extends Controller
         /** Append authenticated user id into the comment data */
         $data['user_id'] = auth()->user()->id;
         // Then create the comment
-        Comment::create($data);
+        $comment = Comment::create($data);
         /**
          * Here we have to increment the comments counter of post
          */
         $post->increment('comments_count');
+
+        if(isset($return['form']))
+            switch($return['form']) {
+                case 'component':
+                    $comment_component = (new CommentComponent($comment));
+                    $comment_component = $comment_component->render(get_object_vars($comment_component))->render();
+                    return $comment_component;
+            }
     }
 
     public function fetch(Request $request) {
