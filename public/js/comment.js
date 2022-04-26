@@ -66,45 +66,94 @@ function handle_share_comment(comment_input_section) {
 }
 
 let loading_comments = $('#post-comments-loading-box');
-let loading_comments_lock = true;
 if(loading_comments.length) {
-    $(window).on('DOMContentLoaded scroll', function() {
-        if(is_visible_in_viewport(loading_comments[0])) {
-            console.log('reached');
-            if(!loading_comments_lock || loading_comments.hasClass('stop-fetch')) return;
-            loading_comments_lock=false;
-            let spinner = loading_comments.find('.spinner');
-            let present_comments = $('#post-comments-box .comment-component').length;
-            spinner.addClass('inf-rotate');
-            $.ajax({
-				url: '/comments/fetch',
-				data: {
-                    skip: present_comments,
-                    take: 10,
-                    form: 'component',
-                    sort: 'newest'
-				},
-                success: function(response) {
-					let comments = response.comments;
-					let hasmore = response.hasmore;
-		
-					if(comments.length) {
-						$('#post-comments-box').append(response.comments);
-						if(!hasmore)
-                            loading_comments.addClass('none stop-fetch');
-					} else {
-						// no results found
-						loading_comments.addClass('none stop-fetch');
-					}
-                },
-                complete: function() {
-                    loading_comments_lock = true;
-                    spinner.removeClass('inf-rotate');
-                },
-                error: function() {
-                    loading_comments.addClass('opacity0 stop-fetch');
-                }
-            });
+    $(window).on('DOMContentLoaded scroll', bootstrap_comments_when_loading_reached);
+}
+
+let loading_comments_lock = true;
+function bootstrap_comments_when_loading_reached() {
+    if(is_visible_in_viewport(loading_comments[0])) {
+        if(!loading_comments_lock || loading_comments.hasClass('stop-fetch')) return;
+        loading_comments_lock=false;
+        let spinner = loading_comments.find('.spinner');
+        let present_comments = $('#post-comments-box .comment-component').length;
+        spinner.addClass('inf-rotate');
+        
+        $.ajax({
+            url: '/comments/fetch',
+            data: {
+                skip: present_comments,
+                take: 10,
+                form: 'component',
+                sort: 'newest'
+            },
+            success: function(response) {
+                let comments = response.comments;
+                let hasmore = response.hasmore;
+    
+                if(comments.length)
+                    $('#post-comments-box').append(response.comments);
+    
+                if(hasmore)
+                    $('#comments-fetch-more').removeClass('none');
+                else
+                    $('#comments-fetch-more').remove();
+            },
+            complete: function() {
+                spinner.removeClass('inf-rotate');
+                loading_comments.remove();
+                $(window).off('DOMContentLoaded scroll', bootstrap_comments_when_loading_reached);
+            },
+            error: function() {
+                loading_comments_lock = true;
+            }
+        });
+    }
+}
+
+let fetch_comments_lock = true;
+$('#comments-fetch-more').on('click', function() {
+    if(!fetch_comments_lock) return;
+    fetch_comments_lock = false;
+
+    let button = $(this);
+    let spinner = button.find('.spinner');
+    let buttonicon = button.find('.icon-above-spinner');
+    let present_comments = $('#post-comments-box .comment-component').length;
+
+    spinner.addClass('inf-rotate');
+    spinner.removeClass('opacity0');
+    buttonicon.addClass('none');
+
+    $.ajax({
+        url: '/comments/fetch',
+        data: {
+            skip: present_comments,
+            take: 10,
+            form: 'component',
+            sort: 'newest'
+        },
+        success: function(response) {
+            let comments = response.comments;
+            let hasmore = response.hasmore;
+
+            if(comments.length)
+                $('#post-comments-box').append(response.comments);
+
+            if(hasmore)
+                $('#comments-fetch-more').removeClass('none');
+            else
+                $('#comments-fetch-more').remove();
+        },
+        complete: function() {
+            fetch_comments_lock = true;
+            
+            spinner.addClass('opacity0');
+            spinner.removeClass('inf-rotate');
+            buttonicon.removeClass('none');
+        },
+        error: function(response) {
+            
         }
     });
-}
+});

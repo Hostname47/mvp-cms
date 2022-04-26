@@ -141,22 +141,30 @@
                     @endif
                     <div id="comment-input-comments-separator"></div>
                     <div id="post-comments-box">
-                        @foreach($post->comments as $comment)
-                        <x-comment.comment :comment="$comment" />
-                        @endforeach
+                        
                     </div>
                     <!-- 
-                        if post has comments then we display loading section to fetch comments only if visitor
-                        scroll down to the comments section
+                        if post has comments then we display loading section and only fetch 
+                        comments if the visitor reaches the comments section by scroll down to it.
                     -->
                     @if($post->comments_count > 0)
-                    <!-- <div id="post-comments-loading-box">
+                    <div id="post-comments-loading-box">
                         <svg class="spinner size24" fill="none" viewBox="0 0 16 16">
                             <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
                             <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
                         </svg>
                         <span class="fs12 mt8 dark bold">{{ __('loading comments') }}</span>
-                    </div> -->
+                    </div>
+                    <div id="comments-fetch-more" class="none">
+                        <div class="relative size18 mr4">
+                            <svg class="size18 icon-above-spinner" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M129.52,227.47q-33.72,0-67.45,0c-18.09,0-29.55-11.5-29.55-29.56V63c0-19.39,11.1-30.48,30.49-30.48q67,0,134,0c19.41,0,30.48,11.08,30.49,30.49q0,67.7,0,135.38c0,17.41-11.61,29-29.08,29.07C175.43,227.51,152.48,227.47,129.52,227.47Zm82.76-65.05c.08-1.79.19-3.17.19-4.55q0-47.79,0-95.58c0-10.11-4.74-14.77-15-14.77q-67.47,0-134.94,0c-10.4,0-15,4.68-15,15.22q0,47.33,0,94.65c0,1.64.14,3.28.21,5ZM47.52,177.68c0,6.68,0,12.9,0,19.11C47.53,208,52,212.47,63,212.47H169.86c9.84,0,19.68.07,29.52,0,6.41-.07,11.82-3.43,12.38-9.25.82-8.4.21-16.94.21-25.52Zm68.64-92.07c-4-3.89-8.34-4.1-11.54-.74-3,3.12-2.68,7.52.94,11.22q9,9.19,18.21,18.22c4.37,4.3,8.11,4.29,12.55-.06q9-8.85,17.89-17.89c3.84-3.9,4.2-8.4,1.09-11.57-3.35-3.41-7.61-3-11.87,1.23s-8.52,8.69-13.36,13.64C125.13,94.66,120.7,90.07,116.16,85.61Z" style="stroke:#000;stroke-miterlimit:10;stroke-width:6px"/></svg>
+                            <svg class="spinner size18 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
+                                <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                            </svg>
+                        </div>
+                        <span>{{ __('Load more comments') }}</span>
+                    </div>
                     @endif
                 </div>
             </article>

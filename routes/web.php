@@ -95,12 +95,13 @@ Route::middleware('client.scopes')->group(function() {
     Route::get('/home', [IndexController::class, 'index'])->name('home');
     Route::get('/discover', [IndexController::class, 'discover'])->name('discover');
 
-    Route::get('/posts/fetch', [PostController::class, 'fetch']);
-
+    
+    Route::get('/comments/fetch', [CommentController::class, 'fetch']);
     Route::post('/comments', [CommentController::class, 'store']);
-
+    
     Route::get('/newsletter/subscribe/viewer', [NewsletterController::class, 'newsletter_subscribe_viewer']);
     Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe']);
-
+    
     Route::get('/{category:slug}/{post:slug}/v', [PostController::class, 'view'])->name('view.post');
+    Route::get('/posts/fetch', [PostController::class, 'fetch']);
 });

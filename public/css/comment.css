@@ -122,3 +122,12 @@
     color: #585f64;
     margin: 0 4px;
 }
+
+#comments-fetch-more {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
