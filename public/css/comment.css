@@ -43,8 +43,8 @@
     box-sizing: border-box;
 }
 
-.comment-bottom-section .cancel {
-    margin: 0 12px;
+.comment-bottom-section .cancel, .comment-bottom-section .comment-display-switch  {
+    margin: 0 16px;
 }
 
 .share-comment-disabled {
@@ -76,9 +76,9 @@
     flex: 1;
 }
 
-
 .commenter-profile-link {
     margin-right: 12px;
+    height: max-content;
 }
 
 .commenter-avatar {
@@ -127,7 +127,7 @@
     display: flex;
     align-items: center;
     padding: 8px 0;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: bold;
     cursor: pointer;
 }

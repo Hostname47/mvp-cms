@@ -533,7 +533,6 @@ function validateEmail(email) {
 
 $('.tooltip-box').each(function() {
     handle_tooltip($(this));
-    console.log('hello');
 })
 
 function handle_tooltip(tooltip_box) {

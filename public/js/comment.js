@@ -9,6 +9,25 @@ function handle_comment_keyup(comment_input_section) {
     });
 }
 
+handle_display_comment_switch($('body'));
+function handle_display_comment_switch(comment_input_section) {
+    comment_input_section.find('.comment-display-switch').on('click', function() {
+        if($(this).hasClass('root')) {
+            let input = $('#root-comment-input .comment-input-box');
+            let open = $('#root-comment-input .open');
+            if(input.hasClass('none')) {
+                input.removeClass('none');
+                open.addClass('none');
+            } else {
+                input.addClass('none');
+                open.removeClass('none');
+            }
+        } else {
+            console.log('not root');
+        }
+    });
+}
+
 handle_share_comment($('body'));
 function handle_share_comment(comment_input_section) {
     comment_input_section.find('.share-comment').on('click', function() {
@@ -91,8 +110,16 @@ function bootstrap_comments_when_loading_reached() {
                 let comments = response.comments;
                 let hasmore = response.hasmore;
     
-                if(comments.length)
+                if(comments.length) {
                     $('#post-comments-box').append(response.comments);
+
+                    let appended_comments = 
+                        $('#post-comments-box .comment-component').slice(response.count*(-1));
+
+                    appended_comments.each(function() {
+                        handle_comment_events($(this));
+                    });
+                }
     
                 if(hasmore)
                     $('#comments-fetch-more').removeClass('none');
@@ -106,6 +133,14 @@ function bootstrap_comments_when_loading_reached() {
             },
             error: function() {
                 loading_comments_lock = true;
+
+                let errorObject = JSON.parse(response.responseText);
+                let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+                if(errorObject.errors) {
+                    let errors = errorObject.errors;
+                    error = errors[Object.keys(errors)[0]][0];
+                }
+                print_top_message(error, 'error');
             }
         });
     }
@@ -157,3 +192,8 @@ $('#comments-fetch-more').on('click', function() {
         }
     });
 });
+
+function handle_comment_events(comment) {
+    comment.find('.tooltip-box').each(function() { handle_tooltip($(this)); });
+    handle_suboptions_container(comment);
+}
