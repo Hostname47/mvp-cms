@@ -23,8 +23,8 @@ class CreatePostsTable extends Migration
             $table->string('visibility')->default('public');
             $table->integer('allow_comments')->default(1);
             $table->integer('allow_reactions')->default(1);
-            $table->integer('comments_count')->default(0);
-            $table->integer('reactions_count')->default(0);
+            $table->unsignedBigInteger('comments_count')->default(0);
+            $table->unsignedBigInteger('reactions_count')->default(0);
             $table->text('summary')->nullable();
 
             $table->unsignedBigInteger('user_id')->nullable();

@@ -42,6 +42,7 @@ class CommentController extends Controller
 
     public function fetch(Request $request) {
         $data = $request->validate([
+            'post_id'=>'required|exists:posts,id',
             'skip'=>'required|numeric',
             'take'=>'required|numeric',
             'sort'=>['required', Rule::in(['newest','oldest','claps'])],
@@ -60,13 +61,17 @@ class CommentController extends Controller
                 $sortby = 'created_at';
                 $sdirection = 'asc';
                 break;
-            case 'oldest':
+            case 'claps':
                 $sortby = 'reactions_count';
                 $sdirection = 'desc';
                 break;
         }
 
-        $comments = Comment::with('user')->orderBy($sortby, $sdirection)->skip($data['skip'])->take($data['take']+1)->get();
+        $post = Post::find($data['post_id']);
+        if(!$post)
+            abort(404, __('Oops something went wrong.'));
+
+        $comments = $post->comments()->with('user')->orderBy($sortby, $sdirection)->skip($data['skip'])->take($data['take']+1)->get();
         $hasmore = $comments->count() > $data['take'];
         $comments = $comments->take($data['take']);
         $payload = '';

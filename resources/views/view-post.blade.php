@@ -79,20 +79,37 @@
                 </div>
                 <!-- comments section -->
                 <div id="comments-section">
+                    <input type="hidden" id="post-comments-sort-key" value="newest" autocomplete="off">
+
                     <input type="hidden" id="comment-content-required" value="{{ __('Comment content is required') }}" autocomplete="off">
                     <input type="hidden" id="comment-shared-successfully" value="{{ __('Comment shared successfully') }}" autocomplete="off">
+                    
                     <!-- comment sorting -->
                     <div id="comment-title-and-sort-container" class="align-center space-between">
                         <span id="comments-title">{{ __('Comments') }} (<span class="post-comments-count">{{ $post->comments_count }}</span>)</span>
                         <div class="relative">
                             <div class="align-center fs13">
                                 <span id="comments-sortby">{{ __('sort by') }} :</span>
-                                <div class="align-center ml8 pointer button-with-suboptions">
+                                <div class="align-center ml8 pointer button-with-suboptions button-style-4">
                                     <span id="comments-sortby-key" class="unselectable">{{ __('Newest') }}</span>
                                     <svg class="size7 ml8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M255.89,84.23c-1.2,1.08-2.45,2.11-3.58,3.25L134.85,204.91c-1.24,1.24-2.54,2.41-3.51,3.32L6.93,83.83l33.4-33.39Q85,95,130.34,140.33l91-91c9.5,9.51,18.44,18.49,27.43,27.41,2.28,2.27,4.73,4.37,7.11,6.55Z"/></svg>
                                 </div>
                                 <div class="suboptions-container typical-suboptions-container" style="right: 0">
-
+                                    <div class="suboption-style-2 mb2 sort-comments sort-comments-key-selected">
+                                        <input type="hidden" class="sort-key-text" value="{{ __('Newest') }}" autocomplete="off">
+                                        <input type="hidden" class="sort-key" value="newest" autocomplete="off">
+                                        <span>{{ __('Newest first') }}</span>
+                                    </div>
+                                    <div class="suboption-style-2 mb2 sort-comments">
+                                        <input type="hidden" class="sort-key-text" value="{{ __('Oldest') }}" autocomplete="off">
+                                        <input type="hidden" class="sort-key" value="oldest" autocomplete="off">
+                                        <span>{{ __('Oldest first') }}</span>
+                                    </div>
+                                    <div class="suboption-style-2 mb2 sort-comments">
+                                        <input type="hidden" class="sort-key-text" value="{{ __('Most claps') }}" autocomplete="off">
+                                        <input type="hidden" class="sort-key" value="claps" autocomplete="off">
+                                        <span>{{ __('Most claps') }}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -117,8 +134,7 @@
                         if post has comments then we display loading section and only fetch 
                         comments if the visitor reaches the comments section by scroll down to it.
                     -->
-                    @if($post->comments_count > 0)
-                    <div id="post-comments-loading-box">
+                    <div id="post-comments-loading-box" class="@if($post->comments_count == 0) none @endif">
                         <svg class="spinner size24" fill="none" viewBox="0 0 16 16">
                             <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
                             <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
@@ -135,7 +151,6 @@
                         </div>
                         <span>{{ __('Load more comments') }}</span>
                     </div>
-                    @endif
                 </div>
             </article>
             <div id="right-panel-container">

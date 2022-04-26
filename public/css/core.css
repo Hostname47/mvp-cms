@@ -484,6 +484,11 @@ figure {
     padding-right: 8px !important;
 }
 
+.py4 {
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+}
+
 .m4 {
     margin: 4px;
 }

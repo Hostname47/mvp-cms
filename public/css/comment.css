@@ -137,3 +137,7 @@
     font-weight: bold;
     cursor: pointer;
 }
+
+.sort-comments-key-selected {
+    background-color: rgb(234, 234, 234) !important;
+}

@@ -96,7 +96,7 @@ function handle_share_comment(comment_input_section) {
 }
 
 $('body').on('click', function() {
-    $('#post-comments-box .comment-component').removeClass('highlighted-comment');
+    $('.comment-component').removeClass('highlighted-comment');
 });
 
 let loading_comments = $('#post-comments-loading-box');
@@ -109,56 +109,59 @@ function bootstrap_comments_when_loading_reached() {
     if(is_visible_in_viewport(loading_comments[0])) {
         if(!loading_comments_lock || loading_comments.hasClass('stop-fetch')) return;
         loading_comments_lock=false;
+
         let spinner = loading_comments.find('.spinner');
-        let present_comments = $('#post-comments-box .comment-component').length;
         spinner.addClass('inf-rotate');
         
-        $.ajax({
-            url: '/comments/fetch',
-            data: {
-                skip: present_comments,
-                take: 10,
-                form: 'component',
-                sort: 'newest'
-            },
-            success: function(response) {
-                let comments = response.comments;
-                let hasmore = response.hasmore;
-    
-                if(comments.length) {
-                    $('#post-comments-box').append(response.comments);
-
-                    let appended_comments = 
-                        $('#post-comments-box .comment-component').slice(response.count*(-1));
-
-                    appended_comments.each(function() {
-                        handle_comment_events($(this));
-                    });
-                }
-    
-                if(hasmore)
-                    $('#comments-fetch-more').removeClass('none');
-                else
-                    $('#comments-fetch-more').remove();
-            },
-            complete: function() {
-                spinner.removeClass('inf-rotate');
-                loading_comments.remove();
-                $(window).off('DOMContentLoaded scroll', bootstrap_comments_when_loading_reached);
-            },
-            error: function() {
-                loading_comments_lock = true;
-
-                let errorObject = JSON.parse(response.responseText);
-                let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
-                if(errorObject.errors) {
-                    let errors = errorObject.errors;
-                    error = errors[Object.keys(errors)[0]][0];
-                }
-                print_top_message(error, 'error');
-            }
-        });
+        bootstrap_comments($('#post-id').val(), 0, 10, 'component', $('#post-comments-sort-key').val());
     }
+}
+
+function bootstrap_comments(post_id, skip, take, form, sort) {
+    return $.ajax({
+        url: '/comments/fetch',
+        data: {
+            post_id: post_id,
+            skip: skip,
+            take: take,
+            form: form,
+            sort: sort
+        },
+        success: function(response) {
+            let comments = response.comments;
+            let hasmore = response.hasmore;
+
+            if(comments.length) {
+                $('#post-comments-box').append(response.comments);
+
+                let appended_comments = 
+                    $('#post-comments-box .comment-component').slice(response.count*(-1));
+
+                appended_comments.each(function() {
+                    handle_comment_events($(this));
+                });
+            }
+
+            if(hasmore)
+                $('#comments-fetch-more').removeClass('none');
+            else
+                $('#comments-fetch-more').remove();
+        },
+        complete: function() {
+            loading_comments.find('spinner').removeClass('inf-rotate');
+            loading_comments.addClass('none');
+            $(window).off('DOMContentLoaded scroll', bootstrap_comments_when_loading_reached);
+        },
+        error: function() {
+            let errorObject = JSON.parse(response.responseText);
+            let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+            if(errorObject.errors) {
+                let errors = errorObject.errors;
+                error = errors[Object.keys(errors)[0]][0];
+            }
+            print_top_message(error, 'error');
+        }
+    });
 }
 
 let fetch_comments_lock = true;
@@ -178,10 +181,11 @@ $('#comments-fetch-more').on('click', function() {
     $.ajax({
         url: '/comments/fetch',
         data: {
+            post_id: $('#post-id').val(),
             skip: present_comments,
             take: 10,
             form: 'component',
-            sort: 'newest'
+            sort: $('#post-comments-sort-key').val()
         },
         success: function(response) {
             let comments = response.comments;
@@ -206,6 +210,28 @@ $('#comments-fetch-more').on('click', function() {
             
         }
     });
+});
+
+$('.sort-comments').on('click', function() {
+    // Hide sort buttons container
+    $(this).parent().css('display', 'none');
+    // Give selected sort key the selected class
+    $('.sort-comments').removeClass('sort-comments-key-selected');
+    $(this).addClass('sort-comments-key-selected');
+    // Assig key and name
+    $('#comments-sortby-key').text($(this).find('.sort-key-text').val());
+    $('#post-comments-sort-key').val($(this).find('.sort-key').val());
+    // Remove all previous comments
+    $('#post-comments-box').html('');
+    // Show loading section (and hide fetch more button if it is shown)
+    let loading = $('#post-comments-loading-box');
+    let fetch = $('#comments-fetch-more');
+    loading.find('.spinner').addClass('inf-rotate');
+    loading.removeClass('none');
+    fetch.addClass('none');
+
+    // Finally fetch comments based onthe sort key selected
+    bootstrap_comments($('#post-id').val(), 0, 10, 'component', $(this).find('.sort-key').val());
 });
 
 function handle_comment_events(comment) {
