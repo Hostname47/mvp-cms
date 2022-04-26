@@ -1,5 +1,5 @@
 #comment-title-and-sort-container {
-    margin-bottom: 24px;
+    margin-bottom: 18px;
 }
 
 .comment-input-box {
@@ -107,7 +107,7 @@
 }
 
 .comment-content {
-    margin: 12px 0;
+    margin: 8px 0;
     font-size: 16px;
     line-height: 1.6;
 }
@@ -115,5 +115,10 @@
 .comment-clap-and-reply-container {
     display: flex;
     align-items: center;
-    margin-top: 2px;
+}
+.comment-clap-and-reply-container .separator {
+    user-select: none;
+    font-size: 13px;
+    color: #585f64;
+    margin: 0 4px;
 }
