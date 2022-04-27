@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{IndexController, AdminController, PostController, CategoryController,
     MediaController, OAuthController, TagController, RoleController, PermissionController, RPManagement,
-    NewsletterController, CommentController};
+    NewsletterController, CommentController, ClapController};
 use App\Http\Controllers\Admin\{AdminSearchController};
 
 Route::get('/test', function() {
@@ -95,6 +95,7 @@ Route::middleware('client.scopes')->group(function() {
     Route::get('/home', [IndexController::class, 'index'])->name('home');
     Route::get('/discover', [IndexController::class, 'discover'])->name('discover');
 
+    Route::post('/claps', [ClapController::class, 'clap']);
     
     Route::get('/comments/fetch', [CommentController::class, 'fetch']);
     Route::post('/comments', [CommentController::class, 'store']);

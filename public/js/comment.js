@@ -152,7 +152,7 @@ function bootstrap_comments(post_id, skip, take, form, sort) {
             loading_comments.addClass('none');
             $(window).off('DOMContentLoaded scroll', bootstrap_comments_when_loading_reached);
         },
-        error: function() {
+        error: function(response) {
             let errorObject = JSON.parse(response.responseText);
             let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
             if(errorObject.errors) {
@@ -160,6 +160,8 @@ function bootstrap_comments(post_id, skip, take, form, sort) {
                 error = errors[Object.keys(errors)[0]][0];
             }
             print_top_message(error, 'error');
+
+            loading_comments.addClass('none');
         }
     });
 }
