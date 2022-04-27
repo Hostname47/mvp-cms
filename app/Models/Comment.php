@@ -10,6 +10,7 @@ use Carbon\Carbon;
 class Comment extends Model
 {
     use HasFactory;
+    use \Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
     protected $guarded = [];
 
@@ -17,8 +18,16 @@ class Comment extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function post() {
+        return $this->belongsTo(Post::class);
+    }
+
     public function claps() {
         return $this->morphMany(Clap::class, 'clapable');
+    }
+
+    public function getParentKeyName() {
+        return 'parent_comment_id';
     }
 
     public function getClapedAttribute() {

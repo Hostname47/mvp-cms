@@ -1,11 +1,11 @@
 
 handle_comment_keyup($('body'));
-function handle_comment_keyup(comment_input_section) {
-    comment_input_section.find('.comment-input').on('keyup', function() {
+function handle_comment_keyup(section) {
+    section.find('.comment-input').first().on('keyup', function() {
         if($(this).val().trim() == '')
-            comment_input_section.find('.share-comment').addClass('share-comment-disabled');
+            section.find('.share-comment').first().addClass('share-comment-disabled');
         else
-            comment_input_section.find('.share-comment').removeClass('share-comment-disabled');
+            section.find('.share-comment').first().removeClass('share-comment-disabled');
     });
 }
 
@@ -34,7 +34,7 @@ function handle_share_comment(comment_input_section) {
         let button = $(this);
         let spinner = button.find('.spinner');
         let buttonicon = button.find('.icon-above-spinner');
-        let error_container = comment_input_section.find('.error-container');
+        let error_container = comment_input_section.find('.error-container').first();
         error_container.addClass('none');
         
         if(button.hasClass('login-required')) return;
@@ -42,12 +42,21 @@ function handle_share_comment(comment_input_section) {
         let comment_input = comment_input_section.find('.comment-input');
         let content = comment_input.val().trim();
         let post_id = $('#post-id').val();
+        let parent_comment = button.find('.parent-comment-id').val();
 
         if(content == '') {
             error_container.find('.error').text($('#comment-content-required').val());
             error_container.removeClass('none');
             return;
         }
+
+        let data = {
+            content: content,
+            post_id: post_id,
+            form: 'component'
+        };
+        if(parent_comment)
+            data.parent_comment_id = parent_comment;
 
         button.addClass('share-comment-disabled');
         spinner.addClass('inf-rotate');
@@ -57,11 +66,7 @@ function handle_share_comment(comment_input_section) {
         $.ajax({
             type: 'post',
             url: '/comments',
-            data: {
-                content: content,
-                post_id: post_id,
-                form: 'component'
-            },
+            data: data,
             success: function(response) {
                 comment_input.val('');
                 if(button.hasClass('root')) {
@@ -74,6 +79,8 @@ function handle_share_comment(comment_input_section) {
                 } else {
 
                 }
+
+                $('.post-comments-count').text(parseInt($('.post-comments-count').text()) + 1);
             },
             error: function(response) {
                 let errorObject = JSON.parse(response.responseText);
@@ -84,9 +91,10 @@ function handle_share_comment(comment_input_section) {
                 }
                 error_container.find('.error').text(error);
                 error_container.removeClass('none');
+
+                button.removeClass('share-comment-disabled');
             },
             complete: function(response) {
-                button.removeClass('share-comment-disabled');
                 spinner.addClass('opacity0');
                 spinner.removeClass('inf-rotate');
                 buttonicon.removeClass('none');
@@ -292,4 +300,7 @@ function handle_comment_events(comment) {
     handle_suboptions_container(comment);
     handle_login_required_actions(comment);
     handle_clap(comment);
+    // Reply to comment events
+    handle_comment_keyup(comment);
+    handle_share_comment(comment);
 }

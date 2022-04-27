@@ -10,10 +10,10 @@ class CommentInput extends Component
     public $is_root;
     public $parent_comment_id;
     
-    public function __construct($root=false, $parent_comment_id=null)
+    public function __construct($root=false, $parentCommentId=null)
     {
         $this->is_root = $root;
-        $this->parent_comment_id = $parent_comment_id;
+        $this->parent_comment_id = $parentCommentId;
     }
 
     /**

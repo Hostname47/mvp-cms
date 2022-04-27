@@ -13,6 +13,7 @@ class CommentController extends Controller
         $data = $request->validate([
             'content'=>'required|max:4000',
             'post_id'=>'required|exists:posts,id',
+            'parent_comment_id'=>'sometimes|exists:comments,id'
         ]);
         $return = $request->validate(['form'=>['sometimes',Rule::in(['component'])]]);
         /**
@@ -73,7 +74,7 @@ class CommentController extends Controller
 
         $comments = $post->comments()->with('user')->orderBy($sortby, $sdirection)->skip($data['skip'])->take($data['take']+1)->get();
         $hasmore = $comments->count() > $data['take'];
-        $comments = $comments->take($data['take']);
+        $comments = $comments->take($data['take'])->toTree();
         $payload = '';
         switch($data['form']) {
             case 'raw':

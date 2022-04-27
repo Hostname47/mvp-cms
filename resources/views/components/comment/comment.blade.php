@@ -59,5 +59,8 @@
                 </div>
             </div>
         </div>
+        <div class="comment-reply-section">
+            <x-comment.comment-input :root="false" :parent_comment_id="$comment->id" />
+        </div>
     </div>
 </div>
