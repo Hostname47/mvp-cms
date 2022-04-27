@@ -39,6 +39,8 @@ class ClapController extends Controller
             ->where('clapable_type', $data['clapable_type'])
             ->first();
 
+        // Disable resource timestamps when modifying reactions_count column
+        $resource->timestamps = false;
         if($already) {
             $already->delete();
             $resource->decrement('reactions_count');

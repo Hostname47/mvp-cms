@@ -8,10 +8,12 @@ use App\Models\Comment as CommentModel;
 class Comment extends Component
 {
     public $comment;
+    public $claped;
 
-    public function __construct(CommentModel $comment)
+    public function __construct(CommentModel $comment, $data=[])
     {
         $this->comment = $comment;
+        $this->claped = isset($data['clapped']) ? $data['clapped'] : $comment->claped;
     }
 
     /**

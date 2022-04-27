@@ -95,6 +95,57 @@ function handle_share_comment(comment_input_section) {
     });
 }
 
+function handle_clap(component) {
+    component.find('.clap').on('click', function() {
+        let button = $(this);
+        let clapable_id = button.find('.clapable-id').val();
+        let clapable_type = button.find('.clapable-type').val();
+
+        comment_clap_button_change(button);
+
+        $.ajax({
+            type: 'post',
+            url: '/claps',
+            data: {
+                clapable_id: clapable_id,
+                clapable_type: clapable_type
+            },
+            success: function(response) {
+
+            },
+            error: function(response) {
+                let errorObject = JSON.parse(response.responseText);
+                let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+                if(errorObject.errors) {
+                    let errors = errorObject.errors;
+                    error = errors[Object.keys(errors)[0]][0];
+                }
+                print_top_message(error, 'error');
+                comment_clap_button_change(button)
+            }
+        })
+    });
+}
+
+function comment_clap_button_change(button) {
+    let button_claps_counter_container = button.find('.comment-claps-count-container');
+    let button_claps_counter = button.find('.claps-count');
+    let claps_count = parseInt(button_claps_counter.text(), 10);
+    if(button.hasClass('comment-claped')) {
+        button.removeClass('comment-claped');
+        claps_count--;
+        button_claps_counter.text(claps_count);
+        if(claps_count == 0)
+            button_claps_counter_container.addClass('none');
+    } else {
+        button.addClass('comment-claped');
+        claps_count++;
+        button_claps_counter.text(claps_count);
+        if(claps_count > 0)
+            button_claps_counter_container.removeClass('none');
+    }
+}
+
 $('body').on('click', function() {
     $('.comment-component').removeClass('highlighted-comment');
 });
@@ -239,4 +290,5 @@ $('.sort-comments').on('click', function() {
 function handle_comment_events(comment) {
     comment.find('.tooltip-box').each(function() { handle_tooltip($(this)); });
     handle_suboptions_container(comment);
+    handle_clap(comment);
 }

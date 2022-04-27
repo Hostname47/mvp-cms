@@ -21,6 +21,12 @@ class Comment extends Model
         return $this->morphMany(Clap::class, 'clapable');
     }
 
+    public function getClapedAttribute() {
+        if(!auth()->user())
+            return false;
+        return (boolean) $this->claps()->where('user_id', auth()->user()->id)->count();
+    }
+
     public function getDateHumansAttribute() {
         return (new Carbon($this->updated_at))->diffForHumans();
     }

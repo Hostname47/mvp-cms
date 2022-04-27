@@ -129,6 +129,20 @@
     margin: 0 4px;
 }
 
+.clap {
+    transition: all 0.1s ease;
+}
+
+.comment-claped {
+    fill: #13a2db;
+    color: #13a2db;
+}
+
+.comment-claps-count-container {
+    font-size: 12px;
+    margin-top: 1px;
+}
+
 #comments-fetch-more {
     display: flex;
     align-items: center;
