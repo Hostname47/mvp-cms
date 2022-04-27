@@ -1,110 +1,157 @@
 
 handle_comment_keyup($('body'));
-function handle_comment_keyup(section) {
-    section.find('.comment-input').first().on('keyup', function() {
-        if($(this).val().trim() == '')
-            section.find('.share-comment').first().addClass('share-comment-disabled');
-        else
-            section.find('.share-comment').first().removeClass('share-comment-disabled');
-    });
+function handle_comment_keyup(comment) {
+    comment.find('.comment-input-container').each(function() {
+        let comment_input_container = $(this);
+        comment_input_container.find('.comment-input').each(function() {
+            $(this).on('keyup', function() {
+                if($(this).val().trim() == '')
+                    comment_input_container.find('.share-comment').first().addClass('share-comment-disabled');
+                else
+                    comment_input_container.find('.share-comment').first().removeClass('share-comment-disabled');
+            });
+        });
+    })
 }
 
-handle_display_comment_switch($('body'));
-function handle_display_comment_switch(comment_input_section) {
-    comment_input_section.find('.comment-display-switch').on('click', function() {
-        if($(this).hasClass('root')) {
-            let input = $('#root-comment-input .comment-input-box');
-            let open = $('#root-comment-input .open');
-            if(input.hasClass('none')) {
-                input.removeClass('none');
-                open.addClass('none');
+handle_display_comment_input_switch($('body'));
+function handle_display_comment_input_switch(comment) {
+    comment.find('.comment-display-switch').each(function() {
+        $(this).on('click', function() {
+            if($(this).hasClass('root')) {
+                let input = $('#root-comment-input .comment-input-box');
+                let open = $('#root-comment-input .open');
+                if(input.hasClass('none')) {
+                    input.removeClass('none');
+                    open.addClass('none');
+                } else {
+                    input.addClass('none');
+                    open.removeClass('none');
+                }
             } else {
-                input.addClass('none');
-                open.removeClass('none');
+                let comment_reply_input_container = $(this);
+                while(!comment_reply_input_container.hasClass('comment-reply-input')) {
+                    comment_reply_input_container = comment_reply_input_container.parent();
+                }
+
+                if(comment_reply_input_container.hasClass('none'))
+                    comment_reply_input_container.removeClass('none');
+                else
+                    comment_reply_input_container.addClass('none');
             }
-        } else {
-            console.log('not root');
-        }
+        });
     });
 }
 
 handle_share_comment($('body'));
-function handle_share_comment(comment_input_section) {
-    comment_input_section.find('.share-comment').on('click', function() {
-        let button = $(this);
-        let spinner = button.find('.spinner');
-        let buttonicon = button.find('.icon-above-spinner');
-        let error_container = comment_input_section.find('.error-container').first();
-        error_container.addClass('none');
-        
-        if(button.hasClass('login-required')) return;
-
-        let comment_input = comment_input_section.find('.comment-input');
-        let content = comment_input.val().trim();
-        let post_id = $('#post-id').val();
-        let parent_comment = button.find('.parent-comment-id').val();
-
-        if(content == '') {
-            error_container.find('.error').text($('#comment-content-required').val());
-            error_container.removeClass('none');
-            return;
-        }
-
-        let data = {
-            content: content,
-            post_id: post_id,
-            form: 'component'
-        };
-        if(parent_comment)
-            data.parent_comment_id = parent_comment;
-
-        button.addClass('share-comment-disabled');
-        spinner.addClass('inf-rotate');
-        spinner.removeClass('opacity0');
-        buttonicon.addClass('none');
-
-        $.ajax({
-            type: 'post',
-            url: '/comments',
-            data: data,
-            success: function(response) {
-                comment_input.val('');
-                if(button.hasClass('root')) {
-                    $('#post-comments-box').prepend(response);
-                    let comment = $('#post-comments-box .comment-component').first();
-                    handle_comment_events(comment);
-                    $('#post-comments-box .comment-component').removeClass('highlighted-comment');
-                    comment.addClass('highlighted-comment');
-                    left_bottom_notification($('#comment-shared-successfully').val());
-                } else {
-
-                }
-
-                $('.post-comments-count').text(parseInt($('.post-comments-count').text()) + 1);
-            },
-            error: function(response) {
-                let errorObject = JSON.parse(response.responseText);
-                let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
-                if(errorObject.errors) {
-                    let errors = errorObject.errors;
-                    error = errors[Object.keys(errors)[0]][0];
-                }
-                error_container.find('.error').text(error);
+function handle_share_comment(comment) {
+    comment.find('.comment-input-container').each(function() {
+        let comment_input_container = $(this);
+        comment_input_container.find('.share-comment').on('click', function() {
+            let button = $(this);
+            let spinner = button.find('.spinner');
+            let buttonicon = button.find('.icon-above-spinner');
+            let error_container = comment_input_container.find('.error-container').first();
+            error_container.addClass('none');
+    
+            let comment_input = comment_input_container.find('.comment-input');
+            let content = comment_input.val().trim();
+            let post_id = $('#post-id').val();
+            let parent_comment = button.find('.parent-comment-id').val();
+    
+            if(content == '') {
+                error_container.find('.error').text($('#comment-content-required').val());
                 error_container.removeClass('none');
-
-                button.removeClass('share-comment-disabled');
-            },
-            complete: function(response) {
-                spinner.addClass('opacity0');
-                spinner.removeClass('inf-rotate');
-                buttonicon.removeClass('none');
+                return;
             }
-        })
+    
+            let data = {
+                content: content,
+                post_id: post_id,
+                form: 'component'
+            };
+            if(parent_comment)
+                data.parent_comment_id = parent_comment;
+    
+            button.addClass('share-comment-disabled');
+            spinner.addClass('inf-rotate');
+            spinner.removeClass('opacity0');
+            buttonicon.addClass('none');
+    
+            $.ajax({
+                type: 'post',
+                url: '/comments',
+                data: data,
+                success: function(response) {
+                    comment_input.val('');
+                    if(button.hasClass('root')) {
+                        $('#post-comments-box').prepend(response);
+                        let comment = $('#post-comments-box .comment-component').first();
+                        handle_comment_events(comment);
+                        $('#post-comments-box .comment-component').removeClass('highlighted-comment');
+                        comment.addClass('highlighted-comment');
+                        left_bottom_notification($('#comment-shared-successfully').val());
+                    } else {
+    
+                    }
+    
+                    $('.post-comments-count').text(parseInt($('.post-comments-count').text()) + 1);
+                },
+                error: function(response) {
+                    let errorObject = JSON.parse(response.responseText);
+                    let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+                    if(errorObject.errors) {
+                        let errors = errorObject.errors;
+                        error = errors[Object.keys(errors)[0]][0];
+                    }
+                    error_container.find('.error').text(error);
+                    error_container.removeClass('none');
+    
+                    button.removeClass('share-comment-disabled');
+                },
+                complete: function(response) {
+                    spinner.addClass('opacity0');
+                    spinner.removeClass('inf-rotate');
+                    buttonicon.removeClass('none');
+                }
+            });
+        });
     });
 }
 
-function handle_clap(component) {
-    component.find('.clap').on('click', function() {
+function handle_comment_reply_button(comment) {
+    comment.find('.comment-reply').each(function() {
+        $(this).on('click', function() {
+            let comment_section = $(this);
+            while(!comment_section.hasClass('comment-section')) {
+                comment_section = comment_section.parent();
+            }
+            let comment_reply_container = comment_section.find('.comment-reply-input').first();
+            
+            if(comment_reply_container.hasClass('none')) {
+                comment_reply_container.removeClass('none');
+            } else {
+                comment_reply_container.addClass('none');
+            }
+        });
+    });
+}
+
+function handle_comment_threadline(comment) {
+    comment.find('.comment-threadline').each(function() {
+        $(this).on({
+            mouseenter: function() {
+                $(this).find('.comment-threadline-inner').css('background-color', '#07b9ff');
+            },
+            mouseleave: function() {
+                $(this).find('.comment-threadline-inner').css('background-color', '');
+            }
+        });
+    })
+}
+
+function handle_clap(comment) {
+    comment.find('.clap').on('click', function() {
         let button = $(this);
         let clapable_id = button.find('.clapable-id').val();
         let clapable_type = button.find('.clapable-type').val();
@@ -117,9 +164,6 @@ function handle_clap(component) {
             data: {
                 clapable_id: clapable_id,
                 clapable_type: clapable_type
-            },
-            success: function(response) {
-
             },
             error: function(response) {
                 let errorObject = JSON.parse(response.responseText);
@@ -301,6 +345,14 @@ function handle_comment_events(comment) {
     handle_login_required_actions(comment);
     handle_clap(comment);
     // Reply to comment events
+    handle_display_comment_input_switch(comment);
     handle_comment_keyup(comment);
     handle_share_comment(comment);
+    handle_comment_reply_button(comment);
+    handle_comment_threadline(comment);
+    handle_close_parent(comment);
+}
+
+function handle() {
+    console.log('handli');
 }

@@ -219,8 +219,7 @@ function handle_suboptions_container(section) {
             if(container.css("display") == "none") {
                 $(".suboptions-container").css("display", "none");
                 container.css("display", "block");
-            }
-            else
+            } else
                 container.css("display", "none");
             
             event.stopPropagation();

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\{Comment,Post};
 use Illuminate\Validation\Rule;
+use Illuminate\Database\Eloquent\Builder;
 use App\View\Components\Comment\Comment as CommentComponent;
 
 class CommentController extends Controller
@@ -72,9 +73,14 @@ class CommentController extends Controller
         if(!$post)
             abort(404, __('Oops something went wrong.'));
 
-        $comments = $post->comments()->with('user')->orderBy($sortby, $sdirection)->skip($data['skip'])->take($data['take']+1)->get();
+        $comments = $post->comments()->whereNull('parent_comment_id')->with('user')->orderBy($sortby, $sdirection)->skip($data['skip'])->take($data['take']+1)->get();
+        // $comments = Comment::withRecursiveQueryConstraint(function (Builder $query) use ($data) {
+        //     $query->where('comments.post_id', $data['post_id']);
+        //  }, function() use ($data, $sortby, $sdirection) {
+        //     return Comment::tree()->with('user')->orderBy($sortby, $sdirection)->skip($data['skip'])->take($data['take']+1)->get();
+        // });
         $hasmore = $comments->count() > $data['take'];
-        $comments = $comments->take($data['take'])->toTree();
+        $comments = $comments->take($data['take']);
         $payload = '';
         switch($data['form']) {
             case 'raw':
@@ -86,8 +92,18 @@ class CommentController extends Controller
                 });
                 break;
             case 'component':
-                $comments->map(function($comment) use (&$payload) {
-                    $comment = (new CommentComponent($comment));
+                /**
+                 * Here instead of checking each comment whether it is claped by the current user, we
+                 * get all claps of the current user on all $comments and return their clapable_id as array
+                 * then we check for every comment if its id exists is claps array; If qso then the current user
+                 * already claped the comment; and we end up with only one query instead of checking the current
+                 * user clap for every single comment (n queries)
+                 */
+                $claped = [];
+                if(auth()->user())
+                    $claped = auth()->user()->claps()->whereIn('clapable_id', $comments->pluck('id')->toArray())->where('clapable_type', 'App\Models\Comment')->pluck('clapable_id')->toArray();
+                $comments->map(function($comment) use (&$payload, $claped) {
+                    $comment = (new CommentComponent($comment, ['claped'=>in_array($comment->id, $claped)]));
                     $comment = $comment->render(get_object_vars($comment))->render();
                     $payload .= $comment;
                 });

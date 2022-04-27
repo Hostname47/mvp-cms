@@ -13,7 +13,7 @@ class Comment extends Component
     public function __construct(CommentModel $comment, $data=[])
     {
         $this->comment = $comment;
-        $this->claped = isset($data['clapped']) ? $data['clapped'] : $comment->claped;
+        $this->claped = isset($data['claped']) ? $data['claped'] : $comment->claped;
     }
 
     /**

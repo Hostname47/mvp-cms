@@ -17,6 +17,7 @@ class CreateCommentsTable extends Migration
             $table->id();
             $table->longText('content');
             $table->unsignedBigInteger('reactions_count')->default(0);
+            $table->unsignedBigInteger('replies_count')->default(0);
             $table->unsignedBigInteger('post_id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('parent_comment_id')->nullable();

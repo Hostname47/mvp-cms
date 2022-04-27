@@ -1,7 +1,12 @@
 <div class="comment-component">
-    <a href="" class="commenter-profile-link">
-        <img src="{{ $comment->user->avatar(100) }}" class="commenter-avatar" alt="">
-    </a>
+    <div class="commenter-avatar-and-threadline">
+        <a href="" class="commenter-profile-link">
+            <img src="{{ $comment->user->avatar(100) }}" class="commenter-avatar" alt="">
+        </a>
+        <div class="comment-threadline">
+            <div class="comment-threadline-inner"></div>
+        </div>
+    </div>
     <div class="comment-section">
         <!-- commenter name -->
         <span class="commenter-name">{{ $comment->user->fullname }}</span>
@@ -59,8 +64,13 @@
                 </div>
             </div>
         </div>
-        <div class="comment-reply-section">
-            <x-comment.comment-input :root="false" :parent_comment_id="$comment->id" />
+        <div class="comment-replies-box">
+            <div class="comment-reply-input none">
+                <div class="comment-reply-v-line"></div>
+                <div class="flex1">
+                    <x-comment.comment-input :root="false" :parent_comment_id="$comment->id" />
+                </div>
+            </div>
         </div>
     </div>
 </div>
