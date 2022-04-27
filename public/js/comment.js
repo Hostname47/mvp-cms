@@ -290,5 +290,6 @@ $('.sort-comments').on('click', function() {
 function handle_comment_events(comment) {
     comment.find('.tooltip-box').each(function() { handle_tooltip($(this)); });
     handle_suboptions_container(comment);
+    handle_login_required_actions(comment);
     handle_clap(comment);
 }
