@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\{Category,Tag, Metadata};
+use App\Models\{Category,Tag, Metadata, Clap};
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -32,6 +32,10 @@ class Post extends Model
 
     public function comments() {
         return $this->hasMany(Comment::class);
+    }
+
+    public function claps() {
+        return $this->morphMany(Clap::class, 'clapable');
     }
 
     public function getCreationDateHumansAttribute() {
