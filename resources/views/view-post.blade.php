@@ -14,6 +14,8 @@
 
 @section('content')
     <input type="hidden" id="post-id" value="{{ $post->id }}" autocomplete="off">
+    <input type="hidden" id="clap-singular" value="{{ __('clap') }}" autocomplete="off">
+    <input type="hidden" id="clap-plural" value="{{ __('claps') }}" autocomplete="off">
 
     <!-- newsletter viewer -->
     <div id="newsletter-viewer" class="global-viewer full-center none" style="background-color: #16171c9c; z-index: 555555">

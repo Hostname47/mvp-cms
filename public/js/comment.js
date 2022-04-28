@@ -84,16 +84,19 @@ function handle_share_comment(comment) {
                 data: data,
                 success: function(response) {
                     comment_input.val('');
+                    let comment;
                     if(button.hasClass('root')) {
                         $('#post-comments-box').prepend(response);
-                        let comment = $('#post-comments-box .comment-component').first();
-                        handle_comment_events(comment);
-                        $('#post-comments-box .comment-component').removeClass('highlighted-comment');
-                        comment.addClass('highlighted-comment');
-                        left_bottom_notification($('#comment-shared-successfully').val());
+                        comment = $('#post-comments-box .comment-component').first();
                     } else {
-    
+                        let replies_box = comment_input;
+                        while(!replies_box.hasClass('comment-replies-box')) replies_box = replies_box.parent();
+                        replies_box.find('.comment-replies-container').prepend(response);
+                        replies_box.removeClass('none')
+                        comment = replies_box.find('.comment-component').first();
                     }
+                    handle_comment_events(comment);
+                    left_bottom_notification($('#comment-shared-successfully').val());
     
                     $('.post-comments-count').text(parseInt($('.post-comments-count').text()) + 1);
                 },
@@ -180,27 +183,32 @@ function handle_clap(comment) {
 }
 
 function comment_clap_button_change(button) {
-    let button_claps_counter_container = button.find('.comment-claps-count-container');
-    let button_claps_counter = button.find('.claps-count');
-    let claps_count = parseInt(button_claps_counter.text(), 10);
+    let claps_counter = button.find('.claps-count');
+    let claps_count = parseInt(claps_counter.text(), 10);
+    let singular = $('#clap-singular').val();
+    let plural = $('#clap-plural').val();
+
     if(button.hasClass('comment-claped')) {
         button.removeClass('comment-claped');
         claps_count--;
-        button_claps_counter.text(claps_count);
+        claps_counter.text(claps_count);
         if(claps_count == 0)
-            button_claps_counter_container.addClass('none');
+            claps_counter.addClass('none');
+        
+        if(claps_count <= 1)
+            button.find('.claps-text').text(singular);
+        
     } else {
         button.addClass('comment-claped');
         claps_count++;
-        button_claps_counter.text(claps_count);
+        claps_counter.text(claps_count);
         if(claps_count > 0)
-            button_claps_counter_container.removeClass('none');
+            claps_counter.removeClass('none');
+        
+        if(claps_count > 1)
+            button.find('.claps-text').text(plural);
     }
 }
-
-$('body').on('click', function() {
-    $('.comment-component').removeClass('highlighted-comment');
-});
 
 let loading_comments = $('#post-comments-loading-box');
 if(loading_comments.length) {
@@ -238,7 +246,7 @@ function bootstrap_comments(post_id, skip, take, form, sort) {
                 $('#post-comments-box').append(response.comments);
 
                 let appended_comments = 
-                    $('#post-comments-box .comment-component').slice(response.count*(-1));
+                    $('#post-comments-box .comment-component.root').slice(response.count*(-1));
 
                 appended_comments.each(function() {
                     handle_comment_events($(this));
@@ -351,8 +359,4 @@ function handle_comment_events(comment) {
     handle_comment_reply_button(comment);
     handle_comment_threadline(comment);
     handle_close_parent(comment);
-}
-
-function handle() {
-    console.log('handli');
 }

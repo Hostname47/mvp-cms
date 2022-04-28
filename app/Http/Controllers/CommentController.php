@@ -32,6 +32,11 @@ class CommentController extends Controller
          * Here we have to increment the comments counter of post
          */
         $post->increment('comments_count');
+        /**
+         * If the comment is a child comment then we have to increment the parent's replies count
+         */
+        if(isset($data['parent_comment_id']))
+            Comment::find($data['parent_comment_id'])->increment('replies_count');
 
         if(isset($return['form']))
             switch($return['form']) {
@@ -74,13 +79,9 @@ class CommentController extends Controller
             abort(404, __('Oops something went wrong.'));
 
         $comments = $post->comments()->whereNull('parent_comment_id')->with('user')->orderBy($sortby, $sdirection)->skip($data['skip'])->take($data['take']+1)->get();
-        // $comments = Comment::withRecursiveQueryConstraint(function (Builder $query) use ($data) {
-        //     $query->where('comments.post_id', $data['post_id']);
-        //  }, function() use ($data, $sortby, $sdirection) {
-        //     return Comment::tree()->with('user')->orderBy($sortby, $sdirection)->skip($data['skip'])->take($data['take']+1)->get();
-        // });
         $hasmore = $comments->count() > $data['take'];
         $comments = $comments->take($data['take']);
+
         $payload = '';
         switch($data['form']) {
             case 'raw':
@@ -102,8 +103,10 @@ class CommentController extends Controller
                 $claped = [];
                 if(auth()->user())
                     $claped = auth()->user()->claps()->whereIn('clapable_id', $comments->pluck('id')->toArray())->where('clapable_type', 'App\Models\Comment')->pluck('clapable_id')->toArray();
-                $comments->map(function($comment) use (&$payload, $claped) {
-                    $comment = (new CommentComponent($comment, ['claped'=>in_array($comment->id, $claped)]));
+                $comments->map(function($comment) use (&$payload, $claped, $data) {
+                    $comment = new CommentComponent($comment, [
+                        'claped'=>in_array($comment->id, $claped), 'sort'=>$data['sort']
+                    ]);
                     $comment = $comment->render(get_object_vars($comment))->render();
                     $payload .= $comment;
                 });

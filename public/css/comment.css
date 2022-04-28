@@ -2,12 +2,6 @@
     margin-bottom: 18px;
 }
 
-.highlighted-comment {
-    box-shadow: 0 0 6px 2px #ddd;
-    padding: 8px;
-    border-radius: 4px;
-}
-
 .comment-input-box {
     display: flex;
 }
@@ -75,7 +69,7 @@
 
 .comment-component {
     display: flex;
-    margin-bottom: 20px;
+    margin-top: 12px;
 }
 
 .comment-section {
@@ -145,7 +139,7 @@
     color: #13a2db;
 }
 
-.comment-claps-count-container {
+.claps-count, .replies-count {
     font-size: 12px;
     margin-top: 1px;
 }
@@ -164,13 +158,13 @@
 }
 
 .comment-replies-box {
-    margin: 12px 0;
+    margin-top: 12px;
 }
 
 .comment-reply-v-line {
     width: 2px;
     padding: 8px 0;
-    margin-right: 20px;
+    margin-right: 8px;
     background-color: #d7dbdf;
 }
 
@@ -179,7 +173,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 10px;
+    width: 12px;
     height: 100%;
     margin: 6px 0 2px 0;
 }
@@ -195,4 +189,8 @@
 .comment-reply-input {
     display: flex;
     flex: 1;
+}
+
+.comment-replies-container {
+    margin-top: 20px;
 }

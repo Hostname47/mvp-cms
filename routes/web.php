@@ -7,15 +7,13 @@ use App\Http\Controllers\{IndexController, AdminController, PostController, Cate
 use App\Http\Controllers\Admin\{AdminSearchController};
 
 Route::get('/test', function() {
-    // HTML String
-    $htmlElement = "<html><body><h1>Hello darkness my old friend</h1><p>This is Sample Text Message 2</p><p>This is Sample Text Message 3</p></body></html>";
-
-    // DOM Parser Object
-    $htmlDom = new DOMDocument();
-    $htmlDom->loadHTML($htmlElement);
-
-    $title = $htmlDom->getElementsByTagName('h2')[0];
-    dd($title);
+    switch(null) {
+        case '1':
+            dd('1');
+            break;
+        default:
+            dd('default');
+    }
 });
 
 // Roles management
