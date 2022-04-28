@@ -7,13 +7,11 @@ use App\Http\Controllers\{IndexController, AdminController, PostController, Cate
 use App\Http\Controllers\Admin\{AdminSearchController};
 
 Route::get('/test', function() {
-    switch(null) {
-        case '1':
-            dd('1');
-            break;
-        default:
-            dd('default');
-    }
+    dump(session()->has('a'));
+    session()->put('a', 1);
+    dump(session()->has('a'));
+    dump(session()->get('a'));
+    dump(session()->increment('a', 1));
 });
 
 // Roles management
