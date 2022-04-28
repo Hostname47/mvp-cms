@@ -94,6 +94,7 @@ Route::middleware('client.scopes')->group(function() {
     Route::post('/claps', [ClapController::class, 'clap']);
     
     Route::get('/comments/fetch', [CommentController::class, 'fetch']);
+    Route::get('/comments/replies', [CommentController::class, 'replies']);
     Route::post('/comments', [CommentController::class, 'store']);
     
     Route::get('/newsletter/subscribe/viewer', [NewsletterController::class, 'newsletter_subscribe_viewer']);

@@ -91,7 +91,9 @@ function handle_share_comment(comment) {
                     } else {
                         let replies_box = comment_input;
                         while(!replies_box.hasClass('comment-replies-box')) replies_box = replies_box.parent();
-                        replies_box.find('.comment-replies-container').prepend(response);
+                        let replies_container = replies_box.find('.comment-replies-container');
+                        replies_container.prepend(response);
+                        replies_container.removeClass('none');
                         replies_box.removeClass('none')
                         comment = replies_box.find('.comment-component').first();
                     }
@@ -151,6 +153,64 @@ function handle_comment_threadline(comment) {
             }
         });
     })
+}
+
+function handle_load_more_replies(comment) {
+    comment.find('.load-more-replies').each(function() {
+        $(this).on('click', function() {
+            if($(this).hasClass('loading')) return;
+            $(this).addClass('loading');
+
+            let button = $(this);
+            let spinner = button.find('.spinner');
+            let buttonicon = button.find('.icon-above-spinner');
+            let comment_id = button.find('.comment-id').val();
+            
+            let component = button;
+            while(!component.hasClass('comment-component')) component = component.parent();
+            let replies_box = component.find('.comment-replies-container').first();
+            
+            spinner.addClass('inf-rotate');
+            spinner.removeClass('opacity0');
+            buttonicon.addClass('none');
+
+            $.ajax({
+                url: '/comments/replies',
+                data: {
+                    comment_id: comment_id,
+                    skip: $('.reply-child-of-'+comment_id).length,
+                    take: 10,
+                    sort: $('#post-comments-sort-key').val(),
+                    form: 'component'
+                },
+                success: function(response) {
+                    if(!response.hasmore)
+                        button.remove();
+                    // Append replies
+                    replies_box.append(response.replies);
+                    // Handle their events
+                    $('.reply-child-of-'+comment_id).each(function() {
+                        handle_comment_events($(this));
+                    });
+
+                    component.find('.comment-replies-container').removeClass('none');
+                },
+                error: function(response) {
+                    let errorObject = JSON.parse(response.responseText);
+                    let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+                    if(errorObject.errors) {
+                        let errors = errorObject.errors;
+                        error = errors[Object.keys(errors)[0]][0];
+                    }
+                    print_top_message(error, 'error');
+                    button.removeClass('loading')
+                    spinner.addClass('opacity0');
+                    spinner.removeClass('inf-rotate');
+                    buttonicon.removeClass('none');
+                }
+            })
+        });
+    });
 }
 
 function handle_clap(comment) {
@@ -359,4 +419,5 @@ function handle_comment_events(comment) {
     handle_comment_reply_button(comment);
     handle_comment_threadline(comment);
     handle_close_parent(comment);
+    handle_load_more_replies(comment);
 }

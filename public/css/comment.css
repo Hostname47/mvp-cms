@@ -84,15 +84,15 @@
 }
 
 .commenter-avatar {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     border-radius: 4px;
     background-color: #88939d;
 }
 
 .commenter-profile-link {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
 }
 
 .commenter-profile-link .f {
@@ -109,7 +109,7 @@
 
 .comment-date {
     color: #43484d;
-    font-size: 13px;
+    font-size: 12px;
     width: max-content;
 }
 
@@ -159,6 +159,7 @@
 
 .comment-replies-box {
     margin-top: 12px;
+    margin-left: -8px;
 }
 
 .comment-reply-v-line {
@@ -179,7 +180,7 @@
 }
 
 .comment-threadline-inner {
-    background-color: #d7dbdf;
+    background-color: #e1e8ee;
     width: 2px;
     border-radius: 1px;
     height: inherit;
@@ -192,5 +193,12 @@
 }
 
 .comment-replies-container {
-    margin-top: 20px;
+    margin-top: 16px;
+}
+
+.load-more-replies {
+    padding: 12px 8px;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
 }

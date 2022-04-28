@@ -1,4 +1,4 @@
-<div class="comment-component @if(is_null($comment->parent_comment_id)) root @endif">
+<div class="comment-component @if(is_null($comment->parent_comment_id)) root @else reply-child-of-{{ $comment->parent_comment_id }} @endif">
     <div class="commenter-avatar-and-threadline">
         <a href="" class="commenter-profile-link">
             <img src="{{ $comment->user->avatar(100) }}" class="commenter-avatar" alt="">
@@ -72,13 +72,26 @@
                     <x-comment.comment-input :root="false" :parent_comment_id="$comment->id" />
                 </div>
             </div>
-            <div class="comment-replies-container @if(!$replies->count()) none @endif">
-                @if($replies->count())
-                    @foreach($replies as $reply)
-                    <x-comment.comment :comment="$reply" :data="['claped'=>in_array($reply->id, $replies_claped)]"/>
-                    @endforeach
-                @endif
+            <!-- we use children count as class to check it when we get more replies in js file -->
+            <div class="comment-replies-container @if($replies->count() == 0) none @endif {{ $replies->count() }}">
+                @foreach($replies as $reply)
+                <x-comment.comment :comment="$reply" :data="['claped'=>in_array($reply->id, $replies_claped)]"/>
+                @endforeach
             </div>
+            @if($replies_remains)
+            <div class="align-center load-more-replies">
+                <!-- load more icon/spinner -->
+                <div class="relative size16 mr4 full-center">
+                    <svg class="size16 icon-above-spinner" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M83.38,179.88V144.5a2.58,2.58,0,0,0-2.58-2.57H16.35a2.57,2.57,0,0,1-2.57-2.57V121.1a2.57,2.57,0,0,1,2.57-2.57h64.1A2.57,2.57,0,0,0,83,116V80.52a2.57,2.57,0,0,1,4.39-1.82l49.81,50a2.56,2.56,0,0,1,0,3.62L87.76,181.7A2.57,2.57,0,0,1,83.38,179.88ZM246,94.71V72.29H142V94.71Zm-104,70.6v22.4H246.22v-22.4Zm34.89-24h69.13V118.57H176.93Z"/></svg>
+                    <svg class="spinner size14 opacity0 absolute" fill="none" viewBox="0 0 16 16">
+                        <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                        <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                    </svg>
+                </div>
+                <span>{{ __('Load more replies') }} (<span>{{ $replies_remains }}</span>)</span>
+                <input type="hidden" class="comment-id" value="{{ $comment->id }}" autocomplete="off">
+            </div>
+            @endif
         </div>
     </div>
 </div>

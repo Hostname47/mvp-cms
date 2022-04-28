@@ -119,4 +119,62 @@ class CommentController extends Controller
             'hasmore'=>$hasmore
         ];
     }
+
+    public function replies(Request $request) {
+        $data = $request->validate([
+            'comment_id'=>'required|exists:posts,id',
+            'skip'=>'required|numeric',
+            'take'=>'required|numeric',
+            'sort'=>['required', Rule::in(['newest','oldest','claps'])],
+            'form'=>['required', Rule::in(['raw','component'])],
+        ]);
+
+        $comment = Comment::find($data['comment_id']);
+        if(!$comment) abort(404, __('Oops something went wrong.'));
+
+        $order = $this->validate_sort($data['sort']);
+
+        $replies = $comment->children()->with('user')->orderByRaw($order)->skip($data['skip'])->take($data['take']+1)->get();
+        $hasmore = $replies->count() > $data['take'];
+        $replies = $replies->take($data['take']);
+
+        $payload = '';
+        switch($data['form']) {
+            case 'component':
+                $claped = [];
+                if(auth()->user())
+                    $claped = auth()->user()->claps()->whereIn('clapable_id', $replies->pluck('id')->toArray())->where('clapable_type', 'App\Models\Comment')->pluck('clapable_id')->toArray();
+                $replies->map(function($reply) use (&$payload, $claped, $data) {
+                    $reply = new CommentComponent($reply, [
+                        'claped'=>in_array($reply->id, $claped), 'sort'=>$data['sort']
+                    ]);
+                    $reply = $reply->render(get_object_vars($reply))->render();
+                    $payload .= $reply;
+                });
+                break;
+        }
+
+        return [
+            'replies'=>$payload,
+            'count'=>$replies->count(),
+            'hasmore'=>$hasmore
+        ];
+    }
+
+    private function validate_sort($sort) {
+        $order='';
+        switch($sort) {
+            case 'newest':
+                $order = 'created_at desc';
+                break;
+            case 'oldest':
+                $order = 'created_at asc';
+                break;
+            case 'claps':
+                $order = 'reactions_count desc, created_at desc';
+                break;
+        }
+
+        return $order;
+    }
 }

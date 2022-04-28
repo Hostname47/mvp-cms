@@ -11,6 +11,7 @@ class Comment extends Component
     public $claped;
     public $replies;
     public $replies_claped;
+    public $replies_remains;
     const MAX_CHILDREN = 4;
     const MAX_LEVELS = 4;
 
@@ -24,49 +25,45 @@ class Comment extends Component
          */
         $replies = collect([]);
         $replies_claped = [];
-        $has_more_replies = false;
+        $replies_remains = 0;
         /**
          * If a comment has a parent then we need to get the parent session value and increment it
          * by 1 to get the current comment level.
          * root comments has always value 1 which means the first level
          */
         if($comment->parent_comment_id)
-            session()->put("comment-$comment->id", session()->get("comment-$comment->parent_comment_id") + 1);
+            session()->put("comment-$comment->id", session("comment-$comment->parent_comment_id", 0)+1);
         else
             session()->put("comment-$comment->id", 1); // root comment is on level 1
 
-        if(session()->get("comment-$comment->id") < self::MAX_LEVELS) {
+        if(session("comment-$comment->id") < self::MAX_LEVELS) {
             if($comment->replies_count > 0) {
-                $sortby = '';
-                $sdirection = '';
+                $order = '';
                 switch(isset($data['sort']) ? $data['sort'] : null) {
                     case 'newest':
-                        $sortby = 'created_at';
-                        $sdirection = 'desc';
+                        $order = 'created_at desc';
                         break;
                     case 'oldest':
-                        $sortby = 'created_at';
-                        $sdirection = 'asc';
+                        $order = 'created_at asc';
                         break;
                     case 'claps':
-                        $sortby = 'reactions_count';
-                        $sdirection = 'desc';
+                        $order = 'reactions_count desc';
                         break;
                     default:
-                        $sortby = 'created_at';
-                        $sdirection = 'desc';
+                        $order = 'created_at desc';
                 }
                     
-                $replies = $comment->children()->with('user')->orderBy($sortby, $sdirection)->take(self::MAX_CHILDREN)->get();
+                $replies = $comment->children()->with('user')->orderByRaw($order)->take(self::MAX_CHILDREN)->get();
                 $replies_claped = [];
                 if(auth()->user())
                     $replies_claped = auth()->user()->claps()->whereIn('clapable_id', $replies->pluck('id')->toArray())->where('clapable_type', 'App\Models\Comment')->pluck('clapable_id')->toArray();
             }
-        }
+        } else
+            session()->forget("comment-$comment->id");
         
         $this->replies = $replies;
         $this->replies_claped = $replies_claped;
-        $this->has_more_replies = $comment->replies_count > self::MAX_CHILDREN;
+        $this->replies_remains = $comment->replies_count - $replies->count();
     }
 
     /**
