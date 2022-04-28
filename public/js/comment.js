@@ -155,6 +155,28 @@ function handle_comment_threadline(comment) {
     })
 }
 
+function handle_comment_appearence_toggling(comment) {
+    comment.find('.appearence-toggle').each(function() {
+        $(this).on('click', function() {
+            let comment_component = $(this);
+            while(!comment_component.hasClass('comment-component')) comment_component = comment_component.parent();
+            let comment_container = comment_component.find('.comment-container').first();
+            let expand = comment_component.find('.appearence-toggle.expand').first();
+            if($(this).hasClass('expand')) {
+                comment_container.removeClass('none');
+                expand.addClass('none');
+                expand.css('margin-left', '-12px');
+            } else {
+                comment_container.addClass('none');
+                expand.removeClass('none');
+                expand.animate({
+                    marginLeft: '0px'
+                }, 20);
+            }
+        })
+    });
+}
+
 function handle_load_more_replies(comment) {
     comment.find('.load-more-replies').each(function() {
         $(this).on('click', function() {
@@ -345,7 +367,7 @@ $('#comments-fetch-more').on('click', function() {
     let button = $(this);
     let spinner = button.find('.spinner');
     let buttonicon = button.find('.icon-above-spinner');
-    let present_comments = $('#post-comments-box .comment-component').length;
+    let present_comments = $('#post-comments-box .comment-component.root').length;
 
     spinner.addClass('inf-rotate');
     spinner.removeClass('opacity0');
@@ -364,8 +386,13 @@ $('#comments-fetch-more').on('click', function() {
             let comments = response.comments;
             let hasmore = response.hasmore;
 
-            if(comments.length)
+            if(comments.length) {
                 $('#post-comments-box').append(response.comments);
+                let appended_comments = 
+                    $('#post-comments-box .comment-component.root').slice(response.count*(-1));
+
+                appended_comments.each(function() { handle_comment_events($(this)); });
+            }
 
             if(hasmore)
                 $('#comments-fetch-more').removeClass('none');
@@ -420,4 +447,5 @@ function handle_comment_events(comment) {
     handle_comment_threadline(comment);
     handle_close_parent(comment);
     handle_load_more_replies(comment);
+    handle_comment_appearence_toggling(comment);
 }

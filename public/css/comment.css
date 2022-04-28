@@ -158,15 +158,13 @@
 }
 
 .comment-replies-box {
-    margin-top: 12px;
     margin-left: -8px;
 }
 
 .comment-reply-v-line {
     width: 2px;
-    padding: 8px 0;
-    margin-right: 8px;
-    background-color: #d7dbdf;
+    margin: 0 20px 0 14px;
+    background-color: #e1e8ee;
 }
 
 .comment-threadline {
@@ -176,7 +174,7 @@
     justify-content: center;
     width: 12px;
     height: 100%;
-    margin: 6px 0 2px 0;
+    margin-top: 6px;
 }
 
 .comment-threadline-inner {
@@ -190,6 +188,7 @@
 .comment-reply-input {
     display: flex;
     flex: 1;
+    margin-top: 12px;
 }
 
 .comment-replies-container {
@@ -201,4 +200,15 @@
     font-weight: bold;
     cursor: pointer;
     user-select: none;
+}
+
+.comment-component .appearence-toggle.expand {
+    fill: #c8d1d8;
+    cursor: pointer;
+    align-self: center;
+    margin-left: -12px;
+    transition: all 0.2s ease;
+}
+.comment-component .appearence-toggle.expand:hover {
+    fill: #13a2db;
 }
