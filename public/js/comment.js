@@ -220,7 +220,7 @@ function handle_load_more_replies(comment) {
                     // Append replies
                     replies_box.append(response.replies);
                     // Handle their events
-                    $('.reply-child-of-'+comment_id).each(function() {
+                    $('.reply-child-of-'+comment_id).slice(response.count*(-1)).each(function() {
                         handle_comment_events($(this));
                     });
 
