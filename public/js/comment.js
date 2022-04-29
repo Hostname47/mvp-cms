@@ -149,6 +149,69 @@ function handle_comment_update_canceler(comment) {
         })
     });
 }
+function handle_comment_update_button(comment) {
+    comment.find('.update-comment').each(function() {
+        $(this).on('click', function() {
+            let button = $(this);
+            let spinner = button.find('.spinner');
+            let buttonicon = button.find('.icon-above-spinner');
+            let comment_id = button.find('.comment-id').val();
+            
+            let comment_component = button;
+            while(!comment_component.hasClass('comment-component')) comment_component = comment_component.parent();
+            let content = comment_component.find('.comment-update-content').first().val();
+            // Before checking update content input we hide the error container
+            let error_container = comment_component.find('.comment-update-box .error-container').first();
+            error_container.addClass('none');
+            // Then if the content input is empty we show the error
+            if(content == '') {
+                error_container.find('.error').text($('#comment-content-required').val());
+                error_container.removeClass('none');
+                return;
+            }
+    
+            button.addClass('update-comment-disabled');
+            spinner.addClass('inf-rotate');
+            spinner.removeClass('opacity0');
+            buttonicon.addClass('none');
+
+            if(button.hasClass('in-progress')) return;
+            button.addClass('in-progress');
+
+            $.ajax({
+                type: 'patch',
+                url: '/comments',
+                data: {
+                    comment_id: comment_id,
+                    content: content
+                },
+                success: function() {
+                    comment_component.find('.comment-content').first().text(content);
+                    comment_component.find('.original-content').first().val(content);
+                    comment_component.find('.comment-edited').first().removeClass('none');
+                    comment_component.find('.cancel-comment-update').trigger('click');
+                },
+                error: function(response) {
+                    let errorObject = JSON.parse(response.responseText);
+                    let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+                    if(errorObject.errors) {
+                        let errors = errorObject.errors;
+                        error = errors[Object.keys(errors)[0]][0];
+                    }
+                    print_top_message(error, 'error');
+                },
+                complete: function() {
+                    button.removeClass('in-progress');
+
+                    button.removeClass('update-comment-disabled');
+                    spinner.addClass('opacity0');
+                    spinner.removeClass('inf-rotate');
+                    buttonicon.removeClass('none');
+                }
+            })
+        });
+    });
+}
 
 function handle_comment_reply_button(comment) {
     comment.find('.comment-reply').each(function() {
@@ -485,4 +548,5 @@ function handle_comment_events(comment) {
     handle_comment_appearence_toggling(comment);
     handle_comment_update_input_opener(comment);
     handle_comment_update_canceler(comment);
+    handle_comment_update_button(comment);
 }

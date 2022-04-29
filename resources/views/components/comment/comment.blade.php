@@ -20,7 +20,7 @@
             <div class="relative tooltip-box">
                 <div class="align-center comment-date tooltip-pointer">
                     <span class="mt2">{{ $comment->date_humans }}</span>
-                    <span class="mt2 edited none ml4">- ({{ __('edited') }})</span>
+                    <span class="mt2 comment-edited @if(!$comment->updated) none @endif ml4">- {{ __('edited') }}</span>
                 </div>
                 <div class="tooltip tooltip-style-1">
                     <span class="mt2">{{ $comment->date }}</span>

@@ -41,10 +41,14 @@ class Comment extends Model
     }
 
     public function getDateHumansAttribute() {
-        return (new Carbon($this->updated_at))->diffForHumans();
+        return (new Carbon($this->created_at))->diffForHumans();
     }
 
     public function getDateAttribute() {
-        return (new Carbon($this->updated_at))->isoFormat("dddd D MMM YYYY - H:mm A");
+        return (new Carbon($this->created_at))->isoFormat("dddd D MMM YYYY - H:mm A");
+    }
+
+    public function getUpdatedAttribute() {
+        return !$this->created_at->equalTo($this->updated_at);
     }
 }

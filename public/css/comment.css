@@ -47,7 +47,7 @@
     margin: 0 16px;
 }
 
-.share-comment-disabled {
+.share-comment-disabled, .update-comment-disabled {
     background-color: #7c8288 !important;
     cursor: default !important;
     transition: all 0.3s ease;

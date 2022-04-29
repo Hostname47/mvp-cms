@@ -60,7 +60,7 @@
                             <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
                         </svg>
                     </div>
-                    <span>update</span>
+                    <span class="unselectable">update comment</span>
                     <input type="hidden" class="comment-id" value="{{ $comment->id }}" autocomplete="off">
                 </div>
             </div>

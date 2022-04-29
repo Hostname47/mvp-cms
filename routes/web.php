@@ -89,6 +89,7 @@ Route::get('/{provider}/callback', [OAuthController::class, 'handleProviderCallb
 Route::middleware('client.scopes')->group(function() {
     Route::middleware(['auth'])->group(function () {
         Route::post('/claps', [ClapController::class, 'clap']);
+        
         Route::post('/comments', [CommentController::class, 'store']);
         Route::patch('/comments', [CommentController::class, 'update']);
     });
