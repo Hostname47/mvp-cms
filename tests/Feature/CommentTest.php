@@ -180,6 +180,66 @@ class CommentTest extends TestCase
             'post_id'=>$post->id
         ]);
         $this->patch('/comments', ['comment_id'=>$comment->id,'content'=>'hello'])
-            ->assertForbidden(); // $other make the post private so every comments in there is not allowed to be updated
+            ->assertStatus(404);
+    }
+
+    /** @test */
+    public function delete_a_comment() {
+        $this->withoutExceptionHandling();
+        $user = $this->authuser;
+        $post = Post::factory()->create(['status'=>'published']);
+        $comment = Comment::create([
+            'content'=>'hello world',
+            'user_id'=>$user->id,
+            'post_id'=>$post->id
+        ]);
+
+        $this->assertCount(1, Comment::all());
+        $this->delete('/comments', ['comment_id'=>$comment->id]);
+        $this->assertCount(0, Comment::all());
+    }
+
+    /** @test */
+    public function delete_a_post_validation() {
+        $this->delete('/comments', ['comment_id'=>-1])
+            ->assertSessionHasErrors(['comment_id']);
+    }
+
+    /** @test */
+    public function only_comment_owner_and_author_can_delete_it() {
+        $author = $this->authuser;
+        $commenter = User::factory()->create();
+        $third = User::factory()->create();
+        $post = Post::factory()->create(['status'=>'published', 'user_id'=>$author->id]);
+        $comment = Comment::create([
+            'content'=>'hello world',
+            'user_id'=>$commenter->id,
+            'post_id'=>$post->id
+        ]);
+        
+        $this->actingAs($third);
+        $this->delete('/comments', [
+            'comment_id'=>$comment->id,
+        ])->assertStatus(403);
+        
+        $this->actingAs($author);
+        $this->assertCount(1, Comment::all());
+        $this->delete('/comments', [
+            'comment_id'=>$comment->id,
+        ])->assertOk();
+        $this->assertCount(0, Comment::all());
+        
+        $comment = Comment::create([
+            'content'=>'hello world',
+            'user_id'=>$commenter->id,
+            'post_id'=>$post->id
+        ]);
+
+        $this->actingAs($commenter);
+        $this->assertCount(1, Comment::all());
+        $this->delete('/comments', [
+            'comment_id'=>$comment->id,
+        ])->assertOk();
+        $this->assertCount(0, Comment::all());
     }
 }

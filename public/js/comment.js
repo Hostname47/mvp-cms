@@ -168,7 +168,7 @@ function handle_comment_update_button(comment) {
             
             let comment_component = button;
             while(!comment_component.hasClass('comment-component')) comment_component = comment_component.parent();
-            let content = comment_component.find('.comment-update-content').first().val();
+            let content = comment_component.find('.comment-update-content').first().val().trim();
             // Before checking update content input we hide the error container
             let error_container = comment_component.find('.comment-update-box .error-container').first();
             error_container.addClass('none');
@@ -176,6 +176,15 @@ function handle_comment_update_button(comment) {
             if(content == '') {
                 error_container.find('.error').text($('#comment-content-required').val());
                 error_container.removeClass('none');
+                return;
+            }
+
+            /**
+             * If the user open the update section but the content is the same as the original
+             * then we don't have to run patch request
+             */
+            if(content == comment_component.find('.original-content').first().val().trim()) {
+                comment_component.find('.cancel-comment-update').trigger('click');
                 return;
             }
     

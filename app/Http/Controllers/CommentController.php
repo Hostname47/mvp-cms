@@ -53,7 +53,6 @@ class CommentController extends Controller
                     return $comment_component;
             }
     }
-
     public function update(Request $request) {
         $data = $request->validate([
             'comment_id'=>'required|exists:comments,id',
@@ -67,6 +66,18 @@ class CommentController extends Controller
 
         $this->authorize('update', [Comment::class, $comment]);
         $comment->update(['content'=>$data['content']]);
+    }
+    public function delete(Request $request) {
+        $id = $request->validate(['comment_id'=>'required|exists:comments,id'])['comment_id'];
+
+        $comment = Comment::find($id);
+        abort_if(is_null($comment), 404, __('Oops something went wrong.'));
+        $post = $comment->post;
+        abort_if(is_null($post), 404, __('Oops something went wrong.'));
+
+        $this->authorize('delete', [Comment::class, $comment, $post]);
+
+        $comment->delete();
     }
 
     public function fetch(Request $request) {

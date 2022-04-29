@@ -92,6 +92,7 @@ Route::middleware('client.scopes')->group(function() {
         
         Route::post('/comments', [CommentController::class, 'store']);
         Route::patch('/comments', [CommentController::class, 'update']);
+        Route::delete('/comments', [CommentController::class, 'delete']);
     });
 
     Route::get('/', [IndexController::class, 'index'])->name('root.slash');
