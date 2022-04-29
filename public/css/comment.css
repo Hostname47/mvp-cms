@@ -43,7 +43,7 @@
     box-sizing: border-box;
 }
 
-.comment-bottom-section .cancel, .comment-bottom-section .comment-display-switch  {
+.comment-bottom-section .cancel, .comment-bottom-section .comment-display-switch, .cancel-comment-update {
     margin: 0 16px;
 }
 
@@ -211,4 +211,8 @@
 }
 .comment-component .appearence-toggle.expand:hover {
     fill: #13a2db;
+}
+
+.comment-update-box {
+    margin: 12px 0;
 }

@@ -124,6 +124,32 @@ function handle_share_comment(comment) {
     });
 }
 
+function handle_comment_update_input_opener(comment) {
+    comment.find('.open-comment-update-input').each(function() {
+        $(this).on('click', function() {
+            $(this).parent().css('display', 'none');
+            let comment_section = $(this);
+            while(!comment_section.hasClass('comment-section')) comment_section = comment_section.parent();
+            comment_section.find('.comment-update-box').first().removeClass('none');
+            comment_section.find('.comment-wrapper').first().addClass('none');
+        })
+    });
+}
+function handle_comment_update_canceler(comment) {
+    comment.find('.cancel-comment-update').each(function() {
+        $(this).on('click', function() {
+            let comment_section = $(this);
+            while(!comment_section.hasClass('comment-section')) comment_section = comment_section.parent();
+            // Hide update section
+            comment_section.find('.comment-update-box').first().addClass('none');
+            // Reset the content in update input
+            comment_section.find('.comment-update-content').first().val(comment_section.find('.original-content').first().val());
+            // Show comment
+            comment_section.find('.comment-wrapper').first().removeClass('none');
+        })
+    });
+}
+
 function handle_comment_reply_button(comment) {
     comment.find('.comment-reply').each(function() {
         $(this).on('click', function() {
@@ -457,4 +483,6 @@ function handle_comment_events(comment) {
     handle_close_parent(comment);
     handle_load_more_replies(comment);
     handle_comment_appearence_toggling(comment);
+    handle_comment_update_input_opener(comment);
+    handle_comment_update_canceler(comment);
 }
