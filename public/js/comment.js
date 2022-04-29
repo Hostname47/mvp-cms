@@ -49,6 +49,9 @@ function handle_share_comment(comment) {
         let comment_input_container = $(this);
         comment_input_container.find('.share-comment').on('click', function() {
             let button = $(this);
+            if(button.hasClass('in-progress')) return;
+            button.addClass('in-progress');
+
             let spinner = button.find('.spinner');
             let buttonicon = button.find('.icon-above-spinner');
             let error_container = comment_input_container.find('.error-container').first();
@@ -91,11 +94,16 @@ function handle_share_comment(comment) {
                     } else {
                         let replies_box = comment_input;
                         while(!replies_box.hasClass('comment-replies-box')) replies_box = replies_box.parent();
-                        let replies_container = replies_box.find('.comment-replies-container');
+                        let replies_container = replies_box.find('.comment-replies-container').first();
                         replies_container.prepend(response);
                         replies_container.removeClass('none');
                         replies_box.removeClass('none')
                         comment = replies_box.find('.comment-component').first();
+                        // Increment comment replies count (we need to reach the parent comment)
+                        let parent_comment = button;
+                        while(!parent_comment.hasClass('comment-component')) parent_comment = parent_comment.parent();
+                        parent_comment.find('.replies-count').first().text(parseInt(parent_comment.find('.replies-count').first().text()) + 1);
+                        parent_comment.find('.replies-count-part').first().removeClass('none');
                     }
                     handle_comment_events(comment);
                     left_bottom_notification($('#comment-shared-successfully').val());
@@ -114,7 +122,8 @@ function handle_share_comment(comment) {
     
                     button.removeClass('share-comment-disabled');
                 },
-                complete: function(response) {
+                complete: function() {
+                    button.removeClass('in-progress');
                     spinner.addClass('opacity0');
                     spinner.removeClass('inf-rotate');
                     buttonicon.removeClass('none');

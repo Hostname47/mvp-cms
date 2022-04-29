@@ -139,9 +139,9 @@
     color: #13a2db;
 }
 
-.claps-count, .replies-count {
+.claps-count, .replies-count-part {
     font-size: 12px;
-    margin-top: 1px;
+    margin-top: 2px;
 }
 
 #comments-fetch-more {

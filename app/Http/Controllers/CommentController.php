@@ -29,14 +29,21 @@ class CommentController extends Controller
         // Then create the comment
         $comment = Comment::create($data);
         /**
-         * Here we have to increment the comments counter of post
+         * Here we have to increment the comments counter of post; Notice that we don't want 
+         * updated_at column of post to be updated in that case
          */
+        $post->timestamps = false;
         $post->increment('comments_count');
         /**
          * If the comment is a child comment then we have to increment the parent's replies count
          */
-        if(isset($data['parent_comment_id']))
-            Comment::find($data['parent_comment_id'])->increment('replies_count');
+        if(isset($data['parent_comment_id'])) {
+            $parent = Comment::find($data['parent_comment_id']);
+            if($parent) {
+                $parent->timestamps = false;
+                $parent->increment('replies_count');
+            }
+        }
 
         if(isset($return['form']))
             switch($return['form']) {
