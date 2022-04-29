@@ -507,10 +507,10 @@ function handle_lazy_images() {
 
 function is_visible_in_viewport(element) {
     let rect = element.getBoundingClientRect();
-    var top = rect.top;
+    var top = rect.top - ($('header').length ? $('header').height() : 0);
     var bottom = rect.bottom;
 
-    return top < window.innerHeight && bottom >= 0;
+    return top < window.innerHeight;
 }
 
 function updateQueryStringParameter(uri, key, value) {

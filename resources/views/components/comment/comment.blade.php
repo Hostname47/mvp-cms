@@ -1,4 +1,5 @@
-<div class="comment-component @if(is_null($comment->parent_comment_id)) root @else reply-child-of-{{ $comment->parent_comment_id }} @endif">
+<div id="comment-{{ $comment->id }}" class="comment-component @if(is_null($comment->parent_comment_id)) root @else reply-child-of-{{ $comment->parent_comment_id }} @endif">
+    <input type="hidden" class="comment-id" value="{{ $comment->id }}" autocomplete="off">
     <!-- this is only visibile when user hide the comment -->
     <div class="appearence-toggle expand none">
         <svg class="size16 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M114.53,95.48,96.73,113.3,49.39,65.89V95.12H26.31V86.59c0-15.65,0-31.31,0-47,0-8.87,4.42-13.27,13.28-13.3,18.35-.05,36.69,0,55.43,0V49H67.54Zm105.65,138.2c9.18,0,13.48-4.4,13.5-13.65q.06-25.64,0-51.28a36.52,36.52,0,0,0-.36-3.75H210.58v28.26l-46.64-46.68L146,164.35l46.64,46.55H164.77v22.79C183.54,233.69,201.86,233.73,220.18,233.68ZM182.86,92.2,168.18,76.77,76.67,168.29,92,183Z"/></svg>
@@ -81,7 +82,7 @@
                         <x-comment.comment-input :root="false" :parent_comment_id="$comment->id" />
                     </div>
                 </div>
-                <div class="comment-replies-container @if($replies->count() == 0) none @endif">
+                <div class="comment-replies-container @if($comment->replies_count == 0) none @endif">
                     @foreach($replies as $reply)
                     <x-comment.comment :comment="$reply" :data="['claped'=>in_array($reply->id, $replies_claped)]"/>
                     @endforeach

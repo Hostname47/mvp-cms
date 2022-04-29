@@ -172,6 +172,15 @@ function handle_comment_appearence_toggling(comment) {
                 expand.animate({
                     marginLeft: '0px'
                 }, 20);
+
+                /**
+                 * If the hidden comment is not in the viewport (its top is not in the viewport)
+                 * then we need to scroll to it right after hide it.
+                 */
+                let id = comment_component.find('.comment-id').first().val();
+                let element = $('#comment-'+id);
+                if(element[0].getBoundingClientRect().top < $('header').height())
+                    scroll_to_element('comment-'+comment_component.find('.comment-id').first().val());
             }
         })
     });
@@ -201,8 +210,8 @@ function handle_load_more_replies(comment) {
                 data: {
                     comment_id: comment_id,
                     skip: $('.reply-child-of-'+comment_id).length,
-                    take: 10,
-                    sort: $('#post-comments-sort-key').val(),
+                    take: 8,
+                    sort: 'newest',
                     form: 'component'
                 },
                 success: function(response) {

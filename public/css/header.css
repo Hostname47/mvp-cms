@@ -8,14 +8,14 @@ header {
 
     display: flex;
     align-items: center;
-    height: 54px;
+    height: 51px;
     background-color: rgb(23, 24, 26);
     padding: 0 10px;
     border-bottom: 1px solid #121313;
 }
 
 body {
-    margin-top: 54px !important;
+    margin-top: 51px !important;
 }
 
 #header-logo {
@@ -157,7 +157,7 @@ body {
     position: absolute;
     display: none;
     left: 0;
-    top: 54px;
+    top: 51px;
     width: 100%;
     padding: 18px;
     box-sizing: border-box;

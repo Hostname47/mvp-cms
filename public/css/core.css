@@ -1374,7 +1374,7 @@ footer .newsletter-section {
     position: fixed;
     left: 0;
     padding: 20px 0 20px 24px;
-    height: calc(100% - 54px);
+    height: calc(100% - 51px);
     width: 270px;
     overflow-y: auto;
     box-sizing: border-box;

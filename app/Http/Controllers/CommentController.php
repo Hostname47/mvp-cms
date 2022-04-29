@@ -16,7 +16,7 @@ class CommentController extends Controller
             'post_id'=>'required|exists:posts,id',
             'parent_comment_id'=>'sometimes|exists:comments,id'
         ]);
-        $return = $request->validate(['form'=>['sometimes',Rule::in(['component'])]]);
+        $return = $request->validate(['form'=>['sometimes', Rule::in(['component'])]]);
         /**
          * Here we get the post here because we need it here and in policy. Simply get the post and
          * pass it to the policy for checks
@@ -57,20 +57,16 @@ class CommentController extends Controller
             'id'=>'sometimes|exists:comments,id'
         ]);
 
-        $sortby = '';
-        $sdirection = '';
+        $order = '';
         switch($data['sort']) {
             case 'newest':
-                $sortby = 'created_at';
-                $sdirection = 'desc';
+                $order = 'created_at desc';
                 break;
             case 'oldest':
-                $sortby = 'created_at';
-                $sdirection = 'asc';
+                $order = 'created_at asc';
                 break;
             case 'claps':
-                $sortby = 'reactions_count';
-                $sdirection = 'desc';
+                $order = 'reactions_count desc, created_at desc';
                 break;
         }
 
@@ -78,7 +74,7 @@ class CommentController extends Controller
         if(!$post)
             abort(404, __('Oops something went wrong.'));
 
-        $comments = $post->comments()->whereNull('parent_comment_id')->with('user')->orderBy($sortby, $sdirection)->skip($data['skip'])->take($data['take']+1)->get();
+        $comments = $post->comments()->whereNull('parent_comment_id')->with('user')->orderByRaw($order)->skip($data['skip'])->take($data['take']+1)->get();
         $hasmore = $comments->count() > $data['take'];
         $comments = $comments->take($data['take']);
 

@@ -81,4 +81,23 @@ class CommentTest extends TestCase
         $this->post('/comments', ['content'=>'hello', 'post_id'=>$post->id])
             ->assertStatus(403);
     }
+
+    /** @test */
+    public function reply_to_a_comment() {
+        $user = $this->authuser;
+        $post = Post::factory()->create(['status'=>'published']);
+        $comment = Comment::factory()->create([
+            'user_id'=>$user->id,
+            'post_id'=>$post->id
+        ]);
+        $this->assertCount(0, $comment->replies);
+        $this->assertEquals(0, $comment->replies_count);
+        $this->post('/comments', [
+            'content'=>'hello darkness my old friend',
+            'post_id'=>$post->id,
+            'parent_comment_id'=>$comment->id
+        ]);
+        $this->assertCount(1, $comment->refresh()->replies);
+        $this->assertEquals(1, $comment->replies_count);
+    }
 }
