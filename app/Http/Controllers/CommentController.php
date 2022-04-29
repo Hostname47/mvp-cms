@@ -47,6 +47,21 @@ class CommentController extends Controller
             }
     }
 
+    public function update(Request $request) {
+        $data = $request->validate([
+            'comment_id'=>'required|exists:comments,id',
+            'content'=>'sometimes|max:4000',
+        ]);
+
+        $comment = Comment::find($data['comment_id']);
+        abort_if(is_null($comment), 404, __('Oops something went wrong.'));
+        $post = $comment->post;
+        abort_if(is_null($post), 404, __('Oops something went wrong.'));
+
+        $this->authorize('update', [Comment::class, $comment]);
+        $comment->update(['content'=>$data['content']]);
+    }
+
     public function fetch(Request $request) {
         $data = $request->validate([
             'post_id'=>'required|exists:posts,id',

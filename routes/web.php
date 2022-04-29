@@ -87,15 +87,19 @@ Route::get('/login/{provider}', [OAuthController::class, 'redirectToProvider']);
 Route::get('/{provider}/callback', [OAuthController::class, 'handleProviderCallback']);
 
 Route::middleware('client.scopes')->group(function() {
+    Route::middleware(['auth'])->group(function () {
+        Route::post('/claps', [ClapController::class, 'clap']);
+        Route::post('/comments', [CommentController::class, 'store']);
+        Route::patch('/comments', [CommentController::class, 'update']);
+    });
+
     Route::get('/', [IndexController::class, 'index'])->name('root.slash');
     Route::get('/home', [IndexController::class, 'index'])->name('home');
     Route::get('/discover', [IndexController::class, 'discover'])->name('discover');
 
-    Route::post('/claps', [ClapController::class, 'clap']);
     
     Route::get('/comments/fetch', [CommentController::class, 'fetch']);
     Route::get('/comments/replies', [CommentController::class, 'replies']);
-    Route::post('/comments', [CommentController::class, 'store']);
     
     Route::get('/newsletter/subscribe/viewer', [NewsletterController::class, 'newsletter_subscribe_viewer']);
     Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe']);

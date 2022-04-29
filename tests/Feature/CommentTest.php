@@ -21,8 +21,7 @@ class CommentTest extends TestCase
     }
 
     /** @test */
-    public function write_a_comment_on_a_post()
-    {
+    public function write_a_comment_on_a_post() {
         $post = Post::factory()->create(['status'=>'published']);
         
         $this->assertCount(0, Comment::all());
@@ -83,6 +82,17 @@ class CommentTest extends TestCase
     }
 
     /** @test */
+    public function unauthenticated_user_cannot_comment() {
+        $this->post('/logout');
+        $post = Post::factory()->create(['status'=>'published']);
+
+        $this->post('/comments', [
+            'content'=>'hello darkness my old friend',
+            'post_id'=>$post->id
+        ])->assertRedirect();
+    }
+
+    /** @test */
     public function reply_to_a_comment() {
         $user = $this->authuser;
         $post = Post::factory()->create(['status'=>'published']);
@@ -99,5 +109,77 @@ class CommentTest extends TestCase
         ]);
         $this->assertCount(1, $comment->refresh()->replies);
         $this->assertEquals(1, $comment->replies_count);
+    }
+
+    /** @test */
+    public function update_a_comment() {
+        $user = $this->authuser;
+        $post = Post::factory()->create(['status'=>'published']);
+        $comment = Comment::create([
+            'content'=>'hello world',
+            'user_id'=>$user->id,
+            'post_id'=>$post->id
+        ]);
+
+        $this->assertEquals('hello world', $comment->content);
+        $this->patch('/comments', [
+            'comment_id'=>$comment->id,
+            'content'=>'hello darkness my old friend',
+        ]);
+        $this->assertEquals('hello darkness my old friend', $comment->refresh()->content);
+    }
+
+    /** @test */
+    public function update_a_post_validation() {
+        $this->patch('/comments', ['comment_id'=>-1,'content'=>'hello'])
+            ->assertSessionHasErrors(['comment_id']); // comment does not exist with id=-1
+    }
+
+    /** @test */
+    public function only_comment_owner_can_update_it() {
+        $user = $this->authuser;
+        $other = User::factory()->create();
+        $post = Post::factory()->create(['status'=>'published']);
+        $comment = Comment::create([
+            'content'=>'hello world',
+            'user_id'=>$other->id,
+            'post_id'=>$post->id
+        ]);
+        
+        $this->patch('/comments', [
+            'comment_id'=>$comment->id,
+            'content'=>'hello darkness my old friend',
+        ])->assertStatus(403); // $user cannot update $other's comment
+        
+        $this->actingAs($other);
+        $this->patch('/comments', [
+            'comment_id'=>$comment->id,
+            'content'=>'hello darkness my old friend',
+        ])->assertOk();
+    }
+    
+    /** @test */
+    public function unauthenticated_user_cannot_update_a_comment() {
+        $this->post('/logout');
+        $post = Post::factory()->create(['status'=>'published']);
+
+        $this->patch('/comments', [
+            'content'=>'hello darkness my old friend',
+            'post_id'=>$post->id
+        ])->assertRedirect();
+    }
+
+    /** @test */
+    public function cannot_update_a_comment_of_a_post_not_available() {
+        $user = $this->authuser;
+        $other = User::factory()->create();
+        $post = Post::factory()->create(['user_id'=>$other->id, 'status'=>'published', 'visibility'=>'private']);
+        $comment = Comment::create([
+            'content'=>'hello world',
+            'user_id'=>$user->id,
+            'post_id'=>$post->id
+        ]);
+        $this->patch('/comments', ['comment_id'=>$comment->id,'content'=>'hello'])
+            ->assertForbidden(); // $other make the post private so every comments in there is not allowed to be updated
     }
 }
