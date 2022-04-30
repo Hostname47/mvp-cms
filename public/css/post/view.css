@@ -270,3 +270,56 @@ main {
     font-size: 22px;
     font-weight: bold;
 }
+
+/* report section */
+.report-resource-box {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #0003;
+}
+
+.report-resource-container {
+    position: relative;
+    width: 600px;
+    padding: 20px;
+    border: 1px solid rgb(179, 179, 179);
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 0 5px 0px #0000001f;
+}
+
+.resource-report-option {
+    display: flex;
+    cursor: pointer;
+    margin: 4px 0;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.resource-report-option:hover {
+    background-color: #f7f7f7;
+}
+
+.report-body-input {
+    resize: none;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0 2px 0;
+    box-sizing: border-box;
+    border: 1px solid rgb(200, 200, 200);
+    border-radius: 4px;
+}
+
+.report-body-input:focus {
+    box-shadow: 0 0 0px 3px #def2ff;
+    border-color: #64ceff;
+}

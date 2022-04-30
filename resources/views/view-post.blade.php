@@ -68,6 +68,7 @@
             </div>
         </div>
     </div>
+    <x-report.report-form :resource="\App\Models\Comment::first()" />
     
     <div id="post-box">
         <!-- nav links -->
