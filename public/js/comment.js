@@ -140,7 +140,7 @@ function handle_comment_update_input_opener(comment) {
             let comment_section = $(this);
             while(!comment_section.hasClass('comment-section')) comment_section = comment_section.parent();
             comment_section.find('.comment-update-box').first().removeClass('none');
-            comment_section.find('.comment-wrapper').first().addClass('none');
+            comment_section.find('.comment-content-and-buttons').first().addClass('none');
         })
     });
 }
@@ -154,7 +154,7 @@ function handle_comment_update_canceler(comment) {
             // Reset the content in update input
             comment_section.find('.comment-update-content').first().val(comment_section.find('.original-content').first().val());
             // Show comment
-            comment_section.find('.comment-wrapper').first().removeClass('none');
+            comment_section.find('.comment-content-and-buttons').first().removeClass('none');
         })
     });
 }
