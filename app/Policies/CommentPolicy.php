@@ -77,4 +77,15 @@ class CommentPolicy
     public function able_to_delete(User $user, $comment) {
         return $user->id == $comment->user_id;
     }
+
+    public function report(User $user, $comment) {
+        // Implement later
+        return false;
+    }
+
+    public function able_to_report(User $user, $comment) {
+        return $user->id != $comment->user_id;
+    }
+
+
 }

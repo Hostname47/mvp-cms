@@ -77,6 +77,6 @@ class ClapTest extends TestCase
         $this->post('/logout');
         $post = Post::factory()->create(['status'=>'published']);
         $this->post('/claps', ['clapable_id'=>$post->id,'clapable_type'=>'post'])
-            ->assertStatus(403);
+            ->assertRedirect();
     }
 }

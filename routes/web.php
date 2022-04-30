@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{IndexController, AdminController, PostController, CategoryController,
     MediaController, OAuthController, TagController, RoleController, PermissionController, RPManagement,
-    NewsletterController, CommentController, ClapController};
+    NewsletterController, CommentController, ClapController, ReportController};
 use App\Http\Controllers\Admin\{AdminSearchController};
 
 Route::get('/test', function() {
@@ -88,11 +88,13 @@ Route::get('/{provider}/callback', [OAuthController::class, 'handleProviderCallb
 
 Route::middleware('client.scopes')->group(function() {
     Route::middleware(['auth'])->group(function () {
-        Route::post('/claps', [ClapController::class, 'clap']);
-        
         Route::post('/comments', [CommentController::class, 'store']);
         Route::patch('/comments', [CommentController::class, 'update']);
         Route::delete('/comments', [CommentController::class, 'delete']);
+
+        Route::post('/claps', [ClapController::class, 'clap']);
+
+        Route::post('/reports', [ReportController::class, 'report']);
     });
 
     Route::get('/', [IndexController::class, 'index'])->name('root.slash');
