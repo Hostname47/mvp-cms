@@ -49,9 +49,6 @@ function handle_share_comment(comment) {
         let comment_input_container = $(this);
         comment_input_container.find('.share-comment').on('click', function() {
             let button = $(this);
-            if(button.hasClass('in-progress')) return;
-            button.addClass('in-progress');
-
             let spinner = button.find('.spinner');
             let buttonicon = button.find('.icon-above-spinner');
             let error_container = comment_input_container.find('.error-container').first();
@@ -76,6 +73,9 @@ function handle_share_comment(comment) {
             if(parent_comment)
                 data.parent_comment_id = parent_comment;
     
+            if(button.hasClass('in-progress')) return;
+            button.addClass('in-progress');
+
             button.addClass('share-comment-disabled');
             spinner.addClass('inf-rotate');
             spinner.removeClass('opacity0');
@@ -104,6 +104,8 @@ function handle_share_comment(comment) {
                         while(!parent_comment.hasClass('comment-component')) parent_comment = parent_comment.parent();
                         parent_comment.find('.replies-count').first().text(parseInt(parent_comment.find('.replies-count').first().text()) + 1);
                         parent_comment.find('.replies-count-part').first().removeClass('none');
+                        // Hide reply input
+                        parent_comment.find('.comment-reply-input').first().addClass('none');
                     }
                     handle_comment_events(comment);
                     left_bottom_notification($('#comment-shared-successfully').val());

@@ -149,7 +149,7 @@ class CommentTest extends TestCase
         $this->patch('/comments', [
             'comment_id'=>$comment->id,
             'content'=>'hello darkness my old friend',
-        ])->assertStatus(403); // $user cannot update $other's comment
+        ])->assertForbidden(); // $user cannot update $other's comment
         
         $this->actingAs($other);
         $this->patch('/comments', [
@@ -205,7 +205,7 @@ class CommentTest extends TestCase
     }
 
     /** @test */
-    public function only_comment_owner_and_author_can_delete_it() {
+    public function comment_can_be_deleted_by_its_owner_only() {
         $author = $this->authuser;
         $commenter = User::factory()->create();
         $third = User::factory()->create();
@@ -219,20 +219,12 @@ class CommentTest extends TestCase
         $this->actingAs($third);
         $this->delete('/comments', [
             'comment_id'=>$comment->id,
-        ])->assertStatus(403);
+        ])->assertForbidden();
         
         $this->actingAs($author);
-        $this->assertCount(1, Comment::all());
         $this->delete('/comments', [
             'comment_id'=>$comment->id,
-        ])->assertOk();
-        $this->assertCount(0, Comment::all());
-        
-        $comment = Comment::create([
-            'content'=>'hello world',
-            'user_id'=>$commenter->id,
-            'post_id'=>$post->id
-        ]);
+        ])->assertForbidden();
 
         $this->actingAs($commenter);
         $this->assertCount(1, Comment::all());

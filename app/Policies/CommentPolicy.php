@@ -46,6 +46,10 @@ class CommentPolicy
         return true;
     }
 
+    public function able_to_update(User $user, $comment) {
+        return $user->id == $comment->user_id;
+    }
+
     public function update(User $user, $comment) {
         /**
          * we check if the comment owner is the one who is trying to update
@@ -62,11 +66,15 @@ class CommentPolicy
         /**
          * we check if the comment owner is the one who is trying to update
          */
-        if($user->id != $comment->user_id && $user->id != $post->user_id) {
+        if($user->id != $comment->user_id){
             /** Log this authorization break */
             return $this->deny(__('Unauthorized action. A snapshot of details is sent to admins to review'));
         }
 
         return true;
+    }
+
+    public function able_to_delete(User $user, $comment) {
+        return $user->id == $comment->user_id;
     }
 }
