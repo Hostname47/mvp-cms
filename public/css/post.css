@@ -51,12 +51,13 @@
 
 .post-component .post-bottom-section {
     display: flex;
+    align-items: center;
     margin-top: auto;
 }
 
 .post-component .author-avatar {
-    width: 36px;
-    height: 36px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     margin-right: 6px;
 }

@@ -20,10 +20,10 @@ class ReportPolicy
         
         $reportable = null;
         switch($data['reportable_type']) {
-            case 'comment':
+            case 'App\Models\Comment':
                 $reportable = Comment::find($data['reportable_id']);
                 break;
-            case 'post':
+            case 'App\Models\Post':
                 $reportable = Post::find($data['reportable_id']);
                 break;
         }

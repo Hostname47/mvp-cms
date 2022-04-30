@@ -16,9 +16,6 @@ class ReportController extends Controller
             'type'=>['required', Rule::in(['spam', 'rude-or-abusive', 'low-quality', 'moderator-intervention'])]
         ]);
 
-        // Handle authorization first
-        $this->authorize('report', [Report::class, $data]);
-
         // Set reporter (current user)
         $data['reporter'] = auth()->user()->id;
 
@@ -31,6 +28,9 @@ class ReportController extends Controller
                 $data['reportable_type'] = 'App\Models\Comment';
                 break;
         }
+        
+        // Handle authorization first
+        $this->authorize('report', [Report::class, $data]);
 
         Report::create($data);
     }

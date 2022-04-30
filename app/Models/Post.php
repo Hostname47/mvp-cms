@@ -38,6 +38,10 @@ class Post extends Model
         return $this->morphMany(Clap::class, 'clapable');
     }
 
+    public function reports() {
+        return $this->morphMany(Report::class, 'reportable');
+    }
+
     public function getCreationDateHumansAttribute() {
         return (new Carbon($this->created_at))->diffForHumans();
     }
