@@ -30,6 +30,10 @@ class Comment extends Model
         return $this->morphMany(Clap::class, 'clapable');
     }
 
+    public function reports() {
+        return $this->morphMany(Report::class, 'reportable');
+    }
+
     public function getParentKeyName() {
         return 'parent_comment_id';
     }
