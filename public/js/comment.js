@@ -188,13 +188,13 @@ function handle_comment_update_button(comment) {
                 return;
             }
     
+            if(button.hasClass('in-progress')) return;
+            button.addClass('in-progress');
+
             button.addClass('update-comment-disabled');
             spinner.addClass('inf-rotate');
             spinner.removeClass('opacity0');
             buttonicon.addClass('none');
-
-            if(button.hasClass('in-progress')) return;
-            button.addClass('in-progress');
 
             $.ajax({
                 type: 'patch',
@@ -230,6 +230,64 @@ function handle_comment_update_button(comment) {
         });
     });
 }
+
+function handle_comment_delete_viewer_opener(comment) {
+    let viewer = $('#delete-comment-viewer');
+    comment.find('.open-comment-delete-viewer').each(function() {
+        $(this).on('click', function() {
+            $(this).parent().css('display', 'none');
+            let comment_component = $(this);
+            while(!comment_component.hasClass('comment-component')) comment_component = comment_component.parent();
+            viewer.find('.comment-delete-content').text(comment_component.find('.comment-content').first().text());
+            viewer.find('.comment-id').val(comment_component.find('.comment-id').first().val());
+            viewer.removeClass('none');
+        })
+    });
+}
+$('.delete-comment').on('click', function() {
+    let viewer = $('#delete-comment-viewer');
+    let button = $(this);
+    if(button.hasClass('in-progress')) return;
+    button.addClass('in-progress');
+
+    let spinner = button.find('.spinner');
+    let buttonicon = button.find('.icon-above-spinner');
+    let comment_id = button.find('.comment-id').val();
+    let comment_component = $('#comment-'+comment_id);
+
+    button.addClass('red-bs-disabled');
+    spinner.addClass('inf-rotate');
+    spinner.removeClass('opacity0');
+    buttonicon.addClass('none');
+
+    $.ajax({
+        type: 'delete',
+        url: '/comments',
+        data: { comment_id: comment_id },
+        success: function(response) {
+            comment_component.remove();
+            left_bottom_notification($('#comment-deleted-successfully').val());
+            viewer.find('.close-global-viewer').first().trigger('click');
+            $('.post-comments-count').text(response.post_comments_count);
+        },
+        error: function(response) {
+            let errorObject = JSON.parse(response.responseText);
+            let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+            if(errorObject.errors) {
+                let errors = errorObject.errors;
+                error = errors[Object.keys(errors)[0]][0];
+            }
+            print_top_message(error, 'error');
+
+        },
+        complete: function() {
+            button.removeClass('in-progress red-bs-disabled');
+            spinner.addClass('opacity0');
+            spinner.removeClass('inf-rotate');
+            buttonicon.removeClass('none');
+        }
+    });
+});
 
 function handle_comment_reply_button(comment) {
     comment.find('.comment-reply').each(function() {
@@ -567,4 +625,6 @@ function handle_comment_events(comment) {
     handle_comment_update_input_opener(comment);
     handle_comment_update_canceler(comment);
     handle_comment_update_button(comment);
+    handle_comment_delete_viewer_opener(comment);
+    // delete comment event is handled globally right after handle_comment_delete_viewer_opener()
 }

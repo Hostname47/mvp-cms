@@ -185,7 +185,6 @@ class CommentTest extends TestCase
 
     /** @test */
     public function delete_a_comment() {
-        $this->withoutExceptionHandling();
         $user = $this->authuser;
         $post = Post::factory()->create(['status'=>'published']);
         $comment = Comment::create([
@@ -241,5 +240,39 @@ class CommentTest extends TestCase
             'comment_id'=>$comment->id,
         ])->assertOk();
         $this->assertCount(0, Comment::all());
+    }
+
+    /** @test */
+    public function delete_a_comment_will_delete_all_its_subcomments() {
+        $user = $this->authuser;
+        $post = Post::factory()->create(['status'=>'published']);
+        $c0 = Comment::create(['content'=>'hello world','user_id'=>$user->id,'post_id'=>$post->id]);
+        // Following 2 are direct replies to c0
+        $c00 = Comment::create(['content'=>'c00','user_id'=>$user->id,'post_id'=>$post->id, 'parent_comment_id'=>$c0->id]);
+        $c01 = Comment::create(['content'=>'c01','user_id'=>$user->id,'post_id'=>$post->id, 'parent_comment_id'=>$c0->id]);
+        // Following is reply to c00
+        $c000 = Comment::create(['content'=>'c000','user_id'=>$user->id,'post_id'=>$post->id, 'parent_comment_id'=>$c00->id]);
+
+        $this->assertCount(4, Comment::all());
+        $this->delete('/comments', ['comment_id'=>$c0->id]);
+        $this->assertCount(0, Comment::all());
+    }
+
+    /** @test */
+    public function comment_post_comments_count_is_reduced_once_comment_get_deleted() {
+        $user = $this->authuser;
+        $post = Post::factory()->create(['status'=>'published']);
+        $this->post('/comments', ['content'=>'c0','post_id'=>$post->id]);
+        $this->post('/comments', ['content'=>'c1','post_id'=>$post->id]);
+        $c0 = Comment::where('content', 'c0')->first();
+        $this->post('/comments', ['content'=>'c00','post_id'=>$post->id,'parent_comment_id'=>$c0->id]);
+        $this->post('/comments', ['content'=>'c01','post_id'=>$post->id,'parent_comment_id'=>$c0->id]);
+
+        $this->assertEquals(4, $post->refresh()->comments_count);
+        $this->delete('/comments', ['comment_id'=>$c0->id]);
+        /**
+         * After deleting c0, all its subcommments will get deleted as well; c1 stay there
+         */
+        $this->assertEquals(1, $post->refresh()->comments_count);
     }
 }

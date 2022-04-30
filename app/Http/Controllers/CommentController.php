@@ -78,6 +78,18 @@ class CommentController extends Controller
         $this->authorize('delete', [Comment::class, $comment, $post]);
 
         $comment->delete();
+        /**
+         * After deleting the comment we have to update parent post comments count; We get the new post
+         * comments count and store the values to use it in update as well as returning it to front end
+         * counters
+         */
+        $new_comments_count = $post->comments()->count();
+        $post->timestamps = false;
+        $post->update(['comments_count'=>$new_comments_count]);
+        
+        return [
+            'post_comments_count'=>$new_comments_count
+        ];
     }
 
     public function fetch(Request $request) {
@@ -151,7 +163,7 @@ class CommentController extends Controller
 
     public function replies(Request $request) {
         $data = $request->validate([
-            'comment_id'=>'required|exists:posts,id',
+            'comment_id'=>'required|exists:comments,id',
             'skip'=>'required|numeric',
             'take'=>'required|numeric',
             'sort'=>['required', Rule::in(['newest','oldest','claps'])],
