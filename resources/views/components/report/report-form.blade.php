@@ -1,8 +1,8 @@
 <div class="report-resource-box">
     <div class="report-resource-container">
-        <input type="hidden" class="reportable-id" value="">
-        <input type="hidden" class="reportable-type" value="">
-        <input type="hidden" class="reported-successfully-message" value="{{ __('Your report has been sent successfully') }}." autocomplete="off">
+        <input type="hidden" class="reportable-id" value="{{ $reportable_id }}">
+        <input type="hidden" class="reportable-type" value="{{ $reportable_type }}">
+        <input type="hidden" id="reported-successfully-message" value="{{ __('Your report has been sent successfully') }}." autocomplete="off">
         <!-- close report section -->
         <div class="close-report-container x-close-container-style" style="top: 12px; right: 12px">
             <span class="x-close">✖</span>

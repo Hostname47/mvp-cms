@@ -682,30 +682,32 @@ function handle_newsletter_subscribe_button() {
 /**
  * Reporting
  */
-$('.report-choice-input').on('change', function() {
-    let option = $(this);
-    let report_box = option;
-    while(!report_box.hasClass('report-section')) report_box = report_box.parent();
-    let report_body_container = report_box.find('.report-body-input-container');
-
-    if(option.val() == 'moderator-intervention') {
-        report_body_container.animate({
-            height: '100%'
-        }, 200);
-
-        handle_report_body_input(report_body_container.find('.report-body-input'));
-    } else {
-        report_body_container.animate({
-            height: '0px'
-        }, 200);
-        report_box.find('.submit-report').removeClass('dark-bs-disabled');
-    }
-});
-
-$('.report-body-input').on('input', function() {
-    handle_report_body_input($(this));
-});
-
+function handle_report_choice(report_box) {
+    report_box.find('.report-choice-input').each(function() {
+        $(this).on('change', function() {
+            let option = $(this);
+            let report_box = option;
+            while(!report_box.hasClass('report-section')) report_box = report_box.parent();
+            let report_body_container = report_box.find('.report-body-input-container');
+        
+            if(option.val() == 'moderator-intervention') {
+                report_body_container.animate({
+                    height: '100%'
+                }, 200);
+        
+                handle_report_body_input(report_body_container.find('.report-body-input'));
+            } else {
+                report_body_container.animate({ height: '0px' }, 200);
+                enable_report_submit(report_box);
+            }
+        });
+    });
+}
+function handle_report_body(report_box) {
+    report_box.find('.report-body-input').on('input', function() {
+        handle_report_body_input($(this));
+    });
+}
 function handle_report_body_input(textarea) {
     let report_container = textarea;
     while(!report_container.hasClass('report-resource-container')) report_container = report_container.parent();
@@ -749,7 +751,6 @@ function handle_report_body_input(textarea) {
         }
     }
 }
-
 function enable_report_submit(report_box) {
     report_box.find('.submit-report').removeClass('dark-bs-disabled');
     submit_report_confirmed = true;
@@ -760,3 +761,71 @@ function disable_report_submit(report_box) {
 }
 
 let submit_report_confirmed = false;
+let submit_report_lock = true;
+function handle_report_submit_button(report_box) {
+    report_box.find('.submit-report').on('click', function() {
+        if(!submit_report_lock || !submit_report_confirmed) return;
+        submit_report_lock = false;
+        
+        let button = $(this);
+        let spinner = button.find('.spinner');
+        
+        let reportable_type = report_box.find('.reportable-type').val();
+        let reportable_id = report_box.find('.reportable-id').val();
+        let report_type = report_box.find('input[name="report-option"]:checked').val();
+        let report_content = report_box.find('.report-body-input').val();
+        
+        let data = {
+            reportable_id: reportable_id,
+            reportable_type: reportable_type,
+            type: report_type
+        };
+        if(report_type == "moderator-intervention")
+            data.body = report_content;
+        
+        spinner.removeClass('none');
+        spinner.addClass('inf-rotate');
+        button.addClass('dark-bs-disabled');
+
+        $.ajax({
+            type: 'post',
+            url: `/reports`,
+            data: data,
+            success: function(response) {
+                report_box.find('.close-report-container').trigger('click');
+                // Wait for closing annimation
+                setTimeout(function() {
+                    report_box.addClass('none');
+                    left_bottom_notification($('#reported-successfully-message').val());
+                    disable_report_submit(report_box);
+                }, 200);
+            },
+            error: function(response) {
+                let errorObject = JSON.parse(response.responseText);
+                let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+                if(errorObject.errors) {
+                    let errors = errorObject.errors;
+                    error = errors[Object.keys(errors)[0]][0];
+                }
+                print_top_message(error, 'error');
+                report_box.find('input[name="report-option"]:checked').trigger('change');
+            },
+            complete: function() {
+                spinner.addClass('none');
+                spinner.removeClass('inf-rotate');
+                submit_report_lock = true;
+            }
+        });
+    });
+}
+function handle_close_report_box(report_box) {
+    report_box.find('.close-report-container').each(function() {
+        $(this).on('click', function() {
+            report_box.animate({
+                opacity: 0
+            }, 100, function() {
+                report_box.addClass('none');
+            })
+        })
+    });
+}
