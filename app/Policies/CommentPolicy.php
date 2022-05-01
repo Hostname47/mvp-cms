@@ -78,14 +78,10 @@ class CommentPolicy
         return $user->id == $comment->user_id;
     }
 
-    public function report(User $user, $comment) {
-        // Implement later
-        return false;
-    }
-
+    /**
+     * Authorization of report is done in report policy
+     */
     public function able_to_report(User $user, $comment) {
         return $user->id != $comment->user_id;
     }
-
-
 }

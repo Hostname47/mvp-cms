@@ -272,7 +272,7 @@ main {
 }
 
 /* report section */
-.report-resource-box {
+#report-resource-box {
     position: fixed;
     z-index: 1;
     left: 0;

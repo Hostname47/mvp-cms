@@ -94,6 +94,7 @@ Route::middleware('client.scopes')->group(function() {
 
         Route::post('/claps', [ClapController::class, 'clap']);
 
+        Route::get('/reports/viewer', [ReportController::class, 'viewer']);
         Route::post('/reports', [ReportController::class, 'report']);
     });
 

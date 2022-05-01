@@ -809,10 +809,10 @@ function handle_report_submit_button(report_box) {
                 }
                 print_top_message(error, 'error');
                 report_box.find('input[name="report-option"]:checked').trigger('change');
-            },
-            complete: function() {
                 spinner.addClass('none');
                 spinner.removeClass('inf-rotate');
+            },
+            complete: function() {
                 submit_report_lock = true;
             }
         });

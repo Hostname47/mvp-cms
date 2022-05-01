@@ -383,6 +383,10 @@ figure {
     cursor: pointer;
 }
 
+.default-cursor {
+    cursor: default !important;
+}
+
 .lh15 {
     line-height: 1.5;
 }

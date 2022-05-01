@@ -45,4 +45,15 @@ class ReportPolicy
 
         return true;
     }
+
+    public function viewer(User $user, $reportable) {
+        if(is_null($reportable))
+            return $this->deny(__('Oops something went wrong.'));
+
+        // User cannot report his own resources
+        if($reportable->user_id == $user->id)
+            return $this->deny(__('You cannot report your own resources.'));
+
+        return true;
+    }
 }

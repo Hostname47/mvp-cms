@@ -68,7 +68,8 @@
             </div>
         </div>
     </div>
-    <x-report.report-form :resource="\App\Models\Comment::first()" />
+    <!-- report viewer -->
+    <div id="report-resource-box" class="none"><!-- filled dynamically --></div>
     
     <div id="post-box">
         <!-- nav links -->

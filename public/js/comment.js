@@ -353,6 +353,62 @@ function handle_comment_appearence_toggling(comment) {
     });
 }
 
+function handle_comment_report_opener(comment) {
+    comment.find('.open-comment-report-dialog').each(function() {
+        $(this).on('click', function() {
+            let button = $(this);
+            if(button.hasClass('in-progress')) return;
+            button.addClass('in-progress');
+            let spinner = button.find('.spinner');
+            let buttonicon = button.find('.icon-above-spinner');
+        
+            button.addClass('default-cursor');
+            spinner.addClass('inf-rotate')
+            spinner.removeClass('opacity0');
+            buttonicon.addClass('none');
+        
+            $.ajax({
+                url: '/reports/viewer',
+                data: {
+                    reportable_id: button.find('.reportable-id').val(),
+                    reportable_type: button.find('.reportable-type').val(),
+                },
+                success: function(report_form) {
+                    button.parent().css('display', 'none'); // Close button parent suboptions
+                    let report_box = $('#report-resource-box');
+                    report_box.html(report_form);
+                    handle_report_choice(report_box);
+                    handle_report_body(report_box);
+                    enable_report_submit(report_box);
+                    disable_report_submit(report_box);
+                    handle_report_submit_button(report_box);
+                    handle_close_report_box(report_box);
+                    report_box.removeClass('none');
+                    report_box.animate({
+                        opacity: 1
+                    }, 100);
+                },
+                error: function(response) {
+                    let errorObject = JSON.parse(response.responseText);
+                    let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+                    if(errorObject.errors) {
+                        let errors = errorObject.errors;
+                        error = errors[Object.keys(errors)[0]][0];
+                    }
+                    print_top_message(error, 'error');
+                },
+                complete: function() {
+                    button.addClass('default-cursor');
+                    button.removeClass('in-progress default-cursor');
+                    spinner.addClass('opacity0');
+                    spinner.removeClass('inf-rotate');
+                    buttonicon.removeClass('none');
+                }
+            });
+        });
+    });
+}
+
 function handle_load_more_replies(comment) {
     comment.find('.load-more-replies').each(function() {
         $(this).on('click', function() {
@@ -629,4 +685,5 @@ function handle_comment_events(comment) {
     handle_comment_update_button(comment);
     handle_comment_delete_viewer_opener(comment);
     // delete comment event is handled globally right after handle_comment_delete_viewer_opener()
+    handle_comment_report_opener(comment);
 }
