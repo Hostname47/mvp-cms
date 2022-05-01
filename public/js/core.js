@@ -127,9 +127,11 @@ function slugify(s) {
 
 $('.header-menu-button').on({
     mouseenter: function() {
+        $(this).find('.header-menu-button-strip').css('right', 'auto')
         $(this).find('.header-menu-button-strip').width('100%');
     },
     mouseleave: function() {
+        $(this).find('.header-menu-button-strip').css('right', '0')
         $(this).find('.header-menu-button-strip').width('0%');
     }
 })
