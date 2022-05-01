@@ -17,7 +17,7 @@
                 <a href="" class="category">{{ $category->title }}</a>
             @endforeach
         </div>
-        <a href="{{ $post->link }}" class="title">{{ $post->html_title }}</a>
+        <a href="{{ $post->link }}" class="title">{{ $post->content_title_slice }}</a>
         <p class="excerpt">{{ $post->excerpt }} <a href="{{ $post->link }}" class="dark-blue no-underline fs12 bold ml4">{{__('read more')}}</a></p>
         @if($post->tags->count())
         <div class="tags-box">

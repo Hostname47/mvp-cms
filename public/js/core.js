@@ -6,6 +6,28 @@ $.ajaxSetup({
 
 // $(window).on('unload', function() { $(window).scrollTop(0); });
 
+function set_cookie(name,value,days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/;secure";
+}
+function get_cookie(name) {
+    return document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)')?.pop() || '';
+}
+
+$('.header-discover-display').on('change', function() {
+    let value = $(this).val();
+    set_cookie('header-explore-expand', value, 365);
+    if(value == 'hover')
+        handle_discover_section_hover_effect();
+    else
+        handle_discover_section_click_effect();
+});
+
 $('.fade-box').each(function() {
     let box = $(this);
     window.setInterval(function(){
@@ -22,29 +44,80 @@ $('.fade-box').each(function() {
 })
 
 let discover_opening_timeout;
-$('#header-discover-button').on({
-    mouseenter: function() {
-        clearTimeout(discover_opening_timeout);
-        $('#header-discover-box').css('display', 'block');
-    },
-    mouseleave: function() {
-        close_header_discover_section();
-    }
-});
+function handle_discover_section_hover_effect() {
+    let discover_expand_button = $('#header-discover-expand-button');
+    discover_expand_button.addClass('none');
+    /**
+     * Even though we hide the expand button, but we need to rotate it based on discover section
+     * appearence so that when user select click again thebutton should be rotated
+     */
+    $('#header-discover-button').on({
+        mouseenter: function() {
+            clearTimeout(discover_opening_timeout);
+            $('#header-discover-box').css('display', 'block');
+            rotate(discover_expand_button, 90);
+        },
+        mouseleave: function() {
+            close_header_discover_section();
+        }
+    });
+    $('#header-discover-box').on({
+        mouseenter: function() {
+            clearTimeout(discover_opening_timeout);
+            rotate(discover_expand_button, 90);
+        },
+        mouseleave: function() {
+            close_header_discover_section();
+        }
+    });
+}
 
-$('#header-discover-box').on({
-    mouseenter: function() {
-        clearTimeout(discover_opening_timeout);
-    },
-    mouseleave: function() {
-        close_header_discover_section();
-    }
-});
+function handle_discover_section_click_effect() {
+    let discover_button = $('#header-discover-button');
+    let expand = $('#header-discover-expand-button');
+    let box = $('#header-discover-box');
+    
+    discover_button.off('mouseenter mouseleave');
+    box.off('mouseenter mouseleave');
+
+    expand.off('click');
+    expand.on('click', function(event) {
+        if(box.css('display') == 'none') {
+            box.css('display', 'block');
+            rotate(expand, 90);
+        } else {
+            box.css('display', 'none');
+            rotate(expand, 0);
+        }
+        event.stopPropagation();
+    });
+    expand.removeClass('none');
+}
 
 function close_header_discover_section() {
     discover_opening_timeout = setTimeout(function() {
         $('#header-discover-box').css('display', 'none');
     }, 60);
+    rotate($('#header-discover-expand-button'), 0);
+}
+
+$('.close-discover-panel').on('click', function() {
+    close_header_discover_section();
+});
+
+if(get_cookie('header-explore-expand') == 'click')
+    $('#discover-display-click').trigger('click');
+else
+    $('#discover-display-hover').trigger('click');
+
+function rotate(element, deg) {
+    element.css({
+        transform:'rotate(' + deg + 'deg)',
+        '-ms-transform':'rotate(' + deg + 'deg)',
+        '-moz-transform':'rotate(' + deg + 'deg)',
+        '-webkit-transform':'rotate(' + deg + 'deg)',
+        '-o-transform':'rotate(' + deg + 'deg)'
+    });
 }
 
 $('.toggle-box').each(function() { handle_toggling($(this)); });
