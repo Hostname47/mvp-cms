@@ -18,8 +18,8 @@ class ReportForm extends Component
      *
      * @return \Illuminate\Contracts\View\View|\Closure|string
      */
-    public function render()
+    public function render($data=[])
     {
-        return view('components.report.report-form');
+        return view('components.report.report-form', $data);
     }
 }

@@ -679,3 +679,84 @@ function handle_newsletter_subscribe_button() {
     });
 }
 
+/**
+ * Reporting
+ */
+$('.report-choice-input').on('change', function() {
+    let option = $(this);
+    let report_box = option;
+    while(!report_box.hasClass('report-section')) report_box = report_box.parent();
+    let report_body_container = report_box.find('.report-body-input-container');
+
+    if(option.val() == 'moderator-intervention') {
+        report_body_container.animate({
+            height: '100%'
+        }, 200);
+
+        handle_report_body_input(report_body_container.find('.report-body-input'));
+    } else {
+        report_body_container.animate({
+            height: '0px'
+        }, 200);
+        report_box.find('.submit-report').removeClass('dark-bs-disabled');
+    }
+});
+
+$('.report-body-input').on('input', function() {
+    handle_report_body_input($(this));
+});
+
+function handle_report_body_input(textarea) {
+    let report_container = textarea;
+    while(!report_container.hasClass('report-resource-container')) report_container = report_container.parent();
+    let report_body_container = report_container.find('.report-body-input-container');
+    let counter_container = textarea.parent().find('.report-body-counter');
+    let counter = counter_container.find('.report-body-count');
+    let phrase = counter_container.find('.report-body-count-phrase');
+    let maxlength = 500;
+    let currentLength = textarea.val().trim().length;
+
+    disable_report_submit(report_container);
+
+    counter_container.addClass('gray');
+    if(currentLength == 0) {
+        counter_container.attr('style', '');
+        counter.text('');
+        phrase.text(report_body_container.find('.enter-at-least-10-chars-text').val());
+    } else if(currentLength > maxlength) {
+        let more_than_max = currentLength - maxlength;
+        let chars_text = more_than_max > 1 ? report_body_container.find('.characters-text').val() : report_body_container.find('.characters-text').val().slice(0, -1);
+        let counter_phrase = report_body_container.find('.too-long-text').val() + ' ' + more_than_max + ' ' + chars_text;
+        counter.text('');
+        phrase.text(counter_phrase);
+
+        counter_container.removeClass('gray');
+        counter_container.css('color', '#e83131');
+    } else {
+        counter_container.attr('style', '');
+        if(currentLength < 10) {
+            let left_to_10 = 10 - currentLength;
+            let counter_phrase = report_body_container.find('.more-to-go-text').val();
+            counter_container.find('.report-body-count').text(left_to_10);
+            phrase.text(counter_phrase);
+        } else {
+            let chars_left = maxlength - currentLength;
+            let counter_phrase = report_body_container.find('.chars-left-text').val();
+            counter_container.find('.report-body-count').text(chars_left);
+            phrase.text(counter_phrase);
+            
+            enable_report_submit(report_container);
+        }
+    }
+}
+
+function enable_report_submit(report_box) {
+    report_box.find('.submit-report').removeClass('dark-bs-disabled');
+    submit_report_confirmed = true;
+}
+function disable_report_submit(report_box) {
+    report_box.find('.submit-report').addClass('dark-bs-disabled');
+    submit_report_confirmed = false;
+}
+
+let submit_report_confirmed = false;
