@@ -34,11 +34,7 @@ class ClapController extends Controller
         ];
 
         // Check if user already clap the resource (unclap) or it is the first time he clap
-        $already = auth()->user()->claps()
-            ->where('clapable_id', $data['clapable_id'])
-            ->where('clapable_type', $data['clapable_type'])
-            ->first();
-
+        $already = $resource->claps()->where('user_id', auth()->user()->id)->first();
         // Disable resource timestamps when modifying reactions_count column
         $resource->timestamps = false;
         if($already) {

@@ -42,6 +42,12 @@ class Post extends Model
         return $this->morphMany(Report::class, 'reportable');
     }
 
+    public function getClapedAttribute() {
+        if(!auth()->user())
+            return false;
+        return (boolean) $this->claps()->where('user_id', auth()->user()->id)->count();
+    }
+
     public function getCreationDateHumansAttribute() {
         return (new Carbon($this->created_at))->diffForHumans();
     }

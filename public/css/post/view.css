@@ -328,3 +328,24 @@ main {
     box-shadow: 0 0 0px 3px #def2ff;
     border-color: #64ceff;
 }
+
+.post-share-stats-section .post-stats-button {
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+.post-share-stats-section .post-stats-button:hover {
+    background-color: #f2f2f2;
+}
+
+.post-share-stats-section .stats-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 6px;
+}
+
+.post-claped {
+    fill: #007cff;
+    color: #007cff;
+    background-color: #007cff0d !important;
+}
