@@ -44,3 +44,8 @@ function post_clap_button_change(button) {
         claps_counter.text(claps_count);
     }
 }
+
+$('.share-anchor').on('click', function() {
+    window.open($(this).attr('href'), 'newwindow', 'width=300,height=250');
+    return false;
+});

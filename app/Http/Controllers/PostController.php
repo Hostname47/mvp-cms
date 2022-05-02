@@ -73,9 +73,13 @@ class PostController extends Controller
     }
 
     public function view(Request $request, Category $category, Post $post) {
+        $link = route('view.post', ['category'=>$category->slug, 'post'=>$post->slug]);
+        $title = $post->html_title;
         return view('view-post')
             ->with(compact('category'))
-            ->with(compact('post'));
+            ->with(compact('post'))
+            ->with(compact('title'))
+            ->with(compact('link'));
     }
 
     public function create() {
