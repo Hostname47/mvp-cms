@@ -50,7 +50,7 @@
                 <span>{{__('adv. search')}}</span>
             </a>
         </div>
-        <form class="flex1">
+        <form action="{{ route('search') }}" class="flex1">
             <p class="fs11 no-margin light-gray">{{__('Search for everything')}}..</p>
             <div class="align-center mt4">
                 <input type="text" name="k" id="left-panel-search-input" required class="flex1" placeholder="{{ __('Search keywords') }}" @if($k) value="{{ $k }}" @endif>

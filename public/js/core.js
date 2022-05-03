@@ -84,6 +84,11 @@ function handle_discover_section_click_effect() {
     expand.on('click', function(event) {
         if(box.css('display') == 'none') {
             box.css('display', 'block');
+            /**
+             * The following click trigger is used to close any other options subcontainer that could
+             * be opened already like header search
+             */
+            box.trigger('click');
             rotate(expand, 90);
         } else {
             box.css('display', 'none');
@@ -274,10 +279,8 @@ $('.remove-top-message-container-button').on('click', function() {
 document.addEventListener("click", function(event) {
     $(".suboptions-container").css("display", "none");
 }, false);
-$(".button-with-suboptions").each(function() {
-    handle_suboptions_container($(this).parent());
-});
 
+handle_suboptions_container($('body'));
 function handle_suboptions_container(section) {
     section.find('.button-with-suboptions').each(function() {
         $(this).on('click', function(event) {
