@@ -1337,6 +1337,12 @@ footer .newsletter-section {
     padding: 14px 16px 0 16px;
 }
 
+.title-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+}
+
 .title-style {
     font-size: 25px;
     color: #15171a;

@@ -44,6 +44,10 @@ class User extends Authenticatable
         return $this->hasMany(Report::class, 'reporter');
     }
 
+    public function posts() {
+        return $this->hasMany(Post::class);
+    }
+
     public function getHasAvatarAttribute() {
         if(is_null($this->avatar)) {
             /**

@@ -18,9 +18,16 @@
     align-items: center;
 }
 
+.init-search-input-icon {
+    position: absolute;
+    left: 14px;
+    width: 14px;
+    height: 14px;
+}
+
 #init-search-input {
     flex: 1;
-    padding: 10px 10px 10px 36px;
+    padding: 10px 44px 10px 36px;
     border: 1px solid #bbc4ca;
     border-radius: 3px 0 0 3px;
 }
@@ -46,4 +53,124 @@
 }
 #init-search-button:hover {
     background-color: #e3e8eb;
+}
+
+#init-search-filters-box {
+    position: absolute;
+    right: 88px;
+}
+
+#init-search-filters-box .filter-button {
+    display: flex;
+    padding: 5px;
+    background-color: #d5dde3;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+#init-search-filters-box .arrow {
+    width: 8px;
+    height: 8px;
+    fill: #313131
+}
+
+#init-search-filters-box .filter-panel {
+    position: absolute;
+    top: calc(100% + 4px);
+    background-color: white;
+    border: 1px solid #bbc4ca;
+    width: 150px;
+    right: 0;
+    border-radius: 3px;
+    padding: 10px;
+}
+
+.search-result-query-text {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 8px 0;
+    color: #110e0e;
+}
+
+.search-resource-title {
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+
+.search-resource-title .count {
+    margin-left: 4px;
+    font-size: 14px;
+}
+
+#authors-section {
+    margin-bottom: 18px;
+}
+
+#no-posts-found-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#no-posts-found-box .icon {
+    width: 88px;
+    height: 88px;
+}
+
+#no-posts-found-box .bold-text {
+    font-weight: bold;
+    font-size: 16px;
+    margin: 4px 0 6px 0;
+    color: #110e0e;
+}
+
+#no-posts-found-box .desc-text {
+    font-size: 13px;
+    margin: 0;
+    color: #110e0e;
+}
+
+.author-component {
+    display: flex;
+    padding: 6px;
+    margin: 10px 0;
+}
+
+.author-avatar {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+}
+
+.author-component .name {
+    display: block;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.author-component .name .posts-count {
+    font-size: 14px;
+}
+
+.author-component .username {
+    display: block;
+    margin-top: 1px;
+}
+
+#authors-see-more {
+    text-decoration: none;
+    margin-left: 10px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    color: #2ca0ff;
+}
+#authors-see-more .icon {
+    width: 14px;
+    height: 14px;
+    margin-right: 6px;
+    fill: #2ca0ff;
+    stroke:#2ca0ff;
 }
