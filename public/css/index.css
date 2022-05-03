@@ -24,6 +24,10 @@
     background: linear-gradient(150deg, rgba(0, 0, 0, 0.66) 0%, rgba(10, 27, 45, 0.42) 100%);
     z-index: 1;
 }
+#logo-above-title {
+    height: 50px;
+    fill: white;
+}
 #welcome-title-and-text-container {
     display: flex;
     align-items: center;
@@ -33,11 +37,11 @@
 }
 #welcome-title {
     text-align: center;
-    font-size: 38px;
+    font-size: 32px;
     width: 65%;
     letter-spacing: 1.5px;
     line-height: 1.3;
-    margin-bottom: 4px;
+    margin: 8px 0;
 }
 #welcome-text {
     text-align: center;
@@ -136,6 +140,7 @@
 }
 
 .feature-description {
+    /* display: none; */
     color: #1c1e1f;
     text-align: center;
     letter-spacing: 1.4px;

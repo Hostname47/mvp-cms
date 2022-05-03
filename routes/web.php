@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{IndexController, AdminController, PostController, CategoryController,
     MediaController, OAuthController, TagController, RoleController, PermissionController, RPManagement,
-    NewsletterController, CommentController, ClapController, ReportController};
+    NewsletterController, CommentController, ClapController, ReportController, SearchController};
 use App\Http\Controllers\Admin\{AdminSearchController};
 
 Route::get('/test', function() {
@@ -97,6 +97,8 @@ Route::middleware('client.scopes')->group(function() {
         Route::get('/reports/viewer', [ReportController::class, 'viewer']);
         Route::post('/reports', [ReportController::class, 'report']);
     });
+
+    Route::get('/search', [SearchController::class, 'search'])->name('search');
 
     Route::get('/', [IndexController::class, 'index'])->name('root.slash');
     Route::get('/home', [IndexController::class, 'index'])->name('home');

@@ -49,9 +49,20 @@
     </div>
 
     <div class="header-right-part">
-        <div class="header-round-button pointer">
+        <div class="header-round-button header-search-button button-with-suboptions pointer">
             <svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M250.82,115.41c-1.7,41.32-19.48,73.53-56.43,92.9-36.66,19.22-73.18,16.4-108-6-2.75-1.78-4.08-1.79-6.41.56q-21.72,21.78-43.77,43.22c-5.18,5.07-11.62,6-17.67,3a14.9,14.9,0,0,1-8.25-14.61c.33-4.29,2.49-7.59,5.48-10.56,14.1-14,28.05-28.18,42.25-42.09,2.64-2.58,2.83-4.08.68-7.21-43.79-63.73-4.94-152.3,71.52-163.29C187.68,3,241.28,42.78,249.58,99.89A89.72,89.72,0,0,1,250.82,115.41ZM145.38,40.3a75.14,75.14,0,1,0,75.27,75.09A75.24,75.24,0,0,0,145.38,40.3Z"/></svg>
         </div>
+        <form action="{{ route('search') }}" id="header-search-box" class="suboptions-container">
+            <div class="full-center">
+                <div id="header-search-container">
+                    <svg id="header-search-icon" fill="#5b5b5b" enable-background="new 0 0 515.558 515.558" viewBox="0 0 515.558 515.558" xmlns="http://www.w3.org/2000/svg"><path d="m378.344 332.78c25.37-34.645 40.545-77.2 40.545-123.333 0-115.484-93.961-209.445-209.445-209.445s-209.444 93.961-209.444 209.445 93.961 209.445 209.445 209.445c46.133 0 88.692-15.177 123.337-40.547l137.212 137.212 45.564-45.564c0-.001-137.214-137.213-137.214-137.213zm-168.899 21.667c-79.958 0-145-65.042-145-145s65.042-145 145-145 145 65.042 145 145-65.043 145-145 145z"></path></svg>
+                    <input type="text" required id="header-search-input" placeholder="{{ __('Search for posts, authors, tags ..') }}">
+                    <button type="submit" id="header-search-button">
+                        <svg id="header-search-button-icon" enable-background="new 0 0 515.558 515.558" viewBox="0 0 515.558 515.558" xmlns="http://www.w3.org/2000/svg"><path d="m378.344 332.78c25.37-34.645 40.545-77.2 40.545-123.333 0-115.484-93.961-209.445-209.445-209.445s-209.444 93.961-209.444 209.445 93.961 209.445 209.445 209.445c46.133 0 88.692-15.177 123.337-40.547l137.212 137.212 45.564-45.564c0-.001-137.214-137.213-137.214-137.213zm-168.899 21.667c-79.958 0-145-65.042-145-145s65.042-145 145-145 145 65.042 145 145-65.043 145-145 145z"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </form>
         <span class="mx8 white unselectable">•</span>
         <div class="header-login-wrapper">
             @auth
