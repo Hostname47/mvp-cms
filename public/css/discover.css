@@ -1,7 +1,3 @@
-main {
-    margin-left: 270px;
-}
-
 #discover-main {
     flex: 1;
 }
@@ -10,9 +6,8 @@ main {
     width: 270px;
     min-width: 270px;
     background-color: #f3f6f9;
-    border-right: 1px solid #dde5ec;
     height: 100px;
-    margin-left: 8px;
+    margin-left: 14px;
 }
 
 #filters-wrapper {

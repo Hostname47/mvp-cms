@@ -3,6 +3,7 @@
 @section('title', 'Fibonashi - Discover')
 
 @push('styles')
+<link rel="stylesheet" href="{{ asset('css/left-panel.css') }}">
 <link rel="stylesheet" href="{{ asset('css/discover.css') }}">
 <link rel="stylesheet" href="{{ asset('css/post.css') }}">
 @endpush
