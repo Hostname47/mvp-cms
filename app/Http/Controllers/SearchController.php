@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\Models\{User,Post,Role};
+use App\Models\{User,Post,Tag,Role};
 use App\Helpers\Search;
 use Purifier;
 
@@ -13,48 +13,62 @@ class SearchController extends Controller
     public function search(Request $request) {
         $data = $this->validate($request, [
             'k'=>'sometimes|max:450',
-            'type'=>['sometimes', Rule::in(['all','posts','authors'])]
+            'type'=>['sometimes', Rule::in(['all','posts','authors','tags'])]
         ], [
             'k.max'=>__('Your search query is too long')
         ]);
 
         $k = null;
         $type = $data['type'] ?? 'all';
-        $posts = collect([]);
         $authors = collect([]);
-        $hasmore = ['authors'=>false, 'posts'=>false];
+        $tags = collect([]);
+        $posts = collect([]);
+        $hasmore = ['authors'=>false, 'tags'=>false, 'posts'=>false];
         
         if($request->has('k')) {
             // protect against xss
             $k = Purifier::clean($request->get('k'));
-            $length = ['tags'=>10, 'authors'=>4, 'posts'=>10];
-            $hasmore = ['tags'=>false, 'authors'=>false, 'posts'=>false];
+            $length = ['tags'=>4, 'authors'=>4, 'posts'=>10];
 
-            switch($data['type']) {
+            switch($type) {
                 case 'authors':
-                    $author = Role::where('slug', 'author')->first();
-                    $authors = Search::search($author->users(), $k, ['firstname','lastname','username'], ['like','like','like'])
+                    $authors = Search::search(Role::where('slug', 'author')->first()->users(), $k, ['firstname','lastname','username'], ['like','like','like'])
                         ->paginate($length['authors']);
+                    $hasmore['authors'] = $authors->hasMorePages();
+                    break;
+                case 'tags':
+                    /**
+                     * We only get tags if the search query contains only one keyword
+                     */
+                    $tags = Search::search(Tag::query(), $k, ['title','slug'], ['like','like'])
+                        ->paginate($length['tags']);
+                    $hasmore['tags'] = $tags->hasMorePages();
                     break;
                 case 'posts':
-                    $posts = Search::search(Post::query(), $k, ['title','slug','content'], ['like','like','like'])
+                    $posts = Search::search(Post::with(['categories', 'author','author.roles', 'tags']), $k, ['title','slug','content'], ['like','like','like'])
                         ->paginate($length['posts']);
+                    $hasmore['posts'] = $posts->hasMorePages();
                     break;
                 case 'all':
                     // get authors
                     $authors = Search::search(Role::where('slug', 'author')->first()->users(), $k, ['firstname','lastname','username'], ['like','like','like'])
-                    ->paginate($length['authors']);
+                        ->paginate($length['authors']);
+                    $hasmore['authors'] = $authors->hasMorePages();
+                    // get tags
+                    $tags = Search::search(Tag::query(), $k, ['title','slug'], ['like','like'])
+                        ->paginate($length['tags']);
+                    $hasmore['tags'] = $tags->hasMorePages();
                     // get posts
-                    $posts = Search::search(Post::query(), $k, ['title','slug','content'], ['like','like','like'])
+                    $posts = Search::search(Post::with(['categories', 'author','author.roles', 'tags']), $k, ['title','slug','content'], ['like','like','like'])
                         ->paginate($length['posts']);
+                    $hasmore['posts'] = $posts->hasMorePages();
                     break;
             }
-
-            $hasmore = ['authors'=>$authors->total() > $length['authors']];
         }
 
         return view('search.search')
             ->with(compact('authors'))
+            ->with(compact('tags'))
             ->with(compact('posts'))
             ->with(compact('type'))
             ->with(compact('hasmore'))

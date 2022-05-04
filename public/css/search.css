@@ -79,10 +79,9 @@
     top: calc(100% + 4px);
     background-color: white;
     border: 1px solid #bbc4ca;
-    width: 150px;
     right: 0;
     border-radius: 3px;
-    padding: 10px;
+    padding: 10px 16px;
 }
 
 .search-result-query-text {
@@ -99,11 +98,11 @@
 }
 
 .search-resource-title .count {
-    margin-left: 4px;
+    margin: 0 4px;
     font-size: 14px;
 }
 
-#authors-section {
+#authors-section, #posts-section, #tags-section {
     margin-bottom: 18px;
 }
 
@@ -173,4 +172,23 @@
     margin-right: 6px;
     fill: #2ca0ff;
     stroke:#2ca0ff;
+}
+
+.tags-wrapper {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.tag {
+    color: #101214;
+    text-decoration: none;
+    font-size: 12px;
+    background-color: #d8dee6;
+    border-radius: 3px;
+    padding: 3px 8px;
+}
+.tag:hover {
+    background-color: #c6cdd6;
 }
