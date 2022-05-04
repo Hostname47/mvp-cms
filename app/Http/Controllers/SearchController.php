@@ -77,7 +77,7 @@ class SearchController extends Controller
 
     public function authors(Request $request) {
         $k = null;
-        $perpage = 8;
+        $perpage = 10;
         $authors = Role::where('slug', 'author')->first()->users();
 
         if($request->has('k')) {
@@ -85,7 +85,7 @@ class SearchController extends Controller
             $authors = Search::search($authors, $k, ['firstname','lastname','username'], ['like','like','like']);
         }
 
-        $authors = $authors->paginate($perpage);
+        $authors = $authors->orderBy('username')->paginate($perpage);
         $hasmore = $authors->hasMorePages();
 
         return view('search.search-authors')

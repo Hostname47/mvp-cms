@@ -87,7 +87,7 @@
 .search-result-query-text {
     font-size: 18px;
     font-weight: bold;
-    margin: 8px 0;
+    margin: 12px 0;
     color: #110e0e;
 }
 
@@ -106,26 +106,26 @@
     margin-bottom: 18px;
 }
 
-#no-posts-found-box {
+#no-results-found-box {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
 }
 
-#no-posts-found-box .icon {
+#no-results-found-box .icon {
     width: 88px;
     height: 88px;
 }
 
-#no-posts-found-box .bold-text {
+#no-results-found-box .bold-text {
     font-weight: bold;
     font-size: 16px;
     margin: 4px 0 6px 0;
     color: #110e0e;
 }
 
-#no-posts-found-box .desc-text {
+#no-results-found-box .desc-text {
     font-size: 13px;
     margin: 0;
     color: #110e0e;
@@ -167,8 +167,8 @@
     color: #2ca0ff;
 }
 #authors-see-more .icon {
-    width: 14px;
-    height: 14px;
+    width: 15px;
+    height: 15px;
     margin-right: 6px;
     fill: #2ca0ff;
     stroke:#2ca0ff;
