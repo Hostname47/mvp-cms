@@ -112,7 +112,7 @@
                         <span class="fs7 bold light-gray unselectable mx8">●</span>
                         <div class="tags-wrapper">
                             @foreach($tags as $tag)
-                            <a href="" class="tag"><span>#{{ $tag->slug }}</span></a>
+                            <a href="{{ route('tag.view', ['tag'=>$tag->slug]) }}" class="tag"><span>#{{ $tag->slug }}</span></a>
                             @endforeach
                             @if(!$tags->count())
                                 <p class="italic light-gray fs13 no-margin ml4" style="margin-top: 1px;">{{ __('No tags found') }}</p>

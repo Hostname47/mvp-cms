@@ -1,3 +1,17 @@
+#tags-main {
+    flex: 1;
+    margin-bottom: 26px;
+}
+
+#no-results-found-box .bold-text {
+    margin: 7px 0;
+    font-size: 18px;
+}
+
+#no-results-found-box .desc-text {
+    font-size: 16px;
+}
+
 #tag-page-description {
     line-height: 1.4;
     width: 80%;
@@ -67,7 +81,7 @@
 }
 
 #no-results-found-box {
-    margin-top: 42px;
+    margin-top: 82px;
 }
 
 #tag-title {
@@ -79,6 +93,6 @@
 }
 
 .n-posts-title {
-    font-size: 16px;
-    margin: 8px 0;
+    font-size: 18px;
+    margin: 12px 0 10px 0;
 }

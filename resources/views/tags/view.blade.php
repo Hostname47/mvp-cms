@@ -16,7 +16,7 @@
 @section('content')
     <x-layout.left-panel.left-panel />
     <div class="page-padding flex">
-        <div id="search-main">
+        <div id="tags-main">
             <!-- path -->
             <div class="page-path-wrapper align-center">
                 <a href="{{ route('root.slash') }}" class="align-center page-path">
@@ -62,10 +62,17 @@
                 </div>
                 <p id="tag-page-description">{{ __($tag->description) }}</p>
 
-                <p class="n-posts-title">{{ $posts->total() . ' ' . __('posts') }} </p>
+                <div class="align-center">
+                    <p class="n-posts-title">{{ $posts->total() . ' ' . __('posts') }} </p>
+                    <div class="move-to-right">{{ $posts->appends(request()->query())->onEachSide(0)->links() }}</div>
+                </div>
                 @foreach($posts as $post)
                 <x-post.post-card :post="$post" />
                 @endforeach
+
+                <div class="flex bottom-pagination">
+                    <div class="move-to-right">{{ $posts->appends(request()->query())->onEachSide(0)->links() }}</div>
+                </div>
             @endif
         </div>
     </div>

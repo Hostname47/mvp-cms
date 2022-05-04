@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\Models\{User,Post,Tag,Role};
+use App\Models\{User,Post,Tag,Role,Category};
 use App\Helpers\Search;
 use Purifier;
 
@@ -74,7 +74,11 @@ class SearchController extends Controller
             ->with(compact('hasmore'))
             ->with(compact('k'));
     }
-
+    public function advanced(Request $request) {
+        $categories = Category::tree()->get()->toTree();
+        return view('search.advanced')
+        ->with(compact('categories'));
+    }
     public function authors(Request $request) {
         $k = null;
         $perpage = 10;

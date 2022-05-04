@@ -61,3 +61,14 @@ $('#fetch-more-authors').on('click', function() {
         },
     })
 });
+
+$('#category-input-all').on('change', function() {
+    let wrapper = $(this);
+    while(!wrapper.hasClass('categories-wrapper')) wrapper = wrapper.parent();
+    if($(this).is(":checked"))
+        wrapper.find('.categories .category').prop('disabled', true);
+    else
+        wrapper.find('.categories .category').prop('disabled', false);
+});
+
+$('#category-input-all').trigger('click');

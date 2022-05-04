@@ -1360,12 +1360,15 @@ footer .newsletter-section {
 }
 
 .page-path {
+    display: flex;
+    align-items: center;
     color: #111;
     font-weight: bold;
     font-size: 13px;
 }
 .page-path:hover {
     color: #007cff;
+    fill: #007cff;
 }
 
 .page-path-wrapper a {
