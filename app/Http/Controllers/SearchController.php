@@ -93,4 +93,37 @@ class SearchController extends Controller
             ->with(compact('authors'))
             ->with(compact('hasmore'));
     }
+    public function fetch_authors(Request $request) {
+        $data = $request->validate([
+            'k'=>'sometimes|max:450',
+            'skip'=>'required|numeric',
+            'take'=>'required|numeric',
+        ]);
+
+        $take = 10;
+        $authors = Role::where('slug', 'author')->first()->users();
+
+        if(isset($data['k'])) {
+            $k = Purifier::clean($request->get('k'));
+            $authors = Search::search($authors, $k, ['firstname','lastname','username'], ['like','like','like']);
+        }
+            
+        $authors = $authors->orderBy('username')->skip($data['skip'])->take($data['take']+1)->get();
+        $hasmore = $authors->count() > $data['take'];
+        $authors = $authors->take($data['take'])->map(function($author) {
+            return [
+                'link'=>'', // Later
+                'avatar'=>$author->avatar(100),
+                'fullname'=>$author->fullname,
+                'username'=>'@'.$author->username,
+                'posts_count'=>$author->posts()->count() . ' ' . __('posts'),
+            ];
+        });
+
+        return [
+            'authors'=>$authors,
+            'count'=>$authors->count(),
+            'hasmore'=>$hasmore
+        ];
+    }
 }
