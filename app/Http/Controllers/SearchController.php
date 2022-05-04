@@ -74,4 +74,23 @@ class SearchController extends Controller
             ->with(compact('hasmore'))
             ->with(compact('k'));
     }
+
+    public function authors(Request $request) {
+        $k = null;
+        $perpage = 8;
+        $authors = Role::where('slug', 'author')->first()->users();
+
+        if($request->has('k')) {
+            $k = Purifier::clean($request->get('k'));
+            $authors = Search::search($authors, $k, ['firstname','lastname','username'], ['like','like','like']);
+        }
+
+        $authors = $authors->paginate($perpage);
+        $hasmore = $authors->hasMorePages();
+
+        return view('search.search-authors')
+            ->with(compact('k'))
+            ->with(compact('authors'))
+            ->with(compact('hasmore'));
+    }
 }
