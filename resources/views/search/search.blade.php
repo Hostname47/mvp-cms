@@ -119,7 +119,7 @@
                                 <p class="italic light-gray fs13 no-margin ml4" style="margin-top: 1px;">{{ __('No tags found') }}</p>
                             @endif
                             @if($hasmore['tags'])
-                            <a href="" class="flex fs12 bold blue no-underline">
+                            <a href="{{ route('tags', ['k'=>$k]) }}" class="flex fs12 bold blue no-underline">
                                 {{ __('see more') }}
                             </a>
                             @endif

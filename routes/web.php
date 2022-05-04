@@ -102,6 +102,8 @@ Route::middleware('client.scopes')->group(function() {
     Route::get('/search/authors', [SearchController::class, 'authors'])->name('search.authors');
     Route::get('/search/authors/fetch', [SearchController::class, 'fetch_authors']);
 
+    Route::get('/tags', [TagController::class, 'index'])->name('tags');
+
     Route::get('/', [IndexController::class, 'index'])->name('root.slash');
     Route::get('/home', [IndexController::class, 'index'])->name('home');
     Route::get('/discover', [IndexController::class, 'discover'])->name('discover');

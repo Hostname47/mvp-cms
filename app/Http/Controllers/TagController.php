@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Models\{Tag};
+use App\Helpers\Search;
+use Purifier;
 
 class TagController extends Controller
 {
@@ -67,5 +69,26 @@ class TagController extends Controller
     public function delete(Request $request) {
         $tag_id = $request->validate(['tag_id'=>'required|exists:tags,id'])['tag_id'];
         Tag::find($tag_id)->delete();
+    }
+
+    /**
+     * Client
+     */
+    public function index(Request $request) {
+        $k = null;
+        $perpage = 16;
+        $tags = Tag::query();
+        if($request->has('k')) {
+            $k = Purifier::clean($request->get('k'));
+            $tags = Search::search($tags, $k, ['title','title_meta','slug'], ['like','like','like']);
+        }
+
+        $tags = $tags->orderBy('slug')->paginate($perpage);
+        $hasmore = $tags->hasMorePages();
+
+        return view('tags.index')
+            ->with(compact('tags'))
+            ->with(compact('hasmore'))
+            ->with(compact('k'));
     }
 }
