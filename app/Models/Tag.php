@@ -26,4 +26,11 @@ class Tag extends Model
     public function posts() {
         return $this->belongsToMany(Post::class);
     }
+
+    public function getPostsCountAttribute() {
+        /**
+         * This query should be cached because tags posts count is not changed frequently
+         */
+        return $this->posts()->count();
+    }
 }

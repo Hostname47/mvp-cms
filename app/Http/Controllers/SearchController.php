@@ -28,7 +28,7 @@ class SearchController extends Controller
         if($request->has('k')) {
             // protect against xss
             $k = Purifier::clean($request->get('k'));
-            $length = ['tags'=>4, 'authors'=>4, 'posts'=>10];
+            $length = ['authors'=>4, 'tags'=>6, 'posts'=>10];
 
             switch($type) {
                 case 'authors':

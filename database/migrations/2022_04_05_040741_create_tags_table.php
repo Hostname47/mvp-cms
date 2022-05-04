@@ -19,6 +19,7 @@ class CreateTagsTable extends Migration
             $table->string('title_meta')->unique();
             $table->string('slug')->unique();
             $table->text('description')->nullable();
+            // $table->unsignedBigIneteger('posts_count')->default(0);
         });
     }
 

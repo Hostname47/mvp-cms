@@ -60,7 +60,7 @@
             <div id="tags-container">
                 @foreach($tags as $tag)
                 <div class="tag-component">
-                    <div class="flex"><a class="tag" href="?tag={{ $tag->slug }}">#{{ $tag->slug }}</a></div>
+                    <div class="flex"><a class="tag" href="{{ route('tag.view', ['tag'=>$tag->slug]) }}">#{{ $tag->slug }}</a></div>
                     <span class="tag-description">{{ $tag->description }}</span>
                     <span class="posts-count">{{ $tag->posts_count }} {{ __('posts') }}</span>
                 </div>

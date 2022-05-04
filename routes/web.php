@@ -103,6 +103,7 @@ Route::middleware('client.scopes')->group(function() {
     Route::get('/search/authors/fetch', [SearchController::class, 'fetch_authors']);
 
     Route::get('/tags', [TagController::class, 'index'])->name('tags');
+    Route::get('/tags/{tag:slug}', [TagController::class, 'view'])->name('tag.view');
 
     Route::get('/', [IndexController::class, 'index'])->name('root.slash');
     Route::get('/home', [IndexController::class, 'index'])->name('home');

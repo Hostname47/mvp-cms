@@ -91,4 +91,18 @@ class TagController extends Controller
             ->with(compact('hasmore'))
             ->with(compact('k'));
     }
+
+    public function view($slug) {
+        $tag = Tag::where('slug', $slug)->first();
+        $posts = collect([]);
+        $perpage = 10;
+
+        if($tag)
+            $posts = $tag->posts()->with(['author','tags','categories'])->paginate($perpage);
+
+        return view('tags.view')
+            ->with(compact('tag'))
+            ->with(compact('slug'))
+            ->with(compact('posts'));
+    }
 }

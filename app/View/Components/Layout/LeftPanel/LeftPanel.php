@@ -19,7 +19,7 @@ class LeftPanel extends Component
         $this->tags = Tag::withCount('posts')
             ->withCount('posts as posts_count')
             ->orderByRaw('posts_count DESC')
-            ->take(12)->get();
+            ->take(8)->get();
 
         // Search query
         $this->k = ($request->has('k')) ? $request->get('k') : '';

@@ -1,5 +1,6 @@
 #search-main {
     flex: 1;
+    margin-bottom: 26px;
 }
 
 #init-search-container {
@@ -81,7 +82,7 @@
     border: 1px solid #bbc4ca;
     right: 0;
     border-radius: 3px;
-    padding: 10px 16px;
+    padding: 10px;
 }
 
 .search-result-query-text {
@@ -102,8 +103,14 @@
     font-size: 14px;
 }
 
-#authors-section, #posts-section, #tags-section {
+#posts-section, #tags-section {
     margin-bottom: 18px;
+}
+
+#authors-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
 #no-results-found-box {
@@ -138,24 +145,25 @@
 }
 
 .author-avatar {
-    height: 40px;
-    width: 40px;
+    height: 36px;
+    width: 36px;
     border-radius: 50%;
 }
 
 .author-component .name {
     display: block;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .author-component .name .posts-count {
-    font-size: 14px;
+    font-size: 12px;
 }
 
 .author-component .username {
     display: block;
     margin-top: 1px;
+    font-size: 12px;
 }
 
 #authors-see-more {
@@ -191,4 +199,25 @@
 }
 .tag:hover {
     background-color: #c6cdd6;
+}
+
+.discover-link {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #2ca0ff;
+    fill: #2ca0ff;
+}
+.discover-link .icon {
+    width: 14px;
+    height: 14px;
+    margin-right: 4px;
+}
+
+.title-after-search-resource-title {
+    display: flex;
+    margin: 2px 0;
+    color: #313131;
 }

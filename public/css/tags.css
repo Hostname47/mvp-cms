@@ -3,6 +3,7 @@
     width: 80%;
     color: #1e1e1e;
     margin-bottom: 4px;
+    font-size: 15px;
 }
 
 #init-search-inputs-container {
@@ -46,6 +47,12 @@
     font-size: 12px;
     color: rgb(34, 34, 34);
     margin-top: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4; /* number of lines to show */
+            line-clamp: 4; 
+    -webkit-box-orient: vertical;
 }
 
 .tag-component .posts-count {
@@ -57,4 +64,21 @@
 
 .bottom-pagination {
     margin: 12px 0 20px 0;
+}
+
+#no-results-found-box {
+    margin-top: 42px;
+}
+
+#tag-title {
+    margin: 0 6px;
+    padding: 3px 10px;
+    background-color: #e0e5e8;
+    border-radius: 3px;
+    color: #282c2f;
+}
+
+.n-posts-title {
+    font-size: 16px;
+    margin: 8px 0;
 }

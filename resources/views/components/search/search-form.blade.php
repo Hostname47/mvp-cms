@@ -7,8 +7,8 @@
             <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"></path></svg>
         </div>
         <div class="suboptions-container filter-panel">
-            <span class="fs14 bold dark">{{__('Search for')}} :</span>
-            <div class="flex flex-column ml8 mt8">
+            <span class="fs14 bold dark no-wrap">{{__('Search for')}} :</span>
+            <div class="flex flex-column mt8">
                 <div class="align-center">
                     <input type="radio" name="type" id="search-filter-all" class="mr6" value="all" autocomplete="off" @if($type=='all') checked="checked" @endif>
                     <label for="search-filter-all" class="dark">{{ __('all') }}</label>
