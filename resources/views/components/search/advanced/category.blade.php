@@ -1,6 +1,6 @@
 <div class="category-container toggle-box">
     <div class="align-center">
-        <input type="checkbox" id="category-input-{{ $category->id }}" class="category" value="{{ $category->id }}" autocomplete="off">
+        <input type="checkbox" id="category-input-{{ $category->id }}" name="category[]" class="category" value="{{ $category->id }}" autocomplete="off">
         <label for="category-input-{{ $category->id }}" class="unselectable">{{ __($category->title) }}</label>
         @if($category->children->count())
         <div class="toggle-button category-toggle-button">

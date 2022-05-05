@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\Models\{User,Post,Tag,Role,Category};
+use App\Models\{User,Post,Tag,Role,Category,CategoryPost};
 use App\Helpers\Search;
 use Purifier;
+use Carbon\Carbon;
 
 class SearchController extends Controller
 {
@@ -78,6 +79,51 @@ class SearchController extends Controller
         $categories = Category::tree()->get()->toTree();
         return view('search.advanced')
         ->with(compact('categories'));
+    }
+    public function advanced_results(Request $request) {
+        $data = $request->validate([
+            'k'=>'sometimes|max:450',
+            'category'=>'sometimes',
+            'category.*'=>'nullable|exists:categories,id',
+            'date-filter'=>['sometimes',Rule::in(['anytime','past24hours','pastweek','pastmonth'])],
+            'sort-filter'=>['sometimes',Rule::in(['published-at-desc','published-at-asc','claps-count','comments-count'])],
+        ]);
+
+        // Categories
+
+        // Date filter
+        if(isset($data['date-filter'])) {
+            switch($data['date-filter']) {
+                case 'past24hours':
+                    $posts = $posts->where("created_at",">=",Carbon::now()->subDay(1));
+                    break;
+                case 'pastweek':
+                    $posts = $posts->where("created_at",">",Carbon::now()->subDays(7));
+                    break;
+                case 'pastmonth':
+                    $posts = $posts->where("created_at",">",Carbon::now()->subMonth());
+                    break;
+            }
+        }
+        // Sort filter
+        $sort = isset($data['sorted-by']) ? $data['sorted-by'] : 'published-at-desc';
+        switch($sort) {
+            case 'published-at-desc':
+                $posts = $posts->orderBy('published_at', 'desc');
+                break;
+            case 'published-at-asc':
+                $posts = $posts->orderBy('published_at');
+                break;
+            case 'claps-count':
+                $posts = $posts->orderBy('reactions_count', 'desc');
+                break;
+            case 'comment-count':
+                $posts = $posts->orderBy('comments_count', 'desc');
+                break;
+        }
+
+        return view('search.advanced-results')
+            ->with(compact('posts'));
     }
     public function authors(Request $request) {
         $k = null;

@@ -100,6 +100,8 @@ Route::middleware('client.scopes')->group(function() {
 
     Route::get('/search', [SearchController::class, 'search'])->name('search');
     Route::get('/search/advanced', [SearchController::class, 'advanced'])->name('search.advanced');
+    Route::get('/search/advanced/results', [SearchController::class, 'advanced_results'])->name('search.advanced.results');
+
     Route::get('/search/authors', [SearchController::class, 'authors'])->name('search.authors');
     Route::get('/search/authors/fetch', [SearchController::class, 'fetch_authors']);
 

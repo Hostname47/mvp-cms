@@ -282,9 +282,37 @@
     border-radius: 4px 0 4px 4px;
 }
 
+.filter-box {
+    margin-top: 12px;
+}
+
+.filter-title {
+    width: 196px;
+}
+
 .categories-filter .category-children-angle {
     width: 8px;
     height: 8px;
     fill: #a6b1bf;
     margin: 0 4px;
+}
+
+.advanced-search-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin: 8px 0 12px 0;
+    width: 84%;
+}
+
+.adv-search-button {
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: 3px;
+    border: 1px solid #a7b5bb;
+    background-color: #e8ecee;
+    cursor: pointer;
+}
+.adv-search-button:hover {
+    background-color: #d6dee2;
 }

@@ -25,10 +25,11 @@ class Search {
          */
         $builder = $builder->where(function($bld) use ($columns, $operators, $search_query) {
             for($i = 0; $i < count($columns); $i++) {
+                $operand = $search_query;
                 if(strtolower($operators[$i])=='like') 
-                    $search_query = "%$search_query%";
+                    $operand = "%$search_query%";
                 
-                $bld = $bld->orWhere($columns[$i], $operators[$i], $search_query);
+                $bld = $bld->orWhere($columns[$i], $operators[$i], $operand);
             }
         });
 

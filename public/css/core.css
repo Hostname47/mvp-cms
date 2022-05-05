@@ -964,6 +964,21 @@ textarea {
     padding: 6px;
 }
 
+.dropdown-style-2 {
+    padding: 8px 10px;
+    border-radius: 3px;
+    border: 1px solid #b9c5ce;
+    background-color: #f5f7f9;
+    font-size: 12px;
+    cursor: pointer;
+}
+.dropdown-style-2:hover {
+    background-color: #eff1f2;
+}
+.dropdown-style-2 option {
+    padding: 6px;
+}
+
 .custom-dropdown-item-style:hover {
     background-color: rgb(243, 243, 243);
 }
