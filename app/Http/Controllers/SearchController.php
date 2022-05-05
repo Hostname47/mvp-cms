@@ -88,42 +88,71 @@ class SearchController extends Controller
             'date-filter'=>['sometimes',Rule::in(['anytime','past24hours','pastweek','pastmonth'])],
             'sort-filter'=>['sometimes',Rule::in(['published-at-desc','published-at-asc','claps-count','comments-count'])],
         ]);
+        $perpage = 10;
+        $k = isset($data['k']) ? Purifier::clean($data['k']) : '';
+        $posts = Post::with(['categories', 'author','author.roles', 'tags']);
+        $filters = [];
 
-        // Categories
+        // Category(s) filter (by default we take all categories for search unless the user select)
+        $filters['categories'] = [__('Categories'), ['All categories']];
+
+        if(isset($data['category'])) {
+            if($data['category'][0] != null) {
+                $filters['categories'] = [__('Categories'), Category::findMany($data['category'])->pluck('title')];
+                $posts = $posts->whereIn('id', CategoryPost::whereIn('category_id', $data['category'])->pluck('post_id'));            
+            }
+        }
 
         // Date filter
         if(isset($data['date-filter'])) {
             switch($data['date-filter']) {
                 case 'past24hours':
                     $posts = $posts->where("created_at",">=",Carbon::now()->subDay(1));
+                    $filters['date'] = __('Last 24 hours');
                     break;
                 case 'pastweek':
                     $posts = $posts->where("created_at",">",Carbon::now()->subDays(7));
+                    $filters['date'] = __('Last week');
                     break;
                 case 'pastmonth':
                     $posts = $posts->where("created_at",">",Carbon::now()->subMonth());
+                    $filters['date'] = __('Last month');
                     break;
+                default:
+                    $filters['date'] = __('Anytime');
             }
         }
+
+        // Search keywords
+        $posts = Search::search($posts, $k, ['title','title_meta','slug','content'], ['like','like','like','like']);
+
         // Sort filter
-        $sort = isset($data['sorted-by']) ? $data['sorted-by'] : 'published-at-desc';
+        $sort = isset($data['sort-filter']) ? $data['sort-filter'] : 'published-at-desc';
         switch($sort) {
             case 'published-at-desc':
                 $posts = $posts->orderBy('published_at', 'desc');
+                $filters['sort'] = __('Publish date (newest first)');
                 break;
             case 'published-at-asc':
                 $posts = $posts->orderBy('published_at');
+                $filters['sort'] = __('Publish date (oldest first)');
                 break;
             case 'claps-count':
                 $posts = $posts->orderBy('reactions_count', 'desc');
+                $filters['sort'] = __('Number of claps');
                 break;
-            case 'comment-count':
+            case 'comments-count':
                 $posts = $posts->orderBy('comments_count', 'desc');
+                $filters['sort'] = __('Number of comments');
                 break;
         }
 
+        $posts = $posts->paginate($perpage);
+
         return view('search.advanced-results')
-            ->with(compact('posts'));
+            ->with(compact('posts'))
+            ->with(compact('k'))
+            ->with(compact('filters'));
     }
     public function authors(Request $request) {
         $k = null;

@@ -316,3 +316,40 @@
 .adv-search-button:hover {
     background-color: #d6dee2;
 }
+
+.adv-search-filters-box {
+    margin-left: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.adv-search-filter {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px;
+    background-color: #fdfdfd;
+    border: 1px solid gainsboro;
+    border-radius: 2px;
+}
+
+.adv-search-filter .key {
+    font-size: 12px;
+    font-weight: bold;
+    color: #222628;
+}
+
+.adv-search-filter .value {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.adv-search-filter .category {
+    font-weight: bold;
+    font-size: 13px;
+    padding: 4px 8px;
+    background-color: #e7edf0;
+    border-radius: 2px;
+}

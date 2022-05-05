@@ -91,7 +91,7 @@
     
                 <!-- date filter -->
                 <div class="filter-box align-center">
-                    <label for="date-filter" class="filter-title no-wrap">{{ __('Posts Date') }} :</label>
+                    <label for="date-filter" class="filter-title no-wrap">{{ __('Publish Date') }} :</label>
                     <select name="date-filter" id="date-filter" class="dropdown-style-2">
                         <option value="anytime">{{ __("anytime") }}</option>
                         <option value="past24hours">{{ __("Last 24 hours") }}</option>
