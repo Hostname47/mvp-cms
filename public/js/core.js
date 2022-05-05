@@ -43,6 +43,15 @@ $('.fade-box').each(function() {
     }, 800);
 })
 
+$('.sticky-when-bottom-reached').each(function() {
+    let section = $(this);
+    /**
+     * header + 1 => for border bottom og header
+     */
+    let top = $(this).find('.compass')[0].offsetTop - window.innerHeight;
+    section.css('top','-'+top+'px');
+});
+
 let discover_opening_timeout;
 function handle_discover_section_hover_effect() {
     let discover_expand_button = $('#header-discover-expand-button');
@@ -682,7 +691,7 @@ $('#newsletter-subscribe-opener-button').on('click', function() {
         });
     }
     viewer.removeClass('none');
-    disable_page_scroll();
+    // disable_page_scroll();
 });
 
 /**

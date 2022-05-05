@@ -110,6 +110,12 @@ class Post extends Model
         return (strlen($title) > $length) ? $slice . '..' : $slice;
     }
 
+    public function title($length) {
+        $title = $this->html_title;
+        $slice = substr($title, 0, $length);
+        return (strlen($title) > $length) ? $slice . '..' : $slice;
+    }
+
     public function getExcerptAttribute() {
         $excerpt = "";
 

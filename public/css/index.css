@@ -108,13 +108,13 @@
 .section-title {
     margin-bottom: 0;
     color: #1b1d1e;
-    font-size: 30px;
-    letter-spacing: 2.5px;
+    font-size: 25px;
+    letter-spacing: 1.8px;
 }
 
 .section-brief-title {
-    font-size: 17px;
-    letter-spacing: 4px;
+    font-size: 16px;
+    letter-spacing: 2px;
     color: #282828;
     margin: 10px 0;
 }
@@ -122,12 +122,13 @@
 .features-box {
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
     margin-top: 30px;
+    gap: 40px;
 }
 
 .feature-box {
     width: 20%;
-    margin: 0 40px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -135,13 +136,13 @@
 
 .feature-icon {
     fill: #101213;
-    width: 58px;
-    height: 58px;
+    width: 46px;
+    height: 46px;
 }
 
 .feature-title {
-    font-size: 18px;
-    letter-spacing: 1.8px;
+    font-size: 17px;
+    letter-spacing: 1.4px;
     margin: 12px 0;
 }
 

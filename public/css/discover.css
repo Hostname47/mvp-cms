@@ -3,11 +3,11 @@
 }
 
 #discover-right-panel {
-    width: 270px;
-    min-width: 270px;
-    background-color: #f3f6f9;
-    height: 100px;
+    height: max-content;
+    width: 290px;
+    min-width: 290px;
     margin-left: 14px;
+    margin-bottom: 12px;
 }
 
 #filters-wrapper {
