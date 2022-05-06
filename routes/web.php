@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{IndexController, AdminController, PostController, CategoryController,
     MediaController, OAuthController, TagController, RoleController, PermissionController, RPManagement,
-    NewsletterController, CommentController, ClapController, ReportController, SearchController};
+    NewsletterController, CommentController, ClapController, ReportController, SearchController,
+    AuthorRequestController};
 use App\Http\Controllers\Admin\{AdminSearchController};
 
 Route::get('/test', function() {
@@ -111,7 +112,7 @@ Route::middleware('client.scopes')->group(function() {
     Route::get('/', [IndexController::class, 'index'])->name('root.slash');
     Route::get('/home', [IndexController::class, 'index'])->name('home');
     Route::get('/discover', [IndexController::class, 'discover'])->name('discover');
-
+    Route::get('/author-request', [AuthorRequestController::class, 'index'])->name('author-request');
     
     Route::get('/comments/fetch', [CommentController::class, 'fetch']);
     Route::get('/comments/replies', [CommentController::class, 'replies']);
