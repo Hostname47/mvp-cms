@@ -30,9 +30,10 @@ main {
 }
 
 #right-panel-container {
-    min-width: 346px;
-    max-width: 346px;
+    min-width: 300px;
+    max-width: 300px;
     padding-left: 20px;
+    height: max-content;
 }
 
 .post-meta-text {
@@ -123,6 +124,7 @@ main {
 /* comments-section */
 #comments-section {
     margin: 36px 0;
+    width: calc(100% - 320px);
 }
 
 #comments-title {

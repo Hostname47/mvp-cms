@@ -148,7 +148,7 @@
                     <span>{{ __('SUBSCRIBE') }}</span>
                 </div>
             </div>
-            <div class="compass"></div>
+            <div class="compass my8"></div>
         </div>
     </div>
 @endsection

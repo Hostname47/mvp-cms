@@ -1562,14 +1562,10 @@ footer .newsletter-section {
     color: #2d2d2d;
 }
 .addd-250x250 .section {
-    width: 250px;
+    /* width: 250px; */
+    width: 100%;
     height: 250px;
     background-color: #f1f2f2;
-}
-.square-advertisement-box {
-    width: 340px;
-    height: 340px;
-    background-color: #f1f4f7;
 }
 
 /* featured posts */
@@ -1579,7 +1575,9 @@ footer .newsletter-section {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    padding: 4px;
+    padding: 10px;
+    border: 1px solid #c6d0d9;
+    border-radius: 3px;
 }
 
 #featured-posts .section-title {

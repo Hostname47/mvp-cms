@@ -92,84 +92,8 @@
                     {!! $post->content !!}
                 </div>
                 @include('partials.post.sharer')
-                <!-- comments section -->
-                <div id="comments-section">
-                    <input type="hidden" id="post-comments-sort-key" value="newest" autocomplete="off">
-
-                    <input type="hidden" id="comment-content-required" value="{{ __('Comment content is required') }}" autocomplete="off">
-                    <input type="hidden" id="comment-shared-successfully" value="{{ __('Comment shared successfully') }}" autocomplete="off">
-                    <input type="hidden" id="comment-deleted-successfully" value="{{ __('Comment deleted successfully') }}" autocomplete="off">
-                    
-                    <!-- comment sorting -->
-                    <div id="comment-title-and-sort-container" class="align-center space-between">
-                        <span id="comments-title">{{ __('Comments') }} (<span class="post-comments-count">{{ $post->comments_count }}</span>)</span>
-                        <div class="relative">
-                            <div class="align-center">
-                                <span id="comments-sortby">{{ __('sort by') }} :</span>
-                                <div class="align-center ml4 pointer button-with-suboptions button-style-4">
-                                    <span id="comments-sortby-key" class="unselectable">{{ __('Newest') }}</span>
-                                    <svg class="size7 ml8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M255.89,84.23c-1.2,1.08-2.45,2.11-3.58,3.25L134.85,204.91c-1.24,1.24-2.54,2.41-3.51,3.32L6.93,83.83l33.4-33.39Q85,95,130.34,140.33l91-91c9.5,9.51,18.44,18.49,27.43,27.41,2.28,2.27,4.73,4.37,7.11,6.55Z"/></svg>
-                                </div>
-                                <div class="suboptions-container typical-suboptions-container" style="right: 0">
-                                    <div class="suboption-style-2 mb2 sort-comments sort-comments-key-selected">
-                                        <input type="hidden" class="sort-key-text" value="{{ __('Newest') }}" autocomplete="off">
-                                        <input type="hidden" class="sort-key" value="newest" autocomplete="off">
-                                        <span>{{ __('Newest first') }}</span>
-                                    </div>
-                                    <div class="suboption-style-2 mb2 sort-comments">
-                                        <input type="hidden" class="sort-key-text" value="{{ __('Oldest') }}" autocomplete="off">
-                                        <input type="hidden" class="sort-key" value="oldest" autocomplete="off">
-                                        <span>{{ __('Oldest first') }}</span>
-                                    </div>
-                                    <div class="suboption-style-2 mb2 sort-comments">
-                                        <input type="hidden" class="sort-key-text" value="{{ __('Most claps') }}" autocomplete="off">
-                                        <input type="hidden" class="sort-key" value="claps" autocomplete="off">
-                                        <span>{{ __('Most claps') }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    @if($post->allow_comments)
-                        <!-- comment input -->
-                        <div id="root-comment-input">
-                            <x-comment.comment-input root="true" />
-                            <div class="align-center pointer comment-display-switch root open none">
-                                <svg class="size18 mr6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M73.59,195.36c-6.65,0-12.82,0-19,0-17.48-.15-30.21-12.5-30.31-30q-.22-49.08,0-98.15c.1-17.81,12.88-30,31.2-30,32.71-.09,65.42,0,98.14,0H209.2c20.13,0,32.25,12.15,32.27,32.28q.06,47,0,94c0,19.85-12.2,31.9-32.12,31.92-23,0-46-.07-69,.1a12.43,12.43,0,0,0-7,2.44c-14.14,11-28.13,22.1-42.1,33.29-3.73,3-7.53,4.94-12.25,2.53s-5.54-6.56-5.47-11.35C73.69,213.61,73.59,204.82,73.59,195.36Zm19.68,9.1c2.17-1.64,3.48-2.58,4.76-3.59,8.45-6.71,17-13.31,25.28-20.24a20.56,20.56,0,0,1,14.27-5.06c23.91.24,47.82.13,71.73.09,8.82,0,12.45-3.62,12.46-12.27V69c0-8.34-3.46-11.84-11.82-11.84H55.86C47.48,57.13,44,60.62,44,68.89v94.88c0,8.09,3.72,11.82,11.89,11.89,8.64.07,17.28,0,25.92,0,8.08.07,11.42,3.46,11.48,11.64,0,5.37,0,10.7,0,17.16Z"/></svg>    
-                                <span class="dark fs14 bold unselectable" style="margin-top: -2px;">{{ __('write a comment') }}..</span>
-                            </div>
-                        </div>
-                    @else
-                        <p class="light-gray text-center fs13">{{ __('The author is not currently accepting comments on this post') }}.</p>
-                    @endif
-                    <div id="comment-input-comments-separator"></div>
-                    <div id="post-comments-box">
-                        
-                    </div>
-                    <!-- 
-                        if post has comments then we display loading section and only fetch 
-                        comments if the visitor reaches the comments section by scroll down to it.
-                    -->
-                    <div id="post-comments-loading-box" class="@if($post->comments_count == 0) none @endif">
-                        <svg class="spinner size24" fill="none" viewBox="0 0 16 16">
-                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
-                            <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
-                        </svg>
-                        <span class="fs12 mt8 dark bold">{{ __('loading comments') }}</span>
-                    </div>
-                    <div id="comments-fetch-more" class="none">
-                        <div class="relative full-center size18 mr8">
-                            <svg class="size18 icon-above-spinner" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M129.52,227.47q-33.72,0-67.45,0c-18.09,0-29.55-11.5-29.55-29.56V63c0-19.39,11.1-30.48,30.49-30.48q67,0,134,0c19.41,0,30.48,11.08,30.49,30.49q0,67.7,0,135.38c0,17.41-11.61,29-29.08,29.07C175.43,227.51,152.48,227.47,129.52,227.47Zm82.76-65.05c.08-1.79.19-3.17.19-4.55q0-47.79,0-95.58c0-10.11-4.74-14.77-15-14.77q-67.47,0-134.94,0c-10.4,0-15,4.68-15,15.22q0,47.33,0,94.65c0,1.64.14,3.28.21,5ZM47.52,177.68c0,6.68,0,12.9,0,19.11C47.53,208,52,212.47,63,212.47H169.86c9.84,0,19.68.07,29.52,0,6.41-.07,11.82-3.43,12.38-9.25.82-8.4.21-16.94.21-25.52Zm68.64-92.07c-4-3.89-8.34-4.1-11.54-.74-3,3.12-2.68,7.52.94,11.22q9,9.19,18.21,18.22c4.37,4.3,8.11,4.29,12.55-.06q9-8.85,17.89-17.89c3.84-3.9,4.2-8.4,1.09-11.57-3.35-3.41-7.61-3-11.87,1.23s-8.52,8.69-13.36,13.64C125.13,94.66,120.7,90.07,116.16,85.61Z" style="stroke:#000;stroke-miterlimit:10;stroke-width:6px"/></svg>
-                            <svg class="spinner size15 opacity0 absolute" fill="none" viewBox="0 0 16 16">
-                                <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
-                                <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
-                            </svg>
-                        </div>
-                        <span>{{ __('Load more comments') }}</span>
-                    </div>
-                </div>
             </article>
-            <div id="right-panel-container">
+            <div id="right-panel-container" class="sticky-when-bottom-reached">
                 <!-- published by & publish date & categories -->
                 <div class="post-meta">
                     <!-- date -->
@@ -221,16 +145,88 @@
                     </div>
                 </div>
                 <!-- advertisement -->
-                <div id="post-square-advertisement-box">
-                    <span class="fs11 bold light-gray mb4">{{ __('ADVERTISEMENT') }}</span>
-                    <div class="square-advertisement-box">
-                        <!-- 340x340 ad -->
-                    </div>
-                </div>
+                @include('partials.ads.250x250')
                 <!-- related posts -->
                 <div id="related-post-box">
 
                 </div>
+                <div class="compass"></div>
+            </div>
+        </div>
+        <!-- comments section -->
+        <div id="comments-section">
+            <input type="hidden" id="post-comments-sort-key" value="newest" autocomplete="off">
+
+            <input type="hidden" id="comment-content-required" value="{{ __('Comment content is required') }}" autocomplete="off">
+            <input type="hidden" id="comment-shared-successfully" value="{{ __('Comment shared successfully') }}" autocomplete="off">
+            <input type="hidden" id="comment-deleted-successfully" value="{{ __('Comment deleted successfully') }}" autocomplete="off">
+            
+            <!-- comment sorting -->
+            <div id="comment-title-and-sort-container" class="align-center space-between">
+                <span id="comments-title">{{ __('Comments') }} (<span class="post-comments-count">{{ $post->comments_count }}</span>)</span>
+                <div class="relative">
+                    <div class="align-center">
+                        <span id="comments-sortby">{{ __('sort by') }} :</span>
+                        <div class="align-center ml4 pointer button-with-suboptions button-style-4">
+                            <span id="comments-sortby-key" class="unselectable">{{ __('Newest') }}</span>
+                            <svg class="size7 ml8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M255.89,84.23c-1.2,1.08-2.45,2.11-3.58,3.25L134.85,204.91c-1.24,1.24-2.54,2.41-3.51,3.32L6.93,83.83l33.4-33.39Q85,95,130.34,140.33l91-91c9.5,9.51,18.44,18.49,27.43,27.41,2.28,2.27,4.73,4.37,7.11,6.55Z"/></svg>
+                        </div>
+                        <div class="suboptions-container typical-suboptions-container" style="right: 0">
+                            <div class="suboption-style-2 mb2 sort-comments sort-comments-key-selected">
+                                <input type="hidden" class="sort-key-text" value="{{ __('Newest') }}" autocomplete="off">
+                                <input type="hidden" class="sort-key" value="newest" autocomplete="off">
+                                <span>{{ __('Newest first') }}</span>
+                            </div>
+                            <div class="suboption-style-2 mb2 sort-comments">
+                                <input type="hidden" class="sort-key-text" value="{{ __('Oldest') }}" autocomplete="off">
+                                <input type="hidden" class="sort-key" value="oldest" autocomplete="off">
+                                <span>{{ __('Oldest first') }}</span>
+                            </div>
+                            <div class="suboption-style-2 mb2 sort-comments">
+                                <input type="hidden" class="sort-key-text" value="{{ __('Most claps') }}" autocomplete="off">
+                                <input type="hidden" class="sort-key" value="claps" autocomplete="off">
+                                <span>{{ __('Most claps') }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @if($post->allow_comments)
+                <!-- comment input -->
+                <div id="root-comment-input">
+                    <x-comment.comment-input root="true" />
+                    <div class="align-center pointer comment-display-switch root open none">
+                        <svg class="size18 mr6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M73.59,195.36c-6.65,0-12.82,0-19,0-17.48-.15-30.21-12.5-30.31-30q-.22-49.08,0-98.15c.1-17.81,12.88-30,31.2-30,32.71-.09,65.42,0,98.14,0H209.2c20.13,0,32.25,12.15,32.27,32.28q.06,47,0,94c0,19.85-12.2,31.9-32.12,31.92-23,0-46-.07-69,.1a12.43,12.43,0,0,0-7,2.44c-14.14,11-28.13,22.1-42.1,33.29-3.73,3-7.53,4.94-12.25,2.53s-5.54-6.56-5.47-11.35C73.69,213.61,73.59,204.82,73.59,195.36Zm19.68,9.1c2.17-1.64,3.48-2.58,4.76-3.59,8.45-6.71,17-13.31,25.28-20.24a20.56,20.56,0,0,1,14.27-5.06c23.91.24,47.82.13,71.73.09,8.82,0,12.45-3.62,12.46-12.27V69c0-8.34-3.46-11.84-11.82-11.84H55.86C47.48,57.13,44,60.62,44,68.89v94.88c0,8.09,3.72,11.82,11.89,11.89,8.64.07,17.28,0,25.92,0,8.08.07,11.42,3.46,11.48,11.64,0,5.37,0,10.7,0,17.16Z"/></svg>    
+                        <span class="dark fs14 bold unselectable" style="margin-top: -2px;">{{ __('write a comment') }}..</span>
+                    </div>
+                </div>
+            @else
+                <p class="light-gray text-center fs13">{{ __('The author is not currently accepting comments on this post') }}.</p>
+            @endif
+            <div id="comment-input-comments-separator"></div>
+            <div id="post-comments-box">
+                
+            </div>
+            <!-- 
+                if post has comments then we display loading section and only fetch 
+                comments if the visitor reaches the comments section by scroll down to it.
+            -->
+            <div id="post-comments-loading-box" class="@if($post->comments_count == 0) none @endif">
+                <svg class="spinner size24" fill="none" viewBox="0 0 16 16">
+                    <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                    <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                </svg>
+                <span class="fs12 mt8 dark bold">{{ __('loading comments') }}</span>
+            </div>
+            <div id="comments-fetch-more" class="none">
+                <div class="relative full-center size18 mr8">
+                    <svg class="size18 icon-above-spinner" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M129.52,227.47q-33.72,0-67.45,0c-18.09,0-29.55-11.5-29.55-29.56V63c0-19.39,11.1-30.48,30.49-30.48q67,0,134,0c19.41,0,30.48,11.08,30.49,30.49q0,67.7,0,135.38c0,17.41-11.61,29-29.08,29.07C175.43,227.51,152.48,227.47,129.52,227.47Zm82.76-65.05c.08-1.79.19-3.17.19-4.55q0-47.79,0-95.58c0-10.11-4.74-14.77-15-14.77q-67.47,0-134.94,0c-10.4,0-15,4.68-15,15.22q0,47.33,0,94.65c0,1.64.14,3.28.21,5ZM47.52,177.68c0,6.68,0,12.9,0,19.11C47.53,208,52,212.47,63,212.47H169.86c9.84,0,19.68.07,29.52,0,6.41-.07,11.82-3.43,12.38-9.25.82-8.4.21-16.94.21-25.52Zm68.64-92.07c-4-3.89-8.34-4.1-11.54-.74-3,3.12-2.68,7.52.94,11.22q9,9.19,18.21,18.22c4.37,4.3,8.11,4.29,12.55-.06q9-8.85,17.89-17.89c3.84-3.9,4.2-8.4,1.09-11.57-3.35-3.41-7.61-3-11.87,1.23s-8.52,8.69-13.36,13.64C125.13,94.66,120.7,90.07,116.16,85.61Z" style="stroke:#000;stroke-miterlimit:10;stroke-width:6px"/></svg>
+                    <svg class="spinner size15 opacity0 absolute" fill="none" viewBox="0 0 16 16">
+                        <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                        <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                    </svg>
+                </div>
+                <span>{{ __('Load more comments') }}</span>
             </div>
         </div>
     </div>
