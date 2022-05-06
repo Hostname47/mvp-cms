@@ -9,6 +9,7 @@ use App\Models\Subscriber;
 class NewsletterSubscribeViewer extends Component
 {
     public $subscribed;
+    public $authenticated;
     
     public function __construct()
     {
