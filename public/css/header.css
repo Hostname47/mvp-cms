@@ -96,6 +96,7 @@ body {
 }
 
 .header-round-button {
+    cursor: pointer;
     border-radius: 50%;
     padding: 10px;
     transition: all 0.4s ease;
@@ -325,12 +326,26 @@ header .link:hover {
     display: none;
 }
 
-@media only screen and (min-width: 1000px) {
+#header-auth-mobile-section {
+    display: none;
+    color: white;
+}
+
+@media only screen and (min-width: 1001px) {
     .header-menu {
         display: flex !important;
     }
+
+    .header-menu-wrapper .header-menu-modile-dot {
+        display: none;
+    }
 }
 
+@media only screen and (max-width: 1080px) {
+    .header-auth-username {
+        display: none;
+    }
+}
 
 @media only screen and (max-width: 1000px) {
     .header-auth-username {
@@ -357,7 +372,7 @@ header .link:hover {
 
     .header-menu-container {
         padding: 30px;
-        gap: 30px;
+        gap: 36px;
     }
 
     #header-discover-expand-button {
@@ -414,8 +429,6 @@ header .link:hover {
         display: none;
     }
 
-
-
     .header-i18n-button {
         display: none !important;
     }
@@ -449,5 +462,41 @@ header .link:hover {
         color: white;
         display: flex;
         align-items: center;
+    }
+
+    #header-search-container {
+        width: 100%;
+    }
+
+    #header-search-button {
+        height: 62px;
+    }
+
+    #header-search-input {
+        font-size: 14px;
+        padding: 20px;
+    }
+
+    #header-search-icon {
+        display: none;
+    }
+
+    #header-search-box {
+        height: 62px;
+    }
+
+    #header-auth-mobile-section {
+        display: block;
+    }
+
+    #header-auth-mobile-section .avatar-container, #header-auth-mobile-section .avatar{
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        margin-right: 8px;
+    }
+
+    .header-login-button-style {
+        padding: 12px !important;
     }
 }

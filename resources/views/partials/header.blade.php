@@ -9,13 +9,53 @@
     <span class="logo-menu-separator">•</span>
     <div class="header-menu-wrapper">
         <!-- the following button is shown only on small devices (menu button) -->
-        <div class="header-round-button header-menu-mobile-button button-with-suboptions pointer">
+        <div class="header-round-button header-menu-mobile-button button-with-suboptions">
             <svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M240,70.37H19.94V36.83H240Zm0,76.22V113.22H19.78v33.37ZM19.94,189.8v33.37H240.22V189.8Z"/></svg>
         </div>
         <span class="header-menu-modile-dot">•</span>
         <!-- menu links -->
         <div class="suboptions-container header-menu">
             <div class="header-menu-container">
+                <div id="header-auth-mobile-section">
+                    <div class="full-center flex-column">
+                        @auth
+                        <div class="toggle-box">
+                            <div class="header-login-button-style align-center toggle-button">
+                                <div class="avatar-container">
+                                    <img src="{{ auth()->user()->avatar(36, 'h') }}" class="avatar" alt="">
+                                </div>
+                                <div>
+                                    <div class="align-center">
+                                        <div class="unselectable fs15 bold">{{ auth()->user()->fullname }}</div>
+                                        <svg class="arrow size10 ml8 toggle-arrow" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"></path></svg>
+                                    </div>
+                                    <div class="unselectable fs13">{{ '@' . auth()->user()->username }}</div>
+                                </div>
+                            </div>
+                            <div class="toggle-container none">
+                                <a href="" class="no-underline white align-center" style="padding: 12px 26px">
+                                    <svg class="size15 mr8" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M248 104c-53 0-96 43-96 96s43 96 96 96 96-43 96-96-43-96-96-96zm0 144c-26.5 0-48-21.5-48-48s21.5-48 48-48 48 21.5 48 48-21.5 48-48 48zm0-240C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-49.7 0-95.1-18.3-130.1-48.4 14.9-23 40.4-38.6 69.6-39.5 20.8 6.4 40.6 9.6 60.5 9.6s39.7-3.1 60.5-9.6c29.2 1 54.7 16.5 69.6 39.5-35 30.1-80.4 48.4-130.1 48.4zm162.7-84.1c-24.4-31.4-62.1-51.9-105.1-51.9-10.2 0-26 9.6-57.6 9.6-31.5 0-47.4-9.6-57.6-9.6-42.9 0-80.6 20.5-105.1 51.9C61.9 339.2 48 299.2 48 256c0-110.3 89.7-200 200-200s200 89.7 200 200c0 43.2-13.9 83.2-37.3 115.9z"></path></svg>
+                                    <span class="no-margin white">{{__('Profile')}}</span>
+                                </a>
+                                <div class="relative mt8 white align-center" style="padding: 0 26px 0 26px">
+                                    <form action="{{ route('logout') }}" method="POST" id="header-logout-button">
+                                        @csrf
+                                        <button type="submit" class="flex align-center full-dimensions bold pointer" style="background: unset; border: unset; padding: 0 0 0 3px"></button>
+                                    </form>
+                                    <svg class="size15" fill="white" style="padding-left: 2px; margin-right: 6px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M496,240H293.32a16,16,0,1,1,0-32H496a16,16,0,0,1,0,32Zm-80,80a16,16,0,0,1-11.31-27.33L473.37,224,404.68,155.3a16,16,0,0,1,22.63-22.64l80,80a16,16,0,0,1,0,22.63l-80,80A15.87,15.87,0,0,1,416,320ZM170.66,512a44,44,0,0,1-13.22-2L29.05,467.24A43.06,43.06,0,0,1,0,426.67v-384A42.71,42.71,0,0,1,42.67,0,44.07,44.07,0,0,1,55.89,2L184.27,44.77a43.06,43.06,0,0,1,29.06,40.58v384A42.72,42.72,0,0,1,170.66,512ZM42.67,32A10.71,10.71,0,0,0,32,42.68v384A11.08,11.08,0,0,0,39.4,437l127.78,42.58a11.53,11.53,0,0,0,3.48.47,10.7,10.7,0,0,0,10.67-10.67v-384a11.09,11.09,0,0,0-7.41-10.29L46.14,32.48A11.73,11.73,0,0,0,42.67,32ZM325.32,170.68a16,16,0,0,1-16-16v-96A26.7,26.7,0,0,0,282.66,32h-240a16,16,0,1,1,0-32h240a58.71,58.71,0,0,1,58.66,58.66v96A16,16,0,0,1,325.32,170.68ZM282.66,448H197.33a16,16,0,0,1,0-32h85.33a26.7,26.7,0,0,0,26.66-26.66v-96a16,16,0,0,1,32,0v96A58.71,58.71,0,0,1,282.66,448Z"/></svg>
+                                    <span>{{__('Logout')}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        @else
+                        <div class="align-center header-login-button-style login-required">
+                            <svg class="size17" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M130,254C61.82,254.05,5.93,198.12,6,129.89S62.07,5.77,130.23,6A124.29,124.29,0,0,1,254,129.79C254.18,198,198.32,254,130,254Zm99-123.86c.06-54.55-43.36-98.92-98-99C89.94,31.1,59,50.08,41.12,86.79,23.34,123.28,28,158.8,52.29,191.58c2.25,3,3.58,3.77,7,1,43-34.12,98.77-34.07,141.52.13,3.24,2.59,4.48,1.9,6.63-.87C221.6,173.69,229,153.2,229,130.14ZM74.91,212c32.78,23.76,81.48,21.67,110.05-.06C155.36,185.48,105.73,185.4,74.91,212Zm54.77-57.31c-27.29-.17-49.5-22.52-49.31-49.63a49.79,49.79,0,0,1,50.24-49.34c27.12.25,49.43,23,49,50A49.53,49.53,0,0,1,129.68,154.65Zm25-49.32A24.65,24.65,0,1,0,130,130,24.71,24.71,0,0,0,154.65,105.33Z"/></svg>
+                            <span class="fs12 bold ml8 header-login-button-text">{{__('Login')}}</span>
+                        </div>
+                        @endauth
+                        <span class="white unselectable fs10" style="margin-top: 14px;">•</span>
+                    </div>
+                </div>
                 <a href="{{ route('root.slash') }}" class="header-menu-button">
                     <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M130,249.63q-38.79,0-77.56,0c-24.86,0-42.06-17.09-42.09-41.82,0-27.88.07-55.77,0-83.65-.05-12.75,4.55-23.27,14-31.81Q63.44,56.93,102.51,21.4C119,6.5,140.94,6.45,157.42,21.34c26,23.5,51.85,47.15,77.89,70.59,9.77,8.79,14.43,19.5,14.37,32.59-.13,27.41-.22,54.83,0,82.25.19,21.92-15.28,43.78-43.09,43C181.09,249.07,155.53,249.63,130,249.63Zm-.63-23.08q39,0,78,0c10.76,0,17.06-6.35,17.08-17.13,0-28,0-56.06,0-84.09a21.06,21.06,0,0,0-7.4-16.42q-37.51-34.07-75-68.13c-8.69-7.89-16.76-7.78-25.51.18C91.79,63.47,67.14,86.11,42.11,108.33c-5.52,4.91-7.92,10.11-7.86,17.36.22,27.72.06,55.44.1,83.16,0,11.64,6.2,17.69,17.95,17.7Z"/></svg>
                     <div class="relative">
@@ -82,7 +122,7 @@
     </div>
 
     <div class="header-right-part">
-        <div class="header-round-button button-with-suboptions pointer">
+        <div class="header-round-button button-with-suboptions">
             <svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M250.82,115.41c-1.7,41.32-19.48,73.53-56.43,92.9-36.66,19.22-73.18,16.4-108-6-2.75-1.78-4.08-1.79-6.41.56q-21.72,21.78-43.77,43.22c-5.18,5.07-11.62,6-17.67,3a14.9,14.9,0,0,1-8.25-14.61c.33-4.29,2.49-7.59,5.48-10.56,14.1-14,28.05-28.18,42.25-42.09,2.64-2.58,2.83-4.08.68-7.21-43.79-63.73-4.94-152.3,71.52-163.29C187.68,3,241.28,42.78,249.58,99.89A89.72,89.72,0,0,1,250.82,115.41ZM145.38,40.3a75.14,75.14,0,1,0,75.27,75.09A75.24,75.24,0,0,0,145.38,40.3Z"/></svg>
         </div>
         <div id="header-search-box" class="suboptions-container">
@@ -143,7 +183,7 @@
             <span class="header-menu-modile-dot">•</span>
         </div>
         <div class="relative header-i18n-button align-center">
-            <div class="header-round-button button-with-suboptions mr8 pointer">
+            <div class="header-round-button button-with-suboptions mr8">
                 <svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M119.28,176.71H89.72c-2.15-10-4.24-19.8-6.36-29.72H50.06c-2.09,9.84-4.17,19.62-6.33,29.77H13.47C17.31,157.17,21,138,24.84,118.88,30.61,90,36.67,61.18,42.12,32.24c1.12-5.93,3.25-8,9.21-7.72,10.7.42,21.46-.21,32.15.37,2.5.13,6.54,3,7,5.23,9.85,47.47,19.29,95,28.77,142.57A22.86,22.86,0,0,1,119.28,176.71ZM67.47,66.57l-1.59.25c-3.2,16.15-6.39,32.3-9.67,48.88h21C73.9,98.88,70.69,82.72,67.47,66.57ZM140.4,144.4h60.18c-.2,15-4.74,27.32-13.46,38.08-11.93,14.71-27.82,21.77-46.67,23v29.86c23.78.34,43.28-8.73,61.76-23.88l22.25,24,22.07-22.28c-7.14-6.88-14.54-13.74-21.55-21-1.75-1.8-3.58-5.22-3-7.28,3.54-13.37,7.74-26.56,12.07-41h11.9V113.43H208.23V83.8h-30.6v29.85H140.4Z"/></svg>
             </div>
             <div id="header-languages-box" class="suboptions-container">
