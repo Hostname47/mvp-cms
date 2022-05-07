@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\{Role,RoleUser,Comment,Clap,Report};
+use App\Models\{Role,RoleUser,Comment,Clap,Report,ContactMessage};
 
 class User extends Authenticatable
 {
@@ -46,6 +46,10 @@ class User extends Authenticatable
 
     public function posts() {
         return $this->hasMany(Post::class);
+    }
+
+    public function contact_messages() {
+        return $this->hasMany(ContactMessage::class);
     }
 
     public function getHasAvatarAttribute() {

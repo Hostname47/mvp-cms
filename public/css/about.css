@@ -1,6 +1,7 @@
 #first-section {
     display: flex;
     align-items: center;
+    margin-top: 26px;
 }
 
 #first-section .banner {

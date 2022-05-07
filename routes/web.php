@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{IndexController, AdminController, PostController, CategoryController,
     MediaController, OAuthController, TagController, RoleController, PermissionController, RPManagement,
     NewsletterController, CommentController, ClapController, ReportController, SearchController,
-    AuthorRequestController};
+    AuthorRequestController, ContactController};
 use App\Http\Controllers\Admin\{AdminSearchController};
 
 Route::get('/test', function() {
@@ -117,6 +117,8 @@ Route::middleware('client.scopes')->group(function() {
     Route::post('/author-request', [AuthorRequestController::class, 'request']);
     
     Route::view('/about', 'about')->name('about');
+
+    Route::post('/contact', [ContactController::class, 'store']);
     
     Route::get('/comments/fetch', [CommentController::class, 'fetch']);
     Route::get('/comments/replies', [CommentController::class, 'replies']);
