@@ -106,7 +106,7 @@
         <p class="mt8 dark lh15">{{ __("Choose the categories that you are passionate about, along with a detailed message with all the informations about you and your skills and passions in order for us to accept your request. If your preffered category does not exists within the list of categories below, please include it in the message.") }}</p>
         <div id="request-form">
             <input type="hidden" id="select-at-least-one-category" value="{{ __('You need to select at least one category') }}" autocomplete="off">
-            <input type="hidden" id="request-message-is-required" value="{{ __('Request message is required') }}" autocomplete="off">
+            <input type="hidden" id="request-message-is-required" value="{{ __('Message field is required') }}" autocomplete="off">
             <!-- select categories -->
             <div id="categories-box">
                 <div class="align-center">

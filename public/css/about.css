@@ -1,0 +1,50 @@
+#first-section {
+    display: flex;
+    align-items: center;
+}
+
+#first-section .banner {
+    width: 50%;
+    flex: 1;
+}
+
+#first-section .title {
+    display: flex;
+    width: 50%;
+    font-size: 32px;
+    font-weight: 400;
+    letter-spacing: 3.2px;
+    line-height: 1.4;
+    color: #1d2227;
+    margin-left: 28px;
+    padding-right: 26px;
+}
+
+#about-main .section {
+    margin: 40px 0;
+    padding: 0 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#about-main .section .asset {
+    width: 92px;
+    height: 92px;
+}
+
+#about-main .section .text-part {
+    flex: 1;
+    margin: 0 50px;
+}
+
+#about-main .section-title {
+    font-size: 17px;
+    color: #1d2227;
+}
+
+#about-main .section-content {
+    font-size: 17px;
+    letter-spacing: 1.1px;
+    line-height: 1.6;
+}

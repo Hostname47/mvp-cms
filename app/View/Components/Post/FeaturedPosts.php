@@ -20,7 +20,7 @@ class FeaturedPosts extends Component
          * Also we need to make featured posts to be flexible to match featured posts that 
          * belong to the a specific cateory if the user is within a speciic category
          */
-        $this->posts = Post::with(['author','categories'])->orderBy('reactions_count', 'desc')->take(6)->get();
+        $this->posts = Post::with(['author','categories'])->orderBy('reactions_count', 'desc')->take(5)->get();
     }
 
     /**
