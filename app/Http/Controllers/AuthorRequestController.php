@@ -4,11 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\AuthorRequest;
+use App\Models\Category;
 
 class AuthorRequestController extends Controller
 {
     public function index(Request $request) {
-        return view('author-request');
+        $categories = Category::tree()->get()->toTree();
+
+        return view('author-request')
+            ->with(compact('categories'));
     }
 
     public function request(Request $request) {

@@ -1,0 +1,99 @@
+main {
+    padding-bottom: 40px;
+}
+
+#request-form .title {
+    font-size: 18px;
+    margin: 4px 0 4px 0;
+    color: #1d2124;
+}
+
+#request-form .title-icon {
+    width: 18px;
+    height: 18px;
+    margin-top: -2px;
+    margin-right: 6px;
+    fill: #1d2124;
+}
+
+#request-form .sub-title {
+    margin: 0 0 6px 0;
+    color: #1d2124;
+    font-size: 14px;
+}
+
+#select-categories-box {
+    padding: 10px 0 10px 10px;
+    background-color: #f4f6f7;
+    margin-top: 8px;
+    border-radius: 3px;
+    overflow-y: auto;
+    max-height: 280px;
+    width: 700px;
+}
+
+#request-form .categories-wrapper {
+    margin: 10px 0;
+}
+
+#request-form .category-container {
+    position: relative;
+    margin: 8px 0 8px 8px;
+}
+
+#request-form .category {
+    display: block;
+    color: #24292f;
+    text-decoration: none;
+    font-size: 13px;
+    margin-right: 6px;
+}
+#request-form .category:hover {
+    color: #101214;
+    text-decoration: underline;
+}
+
+#request-form .category-toggle-button {
+    display: flex;
+    margin-left: 4px;
+    padding: 4px;
+    border-radius: 2px;
+    background-color: #dce4ec;
+    border: 1px solid #c0ccd9;
+    cursor: pointer;
+}
+#request-form .category-toggle-button:hover {
+    background-color: #cad2da;
+}
+
+#request-form .category-toggle-arrow {
+    width: 7px;
+    height: 7px;
+    fill: #4f5660;
+}
+
+#request-form .category-children-angle {
+    width: 8px;
+    height: 8px;
+    fill: #a6b1bf;
+    margin: 0 4px;
+}
+
+#request-form .category-children-container {
+    flex: 1;
+    background-color: #aeb9ca2e;
+    border-radius: 4px 0 4px 4px;
+}
+
+#message-box {
+    margin: 16px 0;
+}
+
+#request-message {
+    padding: 12px;
+    font-size: 16px;
+    height: 160px;
+    max-height: 240px;
+    min-height: 100px;
+    resize: vertical;
+}
