@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use App\Models\AuthorRequest;
 use App\Models\Category;
 
@@ -30,5 +31,7 @@ class AuthorRequestController extends Controller
         $data['categories'] = implode(',', $data['categories']);
         $data['user_id'] = auth()->user()->id;
         AuthorRequest::create($data);
+
+        Session::flash('message', __('You request has been sent successfully. We are going to inform you about approval as soon as possible.'));
     }
 }
