@@ -28,8 +28,7 @@ main {
     margin-top: 8px;
     border-radius: 3px;
     overflow-y: auto;
-    max-height: 280px;
-    width: 700px;
+    max-height: 250px;
 }
 
 #request-form .categories-wrapper {
@@ -96,4 +95,17 @@ main {
     max-height: 240px;
     min-height: 100px;
     resize: vertical;
+}
+
+.message-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 20px;
+    padding: 10px 10px 20px 10px;
+    color: #2f3133;
+    fill: #0bbaff;
+    border: 1px solid #d6dde3;
+    border-radius: 3px;
 }
