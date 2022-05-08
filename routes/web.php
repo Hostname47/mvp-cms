@@ -112,6 +112,7 @@ Route::middleware('client.scopes')->group(function() {
     Route::get('/', [IndexController::class, 'index'])->name('root.slash');
     Route::get('/home', [IndexController::class, 'index'])->name('home');
     Route::get('/discover', [IndexController::class, 'discover'])->name('discover');
+    Route::view('/privacy', 'privacy')->name('privacy');
     
     Route::get('/author-request', [AuthorRequestController::class, 'index'])->name('author-request');
     Route::post('/author-request', [AuthorRequestController::class, 'request']);

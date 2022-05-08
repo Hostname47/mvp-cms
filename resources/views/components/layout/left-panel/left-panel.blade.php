@@ -100,7 +100,7 @@
     <div class="section">
         <a href="" class="link my12" style="margin-top: 0;">{{__('FAQs')}}</a>
         <a href="" class="link my12">{{__('Guidelines')}}</a>
-        <a href="" class="link my12">{{__('Privacy Policy')}}</a>
+        <a href="{{ __('privacy') }}" class="link my12">{{__('Privacy Policy')}}</a>
     </div>
     <div class="move-to-bottom mr8">
         <div class="flex align-center dark fs13" style="letter-spacing: 1.2px;">
