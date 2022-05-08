@@ -8,7 +8,13 @@ use App\Models\Faq;
 class FaqController extends Controller
 {
     public function index(Request $request) {
-
+        /**
+         * We check for live attribute because when normal user submit a question the default value of live column is 0
+         * and so it is not shown directly to FAQs page until an admin review it
+         */
+        $faqs = Faq::where('status', 1)->orderBy('priority')->paginate(8);
+        return view('faqs')
+            ->with(compact('faqs'));
     }
 
     public function store(Request $request) {

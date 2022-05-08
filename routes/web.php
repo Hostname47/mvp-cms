@@ -8,11 +8,9 @@ use App\Http\Controllers\{IndexController, AdminController, PostController, Cate
 use App\Http\Controllers\Admin\{AdminSearchController};
 
 Route::get('/test', function() {
-    dump(session()->has('a'));
-    session()->put('a', 1);
-    dump(session()->has('a'));
-    dump(session()->get('a'));
-    dump(session()->increment('a', 1));
+    for($i=4;$i<=14;$i++) {
+        \DB::statement("INSERT INTO `faqs` (`question`, `answer`, `description`, `status`, `priority`, `user_id`) VALUES ('This is frequently asked question #$i ?', 'response to question #$i', 'ergererh', '1', '$i', '1')");
+    }
 });
 
 // Roles management
