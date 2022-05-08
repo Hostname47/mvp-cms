@@ -1,0 +1,41 @@
+.quote-after-title {
+    letter-spacing: 1px;
+    font-size: 13px;
+    margin-top: 2px;
+    color: #15171a;
+}
+
+#guidelines-main {
+    padding: 12px;
+    margin-bottom: 26px;
+}
+
+#guidelines-main h2 {
+    color: #15171a;
+    margin-bottom: 8px;
+    margin-top: 20px;
+}
+
+#guidelines-main p {
+    line-height: 1.5;
+}
+
+#guidelines-main li {
+    margin: 6px 0;
+}
+
+#legal-stuff {
+    padding: 12px 16px;
+    background-color: #f3fff4;
+    border: 1px solid #c5e1c8;
+    border-radius: 3px;
+    color: #0b1e0b;
+    margin-bottom: 8px;
+}
+
+#conclusion {
+    max-width: 800px;
+    text-align: center;
+    line-height: 1.5;
+    color: #151515;
+}

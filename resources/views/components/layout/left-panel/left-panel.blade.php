@@ -99,7 +99,7 @@
     <span class="section-title">MORE</span>
     <div class="section">
         <a href="" class="link my12" style="margin-top: 0;">{{__('FAQs')}}</a>
-        <a href="" class="link my12">{{__('Guidelines')}}</a>
+        <a href="{{ __('guidelines') }}" class="link my12">{{__('Guidelines')}}</a>
         <a href="{{ __('privacy') }}" class="link my12">{{__('Privacy Policy')}}</a>
     </div>
     <div class="move-to-bottom mr8">
