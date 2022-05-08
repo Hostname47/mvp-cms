@@ -118,6 +118,7 @@ Route::middleware('client.scopes')->group(function() {
     
     Route::view('/about', 'about')->name('about');
 
+    Route::get('/contact', [ContactController::class, 'contact'])->name('contact');
     Route::post('/contact', [ContactController::class, 'store']);
     
     Route::get('/comments/fetch', [CommentController::class, 'fetch']);

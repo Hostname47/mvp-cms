@@ -55,13 +55,15 @@ class ContactMessageTest extends TestCase
     public function send_contact_message_validation() {
         // For authenticated users : only message is required
         $this->post('/contact')->assertSessionHasErrors(['message']);
-        $this->post('/contact', ['message'=>'helo'])->assertOk();
+        $this->post('/contact', ['message'=>'hello worls !'])->assertOk();
         
         $this->post('/logout');
 
         // For guest users, all fields are required
         $this->post('/contact')->assertSessionHasErrors(['firstname','lastname','email','message']);
         $this->post('/contact', ['firstname'=>'a','lastname'=>'a','email'=>'invalide-email@','message'=>'hello'])
+            ->assertSessionHasErrors(['message']); // Message should contains more than 10 characters
+        $this->post('/contact', ['firstname'=>'a','lastname'=>'a','email'=>'invalide-email@','message'=>'hello world !'])
             ->assertSessionHasErrors(['email']);
     }
 
@@ -69,7 +71,7 @@ class ContactMessageTest extends TestCase
     public function contact_messages_are_limited_per_day() {
         $user = $this->authuser;
         $messages = ContactMessage::factory(10)->create(['user_id'=>$user->id]);
-        $this->post('/contact', ['firstname'=>'a','lastname'=>'a','email'=>'a@a.com','message'=>'hello'])
+        $this->post('/contact', ['firstname'=>'a','lastname'=>'a','email'=>'a@a.com','message'=>'hello world !'])
             ->assertForbidden();
     }
 
@@ -80,7 +82,7 @@ class ContactMessageTest extends TestCase
         $user = $this->authuser;
         $messages = ContactMessage::factory(10)->create(['ip'=>'192.168.1.1']);
         $this->post('/contact',
-            ['firstname'=>'a','lastname'=>'a','email'=>'a@a.com','message'=>'hello'],
+            ['firstname'=>'a','lastname'=>'a','email'=>'a@a.com','message'=>'hello world !'],
             ['REMOTE_ADDR' => '192.168.1.1']
         )->assertForbidden();
     }

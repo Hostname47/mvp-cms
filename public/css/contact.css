@@ -1,0 +1,33 @@
+#contact-form-wrapper {
+    width: 640px;
+}
+
+.title-icon {
+    width: 23px;
+    height: 23px;
+}
+
+.text {
+    line-height: 1.5;
+    color: rgb(23, 26, 29);
+    width: 80%;
+}
+
+.label {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    color: rgb(23, 26, 29);
+    margin-bottom: 4px;
+}
+
+#contact-send-message {
+    margin-top: 14px;
+    padding: 8px 12px;
+}
+
+#message {
+    height: 120px;
+    min-height: 80px;
+    max-height: 200px;
+}

@@ -10,16 +10,20 @@ class ContactController extends Controller
 {
     const PER_DAY_MAXIMUM = 10;
 
+    public function contact(Request $request) {
+        return view('contact');
+    }
+
     public function store(Request $request) {
         if(Auth::check()) {
-            $data = $request->validate(['message'=>'required|max:2000']);
+            $data = $request->validate(['message'=>'required|min:10|max:4000']);
             $data['user_id'] = auth()->user()->id;
         } else {
             $data = $request->validate([
                 'firstname'=>'required|alpha|max:100',
                 'lastname'=>'required|alpha|max:100',
                 'email'=>'required|email|max:320',
-                'message'=>'required|max:2000'
+                'message'=>'required|min:10|max:4000'
             ]);
         }
 
