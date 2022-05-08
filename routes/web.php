@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{IndexController, AdminController, PostController, CategoryController,
     MediaController, OAuthController, TagController, RoleController, PermissionController, RPManagement,
     NewsletterController, CommentController, ClapController, ReportController, SearchController,
-    AuthorRequestController, ContactController};
+    AuthorRequestController, ContactController, FaqController};
 use App\Http\Controllers\Admin\{AdminSearchController};
 
 Route::get('/test', function() {
@@ -115,6 +115,9 @@ Route::middleware('client.scopes')->group(function() {
     Route::view('/privacy', 'privacy')->name('privacy');
     Route::view('/guidelines', 'guidelines')->name('guidelines');
     
+    Route::get('/faqs', [FaqController::class, 'index'])->name('faqs');
+    Route::post('/faqs', [FaqController::class, 'store']);
+
     Route::get('/author-request', [AuthorRequestController::class, 'index'])->name('author-request');
     Route::post('/author-request', [AuthorRequestController::class, 'request']);
     
