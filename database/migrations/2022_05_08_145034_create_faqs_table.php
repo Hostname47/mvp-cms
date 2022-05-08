@@ -18,8 +18,8 @@ class CreateFaqsTable extends Migration
             $table->text('question');
             $table->text('answer')->nullable();
             $table->text('description')->nullable();
-            $table->boolean('status');
-            $table->integer('priority');
+            $table->boolean('status')->default(0);
+            $table->integer('priority')->default(1000);
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('set null')->onUpdate('cascade');
             $table->timestamps();

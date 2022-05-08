@@ -15,11 +15,11 @@ class FaqController extends Controller
         $this->authorize('store', [Faq::class]);
 
         $data = $request->validate([
-            'question'=>'required|min:10|max:400',
+            'question'=>'required|min:10|max:500',
             'description'=>'sometimes|max:2000'
         ]);
         $data['user_id'] = auth()->user()->id;
-        $data['priority'] = 10000; // This make it appear at the end (order) in admin section
+        // Faq priority is set to 1000 by default to set it at the end of order
 
         Faq::create($data);
         \Session::flash('message', __('Your question has been sent successfully'));
