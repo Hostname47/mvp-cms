@@ -55,15 +55,15 @@
         <div class="simple-line-separator my8"></div>
         <div id="contact-form-wrapper">
             <div id="validation-messages"> <!-- collection of validation messages -->
-                <input type="hidden" class="firstname-required" value="{{ __('firstname is required') }}">
-                <input type="hidden" class="lastname-required" value="{{ __('lastname is required') }}">
-                <input type="hidden" class="email-required" value="{{ __('email is required') }}">
-                <input type="hidden" class="email-invalide" value="{{ __('Invalide email address') }}">
-                <input type="hidden" class="message-required" value="{{ __('Message required') }}">
-                <input type="hidden" class="message-length-error" value="{{ __('Message should contain at least 10 characters') }}">
+                <input type="hidden" id="firstname-required" value="{{ __('firstname is required') }}" autocomplete="off">
+                <input type="hidden" id="lastname-required" value="{{ __('lastname is required') }}" autocomplete="off">
+                <input type="hidden" id="email-required" value="{{ __('email is required') }}" autocomplete="off">
+                <input type="hidden" id="email-invalide" value="{{ __('Invalide email address') }}" autocomplete="off">
+                <input type="hidden" id="message-required" value="{{ __('Message required') }}" autocomplete="off">
+                <input type="hidden" id="message-length-error" value="{{ __('Message should contain at least 10 characters') }}" autocomplete="off">
             </div>
             
-            <div class="informative-message-container align-center error-container none relative my8">
+            <div class="informative-message-container align-center none relative my8" id="contact-error-container">
                 <div class="informative-message-container-left-stripe imcls-red"></div>
                 <div class="no-margin fs13 error message-text"></div>
                 <div class="close-parent close-informative-message-style">✖</div>
@@ -72,16 +72,16 @@
             <div class="full-width align-center">
                 <div class="mr8 half-width">
                     <label for="firstname" class="label">{{ __('Firstname') }}<span class="ml4 err red none fs12">*</span></label>
-                    <input type="text" id="firstname" class="styled-input" maxlength="60" placeholder='{{ __("Your firstname") }}' value="@auth {{ auth()->user()->firstname }} @endauth" @auth disabled @endauth>
+                    <input type="text" id="firstname" class="styled-input" autocomplete="off" maxlength="60" placeholder='{{ __("Your firstname") }}' value="@auth {{ auth()->user()->firstname }} @endauth" @auth disabled @endauth>
                 </div>
                 <div class="half-width">
                     <label for="lastname" class="label">{{ __('Lastname') }}<span class="ml4 err red none fs12">*</span></label>
-                    <input type="text" id="lastname" class="styled-input" maxlength="60" placeholder='{{ __("Your lastname") }}' value="@auth {{ auth()->user()->lastname }} @endauth" @auth disabled @endauth>
+                    <input type="text" id="lastname" class="styled-input" autocomplete="off" maxlength="60" placeholder='{{ __("Your lastname") }}' value="@auth {{ auth()->user()->lastname }} @endauth" @auth disabled @endauth>
                 </div>
             </div>
             <div style="margin: 12px 0">
                 <label for="contact-email" class="label">{{ __('Email') }}<span class="ml4 err red none fs12">*</span></label>
-                <input type="text" id="contact-email" class="styled-input" maxlength="400" placeholder='{{ __("Your email") }}' value="@auth {{ auth()->user()->email }} @endauth" @auth disabled @endauth>
+                <input type="text" id="contact-email" class="styled-input" autocomplete="off" maxlength="400" placeholder='{{ __("Your email") }}' value="@auth {{ auth()->user()->email }} @endauth" @auth disabled @endauth>
             </div>
             <div>
                 <label for="message" class="label">{{ __('Message') }} <span class="ml4 err red none fs12">*</span></label>
@@ -90,7 +90,7 @@
             </div>
 
             <div class="flex">
-                <div class="typical-button-style dark-bs align-center" id="contact-send-message" style="margin-bottom: 28px">
+                <div class="typical-button-style dark-bs align-center" id="contact-send-message">
                     <div class="relative size13 mr6">
                         <svg class="size13 icon-above-spinner" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M492.21,3.82a21.45,21.45,0,0,0-22.79-1l-448,256a21.34,21.34,0,0,0,3.84,38.77L171.77,346.4l9.6,145.67a21.3,21.3,0,0,0,15.48,19.12,22,22,0,0,0,5.81.81,21.37,21.37,0,0,0,17.41-9l80.51-113.67,108.68,36.23a21,21,0,0,0,6.74,1.11,21.39,21.39,0,0,0,21.06-17.84l64-384A21.31,21.31,0,0,0,492.21,3.82ZM184.55,305.7,84,272.18,367.7,110.06ZM220,429.28,215.5,361l42.8,14.28Zm179.08-52.07-170-56.67L447.38,87.4Z"></path></svg>
                         <svg class="spinner size13 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
@@ -98,7 +98,7 @@
                             <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
                         </svg>
                     </div>
-                    <span class="bold fs12 unselectable" style="margin-top: 1px">{{ __('Submit message') }}</span>
+                    <span class="bold fs12 unselectable">{{ __('Submit message') }}</span>
                 </div>
             </div>
         </div>
