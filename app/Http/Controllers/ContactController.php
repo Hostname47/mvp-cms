@@ -8,10 +8,22 @@ use Illuminate\Support\Facades\Auth;
 
 class ContactController extends Controller
 {
-    const PER_DAY_MAXIMUM = 10;
+    const PER_DAY_LIMIT = 10;
 
     public function contact(Request $request) {
-        return view('contact');
+        $limit_reached = false;
+        $limit_message = __("You have reached your limited number of messages per day. If you have more messages, and you think it's important to be sent, please try again later.");
+
+        if(Auth::check()) {
+            if(auth()->user()->contact_messages()->count() >= self::PER_DAY_LIMIT)
+                $limit_reached = true;
+        } else {
+            if(ContactMessage::today()->where('ip', $request->ip())->count() >= self::PER_DAY_LIMIT)
+                $limit_reached = true;
+        }
+        return view('contact')
+        ->with(compact('limit_reached'))
+        ->with(compact('limit_message'));
     }
 
     public function store(Request $request) {
@@ -30,21 +42,21 @@ class ContactController extends Controller
         /**
          * Notice that we cannot use a policy here because guest users also could send messages
          *
-         * If the user is authenticated we see if he already sent PER_DAY_MAXIMUM records today; if so we prevent sending
+         * If the user is authenticated we see if he already sent PER_DAY_LIMIT records today; if so we prevent sending
          * If the user is a guest we check the same condition with ip address
          */
         if(Auth::check()) {
-            if(auth()->user()->contact_messages()->count() >= self::PER_DAY_MAXIMUM) {
-                abort(403, __("You have a limited number of messages per day") . '.(' . self::PER_DAY_MAXIMUM . ' ' . __('messages') . ')');
+            if(auth()->user()->contact_messages()->count() >= self::PER_DAY_LIMIT) {
+                abort(403, __("You have reached your limited number of messages per day. If you have more messages, and you think it's important to be sent, please try again later."));
             }
         } else {
-            if(ContactMessage::today()->where('ip', $request->ip())->count() >= self::PER_DAY_MAXIMUM) {
-                abort(403, __("You have a limited number of messages per day") . '(' . self::PER_DAY_MAXIMUM . ' ' . __('messages') . ')');
+            if(ContactMessage::today()->where('ip', $request->ip())->count() >= self::PER_DAY_LIMIT) {
+                abort(403, __("You have reached your limited number of messages per day. If you have more messages, and you think it's important to be sent, please try again later."));
             }
         }
         // For data storage limit protection
         if(ContactMessage::today()->count() >= 5000)
-            abort(403, __("We have received many messages today, If you think your message is too important to review, you can send it to us tomorrow"));
+            abort(403, __("We have received many messages today, If you think your message is too important to review, you can send it to us later"));
         
         $data['ip'] = $request->ip();
 

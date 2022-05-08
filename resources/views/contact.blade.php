@@ -50,6 +50,13 @@
             </div>
         @endif
 
+        @if($limit_reached)
+        <div id="limit-message-container">
+            <svg class="size17 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M404.57,112.64V101.82c0-43.62-40.52-76.69-83-65.55-25.63-49.5-94.09-47.45-118,.75-41.28-10.56-82.41,20.92-82.41,65V228.13A65.45,65.45,0,0,0,59.06,237a67.45,67.45,0,0,0-14.55,93.15l120,168.42A32,32,0,0,0,190.54,512h222.9a32,32,0,0,0,31.18-24.81l30.18-131a203.49,203.49,0,0,0,5.2-45.67V179C480,138.38,444.48,107,404.57,112.64ZM432,310.56a155.71,155.71,0,0,1-4,34.89L400.71,464H198.79L83.59,302.3c-14.44-20.27,15-42.77,29.4-22.6l27.12,38.08c9,12.62,29,6.28,29-9.29V102c0-25.65,36.57-24.81,36.57.69V256a16,16,0,0,0,16,16h6.86a16,16,0,0,0,16-16V67c0-25.66,36.57-24.81,36.57.69V256a16,16,0,0,0,16,16H304a16,16,0,0,0,16-16V101.13c0-25.68,36.57-24.81,36.57.69V256a16,16,0,0,0,16,16h6.85a16,16,0,0,0,16-16V179.69c0-26.24,36.57-25.64,36.57-.69V310.56Z"/></svg>
+            <p class="text no-margin">{{ $limit_message }}</p>
+        </div>
+        <p class="text">{{ __("We have received all your messages, and we will get back to you as soon as possible") }}</p>
+        @else
         <p class="text">{{ __("If you have any questions or queries, a member of staff will always be happy to help. Feel free to contact us using the form below and we will be sure to get back to you as soon as possible") }}.</p>
         <p class="text">{{ __("Be clear, thoughtful, and respectful. Make sure the message or feedback you offer is accurate, specific, and is limited only to the behavior in question, suggestion or advice") }}.</p>
         <div class="simple-line-separator my8"></div>
@@ -102,5 +109,6 @@
                 </div>
             </div>
         </div>
+        @endif
     </div>
 @endsection
