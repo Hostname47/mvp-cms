@@ -134,4 +134,8 @@ class Post extends Model
     public function getLinkAttribute() {
         return route('view.post', ['category'=>$this->categories->first()->slug, 'post'=>$this->slug]);
     }
+
+    public static function featured_posts() {
+        return Post::with(['author','categories','tags'])->orderBy('reactions_count', 'desc')->take(5)->get();
+    }
 }

@@ -28,6 +28,12 @@ $('.header-discover-display').on('change', function() {
         handle_discover_section_click_effect();
 });
 
+$('.header-featured-post-nav').on('click', function() {
+    let scroll = $(this).hasClass('top') ? -200 : 200;
+    let scrollable = $('#header-featured-posts-section');
+    scrollable.scrollTop(scrollable.scrollTop() + scroll);
+})
+
 $('.fade-box').each(function() {
     let box = $(this);
     window.setInterval(function(){
