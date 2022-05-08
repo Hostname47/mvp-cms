@@ -67,5 +67,47 @@
             </div>
         </div>
         @endforeach
+        <div class="simple-line-separator" style="margin: 26px 0;"></div>
+        <!-- error container -->
+        <div class="informative-message-container align-center none relative my8" id="faqs-error-container">
+            <div class="informative-message-container-left-stripe imcls-red"></div>
+            <div class="no-margin fs13 error message-text"></div>
+            <div class="close-parent close-informative-message-style">✖</div>
+        </div>
+
+        <!-- send a question -->
+        <h2 id="send-faq-title">{{ __("Your question does not exist ? Ask your question below") }}</h2>
+        <p class="sub-title">{{ __("If your question does not exist within the faqs above, feel free to ask your quezstion in the form below and we'll responde to your question as soon as possible") }}.</p>
+        <div id="send-faq-form">
+            <input type="hidden" id="question-required" value="{{ __('Question field is required') }}">
+            <input type="hidden" id="question-length-error" value="{{ __('Question must contain at least 10 characters') }}">
+
+            <div class="my8 error-container faqs-error-container none">
+                <div class="flex">
+                    <svg class="size14 mr4" style="min-width: 14px; margin-top: 1px" fill="rgb(68, 5, 5)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M501.61,384.6,320.54,51.26a75.09,75.09,0,0,0-129.12,0c-.1.18-.19.36-.29.53L10.66,384.08a75.06,75.06,0,0,0,64.55,113.4H435.75c27.35,0,52.74-14.18,66.27-38S515.26,407.57,501.61,384.6ZM226,167.15a30,30,0,0,1,60.06,0V287.27a30,30,0,0,1-60.06,0V167.15Zm30,270.27a45,45,0,1,1,45-45A45.1,45.1,0,0,1,256,437.42Z"/></svg>
+                    <span class="dark-red fs13 bold no-margin faqs-error"></span>
+                </div>
+            </div>
+            <div class="my12">
+                <label for="question" class="label">{{ __('Question') }}</label>
+                <input type="text" id="question" class="styled-input" maxlength="500" autocomplete="off" placeholder='{{ __("Your question") }}'>
+            </div>
+            <div>
+                <label for="description" class="label">{{ __('Description of your question') }} <span class="fs11 dark default-weight ml4">({{__('optional')}})</span></label>
+                <textarea id="description" class="styled-input" maxlength="1000" autocomplete="off" placeholder="{{ __('More informations about your question') }}"></textarea>
+            </div>
+            <div class="flex my12" style="margin-bottom: 28px">
+                <div class="typical-button-style dark-bs align-center @auth faq-send-button @else dark-bs-disabled login-required @endauth">
+                    <div class="relative size14 mr4">
+                        <svg class="size14 icon-above-spinner" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M492.21,3.82a21.45,21.45,0,0,0-22.79-1l-448,256a21.34,21.34,0,0,0,3.84,38.77L171.77,346.4l9.6,145.67a21.3,21.3,0,0,0,15.48,19.12,22,22,0,0,0,5.81.81,21.37,21.37,0,0,0,17.41-9l80.51-113.67,108.68,36.23a21,21,0,0,0,6.74,1.11,21.39,21.39,0,0,0,21.06-17.84l64-384A21.31,21.31,0,0,0,492.21,3.82ZM184.55,305.7,84,272.18,367.7,110.06ZM220,429.28,215.5,361l42.8,14.28Zm179.08-52.07-170-56.67L447.38,87.4Z"></path></svg>
+                        <svg class="spinner size14 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
+                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                            <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                        </svg>
+                    </div>
+                    <span class="bold fs12 unselectable" style="margin-top: 1px">{{ __('Submit Question') }}</span>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection

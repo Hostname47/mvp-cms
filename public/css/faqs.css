@@ -65,3 +65,29 @@
     margin: 0 10px;
     color: #1c2022;
 }
+
+#send-faq-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #1c2022;
+    margin-bottom: 2px;
+}
+
+.label {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    color: rgb(23, 26, 29);
+    margin-bottom: 4px;
+}
+
+#send-faq-form {
+    max-width: 720px;
+}
+
+#description {
+    height: 120px;
+    min-height: 80px;
+    max-height: 200px;
+    resize: vertical;
+}

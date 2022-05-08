@@ -22,7 +22,7 @@ class FaqController extends Controller
 
         $data = $request->validate([
             'question'=>'required|min:10|max:500',
-            'description'=>'sometimes|max:2000'
+            'description'=>'sometimes|max:1000'
         ]);
         $data['user_id'] = auth()->user()->id;
         // Faq priority is set to 1000 by default to set it at the end of order
