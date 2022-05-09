@@ -112,6 +112,7 @@ Route::middleware('client.scopes')->group(function() {
     Route::get('/discover', [IndexController::class, 'discover'])->name('discover');
     Route::view('/privacy', 'privacy')->name('privacy');
     Route::view('/guidelines', 'guidelines')->name('guidelines');
+    Route::view('/credits', 'credits')->name('credits');
     
     Route::get('/faqs', [FaqController::class, 'index'])->name('faqs');
     Route::post('/faqs', [FaqController::class, 'store']);

@@ -1280,31 +1280,41 @@ textarea {
 footer {
     overflow: hidden;
     width: 100%;
-    padding: 26px;
+    padding: 42px;
+    padding-bottom: 26px;
     box-sizing: border-box;
     background-color: #151617;
     color: white;
 }
 
+footer .logo-section {
+    align-self: center;
+}
+
 footer .logo {
     fill: white;
-    width: 260px;
+    height: 36px;
 }
 
 footer .footer-content {
-    margin-left: 11px;
+    display: flex;
+    align-items: baseline;
 }
 
 footer .paragraph-after-logo {
-    font-size: 14px;
-    letter-spacing: 2px;
-    margin: 0 0 12px 0;
+    font-size: 12px;
+    letter-spacing: 1.6px;
+    margin: 0 0 12px 10px;
 }
 
 footer .follow-us-container {
-    display: flex;
-    align-items: center;
-    margin-top: 16px;
+    margin-left: 60px;
+}
+
+footer .follow-us-container .title {
+    font-weight: bold;
+    white-space: nowrap;
+
 }
 
 footer .follow-us-container svg {
@@ -1328,34 +1338,35 @@ footer .follow-us-container svg {
 }
 
 footer .links-wrapper {
-    margin: 12px 0;
     display: flex;
-}
-
-footer .links-container {
-    margin: 0 30px;
+    gap: 46px;
+    margin-left: 60px;
 }
 
 footer .links-wrapper .links-title {
     font-weight: bold;
     cursor: default;
+    margin-top: 8px;
 }
 
 footer .links-wrapper .link {
     color: rgb(212, 212, 212);
     display: flex;
-    margin: 8px 0;
+    margin: 7px 0;
     text-decoration: none;
+    font-size: 12px;
+    font-weight: bold;
 }
 
 footer .links-wrapper .link:hover {
     color: white;
 }
 
-footer .newsletter-section {
-    margin-left: auto;
-    margin-right: 20px;
-    max-width: 400px;
+footer .copyrights-notice {
+    margin: 20px 0 0 0;
+    text-align: center;
+    letter-spacing: 1.6px;
+    font-size: 12px;
 }
 
 .page-padding {
@@ -1614,4 +1625,69 @@ footer .newsletter-section {
     font-size: 11px;
     text-decoration: none;
     color: #118af4;
+}
+
+@media only screen and (max-width: 1000px) {
+    footer {
+        padding: 24px;
+    }
+
+    footer .links-wrapper {
+        gap: 30px;
+        margin-left: 30px;
+    }
+
+    footer .follow-us-container {
+        margin-left: 26px;
+    }
+
+    footer .paragraph-after-logo {
+        font-size: 11px;
+    }
+}
+
+@media only screen and (max-width: 780px) {
+    footer .footer-content {
+        flex-direction: column;
+    }
+
+    footer .logo-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    footer .links-wrapper .links-title {
+        font-size: 11px;
+    }
+
+    footer .links-wrapper .link {
+        font-size: 9px;
+    }
+
+    footer .paragraph-after-logo {
+        font-size: 11px;
+        text-align: center;
+    }
+
+    footer .links-wrapper {
+        margin-left: 0;
+    }
+
+    footer .sign-up-box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    footer .text {
+        text-align: center;
+    }
+
+    footer .follow-us-container {
+        margin-left: 0;
+    }
+
+    footer .follow-us-container .title {
+        font-size: 11px;
+    }
 }
