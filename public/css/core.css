@@ -1673,6 +1673,8 @@ footer .copyrights-notice {
     footer .paragraph-after-logo {
         font-size: 11px;
         text-align: center;
+        margin: 4px 0 8px 0;
+        line-height: 1.6;
     }
 
     footer .links-wrapper {

@@ -10,7 +10,8 @@
     <div class="header-menu-wrapper">
         <!-- the following button is shown only on small devices (menu button) -->
         <div class="header-round-button header-menu-mobile-button button-with-suboptions">
-            <svg fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M240,70.37H19.94V36.83H240Zm0,76.22V113.22H19.78v33.37ZM19.94,189.8v33.37H240.22V189.8Z"/></svg>
+            <svg fill="white" class="open" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M240,70.37H19.94V36.83H240Zm0,76.22V113.22H19.78v33.37ZM19.94,189.8v33.37H240.22V189.8Z"/></svg>
+            <svg fill="white" class="close none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M45.73,18.89h.86a24.08,24.08,0,0,0,2,2.66Q88.26,61.24,128,100.89c.78.78,1.69,1.43,2.61,2.21.83-.75,1.49-1.29,2.09-1.89q40-40,80-80a16,16,0,0,0,1.68-2.36h.87l25.93,25.92v.87a24,24,0,0,0-2.66,2Q198.75,87.32,159.08,127c-.78.77-1.43,1.68-2.2,2.61.75.83,1.3,1.48,1.9,2.08q40,40,80,79.93a17.47,17.47,0,0,0,2.36,1.7v.86c-8.46,8.8-16.91,17.61-25.87,26.92l-84.85-84.84L46.7,240,19.9,213.22l83.75-83.72L18.89,44.78Z"/></svg>
         </div>
         <span class="header-menu-modile-dot">•</span>
         <!-- menu links -->

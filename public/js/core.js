@@ -28,6 +28,19 @@ $('.header-discover-display').on('change', function() {
         handle_discover_section_click_effect();
 });
 
+$('.header-menu-mobile-button').on('click', function() {
+    let open = $(this).find('.open');
+    let close = $(this).find('.close');
+
+    if(open.hasClass('none')) {
+        open.removeClass('none');
+        close.addClass('none');
+    } else {
+        open.addClass('none');
+        close.removeClass('none');
+    }
+});
+
 let header_post_nav_lock = true;
 $('.header-featured-post-nav').on('click', function() {
     if(!header_post_nav_lock) return;
