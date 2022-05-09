@@ -131,11 +131,26 @@ class Post extends Model
         return Str::of($excerpt)->words(26, '..');
     }
 
+    public function excerpt($length=26) {
+        $excerpt = "";
+
+        if($this->summary)
+            $excerpt = $this->summary;
+        else {
+            // DOM Parser Object
+            $html_dom = new \DOMDocument();
+            @$html_dom->loadHTML($this->content);
+            $excerpt = $html_dom->getElementsByTagName('p')->item(0)->nodeValue;
+        }
+
+        return Str::of($excerpt)->words($length, '..');
+    }
+
     public function getLinkAttribute() {
         return route('view.post', ['category'=>$this->categories->first()->slug, 'post'=>$this->slug]);
     }
 
-    public static function featured_posts() {
-        return Post::with(['author','categories','tags'])->orderBy('reactions_count', 'desc')->take(5)->get();
+    public static function featured_posts($length=5) {
+        return Post::with(['author','categories','tags', 'author.roles'])->orderBy('reactions_count', 'desc')->take($length)->get();
     }
 }

@@ -28,10 +28,18 @@ $('.header-discover-display').on('change', function() {
         handle_discover_section_click_effect();
 });
 
+let header_post_nav_lock = true;
 $('.header-featured-post-nav').on('click', function() {
+    if(!header_post_nav_lock) return;
+    header_post_nav_lock = false;
+
     let scroll = $(this).hasClass('top') ? -200 : 200;
     let scrollable = $('#header-featured-posts-section');
-    scrollable.scrollTop(scrollable.scrollTop() + scroll);
+    scrollable.animate({
+        scrollTop: scrollable.scrollTop() + scroll
+    }, 140, function() {
+        header_post_nav_lock = true;
+    });
 })
 
 $('.fade-box').each(function() {
@@ -51,9 +59,6 @@ $('.fade-box').each(function() {
 
 $('.sticky-when-bottom-reached').each(function() {
     let section = $(this);
-    /**
-     * header + 1 => for border bottom og header
-     */
     let top = $(this).find('.compass')[0].offsetTop - window.innerHeight;
     section.css('top','-'+top+'px');
 });
