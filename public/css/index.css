@@ -193,16 +193,15 @@
 /* Featured posts */
 
 #featured-posts-section {
+    overflow: hidden;
     box-sizing: border-box;
-    padding: 24px;
+    margin-top: 20px;
     height: 380px;
     border-top: 1px solid #d6dee0;
     border-bottom: 1px solid #d6dee0;
     display: flex;
-    /* align-items: center; */
-    /* justify-content: center; */
     gap: 24px;
-    overflow: hidden;
+    padding: 28px 24px;
 }
 
 #featured-posts-section .featured-post-component {
@@ -297,6 +296,35 @@
     align-self: flex-end;
 }
 
+.post-nav {
+    position: absolute;
+    z-index: 1;
+    top: -22px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: white;
+    border: 2px solid #d6dee0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.post-nav:hover {
+    background-color: #f5f8f9;
+}
+.post-nav .arrow {
+    width: 14px;
+    height: 14px;
+    fill: #39444a;
+}
+.post-nav.left {
+    left: 20px;
+}
+.post-nav.right {
+    right: 20px;
+}
+
 @media only screen and (max-width: 1100px) {
     #welcome-image {
         height: 100%;
@@ -321,6 +349,16 @@
 
     .feature-box {
         width: 80%;
+    }
+
+    .section-title {
+        font-size: 22px;
+        width: 90%;
+    }
+
+    .section-brief-title {
+        font-size: 13px;
+        width: 90%;
     }
 
     #newsletter-section {
@@ -386,7 +424,7 @@
     }
 
     .section-title {
-        font-size: 18px;
+        font-size: 20px;
         width: 90%;
     }
 
@@ -403,5 +441,10 @@
     #newsletter-viewer-container .logo {
         width: auto;
         height: 34px;
+    }
+
+    .featured-post-component {
+        width: 276px !important;
+        min-width: 276px !important;
     }
 }

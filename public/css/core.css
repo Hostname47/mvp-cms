@@ -1278,6 +1278,7 @@ textarea {
 }
 
 footer {
+    overflow: hidden;
     width: 100%;
     padding: 26px;
     box-sizing: border-box;

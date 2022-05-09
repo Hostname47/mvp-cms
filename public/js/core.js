@@ -40,7 +40,7 @@ $('.header-featured-post-nav').on('click', function() {
     }, 140, function() {
         header_post_nav_lock = true;
     });
-})
+});
 
 $('.fade-box').each(function() {
     let box = $(this);
