@@ -1296,6 +1296,11 @@ footer .logo {
     height: 36px;
 }
 
+.title-feather {
+    width: 20px;
+    height: 20px;
+}
+
 footer .footer-content {
     display: flex;
     align-items: baseline;
@@ -1689,5 +1694,11 @@ footer .copyrights-notice {
 
     footer .follow-us-container .title {
         font-size: 11px;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    footer .copyrights-notice {
+        font-size: 9px;
     }
 }
