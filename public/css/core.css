@@ -1398,6 +1398,7 @@ footer .copyrights-notice {
     display: flex;
     flex-wrap: wrap;
     margin-bottom: 12px;
+    gap: 4px;
 }
 
 .page-path {

@@ -22,11 +22,11 @@
                 <a href="{{ route('root.slash') }}" class="align-center page-path">
                     <span>{{__('Home')}}</span>
                 </a>
-                <svg class="size10 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"></path></svg>
+                <svg class="size10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"></path></svg>
                 <a href="{{ route('tags') }}" class="page-path">
                     <span>{{__('Tags')}}</span>
                 </a>
-                <svg class="size10 mx4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"></path></svg>
+                <svg class="size10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"></path></svg>
                 <a href="{{ route('tag.view', ['tag'=>$tag->slug]) }}" class="page-path">
                     <span>{{ $tag->slug }}</span>
                 </a>
@@ -61,7 +61,7 @@
                     <p class="desc-text">{{ __('We cannot find any tag that matches this name') }}.</p>
                 </div>
             @else
-                <div class="align-center mb8">
+                <div class="align-center mb4">
                     <h1 class="title-style align-center">{{ __('Posts tagged') }} [<span id="tag-title">#{{ $tag->slug }}</span>]</h1>
                 </div>
                 <p id="tag-page-description">{{ __($tag->description) }}</p>
@@ -70,9 +70,11 @@
                     <p class="n-posts-title">{{ $posts->total() . ' ' . __('posts') }} </p>
                     <div class="move-to-right">{{ $posts->appends(request()->query())->onEachSide(0)->links() }}</div>
                 </div>
-                @foreach($posts as $post)
-                <x-post.post-card :post="$post" />
-                @endforeach
+                <div id="posts-box">
+                    @foreach($posts as $post)
+                    <x-post.post-card :post="$post" />
+                    @endforeach
+                </div>
 
                 <div class="flex bottom-pagination">
                     <div class="move-to-right">{{ $posts->appends(request()->query())->onEachSide(0)->links() }}</div>

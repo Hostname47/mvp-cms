@@ -15,7 +15,7 @@
 @section('content')
     <x-layout.left-panel.left-panel />
     <div class="page-padding flex">
-        <div id="search-main">
+        <div id="tags-main">
             <!-- path -->
             <div class="page-path-wrapper align-center">
                 <a href="{{ route('root.slash') }}" class="align-center page-path">

@@ -16,7 +16,7 @@
     line-height: 1.4;
     width: 80%;
     color: #1e1e1e;
-    margin-bottom: 4px;
+    margin: 4px 0;
     font-size: 15px;
 }
 
@@ -36,6 +36,8 @@
 }
 
 .tag-component {
+    display: flex;
+    flex-direction: column;
     width: calc(25% - 8px); /* - 8px to reduce space taken by gap */
     box-sizing: border-box;
     padding: 12px;
@@ -60,7 +62,7 @@
     display: flex;
     font-size: 12px;
     color: rgb(34, 34, 34);
-    margin-top: 10px;
+    margin: 10px 0;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
@@ -73,7 +75,7 @@
     display: flex;
     font-size: 12px;
     color: #646d75;
-    margin-top: 10px;
+    margin-top: auto;
 }
 
 .bottom-pagination {
@@ -95,4 +97,33 @@
 .n-posts-title {
     font-size: 18px;
     margin: 12px 0 10px 0;
+}
+
+@media only screen and (max-width: 870px) {
+    #tags-main {
+        width: 100%;
+    }
+
+    .tag-component {
+        width: calc(33% - 5px);
+    }
+
+    .tag-component .tag-description {
+        font-size: 12px;
+    }
+}
+
+@media only screen and (max-width: 570px) {
+    .tag-component {
+        width: calc(50% - 5px);
+    }
+
+    #tag-page-description {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    #init-search-inputs-container {
+        width: 100% !important;
+    }
 }
