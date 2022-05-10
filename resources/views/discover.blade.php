@@ -77,7 +77,7 @@
             </div>
             <div id="filters-wrapper">
                 <p id="text-with-filters" class="dark no-margin">{{ __('Find out what has been recently written') }}.</p>
-                <div class="align-center">
+                <div id="filters-box" class="align-center">
                     <div class="align-center">
                         <label for="discover-posts-sort" class="fs12 bold dark mr4">{{ __('sort by') }} :</label>
                         <select name="count" id="discover-posts-sort" class="dropdown-style-1" autocomplete="off">

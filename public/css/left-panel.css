@@ -210,7 +210,7 @@ main {
     margin-top: 25px;
 }
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 1250px) {
     main {
         margin-left: 0;
     }
