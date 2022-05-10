@@ -22,3 +22,29 @@
 #privacy-main li {
     margin: 6px 0;
 }
+
+@media only screen and (max-width: 620px) {
+    body {
+        font-size: 13px;
+    }
+
+    h2 {
+        font-size: 14px;
+    }
+
+    .page-padding {
+        padding: 10px;
+    }
+
+    .title-style {
+        font-size: 20px;
+    }
+
+    .quote-after-title {
+        font-size: 12px;
+    }
+
+    #guidelines-main {
+        margin-bottom: 8px;
+    }
+}

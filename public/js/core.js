@@ -35,9 +35,11 @@ $('.header-menu-mobile-button').on('click', function() {
     if(open.hasClass('none')) {
         open.removeClass('none');
         close.addClass('none');
+        $('.header-menu').css('display', 'none');
     } else {
         open.addClass('none');
         close.removeClass('none');
+        $('.header-menu').css('display', 'block');
     }
 });
 

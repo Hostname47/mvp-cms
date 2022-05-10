@@ -91,3 +91,56 @@
     max-height: 200px;
     resize: vertical;
 }
+
+@media only screen and (max-width: 580px) {
+    body {
+        font-size: 13px;
+    }
+
+    .title-style {
+        font-size: 20px;
+    }
+
+    #sub-title {
+        margin-bottom: 16px;
+        font-size: 12px;
+    }
+
+    .question-container {
+        padding: 12px 14px;
+    }
+
+    .question {
+        font-size: 12px;
+    }
+
+    .question-icon {
+        width: 15px;
+        min-width: 15px;
+        height: 15px;
+    }
+
+    .answer-icon {
+        width: 10px;
+        min-width: 10px;
+        height: 10px;
+        margin-top: 4px;
+    }
+
+    .faq-toggle-arrow {
+        width: 7px;
+        min-width: 7px;
+        height: 7px;
+        margin-top: 4px;
+    }
+
+    #send-faq-title {
+        font-size: 16px;
+    }
+
+    .sub-title {
+        font-size: 12px;
+        line-height: 1.5;
+        margin-top: 4px;
+    }
+}
