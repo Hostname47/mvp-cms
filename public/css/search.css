@@ -1,10 +1,10 @@
 #search-main {
-    flex: 1;
     margin-bottom: 26px;
+    width: 100%;
 }
 
 #init-search-container {
-    width: 66%;
+    width: 560px;
     margin-top: 26px;
     display: flex;
     flex-direction: column;
@@ -13,7 +13,7 @@
 }
 
 #init-search-inputs-container {
-    width: 80%;
+    width: 100%;
     margin-top: 12px;
     display: flex;
     align-items: center;
@@ -105,6 +105,11 @@
 
 #posts-section, #tags-section {
     margin-bottom: 18px;
+}
+
+#tags-section {
+    display: flex;
+    gap: 10px;
 }
 
 #authors-section {
@@ -352,4 +357,122 @@
     padding: 4px 8px;
     background-color: #e7edf0;
     border-radius: 2px;
+}
+
+.posts-title-and-pagination {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    justify-content: space-between;
+    margin: 8px 0;
+}
+
+@media only screen and (max-width: 1000px) {
+    .page-padding {
+        padding: 10px;
+    }
+
+    #posts-box {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .post-component {
+        flex-direction: column;
+        width: calc(50% - 7px);
+    }
+
+    .post-component .featured-image-container {
+        border-right: none !important;
+        width: auto !important;
+        border-bottom: 1px solid #c6d0d9;
+        height: 150px;
+        max-height: 150px;
+        overflow: hidden !important;
+    }
+
+    .post-component .content-container {
+        padding-top: 6px !important;
+    }
+
+    .post-component .post-bottom-section {
+        padding-top: 16px;
+    }
+
+    .post-component .excerpt {
+        font-size: 13px;
+    }
+
+    #discover-posts-sort, #discover-posts-count {
+        font-size: 11px;
+    }
+
+    .title-after-search-resource-title {
+        font-size: 13px;
+    }
+}
+
+@media only screen and (max-width: 850px) {
+    .post-component .post-bottom-section {
+        gap: 8px;
+        flex-direction: column;
+    }
+}
+
+@media only screen and (max-width: 610px) {
+    #init-search-container {
+        width: 100%;
+    }
+
+    .title-icon {
+        width: 18px;
+        height: 18px;
+    }
+
+    .title-style {
+        font-size: 20px;
+    }
+
+    .sub-title {
+        font-size: 13px;
+    }
+
+    .author-component {
+        margin: 2px 0;
+    }
+
+    .search-resource-title {
+        font-size: 14px;
+    }
+    
+    .search-resource-title .count {
+        font-size: 14px;
+    }
+
+    .title-after-search-resource-title {
+        display: none;
+    }
+
+    .posts-title-and-pagination {
+        flex-direction: column;
+        align-items: unset;
+    }
+
+    .posts-title-and-pagination .pagination-box {
+        margin-left: auto;
+    }
+
+    .post-component {
+        width: 100%;
+    }
+
+    .post-component .category {
+        font-size: 11px;
+    }
+
+    .post-component .f {
+        width: 40px;
+        height: 40px;
+    }
 }
