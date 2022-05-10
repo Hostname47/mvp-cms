@@ -101,6 +101,10 @@ body {
     flex-direction: column;
 }
 
+.row-reverse {
+    flex-direction: row-reverse;
+}
+
 .flex-wrap {
     flex-wrap: wrap;
 }

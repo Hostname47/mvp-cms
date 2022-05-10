@@ -66,7 +66,7 @@
         @if($status == 'applied-status-approved')
         <div class="message-container">
             <svg class="size20 my8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M433.73,49.92,178.23,305.37,78.91,206.08.82,284.17,178.23,461.56,511.82,128Z"/></svg>
-            <p class="message my8">{{ __('we have verified your application and accepted your request. Now you can start creating blog posts and articles.') }}</p>
+            <p class="message my8">{{ __('we have verified your application and accepted your request. Now you can start creating blog posts.') }}</p>
             <div>
                 <p class="">• {{ __('Application date') }} : <strong>{{ $application->date }}</strong></p>
                 <p class="">• {{ __('Approved at') }} : <strong>{{ $application->update_date }}</strong></p>
@@ -132,7 +132,7 @@
                 </div>
                 <p class="sub-title">{{ __('Please, be concise and to the point') }}</p>
                 <textarea id="request-message" class="styled-input" placeholder="{{ __('Enter message body') }}"></textarea>
-                <p class="fs13 gray mt4">{{ __('Please review your application before submitting it; once the request is submitted you will not be able to update it.') }}</p>
+                <p class="notice-after-message">{{ __('Please review your application before submitting it; once the request is submitted you will not be able to update it.') }}</p>
             </div>
 
             <div class="flex">

@@ -44,3 +44,17 @@
     border: 1px solid #dbe5ec;
     margin: 12px 0;
 }
+
+@media only screen and (max-width: 676px) {
+    #contact-form-wrapper {
+        width: 100%;
+    }
+
+    body {
+        font-size: 13px;
+    }
+
+    .title-style {
+        font-size: 22px;
+    }
+}

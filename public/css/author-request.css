@@ -103,9 +103,48 @@ main {
     justify-content: center;
     flex-direction: column;
     margin-top: 20px;
-    padding: 10px 10px 20px 10px;
+    padding: 10px 16px 20px 16px;
     color: #2f3133;
-    fill: #0bbaff;
+    fill: #181c1e;
     border: 1px solid #d6dde3;
+    text-align: center;
     border-radius: 3px;
+}
+
+.notice-after-message {
+    color: #1d2124;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+@media only screen and (max-width: 480px) {
+    .title-style {
+        font-size: 22px;
+    }
+    
+    #left-panel-toggle-button {
+        display: none !important;
+    }
+    
+    .page-padding {
+        padding: 14px 14px 0 14px;
+    }
+
+    #select-categories-box {
+        width: calc(100% + 28px);
+        box-sizing: border-box;
+        margin-left: -14px;
+    }
+
+    body {
+        font-size: 13px;
+    }
+
+    #request-form .sub-title {
+        font-size: 13px;
+    }
+
+    .notice-after-message {
+        font-size: 12px;
+    }
 }
