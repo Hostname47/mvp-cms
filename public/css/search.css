@@ -116,6 +116,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+    margin-bottom: 12px;
 }
 
 #no-results-found-box {
@@ -138,6 +139,7 @@
 }
 
 #no-results-found-box .desc-text {
+    text-align: center;
     font-size: 13px;
     margin: 0;
     color: #110e0e;
@@ -292,7 +294,7 @@
 }
 
 .filter-title {
-    width: 196px;
+    margin-right: 8px;
 }
 
 .categories-filter .category-children-angle {
@@ -425,6 +427,14 @@
         width: 100%;
     }
 
+    .page-path {
+        font-size: 12px;
+    }
+
+    .discover-link {
+        display: none;
+    }
+
     .title-icon {
         width: 18px;
         height: 18px;
@@ -474,5 +484,27 @@
     .post-component .f {
         width: 40px;
         height: 40px;
+    }
+
+    .sub-title {
+        font-size: 13px;
+    }
+
+    .filter-title {
+        margin-right: 6px;
+        font-size: 13px;
+    }
+
+    .selected-categories-for-search {
+        width: calc(100% + 20px);
+        margin-left: -10px;
+    }
+
+    #sort-filter, #date-filter {
+        padding: 6px !important;
+    }
+
+    .advanced-search-input-container {
+        width: 100%;
     }
 }

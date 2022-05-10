@@ -53,11 +53,11 @@
                     <div class="close-parent close-informative-message-style">✖</div>
                 </div>
             @endif
-            <div class="align-center mb8">
+            <div class="align-center mb4">
                 <svg class="title-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M129.94,20.56c29.51,0,59,.13,88.54-.06,11.44-.08,20.42,3.77,25.2,14.52s1.34,20-6.35,28.39q-37.17,40.53-73.93,81.44a14.13,14.13,0,0,0-3.25,8.42c-.34,13.59-.26,27.19-.1,40.78a12.25,12.25,0,0,1-4.91,10.65c-13.35,10.5-26.59,21.15-39.84,31.79-3.11,2.49-6.31,4.06-10.32,2.18-4.18-2-5.13-5.49-5.12-9.74.06-25,0-50.08.11-75.12a12.83,12.83,0,0,0-3.65-9.52q-37.87-41.35-75.47-83C7.63,46.63,14.86,24.7,33.92,21a39.63,39.63,0,0,1,7.48-.41Q85.67,20.54,129.94,20.56Z"></path></svg>
                 <h1 class="title-style">{{__('Advanced Search')}}</h1>
             </div>
-            <p class="mt4">{{ __('Search for posts using the following filters to get accurate results') }}.</p>
+            <p class="mt4 sub-title">{{ __('Search for posts using the following filters to get accurate results') }}.</p>
             <form action="{{ route('search.advanced.results') }}">
                 <div class="advanced-search-input-container">
                     <svg class="init-search-input-icon" fill="#5b5b5b" enable-background="new 0 0 515.558 515.558" viewBox="0 0 515.558 515.558" xmlns="http://www.w3.org/2000/svg"><path d="m378.344 332.78c25.37-34.645 40.545-77.2 40.545-123.333 0-115.484-93.961-209.445-209.445-209.445s-209.444 93.961-209.444 209.445 93.961 209.445 209.445 209.445c46.133 0 88.692-15.177 123.337-40.547l137.212 137.212 45.564-45.564c0-.001-137.214-137.213-137.214-137.213zm-168.899 21.667c-79.958 0-145-65.042-145-145s65.042-145 145-145 145 65.042 145 145-65.043 145-145 145z"></path></svg>

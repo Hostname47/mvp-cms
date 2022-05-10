@@ -36,6 +36,7 @@
     margin-bottom: 8px;
 }
 #no-posts-found-box .desc-text {
+    text-align: center;
     font-size: 13px;
     color: #27292c;
     margin-bottom: 4px;
