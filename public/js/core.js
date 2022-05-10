@@ -55,6 +55,19 @@ $('.header-featured-post-nav').on('click', function() {
     });
 });
 
+$('#left-panel-toggle-button').on('click', function() {
+    let button = $(this);
+    let panel = $('#left-panel');
+
+    if(parseInt(panel.css('left')) == 0) {
+        panel.css('left', '-260px');
+        rotate(button.find('.arrow'), 0);
+    } else {
+        panel.css('left', '0px');
+        rotate(button.find('.arrow'), 180);
+    }
+});
+
 $('.fade-box').each(function() {
     let box = $(this);
     window.setInterval(function(){
