@@ -7,6 +7,10 @@
 <link rel="stylesheet" href="{{ asset('css/settings.css') }}">
 @endpush
 
+@push('scripts')
+<script src="{{ asset('js/settings.js') }}" type="text/javascript" defer></script>
+@endpush
+
 @section('content')
     <x-layout.left-panel.left-panel />
     <div class="page-padding">
@@ -45,7 +49,14 @@
             </div>
         @endif
 
+        <div class="informative-message-container align-center error-container relative none my8">
+            <div class="informative-message-container-left-stripe imcls-red"></div>
+            <div class="no-margin fs13 message-text error"></div>
+            <div class="close-parent close-informative-message-style">✖</div>
+        </div>
+
         <div id="settings-box">
+            <input type="hidden" id="avatar-file-not-supported" value="{{ __('avatar file type is not supported. Only JPG, PNG, JPEG, BMP and GIF image formats are supported.') }}" autocomplete="off">
             <div class="avatar-and-meta-container">
                 <div id="avatar-area">
                     <div class="user-avatar-settings-button-container">
@@ -57,16 +68,16 @@
                                 <input type="file" id="avatar-input" class="avatar-upload-button" autocomplete="off">
                             </div>
                             @if($user->has_avatar)
-                            <div class="suboption-style-2 align-centermt2 open-remove-avatar-dialog">
+                            <div class="suboption-style-2 align-center mt2 open-remove-avatar-dialog">
                                 <svg class="size16 mr4" style="min-width: 16px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M300,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H300a12,12,0,0,0-12,12V404A12,12,0,0,0,300,416ZM464,80H381.59l-34-56.7A48,48,0,0,0,306.41,0H205.59a48,48,0,0,0-41.16,23.3l-34,56.7H48A16,16,0,0,0,32,96v16a16,16,0,0,0,16,16H64V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48h0V128h16a16,16,0,0,0,16-16V96A16,16,0,0,0,464,80ZM203.84,50.91A6,6,0,0,1,209,48h94a6,6,0,0,1,5.15,2.91L325.61,80H186.39ZM400,464H112V128H400ZM188,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H188a12,12,0,0,0-12,12V404A12,12,0,0,0,188,416Z"/></svg>
                                 <span class="fs12 bold dark unselectable">{{ __('Remove used avatar') }}</span>
                             </div>
                             @endif
-                            <div class="suboption-style-2 align-centermt2 restore-original-avatar none">
+                            <div class="suboption-style-2 align-center mt2 restore-original-avatar none">
                                 <svg class="size15 mr4" style="min-width: 15px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M3.53,137.79a8.46,8.46,0,0,1,8.7-4c2.1.23,4.28-.18,6.37.09,3.6.47,4.61-.68,4.57-4.46-.28-24.91,7.59-47.12,23-66.65C82.8,16.35,151.92,9.31,197.09,47.21c3,2.53,3.53,4,.63,7.08-5.71,6.06-11,12.5-16.28,19-2.13,2.63-3.37,3.21-6.4.73-42.11-34.47-103.77-13.24-116,39.81a72.6,72.6,0,0,0-1.61,17c0,2.36.76,3.09,3.09,3,4.25-.17,8.51-.19,12.75,0,5.46.25,8.39,5.55,4.94,9.66-12,14.24-24.29,28.18-36.62,42.39L4.91,143.69c-.37-.43-.5-1.24-1.38-1Z"></path><path d="M216.78,81.86l35.71,41c1.93,2.21,3.13,4.58,1.66,7.58s-3.91,3.54-6.9,3.58c-3.89.06-8.91-1.65-11.33.71-2.1,2-1.29,7-1.8,10.73-6.35,45.41-45.13,83.19-90.81,88.73-28.18,3.41-53.76-3-76.88-19.47-2.81-2-3.61-3.23-.85-6.18,6-6.45,11.66-13.26,17.26-20.09,1.79-2.19,2.87-2.46,5.39-.74,42.83,29.26,99.8,6.7,111.17-43.93,2.2-9.8,2.2-9.8-7.9-9.8-1.63,0-3.27-.08-4.9,0-3.2.18-5.94-.6-7.29-3.75s.13-5.61,2.21-8c7.15-8.08,14.21-16.24,21.31-24.37C207.43,92.59,212,87.31,216.78,81.86Z"></path></svg>
                                 <span class="fs12 bold dark unselectable">{{ __('Restore original avatar') }}</span>
                             </div>
-                            <div class="suboption-style-2 align-centermt2 discard-uploaded-avatar none">
+                            <div class="suboption-style-2 align-center mt2 discard-uploaded-avatar none">
                                 <svg class="size15 mr4" style="min-width: 15px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,8C119,8,8,119,8,256S119,504,256,504,504,393,504,256,393,8,256,8Zm0,448A200,200,0,1,1,456,256,199.94,199.94,0,0,1,256,456ZM357.8,193.8,295.6,256l62.2,62.2a12,12,0,0,1,0,17l-22.6,22.6a12,12,0,0,1-17,0L256,295.6l-62.2,62.2a12,12,0,0,1-17,0l-22.6-22.6a12,12,0,0,1,0-17L216.4,256l-62.2-62.2a12,12,0,0,1,0-17l22.6-22.6a12,12,0,0,1,17,0L256,216.4l62.2-62.2a12,12,0,0,1,17,0l22.6,22.6a12,12,0,0,1,0,17Z"/></svg>
                                 <span class="fs12 bold dark unselectable">{{ __('Discard uploaded avatar') }}</span>
                             </div>
@@ -74,7 +85,7 @@
                     </div>
 
                     <div id="avatar-container">
-                        <img src="{{ $user->avatar(100) }}" id="avatar" alt="{{ $user->fullname . ' - ' . $user->username . ' avatar' }}">
+                        <img src="{{ $user->avatar(100) }}" id="avatar" class="center-image-based-on-higher-dimension" alt="{{ $user->fullname . ' - ' . $user->username . ' avatar' }}">
                     </div>
                     <input type="hidden" id="default-avatar" value="{{ $user->defaultavatar(100) }}" autocomplete="off">
                     <input type="hidden" id="original-avatar" value="{{ $user->avatar(100) }}" autocomplete="off">

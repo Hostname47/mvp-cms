@@ -447,6 +447,14 @@ function handle_image_center_fill(image) {
         console.log($(this).width())
     });
 }
+function fill_image_on_square_container(image) {
+    load_image(image.attr('src'), function() {
+        if(image.width() > image.height())
+            image.height('100%');
+        else
+            image.width('100%');
+    })
+}
 function load_image(src, callback) {
     let image = new Image();
     $(image).on('load', function() {
