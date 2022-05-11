@@ -88,6 +88,8 @@ Route::get('/{provider}/callback', [OAuthController::class, 'handleProviderCallb
 Route::middleware('client.scopes')->group(function() {
     Route::middleware(['auth'])->group(function () {
         Route::get('/users/{user:username}/profile', [UserController::class, 'profile'])->name('user.profile');
+        Route::get('/activities', [UserController::class, 'activities'])->name('user.activities');
+        Route::get('/settings', [UserController::class, 'settings'])->name('user.settings');
 
         Route::post('/comments', [CommentController::class, 'store']);
         Route::patch('/comments', [CommentController::class, 'update']);

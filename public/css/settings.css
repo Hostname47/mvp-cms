@@ -1,0 +1,84 @@
+#settings-box {
+    width: 680px;
+    margin-top: 24px;
+}
+
+.user-avatar-settings-button-container {
+    position: absolute;
+    top: -12px;
+    right: -14px;
+}
+
+.user-avatar-settings-button {
+    background-color: #131313;
+    border-radius: 50%;
+    border: 3px solid #F9FAFB;
+    fill: white;
+    padding: 4px;
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+}
+
+.first-and-last-names-container {
+    margin-top: 8px;
+    display: flex;
+    gap: 10px;
+}
+
+#avatar-area {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: max-content;
+    border: 1px solid #BDC1C6;
+    border-radius: 3px
+}
+
+.avatar-upload-button {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 400px;
+    cursor: pointer;
+}
+
+#avatar-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    background-color: #666d8a;
+    border-radius: 5px;
+
+    overflow: hidden;
+}
+
+#avatar {
+    width: 100%;
+    height: 100%;
+}
+
+.fullname-text {
+    margin: 0;
+    color: #15171a;
+}
+
+.avatar-and-meta-container {
+    display: flex;
+}
+
+.meta-container {
+    width: 100%;
+    margin-left: 18px;
+}
+
+.label {
+    font-weight: bold;
+    color: #35383c;
+    display: flex;
+    margin-bottom: 3px;
+}

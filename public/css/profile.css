@@ -13,6 +13,10 @@
     border-radius: 50%;
 }
 
+.user-avatar-container {
+    position: relative;
+}
+
 .user-meta {
     margin-left: 38px;
 }
@@ -90,4 +94,58 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+@media only screen and (max-width: 700px) {
+    #profile-card {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .user-avatar-container {
+        margin-top: 12px;
+    }
+
+    .user-meta {
+        margin-left: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .links-container {
+        justify-content: center;
+        margin-top: 12px;
+    }
+
+    .user-fullname {
+        font-size: 28px;
+        margin-top: 12px;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    body {
+        font-size: 13px;
+    }
+    
+    .user-avatar {
+        width: 180px;
+        height: 180px;
+    }
+
+    .profile-edit-avatar {
+        top: -6px;
+        right: -10px;
+        font-size: 13px;
+        padding: 4px 6px;
+    }
+
+    .user-fullname {
+        font-size: 20px;
+    }
+
+    .user-username {
+        font-size: 16px;
+    }
 }

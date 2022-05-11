@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Fibonashi - Discover')
+@section('title', 'Fibonashi - ' . $user->username)
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/left-panel.css') }}">
@@ -9,7 +9,6 @@
 @endpush
 
 @section('content')
-    @include('partials.viewers.newsletter-viewer')
     <x-layout.left-panel.left-panel />
     <div class="page-padding">
         <div class="page-path-wrapper align-center">
@@ -48,7 +47,7 @@
         @endif
 
         <div id="profile-card">
-            <div class="relative">
+            <div class="user-avatar-container">
                 <img src="{{ $user->avatar(400) }}" class="user-avatar" alt="">
                 @if($user->same)
                 <a href="" class="profile-edit-avatar">
@@ -60,9 +59,9 @@
             <div class="user-meta">
                 @if($user->same)
                 <div class="links-container">
-                    <a href="" class="button-style-2">{{ __('profile') }}</a>
-                    <a href="" class="button-style-2">{{ __('activities') }}</a>
-                    <a href="" class="button-style-2">{{ __('settings') }}</a>
+                    <a href="{{ route('user.profile', ['user'=>$user->username]) }}" class="button-style-2">{{ __('profile') }}</a>
+                    <a href="{{ route('user.activities') }}" class="button-style-2">{{ __('activities') }}</a>
+                    <a href="{{ route('user.settings') }}" class="button-style-2">{{ __('settings') }}</a>
                 </div>
                 @endif
                 <h2 class="user-fullname">{{ $user->fullname }} @if($hasrole) - <span class="blue">{{ $hrole->title }}</span>@endif</h2>

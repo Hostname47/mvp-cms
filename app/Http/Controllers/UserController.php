@@ -20,4 +20,10 @@ class UserController extends Controller
             ->with(compact('posts'))
             ->with(compact('roles'));
     }
+
+    public function settings() {
+        $user = auth()->user();
+        return view('settings.profile-settings')
+            ->with(compact('user'));
+    }
 }
