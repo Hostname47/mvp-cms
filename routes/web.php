@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{IndexController, AdminController, PostController, CategoryController,
     MediaController, OAuthController, TagController, RoleController, PermissionController, RPManagement,
     NewsletterController, CommentController, ClapController, ReportController, SearchController,
-    AuthorRequestController, ContactController, FaqController};
+    AuthorRequestController, ContactController, FaqController, UserController};
 use App\Http\Controllers\Admin\{AdminSearchController};
 
 Route::get('/test', function() {
@@ -87,6 +87,8 @@ Route::get('/{provider}/callback', [OAuthController::class, 'handleProviderCallb
 
 Route::middleware('client.scopes')->group(function() {
     Route::middleware(['auth'])->group(function () {
+        Route::get('/users/{user:username}/profile', [UserController::class, 'profile'])->name('user.profile');
+
         Route::post('/comments', [CommentController::class, 'store']);
         Route::patch('/comments', [CommentController::class, 'update']);
         Route::delete('/comments', [CommentController::class, 'delete']);
@@ -113,7 +115,7 @@ Route::middleware('client.scopes')->group(function() {
     Route::view('/privacy', 'privacy')->name('privacy');
     Route::view('/guidelines', 'guidelines')->name('guidelines');
     Route::view('/credits', 'credits')->name('credits');
-    
+
     Route::get('/faqs', [FaqController::class, 'index'])->name('faqs');
     Route::post('/faqs', [FaqController::class, 'store']);
 

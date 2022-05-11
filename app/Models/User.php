@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\{Role,RoleUser,Comment,Clap,Report,ContactMessage,Faq};
+use Carbon\Carbon;
 
 class User extends Authenticatable
 {
@@ -86,6 +87,9 @@ class User extends Authenticatable
     public function getFullnameAttribute() {
         return $this->firstname . ' ' . $this->lastname;
     }
+    public function getSameAttribute() {
+        return auth()->user() && auth()->user()->id == $this->id;
+    }
     public function getLightusernameAttribute() {
         return strlen($this->username) > 14 ? substr($this->username, 0, 14) . '..' : $this->username;
     }
@@ -100,5 +104,13 @@ class User extends Authenticatable
     }
     public function has_permission($slug) {
         return (bool) $this->permissions()->where('slug', $slug)->count() > 0;
+    }
+
+    public function getJoinDateHumansAttribute() {
+        return (new Carbon($this->updated_at))->diffForHumans();
+    }
+
+    public function getJoinDateAttribute() {
+        return (new Carbon($this->updated_at))->isoFormat("dddd D MMM YYYY");
     }
 }
