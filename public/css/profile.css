@@ -1,16 +1,20 @@
-#profile-main {
+#profile-card {
     display: flex;
     padding: 12px;
+    background-color: #f7f9fb8f;
+    border: 1px solid #d5dce1;
+    border-radius: 4px;
+    margin-bottom: 12px;
 }
 
 .user-avatar {
-    width: 260px;
-    height: 260px;
+    width: 210px;
+    height: 210px;
     border-radius: 50%;
 }
 
 .user-meta {
-    margin-left: 26px;
+    margin-left: 38px;
 }
 
 .links-container {
@@ -27,13 +31,13 @@
 
 .user-fullname {
     color: #202327;
-    font-size: 42px;
+    font-size: 30px;
     margin: 0;
 }
 
 .user-username {
     color: #3b4047;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .dot-separator {
@@ -80,4 +84,10 @@
     display: flex;
     fill: #444;
     margin-right: 6px;
+}
+
+.title-and-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }

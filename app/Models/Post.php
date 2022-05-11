@@ -151,6 +151,6 @@ class Post extends Model
     }
 
     public static function featured_posts($length=5) {
-        return Post::with(['author','categories','tags', 'author.roles'])->orderBy('reactions_count', 'desc')->take($length)->get();
+        return Post::with(['categories'])->orderBy('reactions_count', 'desc')->take($length)->get();
     }
 }
