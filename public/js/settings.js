@@ -87,17 +87,18 @@ $('#save-user-profile-settings').on('click', function() {
     let spinner = button.find('.spinner');
     let buttonicon = button.find('.icon-above-spinner');
     // First validate inputs
-    if(!avatar_condition($('#firstname').val() != '', $('#firstname-required-error-message').val())) return;
-    if(!avatar_condition($('#lastname').val() != '', $('#lastname-required-error-message').val())) return;
-    if(!avatar_condition($('#username').val() != '', $('#username-required-error-message').val())) return;
+    if(!avatar_condition($('#firstname').val().trim() != '', $('#firstname-required-error-message').val())) return;
+    if(!avatar_condition($('#lastname').val().trim() != '', $('#lastname-required-error-message').val())) return;
+    if(!avatar_condition($('#username').val().trim() != '', $('#username-required-error-message').val())) return;
+    if(!avatar_condition($('#username').val().trim().length >= 6, $('#username-length-error-message').val())) return;
 
     let data = new FormData();
     data.append('firstname', $('#firstname').val());
     data.append('lastname', $('#lastname').val());
     data.append('username', $('#username').val());
     data.append('about', $('#about').val());
-    if($('#avatar').val())
-        data.append('avatar', $('#avatar')[0].files[0]);
+    if($('#avatar-input').val())
+        data.append('avatar', $('#avatar-input')[0].files[0]);
     data.append('avatar_removed', $('#avatar-removed').val());
 
     button.addClass('dark-bs-disabled');

@@ -61,6 +61,7 @@
             <input type="hidden" id="firstname-required-error-message" value="{{ __('Firstname field is required') }}" autocomplete="off">
             <input type="hidden" id="lastname-required-error-message" value="{{ __('Lastname field is required') }}" autocomplete="off">
             <input type="hidden" id="username-required-error-message" value="{{ __('Username field is required') }}" autocomplete="off">
+            <input type="hidden" id="username-length-error-message" value="{{ __('Username should have at least 6 characters') }}" autocomplete="off">
             <div class="avatar-and-meta-container">
                 <div id="avatar-area">
                     <div class="user-avatar-settings-button-container">

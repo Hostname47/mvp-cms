@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use App\Models\User;
+use App\Helpers\ImageResize;
 
 class UserController extends Controller
 {
@@ -53,9 +54,32 @@ class UserController extends Controller
         ]);
 
         if(isset($data['avatar_removed']) && $data['avatar_removed'] == 1) {
-            $data['avatar'] = 'removed';
+            $data['avatar'] = 'none';
         } else if($request->hasFile('avatar')) {
-            // Store avatar to file storage
+            /*
+             * we are going to store the original avatar in avatars folder that contains all user avatars
+             * and different dimensions of it in avatar folder
+             */
+            $path = $request->file('avatar')->storeAs(
+                'users/' . $user->id . '/usermedia/avatars/originals', time() . '.png'
+            );
+            // $path = Storage::disk('public')->getDriver()->getAdapter()->applyPathPrefix($path);
+            
+            $avatar_dims = [[26, 50], [26, 100], [36, 50], [36, 100], [100, 50], [100, 100], [160, 50], [160, 100], [200, 60], [200, 100], [300, 70], [300, 100], [400, 80], [400, 100]];
+            foreach($avatar_dims as $avatar_dim) {
+                // *** 1) Initialise / load image
+                $resizeObj = new ImageResize($path);
+
+                // *** 2) Resize image (options: exact, portrait, landscape, auto, crop)
+                $resizeObj->resizeImage($avatar_dim[0], $avatar_dim[0], 'crop');
+
+                $destination = storage_path('app/users/' . $user->id . '/usermedia/avatars/segments/' . $avatar_dim[0] . (($avatar_dim[1] == 100) ? '-h.png' : '-l.png'));
+                // $destination = Storage::disk('public')->getDriver()->getAdapter()->applyPathPrefix($destination);
+
+                // *** 3) Save image ('image-name', 'quality [int]')
+                $resizeObj->saveImage($destination, $avatar_dim[1]);
+            }
+            // Avatar path is not hard coded stored; Instead it is fetched from users storage based on user id
             $data['avatar'] = 'file';
         }
 
