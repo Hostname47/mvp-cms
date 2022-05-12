@@ -91,6 +91,8 @@ Route::middleware('client.scopes')->group(function() {
         Route::get('/activities', [UserController::class, 'activities'])->name('user.activities');
         Route::get('/settings', [UserController::class, 'settings'])->name('user.settings');
 
+        Route::post('/settings/profile', [UserController::class, 'update_profile_settings']);
+
         Route::post('/comments', [CommentController::class, 'store']);
         Route::patch('/comments', [CommentController::class, 'update']);
         Route::delete('/comments', [CommentController::class, 'delete']);

@@ -38,7 +38,7 @@ class OAuthController extends Controller
         /**
          * If the user is new to our system then we need to save its data to users table
          */
-        if(!$user){
+        if(!$user) {
             $names = explode(' ', $u->name);
             // create a new user
             $user = new User;

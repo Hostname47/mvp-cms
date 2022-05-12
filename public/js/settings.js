@@ -46,6 +46,110 @@ $('.discard-uploaded-avatar').on('click', function(event) {
     $('.restore-original-avatar').addClass('none');
 });
 
+$('.open-remove-avatar-dialog').on('click', function(event) {
+    $(this).parent().css('display', 'none');
+    event.stopPropagation();
+
+    $('#remove-user-avatar-viewer').removeClass('none');
+    disable_page_scroll();
+});
+
+$('.remove-avatar-button').on('click', function() {
+    // Remove avatar by clearing avatar value, mark avatar removed as 1 and emptying avatar image previewer
+    $('#avatar-input').val('');
+    $('#avatar-removed').val('1');
+    $('#avatar').attr('src', $('#default-avatar').val());
+
+    // Hide remove avatar dialog viewer
+    $('#remove-user-avatar-viewer .close-global-viewer').trigger('click');
+    // Hide remove avatar dialog opener button because the user remove the avatar
+    $('.open-remove-avatar-dialog').addClass('none');
+    // Show revert cover deletion - Only show restore cover if user has already a cover
+    if($('#original-avatar').val() != '')
+        $('.restore-original-avatar').removeClass('none');
+});
+
+$('.restore-original-avatar').on('click', function(event) {
+    $('#avatar').attr('src', $('#original-avatar').val());
+    $('#avatar-removed').val('0');
+    $('#avatar-input').val('');
+    $(this).addClass('none');
+    $('.open-remove-avatar-dialog').removeClass('none');
+    $('.discard-uploaded-avatar').addClass('none');
+
+    $(this).parent().css('display', 'none'); // Hide button parent suboptions-container
+    event.stopPropagation();
+});
+
+let save_user_profile_settings_lock = true;
+$('#save-user-profile-settings').on('click', function() {
+    let button = $(this);
+    let spinner = button.find('.spinner');
+    let buttonicon = button.find('.icon-above-spinner');
+    // First validate inputs
+    if(!avatar_condition($('#firstname').val() != '', $('#firstname-required-error-message').val())) return;
+    if(!avatar_condition($('#lastname').val() != '', $('#lastname-required-error-message').val())) return;
+    if(!avatar_condition($('#username').val() != '', $('#username-required-error-message').val())) return;
+
+    let data = new FormData();
+    data.append('firstname', $('#firstname').val());
+    data.append('lastname', $('#lastname').val());
+    data.append('username', $('#username').val());
+    data.append('about', $('#about').val());
+    if($('#avatar').val())
+        data.append('avatar', $('#avatar')[0].files[0]);
+    data.append('avatar_removed', $('#avatar-removed').val());
+
+    button.addClass('dark-bs-disabled');
+    spinner.addClass('inf-rotate');
+    spinner.removeClass('opacity0');
+    buttonicon.addClass('none');
+
+    if(!save_user_profile_settings_lock) return;
+    save_user_profile_settings_lock = false;
+
+    $.ajax({
+        type: 'post',
+        url: '/settings/profile',
+        enctype: 'multipart/form-data',
+        processData: false,
+        contentType: false,
+        data: data,
+        success: function(response) {
+            location.reload();
+        },
+        error: function(response) {
+            let errorObject = JSON.parse(response.responseText);
+            let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+            if(errorObject.errors) {
+                let errors = errorObject.errors;
+                error = errors[Object.keys(errors)[0]][0];
+            }
+            print_top_message(error, 'error');
+
+            button.removeClass('dark-bs-disabled');
+            spinner.removeClass('inf-rotate');
+            spinner.addClass('opacity0');
+            buttonicon.removeClass('none');
+
+            save_user_profile_settings_lock = true;
+        }
+    })
+    
+});
+
+function avatar_condition(condition, error) {
+    if(!condition) {
+        $('.error-container .message-text').text(error);
+        $('.error-container').removeClass('none');
+        $(window).scrollTop(0);
+        save_user_profile_settings_lock = true;
+        return false;
+    }
+
+    return true;
+}
+
 function validate_avatar_image_type(file){
     let extensions = ["jpg", "jpeg", "png", "gif", "bmp"];
     let name = file.name;

@@ -51,12 +51,16 @@
 
         <div class="informative-message-container align-center error-container relative none my8">
             <div class="informative-message-container-left-stripe imcls-red"></div>
-            <div class="no-margin fs13 message-text error"></div>
+            <div class="no-margin fs13 message-text"></div>
             <div class="close-parent close-informative-message-style">✖</div>
         </div>
 
         <div id="settings-box">
+            <input type="hidden" autocomplete="off" value="0" id="avatar-removed" autocomplete="off">
             <input type="hidden" id="avatar-file-not-supported" value="{{ __('avatar file type is not supported. Only JPG, PNG, JPEG, BMP and GIF image formats are supported.') }}" autocomplete="off">
+            <input type="hidden" id="firstname-required-error-message" value="{{ __('Firstname field is required') }}" autocomplete="off">
+            <input type="hidden" id="lastname-required-error-message" value="{{ __('Lastname field is required') }}" autocomplete="off">
+            <input type="hidden" id="username-required-error-message" value="{{ __('Username field is required') }}" autocomplete="off">
             <div class="avatar-and-meta-container">
                 <div id="avatar-area">
                     <div class="user-avatar-settings-button-container">
@@ -114,10 +118,10 @@
             <!-- about -->
             <div class="my12">
                 <label for="about" class="label">{{ __('About me') }}</label>
-                <textarea id="about" class="styled-input" maxlength="1400" spellcheck="false" autocomplete="off" placeholder="{{ __('Something about you') }}">{{ $user->about }}</textarea>
+                <textarea id="about" class="styled-input no-textarea-x-resize" maxlength="1400" spellcheck="false" autocomplete="off" placeholder="{{ __('Something about you') }}">{{ $user->about }}</textarea>
             </div>
-            <!-- save user informations button -->
-            <div id="save-user-profile-settings" class="typical-button-style dark-bs align-center width-max-content mt8">
+            <!-- save user profile settings button -->
+            <div id="save-user-profile-settings" class="typical-button-style dark-bs align-center width-max-content my12">
                 <div class="relative size14 mr4">
                     <svg class="size12 icon-above-spinner" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M256.26,58.1V233.76c-2,2.05-2.07,5-3.36,7.35-4.44,8.28-11.79,12.56-20.32,15.35H26.32c-.6-1.55-2.21-1.23-3.33-1.66C11,250.24,3.67,240.05,3.66,227.25Q3.57,130.14,3.66,33c0-16.47,12.58-29.12,29-29.15q81.1-.15,162.2,0c10,0,19.47,2.82,26.63,9.82C235,26.9,251.24,38.17,256.26,58.1ZM129.61,214.25a47.35,47.35,0,1,0,.67-94.69c-25.81-.36-47.55,21.09-47.7,47.07A47.3,47.3,0,0,0,129.61,214.25ZM108.72,35.4c-17.93,0-35.85,0-53.77,0-6.23,0-9,2.8-9.12,9-.09,7.9-.07,15.79,0,23.68.06,6.73,2.81,9.47,9.72,9.48q53.27.06,106.55,0c7.08,0,9.94-2.85,10-9.84.08-7.39.06-14.79,0-22.19S169.35,35.42,162,35.41Q135.35,35.38,108.72,35.4Z"/><path d="M232.58,256.46c8.53-2.79,15.88-7.07,20.32-15.35,1.29-2.4,1.38-5.3,3.36-7.35,0,6.74-.11,13.49.07,20.23.05,2.13-.41,2.58-2.53,2.53C246.73,256.35,239.65,256.46,232.58,256.46Z"/></svg>
                     <svg class="spinner size14 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
@@ -125,7 +129,7 @@
                         <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
                     </svg>
                 </div>
-                <span class="bold fs12" style="margin-top: 1px">{{ __('Save Profile Informations') }}</span>
+                <span class="bold fs12 unselectable">{{ __('Save Profile Informations') }}</span>
             </div>
         </div>
     </div>

@@ -32,9 +32,9 @@ class FaqTest extends TestCase
     public function submit_faq_validation() {
         $this->post('/faqs')->assertSessionHasErrors(['question']); // question is required
         $this->post('/faqs', ['question'=>Str::random(501)])->assertSessionHasErrors(['question']); // question is too long
-        $this->post('/faqs', ['question'=>'how to do something', 'description'=>Str::random(2001)])
+        $this->post('/faqs', ['question'=>'how to do something', 'description'=>Str::random(1001)])
             ->assertSessionHasErrors(['description']);
-        $this->post('/faqs', ['question'=>Str::random(500), 'description'=>Str::random(2000)])->assertOk();
+        $this->post('/faqs', ['question'=>Str::random(500), 'description'=>Str::random(1000)])->assertOk();
     }
 
     /** @test */
