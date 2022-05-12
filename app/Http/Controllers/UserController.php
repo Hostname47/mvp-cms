@@ -24,10 +24,12 @@ class UserController extends Controller
             ->with(compact('roles'));
     }
 
-    public function settings() {
+    public function profile_settings() {
+        $page = 'profile-settings';
         $user = auth()->user();
         return view('settings.profile-settings')
-            ->with(compact('user'));
+            ->with(compact('user'))
+            ->with(compact('page'));
     }
 
     public function update_profile_settings(Request $request) {
@@ -41,7 +43,7 @@ class UserController extends Controller
                 Rule::unique('users')->ignore($user->id),
             ],
             'about'=>'sometimes|max:1400',
-            'avatar'=>'sometimes|file|image|mimes:jpg,gif,jpeg,bmp,png|max:5000|dimensions:min_width=20,min_height=10,max_width=2000,max_height=2000',
+            'avatar'=>'sometimes|file|image|mimes:jpg,gif,jpeg,bmp,png|max:5000|dimensions:min_width=20,min_height=20,max_width=2000,max_height=2000',
             'avatar_removed'=>['sometimes', Rule::in([0, 1])],
         ], [
             'firstname.alpha'=>__('Firstname must contain only letters'),
@@ -61,9 +63,9 @@ class UserController extends Controller
              * and different dimensions of it in avatar folder
              */
             $path = $request->file('avatar')->storeAs(
-                'users/' . $user->id . '/usermedia/avatars/originals', time() . '.png'
-            );
+                'users/' . $user->id . '/usermedia/avatars/originals', time() . '.png');
             // $path = Storage::disk('public')->getDriver()->getAdapter()->applyPathPrefix($path);
+            $path = Storage::getDriver()->getAdapter()->applyPathPrefix($path);
             
             $avatar_dims = [[26, 50], [26, 100], [36, 50], [36, 100], [100, 50], [100, 100], [160, 50], [160, 100], [200, 60], [200, 100], [300, 70], [300, 100], [400, 80], [400, 100]];
             foreach($avatar_dims as $avatar_dim) {
@@ -73,8 +75,10 @@ class UserController extends Controller
                 // *** 2) Resize image (options: exact, portrait, landscape, auto, crop)
                 $resizeObj->resizeImage($avatar_dim[0], $avatar_dim[0], 'crop');
 
-                $destination = storage_path('app/users/' . $user->id . '/usermedia/avatars/segments/' . $avatar_dim[0] . (($avatar_dim[1] == 100) ? '-h.png' : '-l.png'));
+                // $destination = storage_path('app/users/' . $user->id . '/usermedia/avatars/segments/' . $avatar_dim[0] . (($avatar_dim[1] == 100) ? '-h.png' : '-l.png'));
                 // $destination = Storage::disk('public')->getDriver()->getAdapter()->applyPathPrefix($destination);
+                $destination = '/users/' . $user->id . '/usermedia/avatars/segments/' . $avatar_dim[0] . (($avatar_dim[1] == 100) ? '-h.png' : '-l.png');
+                $destination = Storage::getDriver()->getAdapter()->applyPathPrefix($destination);
 
                 // *** 3) Save image ('image-name', 'quality [int]')
                 $resizeObj->saveImage($destination, $avatar_dim[1]);

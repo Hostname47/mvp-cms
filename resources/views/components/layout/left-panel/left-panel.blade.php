@@ -33,7 +33,7 @@
                     <div class="mt8 toggle-container none">
                         <a href="{{ route('user.profile', ['user'=>auth()->user()->username]) }}" class="my8 link">{{__('profile')}}</a>
                         <a href="" class="my8 link">{{__('activities')}}</a>
-                        <a href="" class="my8 link">{{__('settings')}}</a>
+                        <a href="{{ route('user.settings') }}" class="my8 link">{{__('settings')}}</a>
                     </div>
                 </div>
             </div>

@@ -91,6 +91,13 @@
             <input type="hidden" id="lastname-required-error-message" value="{{ __('Lastname field is required') }}" autocomplete="off">
             <input type="hidden" id="username-required-error-message" value="{{ __('Username field is required') }}" autocomplete="off">
             <input type="hidden" id="username-length-error-message" value="{{ __('Username should have at least 6 characters') }}" autocomplete="off">
+
+            <div class="settings-links">
+                <a href="{{ route('user.settings') }}" class="button-style-2 @if($page=='profile-settings') blue @endif">{{ __('profile settings') }}</a>
+                <a href="" class="button-style-2">{{ __('password settings') }}</a>
+                <a href="" class="button-style-2">{{ __('account settings') }}</a>
+            </div>
+
             <div class="avatar-and-meta-container">
                 <div id="avatar-area">
                     <div class="user-avatar-settings-button-container">
