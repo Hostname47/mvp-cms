@@ -1,6 +1,11 @@
 #settings-box {
-    width: 680px;
+    max-width: 660px;
     margin-top: 24px;
+}
+
+#about {
+    min-height: 100px;
+    max-height: 200px;
 }
 
 .user-avatar-settings-button-container {
@@ -76,4 +81,83 @@
     color: #35383c;
     display: flex;
     margin-bottom: 3px;
+}
+
+#remove-user-avatar-viewer .viewer-content-box {
+    max-width: 418px;
+}
+
+#remove-user-avatar-viewer .avatar {
+    width: 160px;
+    height: 160px;
+    margin-right: 12px;
+    border-radius: 3px;
+}
+
+#remove-user-avatar-viewer .bottom-section {
+    display: flex;
+    align-items: center;
+    padding-top: 12px;
+    margin-top: auto;
+    justify-content: end;
+}
+
+.avatar-delete-section {
+    display: flex;
+}
+
+@media only screen and (max-width: 480px) {
+    .page-padding {
+        padding: 10px;
+    }
+
+    .avatar-and-meta-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #avatar-area {
+        width: max-content;
+        margin-bottom: 12px;
+    }
+
+    #avatar-container {
+        width: 160px;
+        height: 160px;
+    }
+
+    .meta-container {
+        margin-left: 0;
+    }
+
+    .first-and-last-names-container {
+        margin-top: 18px;
+    }
+
+    .fullname-text {
+        text-align: center;
+    }
+
+    .username-text {
+        display: block;
+        text-align: center;
+    }
+
+    .avatar-settings-container {
+        right: 0;
+    }
+
+    .avatar-delete-section {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .avatar-delete-section .avatar {
+        margin-right: 0;
+        margin-bottom: 14px;
+    }
+
+    #remove-user-avatar-viewer .bottom-section {
+        justify-content: start;
+    }
 }

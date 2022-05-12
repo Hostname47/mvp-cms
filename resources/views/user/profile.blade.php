@@ -70,7 +70,7 @@
                 <p><strong>{{ __('Joined') }} :</strong> {{ $user->join_date }}</p>
                 <div class="about-section">
                     <span class="title">{{ __('About') }} :</span>
-                    <p class="content">❝ {{ $user->about ? $user->about : 'the quieter you become' }} ❞</p>
+                    <p class="content">❝ {{ $user->about ? $user->about : '--' }} ❞</p>
                 </div>
             </div>
         </div>

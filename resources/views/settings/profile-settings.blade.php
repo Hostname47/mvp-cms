@@ -55,6 +55,35 @@
             <div class="close-parent close-informative-message-style">✖</div>
         </div>
 
+        @if($user->has_avatar)
+        <div id="remove-user-avatar-viewer" class="global-viewer full-center none">
+            <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
+            <div class="viewer-box-style-1 viewer-content-box">
+                <div class="full-center light-gray-border-bottom relative border-box" style="padding: 14px;">
+                    <div class="align-center mt2">
+                        <svg class="size16 mr4" style="min-width: 16px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M300,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H300a12,12,0,0,0-12,12V404A12,12,0,0,0,300,416ZM464,80H381.59l-34-56.7A48,48,0,0,0,306.41,0H205.59a48,48,0,0,0-41.16,23.3l-34,56.7H48A16,16,0,0,0,32,96v16a16,16,0,0,0,16,16H64V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48h0V128h16a16,16,0,0,0,16-16V96A16,16,0,0,0,464,80ZM203.84,50.91A6,6,0,0,1,209,48h94a6,6,0,0,1,5.15,2.91L325.61,80H186.39ZM400,464H112V128H400ZM188,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H188a12,12,0,0,0-12,12V404A12,12,0,0,0,188,416Z"></path></svg>
+                        <span class="fs16 bold forum-color">{{ __("Remove avatar") }}</span>
+                    </div>
+                    <div class="pointer fs20 close-global-viewer unselectable absolute" style="right: 16px">✖</div>
+                </div>
+                <div class="avatar-delete-section" style="padding: 14px;">
+                    <img src="{{ $user->avatar(300) }}" class="avatar" alt="">
+                    <div class="flex flex-column">
+                        <p class="no-margin mb4 bold fs15 dark">{{__('Remove current avatar')}}</p>
+                        <p class="no-margin mb4 fs13 dark lh15">{{ __('Are you sure you want to remove this avatar') }} ? {{ __("Click on remove button and save the changes") }}</p>
+                        <div class="bottom-section">
+                            <div class="typical-button-style red-bs align-center remove-avatar-button">
+                                <svg class="size13 mr4" fill="white" style="min-width: 13px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M300,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H300a12,12,0,0,0-12,12V404A12,12,0,0,0,300,416ZM464,80H381.59l-34-56.7A48,48,0,0,0,306.41,0H205.59a48,48,0,0,0-41.16,23.3l-34,56.7H48A16,16,0,0,0,32,96v16a16,16,0,0,0,16,16H64V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48h0V128h16a16,16,0,0,0,16-16V96A16,16,0,0,0,464,80ZM203.84,50.91A6,6,0,0,1,209,48h94a6,6,0,0,1,5.15,2.91L325.61,80H186.39ZM400,464H112V128H400ZM188,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H188a12,12,0,0,0-12,12V404A12,12,0,0,0,188,416Z"></path></svg>
+                                <span class="flex fs12 bold">{{ __('Remove') }}</span>
+                            </div>
+                            <div class="button-style-2 close-global-viewer ml8">{{ __('cancel') }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
+
         <div id="settings-box">
             <input type="hidden" autocomplete="off" value="0" id="avatar-removed" autocomplete="off">
             <input type="hidden" id="avatar-file-not-supported" value="{{ __('avatar file type is not supported. Only JPG, PNG, JPEG, BMP and GIF image formats are supported.') }}" autocomplete="off">
@@ -66,7 +95,7 @@
                 <div id="avatar-area">
                     <div class="user-avatar-settings-button-container">
                         <svg class="user-avatar-settings-button button-with-suboptions" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M496,384H160V368a16,16,0,0,0-16-16H112a16,16,0,0,0-16,16v16H16A16,16,0,0,0,0,400v32a16,16,0,0,0,16,16H96v16a16,16,0,0,0,16,16h32a16,16,0,0,0,16-16V448H496a16,16,0,0,0,16-16V400A16,16,0,0,0,496,384Zm0-160H416V208a16,16,0,0,0-16-16H368a16,16,0,0,0-16,16v16H16A16,16,0,0,0,0,240v32a16,16,0,0,0,16,16H352v16a16,16,0,0,0,16,16h32a16,16,0,0,0,16-16V288h80a16,16,0,0,0,16-16V240A16,16,0,0,0,496,224Zm0-160H288V48a16,16,0,0,0-16-16H240a16,16,0,0,0-16,16V64H16A16,16,0,0,0,0,80v32a16,16,0,0,0,16,16H224v16a16,16,0,0,0,16,16h32a16,16,0,0,0,16-16V128H496a16,16,0,0,0,16-16V80A16,16,0,0,0,496,64Z"></path></svg>
-                        <div class="suboptions-container typical-suboptions-container width-max-content">
+                        <div class="suboptions-container typical-suboptions-container width-max-content avatar-settings-container">
                             <div class="suboption-style-2 align-center relative overflow-hidden">
                                 <svg class="size16 mr4" style="min-width: 16px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M217.14,121.14c-4.55-.89-8.39-1.9-12.29-2.32-2.95-.31-3.65-1.43-3.63-4.33.14-20.13.08-40.27.07-60.4,0-6.76-.51-7.26-7.38-7.26H34.5c-6.95,0-7.47.49-7.47,7.19V174.33c0,6.73.47,7.17,7.48,7.17,33,0,66,.06,99-.08,3.43,0,5.29.62,5.16,4.35a15,15,0,0,0,.44,3.44c.53,2.56,2.44,6.36,1.44,7.38-1.89,1.95-5.52.72-8.41.73q-53,.08-105.94,0c-10.8,0-15-4.18-15-14.88V45.82C11.19,35.13,15.4,31,26.25,31H202c11.11,0,15.14,4.06,15.15,15.23ZM155.66,88.56c-6.79-8.14-14.77-8.12-21.56,0-11.48,13.81-23,27.63-34.3,41.55-1.93,2.37-2.84,2.83-4.92.1-5.29-6.94-10.92-13.63-16.45-20.38-6.54-8-14.5-8.14-21.34-.38S43.75,125,37,132.61a7.87,7.87,0,0,0-2,5.78c.09,10.22.2,20.45,0,30.67-.09,3.56.65,4.65,4.48,4.63q47-.28,94,0c3.63,0,4.94-.88,5.5-4.6,3.1-20.5,14.21-35.38,32.59-44.82,3.17-1.63,6.59-2.76,10.24-4.27C172.84,109.33,164.29,98.91,155.66,88.56ZM248.81,178a51.48,51.48,0,1,0-51.59,51C225.4,229.13,248.7,206.1,248.81,178Zm-63.3,2.7c.13-2.6-.68-3.59-3.27-3.25a20,20,0,0,1-4,0c-4.31-.29-6-3.15-3.6-6.64,6.15-8.93,12.47-17.76,18.88-26.52,2.47-3.38,5.09-3.35,7.59.07q9.48,12.93,18.62,26.1c2.61,3.77,1,6.68-3.53,7a9.28,9.28,0,0,1-2.47,0c-4.14-.81-4.74,1.27-4.64,4.85.24,8.23,0,16.47.13,24.7.1,4.42-1.61,6.38-6.1,6.16-4.11-.19-8.23-.1-12.35,0-3.7.08-5.47-1.54-5.39-5.32.1-4.61,0-9.22,0-13.83C185.45,189.61,185.3,185.16,185.51,180.73ZM115,76.81A16.14,16.14,0,0,0,99,60.74a15.84,15.84,0,0,0,.07,31.67A16,16,0,0,0,115,76.81Z"/></svg>
                                 <span class="fs12 bold dark unselectable">{{ __('Upload new avatar') }}</span>
@@ -90,14 +119,14 @@
                     </div>
 
                     <div id="avatar-container">
-                        <img src="{{ $user->avatar(100) }}" id="avatar" class="center-image-based-on-higher-dimension" alt="{{ $user->fullname . ' - ' . $user->username . ' avatar' }}">
+                        <img src="{{ $user->avatar(200) }}" id="avatar" class="center-image-based-on-higher-dimension" alt="{{ $user->fullname . ' - ' . $user->username . ' avatar' }}">
                     </div>
-                    <input type="hidden" id="default-avatar" value="{{ $user->defaultavatar(100) }}" autocomplete="off">
-                    <input type="hidden" id="original-avatar" value="{{ $user->avatar(100) }}" autocomplete="off">
+                    <input type="hidden" id="default-avatar" value="{{ $user->defaultavatar(200) }}" autocomplete="off">
+                    <input type="hidden" id="original-avatar" value="{{ $user->avatar(200) }}" autocomplete="off">
                 </div>
                 <div class="meta-container">
                     <h2 class="fullname-text">{{ $user->fullname }}</h2>
-                    <span class="username-text">{{ $user->username }}</span>
+                    <span class="username-text dark">{{ $user->username }}</span>
                     <!-- firstname & lastname -->
                     <div class="first-and-last-names-container">
                         <div class="full-width">

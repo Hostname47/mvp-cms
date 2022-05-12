@@ -58,21 +58,10 @@ class User extends Authenticatable
     }
 
     public function getHasAvatarAttribute() {
-        if(is_null($this->avatar)) {
-            /**
-             * If user avatar is null we have to check avatar_provider. In case the provider_avatar is null, then
-             * the user has deleted both avatar and provider avatar.
-             */
-            if(!is_null($this->provider_avatar))
-                return true;
-            else
-                return false;
-        }
-
-        return true;
+        return (is_null($this->avatar) && !is_null($this->provider_avatar)) || $this->avatar == 'file';
     }
     public function avatar($size, $quality="h") {
-        if($this->hasavatar) {
+        if($this->has_avatar) {
             if(is_null($this->avatar))
                 return $this->provider_avatar;
             else

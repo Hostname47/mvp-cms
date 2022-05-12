@@ -89,6 +89,10 @@ body {
     justify-content: center;
 }
 
+.justify-end {
+    justify-content: end;
+}
+
 .space-between {
     justify-content: space-between;
 }
@@ -494,6 +498,10 @@ figure {
 
 .pl8 {
     padding-left: 8px !important;
+}
+
+.pt8 {
+    padding-top: 8px;
 }
 
 .px8 {

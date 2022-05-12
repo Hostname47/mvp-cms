@@ -55,7 +55,7 @@ $('.open-remove-avatar-dialog').on('click', function(event) {
 });
 
 $('.remove-avatar-button').on('click', function() {
-    // Remove avatar by clearing avatar value, mark avatar removed as 1 and emptying avatar image previewer
+    // Remove avatar by clearing avatar value, mark avatar removed
     $('#avatar-input').val('');
     $('#avatar-removed').val('1');
     $('#avatar').attr('src', $('#default-avatar').val());
