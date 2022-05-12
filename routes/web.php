@@ -90,6 +90,8 @@ Route::middleware('client.scopes')->group(function() {
         Route::get('/users/{user:username}/profile', [UserController::class, 'profile'])->name('user.profile');
         Route::get('/activities', [UserController::class, 'activities'])->name('user.activities');
         Route::get('/settings/profile', [UserController::class, 'profile_settings'])->name('user.settings');
+        Route::get('/settings/passwords', [UserController::class, 'password_settings'])->name('password.settings');
+        Route::get('/settings/account', [UserController::class, 'account_settings'])->name('account.settings');
 
         Route::post('/settings/profile', [UserController::class, 'update_profile_settings']);
 

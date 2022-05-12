@@ -93,9 +93,9 @@
             <input type="hidden" id="username-length-error-message" value="{{ __('Username should have at least 6 characters') }}" autocomplete="off">
 
             <div class="settings-links">
-                <a href="{{ route('user.settings') }}" class="button-style-2 @if($page=='profile-settings') blue @endif">{{ __('profile settings') }}</a>
-                <a href="" class="button-style-2">{{ __('password settings') }}</a>
-                <a href="" class="button-style-2">{{ __('account settings') }}</a>
+                <a href="{{ route('user.settings') }}" class="button-style-2 @if($page=='profile-settings') blue @endif">{{ __('profile') }}</a>
+                <a href="{{ route('password.settings') }}" class="button-style-2">{{ __('password settings') }}</a>
+                <a href="{{ route('account.settings') }}" class="button-style-2">{{ __('account settings') }}</a>
             </div>
 
             <div class="avatar-and-meta-container">

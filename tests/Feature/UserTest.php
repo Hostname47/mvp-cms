@@ -104,4 +104,23 @@ class UserTest extends TestCase
         $this->post('/settings/profile', ['avatar'=>$avatar1])
             ->assertSessionHasErrors(['avatar']); // invalid dimensions
     }
+
+    /** @test */
+    public function user_upload_avatar() {
+        $user = $this->authuser;
+        // Create avatars folders
+        $path = Storage::getDriver()->getAdapter()->applyPathPrefix("/users/$user->id");
+        File::makeDirectory($path.'/usermedia/avatars', 0777, true, true);
+        File::makeDirectory($path.'/usermedia/avatars/originals', 0777, true, true);
+        File::makeDirectory($path.'/usermedia/avatars/segments', 0777, true, true);
+        $avatar = UploadedFile::fake()->image('eulises.png', 100, 100)->size(100);
+
+        $this->assertNull($user->avatar);
+        $this->assertEquals(0, count(Storage::allFiles("users/$user->id/usermedia/avatars/originals")));
+        $this->assertEquals(0, count(Storage::allFiles("users/$user->id/usermedia/avatars/segments")));
+        $this->post('/settings/profile', ['avatar'=>$avatar])->assertOk();
+        $this->assertEquals(1, count(Storage::allFiles("users/$user->id/usermedia/avatars/originals")));
+        $this->assertEquals(14, count(Storage::allFiles("users/$user->id/usermedia/avatars/segments")));
+        $this->assertEquals($user->refresh()->avatar, 'file');
+    }
 }
