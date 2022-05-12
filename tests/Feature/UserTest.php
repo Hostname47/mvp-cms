@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 use App\Models\{User};
+use Laravel\Socialite\Contracts\Factory as Socialite;
+use Laravel\Socialite\Two\GoogleProvider;
+use Laravel\Socialite\Two\User as SocialUser;
 
 class UserTest extends TestCase
 {
@@ -28,6 +31,72 @@ class UserTest extends TestCase
 
     public function tearDown():void {
         (new Filesystem)->cleanDirectory(storage_path('app/testing'));
+    }
+
+    /** @test */
+    public function google_oauth_opened_successfully() {
+        $this->post('/logout');
+        $response = $this->get('/login/google');
+
+        $response->assertStatus(302);
+        $response->assertSee('google');
+    }
+    
+    /** @test */
+    public function facebbok_oauth_opened_successfully() {
+        $this->post('/logout');
+        $response = $this->get('/login/facebook');
+
+        $response->assertStatus(302);
+        $response->assertSee('facebook');
+    }
+
+    /** @test */
+    public function user_signup_using_google_oauth() {
+        $this->post('/logout');
+        // Mock the Facade and return a User Object
+        $this->mockSocialiteFacade();
+        
+        $this->assertCount(1, User::all()); // 1 because we created one as auth user in 
+        $response = $this->get('google/callback');
+        $this->assertCount(2, User::all());
+    }
+
+    /** @test */
+    public function user_could_not_register_using_usual_signup() { // Only oauth is supported now
+        $this->assertCount(1, User::all());
+        $response = $this->post('/register', [
+            'firstname'=>'mouad',
+            'lastname'=>'nassri',
+            'username'=>'hostname47',
+            'email'=>'qanon@hidden.com',
+            'password'=>'Password54',
+            'password_confirmation'=>'Password54'
+        ]);
+        $this->assertCount(1, User::all());
+    }
+
+    public function mockSocialiteFacade($email='mouad@nassri.com', $token='foo', $id=1) {
+        // mock users
+        $socialiteUser = $this->createMock(SocialUser::class);
+        $socialiteUser->token = $token;
+        $socialiteUser->id = $id;
+        $socialiteUser->email = $email;
+        $socialiteUser->avatar_original = 'mouad.cdn.io/shut-the-fokirap';
+
+        // mock provider
+        $provider = $this->createMock(GoogleProvider::class);
+        $provider->expects($this->any())
+            ->method('user')
+            ->willReturn($socialiteUser);
+
+        $stub = $this->createMock(Socialite::class);
+        $stub->expects($this->any())
+            ->method('driver')
+            ->willReturn($provider);
+
+        // Replace Socialite Instance with our mock
+        $this->app->instance(Socialite::class, $stub);
     }
 
     /** @test */

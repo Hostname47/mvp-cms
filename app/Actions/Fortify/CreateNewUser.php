@@ -13,6 +13,11 @@ class CreateNewUser implements CreatesNewUsers
 {
     public function create(array $input)
     {
+        /**
+         * We don't 
+         */
+        abort(405, __('Usual registration is not currently allowed.'));
+
         Validator::make($input, [
             'firstname' => ['required', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],

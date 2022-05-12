@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\{User};
 use Socialite;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class OAuthController extends Controller
 {
@@ -55,7 +55,7 @@ class OAuthController extends Controller
             $user->refresh();
 
             // Then we have to create folders that will hold user's media and files
-            $path = public_path("/users/$user->id");
+            $path = Storage::getDriver()->getAdapter()->applyPathPrefix("users/$user->id");
             File::makeDirectory($path, 0777, true, true);
             File::makeDirectory($path.'/usermedia/avatars', 0777, true, true);
             File::makeDirectory($path.'/usermedia/avatars/originals', 0777, true, true);
