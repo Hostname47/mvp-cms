@@ -20,6 +20,7 @@ class UserTest extends TestCase
     use DatabaseTransactions;
 
     public $authuser;
+    public $socialite_handled;
 
     public function setUp():void {
         parent::setUp();
@@ -55,7 +56,7 @@ class UserTest extends TestCase
     public function user_signup_using_google_oauth() {
         $this->post('/logout');
         // Mock the Facade and return a User Object
-        $this->mockSocialiteFacade();
+        $this->mock_socialite_facade();
         
         $this->assertCount(1, User::all()); // 1 because we created one as auth user in 
         $response = $this->get('google/callback');
@@ -76,7 +77,7 @@ class UserTest extends TestCase
         $this->assertCount(1, User::all());
     }
 
-    public function mockSocialiteFacade($email='mouad@nassri.com', $token='foo', $id=1) {
+    private function mock_socialite_facade($email='mouad@nassri.com', $token='foo', $id=1) {
         // mock users
         $socialiteUser = $this->createMock(SocialUser::class);
         $socialiteUser->token = $token;
@@ -191,5 +192,49 @@ class UserTest extends TestCase
         $this->assertEquals(1, count(Storage::allFiles("users/$user->id/usermedia/avatars/originals")));
         $this->assertEquals(14, count(Storage::allFiles("users/$user->id/usermedia/avatars/segments")));
         $this->assertEquals($user->refresh()->avatar, 'file');
+    }
+
+    /** @test */
+    public function user_set_first_password() {
+        $user = User::factory()->create(['password'=>null]);
+        $this->actingAs($user);
+
+        $this->assertNull($user->password);
+        $this->post('/settings/password/set', [
+            'password'=>'Hostname1',
+            'password_confirmation'=>'Hostname1'
+        ]);
+        $user->refresh();
+        $this->assertTrue(!is_null($user->password));
+    }
+
+    /** @test */
+    public function set_password_should_be_confirmed() {
+        $user = User::factory()->create(['password'=>null]);
+        $this->actingAs($user);
+
+        $this->assertNull($user->password);
+        $this->post('/settings/password/set', [
+            'password'=>'Hostname1',
+        ])->assertSessionHasErrors(['password']); // Missing password confirmation
+        $this->post('/settings/password/set', [
+            'password'=>'Hostname1',
+            'password_confirmation'=>'Hostname2'
+        ])->assertSessionHasErrors(['password']); // Invalide confirmation
+    }
+
+    /** @test */
+    public function user_can_set_password_only_once() {
+        $user = User::factory()->create(['password'=>null]);
+        $this->actingAs($user);
+
+        $this->post('/settings/password/set', [
+            'password'=>'Hostname1',
+            'password_confirmation'=>'Hostname1'
+        ])->assertOk();
+        $this->post('/settings/password/set', [
+            'password'=>'Hostname1',
+            'password_confirmation'=>'Hostname1'
+        ])->assertForbidden();
     }
 }

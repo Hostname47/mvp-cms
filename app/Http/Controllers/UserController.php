@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use App\Rules\ValidPassword;
 use App\Models\User;
 use App\Helpers\ImageResize;
 
@@ -90,5 +92,16 @@ class UserController extends Controller
         unset($data['avatar_removed']);
         $user->update($data);
         \Session::flash('message', __('Your profile settings has been updated successfully'));
+    }
+
+    public function set_password(Request $request) {
+        $this->authorize('set_password', [User::class]);
+        $user = auth()->user();
+        $data = $request->validate(['password' => ['required', 'confirmed', new ValidPassword()]]);
+        $password = Hash::make($data['password']);
+        $user->update(['password'=>$password]);
+
+        \Session::flash('message', __('Your password has been saved successfully.'));
+        return route('home');
     }
 }

@@ -8,7 +8,7 @@ use App\Http\Controllers\{IndexController, AdminController, PostController, Cate
 use App\Http\Controllers\Admin\{AdminSearchController};
 
 Route::get('/test', function() {
-    for($i=4;$i<=14;$i++) {
+    for($i=1;$i<=20;$i++) {
         \DB::statement("INSERT INTO `faqs` (`question`, `answer`, `description`, `status`, `priority`, `user_id`) VALUES ('This is frequently asked question #$i ?', 'response to question #$i', 'ergererh', '1', '$i', '1')");
     }
 });
@@ -94,6 +94,7 @@ Route::middleware('client.scopes')->group(function() {
         Route::get('/settings/account', [UserController::class, 'account_settings'])->name('account.settings');
 
         Route::post('/settings/profile', [UserController::class, 'update_profile_settings']);
+        Route::post('/settings/password/set', [UserController::class, 'set_password']);
 
         Route::post('/comments', [CommentController::class, 'store']);
         Route::patch('/comments', [CommentController::class, 'update']);
