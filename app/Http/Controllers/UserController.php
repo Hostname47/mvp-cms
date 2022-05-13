@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use App\Rules\ValidPassword;
 use App\Models\User;
@@ -127,5 +128,32 @@ class UserController extends Controller
         $user->update(['password'=>Hash::make($data['password'])]);
 
         \Session::flash('message', __('Your password has been changed successfully'));
+    }
+
+    public function activate_account_page() {
+        return 'activation page';
+    }
+
+    public function deactivate_account(Request $request) {
+        $this->authorize('deactivate_account', [User::class]);
+        $user = auth()->user();
+        $password = $request->validate(['password'=>'required'])['password'];
+
+        if(Hash::check($password, $user->password)) {
+            /**
+             * To deactivate user account, we first set his account status to deactivated, and 
+             * then we logged him out along with a flash message that will be printed to home
+             * page after redirect
+             */
+            $user->update(['status'=>'deactivated']);
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            \Session::flash('message', __('Your account has been deactivated successfully'));
+            return route('home');
+        }
+        
+        abort(422, __('Invalid password. Try again'));
     }
 }

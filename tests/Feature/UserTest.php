@@ -287,4 +287,36 @@ class UserTest extends TestCase
             'password_confirmation'=>'FlimsyEntropy589'
         ])->assertStatus(422);
     }
+
+    /** @test */
+    public function user_deactivate_his_account() {
+        $user = User::factory()->create(['password'=>Hash::make('Hostname47')]);
+        $this->actingAs($user);
+
+        $this->post('/settings/account/deactivate', ['password'=>'Hostname47']);
+        $this->assertEquals('deactivated', $user->refresh()->status);
+    }
+
+    /** @test */
+    public function deactivated_user_will_end_up_with_redirect_to_activation_page_in_every_request() {
+        $user = User::factory()->create(['password'=>Hash::make('Hostname47')]);
+        $this->actingAs($user);
+        $this->post('/settings/account/deactivate', ['password'=>'Hostname47']);
+        $this->actingAs($user);
+        $this->get(route('discover'))->assertRedirect(route('user.account.activate'));
+        $this->post('/settings/password/update', [
+            'current_password'=>'Hostname1',
+            'password'=>'FlimsyEntropy589',
+            'password_confirmation'=>'FlimsyEntropy589'
+        ])->assertRedirect(route('user.account.activate'));
+    }
+
+    /** @test */
+    public function user_cannot_deactivate_deactivated_account() {
+        $user = User::factory()->create(['password'=>Hash::make('Hostname47')]);
+        $this->actingAs($user);
+        $this->post('/settings/account/deactivate', ['password'=>'Hostname47'])->assertOk();
+        $this->actingAs($user);
+        $this->post('/settings/account/deactivate', ['password'=>'Hostname47'])->assertForbidden();
+    }
 }

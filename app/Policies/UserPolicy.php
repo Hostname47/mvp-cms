@@ -26,4 +26,13 @@ class UserPolicy
         
         return true;
     }
+
+    public function deactivate_account(User $user) {
+        if($user->status == 'deactivated') {
+            /** Log unauthorized action */
+            return $this->deny(__('Account already deactivated'));
+        }
+        
+        return true;
+    }
 }

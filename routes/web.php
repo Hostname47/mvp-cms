@@ -6,6 +6,7 @@ use App\Http\Controllers\{IndexController, AdminController, PostController, Cate
     NewsletterController, CommentController, ClapController, ReportController, SearchController,
     AuthorRequestController, ContactController, FaqController, UserController};
 use App\Http\Controllers\Admin\{AdminSearchController};
+use App\Http\Middleware\AccountStatus;
 
 Route::get('/test', function() {
     for($i=1;$i<=20;$i++) {
@@ -96,6 +97,9 @@ Route::middleware('client.scopes')->group(function() {
         Route::post('/settings/profile', [UserController::class, 'update_profile_settings']);
         Route::post('/settings/password/set', [UserController::class, 'set_password']);
         Route::post('/settings/password/update', [UserController::class, 'update_password']);
+
+        Route::get('/settings/account/activate', [UserController::class, 'activate_account_page'])->withoutMiddleware([AccountStatus::class])->name('user.account.activate');
+        Route::post('/settings/account/deactivate', [UserController::class, 'deactivate_account'])->withoutMiddleware([AccountStatus::class]);
 
         Route::post('/comments', [CommentController::class, 'store']);
         Route::patch('/comments', [CommentController::class, 'update']);
