@@ -162,11 +162,9 @@ function validate_avatar_image_type(file){
 }
 
 /** password settings */
-let set_password_lock = true;
-$('#set-password-button').on('click', function() {
-    if(!set_password_lock) return;
-    set_password_lock = false;
 
+let set_password_lock = true;
+$('#set-password').on('click', function() {
     let button = $(this);
     let buttonicon = button.find('.icon');
     let spinner = button.find('.spinner');
@@ -184,6 +182,9 @@ $('#set-password-button').on('click', function() {
     spinner.addClass('inf-rotate');
     spinner.removeClass('opacity0');
     buttonicon.addClass('none');
+
+    if(!set_password_lock) return;
+    set_password_lock = false;
 
     $.ajax({
         type: 'post',
@@ -209,17 +210,70 @@ $('#set-password-button').on('click', function() {
             spinner.addClass('opacity0');
             buttonicon.removeClass('none');
 
-            save_user_profile_settings_lock = true;
+            set_password_lock = true;
         }
     });
 });
+
+let change_password_lock = true;
+$('#change-password').on('click', function() {
+    let button = $(this);
+    let spinner = button.find('.spinner');
+    let buttonicon = button.find('.icon');
+
+	let current_password = $('#current-password').val().trim();
+	let password = $('#new-password').val().trim();
+	let password_confirmation = $('#new-password-confirmation').val().trim();
+
+	$('.error-container').addClass('none');
+
+	if(!password_condition(password !== '' && password_confirmation !== '' && current_password !== '', $('#password-required-error').val())) return;
+	if(!password_condition(password.length >= 8, $('#password-length-error').val())) return;
+	if(!password_condition(password === password_confirmation, $('#password-confirmation-error').val())) return;
+
+	if(!change_password_lock) return;
+	change_password_lock = false;
+
+    button.addClass('dark-bs-disabled');
+    spinner.addClass('inf-rotate');
+    spinner.removeClass('opacity0');
+    buttonicon.addClass('none');
+
+    $.ajax({
+        type: 'post',
+        url: '/settings/password/update',
+        data: {
+            current_password: current_password,
+			password: password,
+			password_confirmation: password_confirmation
+		},
+        success: function() {
+            location.reload();
+        },
+        error: function(response) {
+            let errorObject = JSON.parse(response.responseText);
+            let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+            if(errorObject.errors) {
+                let errors = errorObject.errors;
+                error = errors[Object.keys(errors)[0]][0];
+            }
+            print_top_message(error, 'error');
+
+            button.removeClass('dark-bs-disabled');
+            spinner.removeClass('inf-rotate');
+            spinner.addClass('opacity0');
+            buttonicon.removeClass('none');
+
+            change_password_lock = true;
+        }
+    })
+})
 
 function password_condition(condition, error) {
     if(!condition) {
         $('.error-container .message-text').text(error);
         $('.error-container').removeClass('none');
         $(window).scrollTop(0);
-        set_password_lock = true;
         return false;
     }
 

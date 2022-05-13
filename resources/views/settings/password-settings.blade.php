@@ -84,7 +84,7 @@
                     <div class="typical-section-style my4">
                         <p class="fs13 gray no-margin lh15">{{ __("Please remember your password after setting it, because some actions require your current password like password update. We don't have email service available for now to reset passwords and if you forget the password, then the only way to login is to use your social login") }}.</p>
                     </div>
-                    <div id="set-password-button" class="typical-button-style dark-bs align-center width-max-content" style="margin-bottom: 16px;">
+                    <div id="set-password" class="typical-button-style dark-bs align-center width-max-content" style="margin-bottom: 24px;">
                         <div class="relative size14 mr4">
                             <svg class="size12 icon" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M512 176.001C512 273.203 433.202 352 336 352c-11.22 0-22.19-1.062-32.827-3.069l-24.012 27.014A23.999 23.999 0 0 1 261.223 384H224v40c0 13.255-10.745 24-24 24h-40v40c0 13.255-10.745 24-24 24H24c-13.255 0-24-10.745-24-24v-78.059c0-6.365 2.529-12.47 7.029-16.971l161.802-161.802C163.108 213.814 160 195.271 160 176 160 78.798 238.797.001 335.999 0 433.488-.001 512 78.511 512 176.001zM336 128c0 26.51 21.49 48 48 48s48-21.49 48-48-21.49-48-48-48-48 21.49-48 48z"></path></svg>
                             <svg class="spinner size14 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
@@ -96,6 +96,40 @@
                     </div>
                 </div>
             @else
+                <p class="no-margin mb8 dark lh15">{{ __('If you forgot your password, unfortunately you will not be able to change the password, because we do not have password reset functionality available at this moment. However you still be able to login using your :oauth_provider account', ['oauth_provider'=>$user->provider]) }}.</p>
+
+                <div class="typical-section-style flex mb8">
+                    <svg class="size14 mr8 mt2" style="min-width: 14px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="size14 mr8"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"></path></svg>
+                    <p class="no-margin fs13 dark lh15">{{ __("The reason we cannot restore forgotten password is because we are not currently using any email service to send email verification to account owner. We'll add this feature as soon as we can to make password reset much easier and secured") }}.</p>
+                </div>
+
+                <p class="no-margin mb8 fs13 dark lh15"><strong>{{__('Your email')}} :</strong> {{ $user->email }}</p>
+                <h2 class="dark no-margin fs18">{{ __('Change Password') }}</h2>
+                <div class="my12">
+                    <label for="current-password" class="label">{{ __('Current password') }}</label>
+                    <input type="password" class="styled-input" id="current-password" autocomplete="new-password" placeholder="{{ __('Current password') }}">
+                </div>
+                <div class="my12">
+                    <label for="new-password" class="label">{{ __('New password') }}</label>
+                    <input type="password" class="styled-input" id="new-password" autocomplete="new-password" placeholder="{{ __('Enter your new password') }}">
+                </div>
+                <div class="my12">
+                    <label for="new-password-confirmation" class="label">{{ __('Confirm new password') }}</label>
+                    <input type="password" class="styled-input" id="new-password-confirmation" autocomplete="new-password" placeholder="{{ __('Confirm your new password') }}">
+                </div>
+                <div class="typical-section-style my12">
+                    <p class="fs13 gray no-margin lh15">{{ __("Please remember your password after updating it, because some actions require your current password to be done. We don't have email service available for now to reset passwords and if you forget the password, then the only way to login is to use your social login") }}.</p>
+                </div>
+                <div id="change-password" class="typical-button-style dark-bs align-center width-max-content" style="margin-bottom: 24px;">
+                    <div class="relative size14 mr4">
+                        <svg class="size12 icon" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M512 176.001C512 273.203 433.202 352 336 352c-11.22 0-22.19-1.062-32.827-3.069l-24.012 27.014A23.999 23.999 0 0 1 261.223 384H224v40c0 13.255-10.745 24-24 24h-40v40c0 13.255-10.745 24-24 24H24c-13.255 0-24-10.745-24-24v-78.059c0-6.365 2.529-12.47 7.029-16.971l161.802-161.802C163.108 213.814 160 195.271 160 176 160 78.798 238.797.001 335.999 0 433.488-.001 512 78.511 512 176.001zM336 128c0 26.51 21.49 48 48 48s48-21.49 48-48-21.49-48-48-48-48 21.49-48 48z"></path></svg>
+                        <svg class="spinner size14 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
+                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                            <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                        </svg>
+                    </div>
+                    <span class="bold fs12">{{ __('Change password') }}</span>
+                </div>
             @endif
         </div>
     </div>
