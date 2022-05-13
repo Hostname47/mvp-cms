@@ -35,4 +35,13 @@ class UserPolicy
         
         return true;
     }
+
+    public function activate_account(User $user) {
+        if($user->status != 'deactivated') {
+            /** Log unauthorized action */
+            return $this->deny(__('Account already activated'));
+        }
+        
+        return true;
+    }
 }

@@ -131,7 +131,14 @@ class UserController extends Controller
     }
 
     public function activate_account_page() {
-        return 'activation page';
+        $user = auth()->user();
+        /**
+         * If the user is not authenticated or authenticated but his account is not
+         * deactivated we don't want to display activation view
+         */
+        if(is_null($user) || $user->status != 'deactivated') abort(404);
+
+        return view('settings.account-activation');
     }
 
     public function deactivate_account(Request $request) {
@@ -154,6 +161,23 @@ class UserController extends Controller
             return route('home');
         }
         
+        abort(422, __('Invalid password. Try again'));
+    }
+
+    public function activate_account(Request $request) {
+        $this->authorize('activate_account', [User::class]);
+        $user = auth()->user();
+        if(is_null($user) || $user->status != 'deactivated') abort(405);
+
+        $password = $request->validate(['password'=>'required'])['password'];
+
+        if(Hash::check($password, $user->password)) {
+            $user->update(['status'=>'active']);
+
+            \Session::flash('message', __('Your account has been activated successfully'));
+            return route('discover');
+        }
+
         abort(422, __('Invalid password. Try again'));
     }
 }

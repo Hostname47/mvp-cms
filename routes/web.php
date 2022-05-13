@@ -99,6 +99,7 @@ Route::middleware('client.scopes')->group(function() {
         Route::post('/settings/password/update', [UserController::class, 'update_password']);
 
         Route::get('/settings/account/activate', [UserController::class, 'activate_account_page'])->withoutMiddleware([AccountStatus::class])->name('user.account.activate');
+        Route::post('/settings/account/activate', [UserController::class, 'activate_account'])->withoutMiddleware([AccountStatus::class]);
         Route::post('/settings/account/deactivate', [UserController::class, 'deactivate_account'])->withoutMiddleware([AccountStatus::class]);
 
         Route::post('/comments', [CommentController::class, 'store']);

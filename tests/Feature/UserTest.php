@@ -298,6 +298,15 @@ class UserTest extends TestCase
     }
 
     /** @test */
+    public function user_cannot_deactivate_account_with_invalid_password() {
+        $user = User::factory()->create(['password'=>Hash::make('Hostname47')]);
+        $this->actingAs($user);
+
+        $this->post('/settings/account/deactivate', ['password'=>'Hostname48'])
+            ->assertStatus(422);
+    }
+
+    /** @test */
     public function deactivated_user_will_end_up_with_redirect_to_activation_page_in_every_request() {
         $user = User::factory()->create(['password'=>Hash::make('Hostname47')]);
         $this->actingAs($user);
@@ -318,5 +327,38 @@ class UserTest extends TestCase
         $this->post('/settings/account/deactivate', ['password'=>'Hostname47'])->assertOk();
         $this->actingAs($user);
         $this->post('/settings/account/deactivate', ['password'=>'Hostname47'])->assertForbidden();
+    }
+
+    /** @test */
+    public function user_activate_his_account() {
+        $this->withoutExceptionHandling();
+        $user = User::factory()->create(['password'=>Hash::make('Hostname47')]);
+
+        $this->actingAs($user);
+        $this->post('/settings/account/deactivate', ['password'=>'Hostname47']);
+        $this->assertEquals('deactivated', $user->refresh()->status);
+
+        $this->actingAs($user);
+        $this->post('/settings/account/activate', ['password'=>'Hostname47']);
+        $this->assertEquals('active', $user->refresh()->status);
+    }
+
+    /** @test */
+    public function user_cannot_activate_account_with_invalid_password() {
+        $user = User::factory()->create(['password'=>Hash::make('Hostname47')]);
+        $this->actingAs($user);
+        $this->post('/settings/account/deactivate', ['password'=>'Hostname47']);
+        $this->actingAs($user);
+        $this->post('/settings/account/activate', ['password'=>'Hostname48'])
+            ->assertStatus(422);
+        $this->post('/settings/account/activate', ['password'=>'Hostname47'])
+            ->assertOk();
+    }
+
+    /** @test */
+    public function user_cannot_activate_activated_account() {
+        $user = User::factory()->create(['password'=>Hash::make('Hostname47')]);
+        $this->actingAs($user);
+        $this->post('/settings/account/activate', ['password'=>'Hostname47'])->assertForbidden();
     }
 }
