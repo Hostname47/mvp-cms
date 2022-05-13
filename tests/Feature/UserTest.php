@@ -8,6 +8,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 use App\Models\{User};
@@ -224,6 +225,21 @@ class UserTest extends TestCase
     }
 
     /** @test */
+    public function password_should_contain_at_least_8_characters() {
+        $user = User::factory()->create(['password'=>null]);
+        $this->actingAs($user);
+
+        $this->assertNull($user->password);
+        $this->post('/settings/password/set', [
+            'password'=>'only',
+        ])->assertSessionHasErrors(['password']);
+        $this->post('/settings/password/set', [
+            'password'=>'hello-darkness',
+            'password_confirmation'=>'hello-darkness'
+        ])->assertOk(); // Invalide confirmation
+    }
+
+    /** @test */
     public function user_can_set_password_only_once() {
         $user = User::factory()->create(['password'=>null]);
         $this->actingAs($user);
@@ -236,5 +252,39 @@ class UserTest extends TestCase
             'password'=>'Hostname1',
             'password_confirmation'=>'Hostname1'
         ])->assertForbidden();
+    }
+
+    /** @test */
+    public function update_password() {
+        $user = User::factory()->create(['password'=>null]);
+        $this->actingAs($user);
+
+        $this->post('/settings/password/set', [
+            'password'=>'Hostname1',
+            'password_confirmation'=>'Hostname1'
+        ]);
+        $this->assertTrue(Hash::check('Hostname1', $user->password));
+        $this->post('/settings/password/update', [
+            'current_password'=>'Hostname1',
+            'password'=>'FlimsyEntropy589',
+            'password_confirmation'=>'FlimsyEntropy589'
+        ]);
+        $this->assertTrue(Hash::check('FlimsyEntropy589', $user->password));
+    }
+
+    /** @test */
+    public function user_password_update_fail_if_current_password_is_wrong() {
+        $user = User::factory()->create(['password'=>null]);
+        $this->actingAs($user);
+
+        $response = $this->post('/settings/password/set', [
+            'password'=>'Hostname1',
+            'password_confirmation'=>'Hostname1'
+        ]);
+        $response = $this->post('/settings/password/update', [
+            'current_password'=>'Hostname89',
+            'password'=>'FlimsyEntropy589',
+            'password_confirmation'=>'FlimsyEntropy589'
+        ])->assertStatus(422);
     }
 }

@@ -95,6 +95,7 @@ Route::middleware('client.scopes')->group(function() {
 
         Route::post('/settings/profile', [UserController::class, 'update_profile_settings']);
         Route::post('/settings/password/set', [UserController::class, 'set_password']);
+        Route::post('/settings/password/update', [UserController::class, 'update_password']);
 
         Route::post('/comments', [CommentController::class, 'store']);
         Route::patch('/comments', [CommentController::class, 'update']);

@@ -104,4 +104,18 @@ class UserController extends Controller
         \Session::flash('message', __('Your password has been saved successfully.'));
         return route('home');
     }
+
+    public function update_password(Request $request) {
+        $this->authorize('update_password', [User::class]);
+        $user = auth()->user();
+
+        if(!Hash::check($request->current_password, $user->password))
+            abort(422, __('Current password is invalid'));
+
+        $data = $this->validate($request, ['password' => ['required', 'confirmed', new ValidPassword()]]);
+
+        $user->update(['password'=>Hash::make($data['password'])]);
+
+        \Session::flash('message', __('Your password has been updated successfully'));
+    }
 }
