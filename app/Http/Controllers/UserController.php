@@ -43,6 +43,14 @@ class UserController extends Controller
             ->with(compact('user'));
     }
 
+    public function account_settings(Request $request) {
+        $page = 'account-settings';
+        $user = auth()->user();
+        return view('settings.account-settings')
+            ->with(compact('page'))
+            ->with(compact('user'));
+    }
+
     public function update_profile_settings(Request $request) {
         $user = auth()->user();
 
@@ -111,7 +119,7 @@ class UserController extends Controller
         $user->update(['password'=>$password]);
 
         \Session::flash('message', __('Your password has been saved successfully. Now, you can use your email and password to login.'));
-        return route('home');
+        return route('discover');
     }
 
     public function update_password(Request $request) {
@@ -158,7 +166,7 @@ class UserController extends Controller
             $request->session()->regenerateToken();
 
             \Session::flash('message', __('Your account has been deactivated successfully'));
-            return route('home');
+            return route('discover');
         }
         
         abort(422, __('Invalid password. Try again'));

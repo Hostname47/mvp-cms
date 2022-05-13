@@ -267,7 +267,91 @@ $('#change-password').on('click', function() {
             change_password_lock = true;
         }
     })
-})
+});
+
+/** deactivate/activate account */
+
+$('#deactivate-account-confirm-input').on('input', function() {
+    console.log('typing');
+    let confirmation_input = $(this);
+    let confirmation_value = $('#deactivate-account-confirm-value').val();
+	let button = $('#deactivate-account');
+    
+    if(confirmation_input.val() == confirmation_value) {
+        if($('#deactivate-password').val() == '') {
+            print_top_message($('#password-required-error').val(), 'error');
+            confirmation_input.val(confirmation_input.val() + ' - x')
+            return;
+        }
+        deactivate_account_confirmed = true;
+        button.removeClass('dark-bs-disabled');
+    } else {
+        button.addClass('dark-bs-disabled');
+        deactivate_account_confirmed = false;
+    }
+});
+
+$('#deactivate-password').on('input', function() {
+    let confirmation_input = $('#deactivate-account-confirm-input');
+    let confirmation_value = $('#deactivate-account-confirm-value').val();
+    let button = $('#deactivate-account');
+
+    if($(this).val() == '' && confirmation_input.val() == confirmation_value) {
+        confirmation_input.val(confirmation_input.val() + ' - x');
+        button.addClass('dark-bs-disabled');
+        deactivate_account_confirmed = false;
+    }
+});
+
+let deactivate_account_confirmed = false;
+let deactivate_account_lock = true;
+$('#deactivate-account').on('click', function() {
+    if(!deactivate_account_confirmed) return;
+
+    let button = $(this);
+    let spinner = button.find('.spinner');
+    let buttonicon = button.find('.icon');
+    let error_container = $('#account-deactivation-box .error-container');
+
+    error_container.addClass('none');
+
+    spinner.addClass('inf-rotate');
+    spinner.removeClass('opacity0');
+    buttonicon.addClass('none');
+    button.addClass('dark-bs-disabled');
+
+    if(!deactivate_account_lock) return;
+    deactivate_account_lock = false;
+
+    $.ajax({
+        type: 'post',
+        url: '/settings/account/deactivate',
+        data: {
+            password: $('#deactivate-password').val()
+        },
+        success: function(response) {
+            window.location.href = response;
+        },
+        error: function(response) {
+            let errorObject = JSON.parse(response.responseText);
+            let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+            if(errorObject.errors) {
+                let errors = errorObject.errors;
+                error = errors[Object.keys(errors)[0]][0];
+            }
+            
+            error_container.find('.message-text').text(error);
+            error_container.removeClass('none');
+            $(window).scrollTop(0);
+
+            $('#deactivate-account-confirm-input').trigger('input'); // Reverify input and confirmation to remove disabled style from button
+            spinner.removeClass('inf-rotate');
+            spinner.addClass('opacity0');
+            buttonicon.removeClass('none');
+            deactivate_account_lock = true;
+        }
+    });
+});
 
 function password_condition(condition, error) {
     if(!condition) {
