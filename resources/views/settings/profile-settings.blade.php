@@ -20,7 +20,7 @@
             </a>
             <svg class="size10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path d="M224.31,239l-136-136a23.9,23.9,0,0,0-33.9,0l-22.6,22.6a23.9,23.9,0,0,0,0,33.9l96.3,96.5-96.4,96.4a23.9,23.9,0,0,0,0,33.9L54.31,409a23.9,23.9,0,0,0,33.9,0l136-136a23.93,23.93,0,0,0,.1-34Z"></path></svg>
             <a href="{{ route('user.settings') }}" class="page-path">
-                <span>{{ __('settings') }}</span>
+                <span>{{ __('profile settings') }}</span>
             </a>
         </div>
         <div class="align-center mb8">
@@ -92,11 +92,7 @@
             <input type="hidden" id="username-required-error-message" value="{{ __('Username field is required') }}" autocomplete="off">
             <input type="hidden" id="username-length-error-message" value="{{ __('Username should have at least 6 characters') }}" autocomplete="off">
 
-            <div class="settings-links">
-                <a href="{{ route('user.settings') }}" class="button-style-2 @if($page=='profile-settings') blue @endif">{{ __('profile') }}</a>
-                <a href="{{ route('password.settings') }}" class="button-style-2">{{ __('password settings') }}</a>
-                <a href="{{ route('account.settings') }}" class="button-style-2">{{ __('account settings') }}</a>
-            </div>
+            @include('partials.settings.settings-links', ['page'=>$page])
 
             <div class="avatar-and-meta-container">
                 <div id="avatar-area">

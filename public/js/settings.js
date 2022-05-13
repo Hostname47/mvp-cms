@@ -160,3 +160,68 @@ function validate_avatar_image_type(file){
 
     return false;
 }
+
+/** password settings */
+let set_password_lock = true;
+$('#set-password-button').on('click', function() {
+    if(!set_password_lock) return;
+    set_password_lock = false;
+
+    let button = $(this);
+    let buttonicon = button.find('.icon');
+    let spinner = button.find('.spinner');
+
+	let password = $('#password').val().trim();
+	let password_confirmation = $('#password_confirmation').val().trim();
+
+	$('.error-container').addClass('none');
+
+    if(!password_condition(password !== '' && password_confirmation !== '', $('#password-required-error').val())) return;
+	if(!password_condition(password.length >= 8, $('#password-length-error').val())) return;
+	if(!password_condition(password === password_confirmation, $('#password-confirmation-error').val())) return;
+
+    button.addClass('dark-bs-disabled');
+    spinner.addClass('inf-rotate');
+    spinner.removeClass('opacity0');
+    buttonicon.addClass('none');
+
+    $.ajax({
+        type: 'post',
+        url: '/settings/password/set',
+        data: {
+			password: password,
+			password_confirmation: password_confirmation
+		},
+        success: function(response) {
+            location.reload();
+        },
+        error: function(response) {
+            let errorObject = JSON.parse(response.responseText);
+            let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+            if(errorObject.errors) {
+                let errors = errorObject.errors;
+                error = errors[Object.keys(errors)[0]][0];
+            }
+            print_top_message(error, 'error');
+
+            button.removeClass('dark-bs-disabled');
+            spinner.removeClass('inf-rotate');
+            spinner.addClass('opacity0');
+            buttonicon.removeClass('none');
+
+            save_user_profile_settings_lock = true;
+        }
+    });
+});
+
+function password_condition(condition, error) {
+    if(!condition) {
+        $('.error-container .message-text').text(error);
+        $('.error-container').removeClass('none');
+        $(window).scrollTop(0);
+        set_password_lock = true;
+        return false;
+    }
+
+    return true;
+}

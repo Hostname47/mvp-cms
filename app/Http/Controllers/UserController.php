@@ -34,6 +34,14 @@ class UserController extends Controller
             ->with(compact('page'));
     }
 
+    public function password_settings(Request $request) {
+        $page = 'password-settings';
+        $user = auth()->user();
+        return view('settings.password-settings')
+            ->with(compact('page'))
+            ->with(compact('user'));
+    }
+
     public function update_profile_settings(Request $request) {
         $user = auth()->user();
 
@@ -101,7 +109,7 @@ class UserController extends Controller
         $password = Hash::make($data['password']);
         $user->update(['password'=>$password]);
 
-        \Session::flash('message', __('Your password has been saved successfully.'));
+        \Session::flash('message', __('Your password has been saved successfully. Now, you can use your email and password to login.'));
         return route('home');
     }
 
