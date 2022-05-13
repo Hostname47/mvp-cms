@@ -146,7 +146,8 @@ class UserController extends Controller
          */
         if(is_null($user) || $user->status != 'deactivated') abort(404);
 
-        return view('settings.account-activation');
+        return view('settings.account-activation')
+            ->with(compact('user'));
     }
 
     public function deactivate_account(Request $request) {

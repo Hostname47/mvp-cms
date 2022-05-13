@@ -269,10 +269,9 @@ $('#change-password').on('click', function() {
     })
 });
 
-/** deactivate/activate account */
+/** deactivate account */
 
 $('#deactivate-account-confirm-input').on('input', function() {
-    console.log('typing');
     let confirmation_input = $(this);
     let confirmation_value = $('#deactivate-account-confirm-value').val();
 	let button = $('#deactivate-account');
@@ -283,8 +282,8 @@ $('#deactivate-account-confirm-input').on('input', function() {
             confirmation_input.val(confirmation_input.val() + ' - x')
             return;
         }
-        deactivate_account_confirmed = true;
         button.removeClass('dark-bs-disabled');
+        deactivate_account_confirmed = true;
     } else {
         button.addClass('dark-bs-disabled');
         deactivate_account_confirmed = false;
@@ -351,6 +350,84 @@ $('#deactivate-account').on('click', function() {
             deactivate_account_lock = true;
         }
     });
+});
+
+/** activate account */
+$('#activate-account-confirm-input').on('input', function() {
+    let confirmation_input = $(this);
+    let confirmation_value = $('#activate-account-confirm-value').val();
+	let button = $('#activate-account');
+    
+    if(confirmation_input.val() == confirmation_value) {
+        if($('#activate-password').val() == '') {
+            print_top_message($('#password-required-error').val(), 'error');
+            confirmation_input.val(confirmation_value + ' - x')
+            return;
+        }
+        button.removeClass('green-bs-disabled');
+        activate_account_confirmed = true;
+    } else {
+        button.addClass('green-bs-disabled');
+        activate_account_confirmed = false;
+    }
+});
+
+$('#activate-password').on('input', function() {
+    let confirmation_input = $('#activate-account-confirm-input');
+    let confirmation_value = $('#activate-account-confirm-value').val();
+    let button = $('#activate-account');
+
+    if($(this).val() == '' && confirmation_input.val() == confirmation_value) {
+        confirmation_input.val(confirmation_value + ' - x');
+        button.addClass('green-bs-disabled');
+        activate_account_confirmed = false;
+    }
+});
+
+let activate_account_confirmed = false;
+let activate_account_lock = true;
+$('#activate-account').on('click', function() {
+    if(!activate_account_confirmed) return;
+
+    let button = $(this);
+    let spinner = button.find('.spinner');
+    let buttonicon = button.find('.icon');
+    let error_container = $('#activation-error-container');
+
+    spinner.addClass('inf-rotate');
+    spinner.removeClass('opacity0');
+    buttonicon.addClass('none');
+    button.addClass('green-bs-disabled');
+
+    if(!activate_account_lock) return;
+    activate_account_lock = false;
+
+    $.ajax({
+        type: 'post',
+        url: '/settings/account/activate',
+        data: {
+            password: $('#activate-password').val()
+        },
+        success: function(response) {
+            window.location.href = response;
+        },
+        error: function(response) {
+            let errorObject = JSON.parse(response.responseText);
+            let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+            if(errorObject.errors) {
+                let errors = errorObject.errors;
+                error = errors[Object.keys(errors)[0]][0];
+            }
+            error_container.find('.message-text').text(error);
+            error_container.removeClass('none');
+
+            button.removeClass('green-bs-disabled');
+            spinner.removeClass('inf-rotate');
+            spinner.addClass('opacity0');
+            buttonicon.removeClass('none');
+            activate_account_lock = true;
+        }
+    })
 });
 
 function password_condition(condition, error) {
