@@ -110,7 +110,7 @@ function handle_share_comment(comment) {
                     handle_comment_events(comment);
                     left_bottom_notification($('#comment-shared-successfully').val());
     
-                    $('.post-comments-count').text(parseInt($('.post-comments-count').text()) + 1);
+                    $('.post-comments-count').text(parseInt($('#comments-title .post-comments-count').text(), 10) + 1);
                 },
                 error: function(response) {
                     let errorObject = JSON.parse(response.responseText);

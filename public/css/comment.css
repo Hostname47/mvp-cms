@@ -93,6 +93,7 @@
 .commenter-profile-link {
     width: 28px;
     height: 28px;
+    min-height: 28px;
 }
 
 .commenter-profile-link .f {

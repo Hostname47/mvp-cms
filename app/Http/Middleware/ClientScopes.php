@@ -4,8 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use App\Models\{Category,Post};
-use App\Scopes\{ExcludePrivatePosts,OnlyLiveCategories,OnlyPublishedPosts};
+use App\Models\{Category,Post,User};
+use App\Scopes\{ExcludePrivatePosts,OnlyLiveCategories,OnlyPublishedPosts,
+    ExcludeDeactivatedUsers};
 
 class ClientScopes
 {
@@ -15,7 +16,10 @@ class ClientScopes
         ],
         Post::class => [
             ExcludePrivatePosts::class,
-            OnlyPublishedPosts::class
+            OnlyPublishedPosts::class,
+        ],
+        User::class => [
+            ExcludeDeactivatedUsers::class
         ]
     ];
 

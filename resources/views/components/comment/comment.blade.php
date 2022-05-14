@@ -5,9 +5,15 @@
         <svg class="size16 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M114.53,95.48,96.73,113.3,49.39,65.89V95.12H26.31V86.59c0-15.65,0-31.31,0-47,0-8.87,4.42-13.27,13.28-13.3,18.35-.05,36.69,0,55.43,0V49H67.54Zm105.65,138.2c9.18,0,13.48-4.4,13.5-13.65q.06-25.64,0-51.28a36.52,36.52,0,0,0-.36-3.75H210.58v28.26l-46.64-46.68L146,164.35l46.64,46.55H164.77v22.79C183.54,233.69,201.86,233.73,220.18,233.68ZM182.86,92.2,168.18,76.77,76.67,168.29,92,183Z"/></svg>
     </div>
     <div class="commenter-avatar-and-threadline">
-        <a href="" class="commenter-profile-link">
+        @if($comment->user)
+        <a href="{{ route('user.profile', ['user'=>$comment->user->username]) }}" class="commenter-profile-link">
             <img src="{{ $comment->user->avatar(100) }}" class="commenter-avatar" alt="">
         </a>
+        @else
+        <div class="commenter-profile-link commenter-avatar full-center">
+            <svg class="f" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M56.69,31H205.78C204.5,44.71,203.3,57.53,202,71.37L191.28,72c-.83-1.56-1.44-2.25-1.57-3-4-24.39,1.61-21.18-25.79-24.67a135.39,135.39,0,0,0-14.38-.91c-7.85-.15-15.71,0-25,0V120.8c13.22,0,27.24,1.45,40.65-.77,4.86-.81,8.27-10.4,10.27-18.34l12.17-.62v59.62H176.14c-.54-.81-1.35-1.48-1.44-2.24-2.6-21.54-2.58-21.67-25-22.86-8.2-.43-16.44-.07-25.59-.07,0,24.42-.31,48.26.15,72.08.19,9.88,8.6,9,15.49,10,6.07.88,15.59-1.06,11.61,11.47h-94c-1.32-9.18-1.36-10,6.22-10.34,12.28-.49,16.17-6.13,16-18.13-.53-46.73-.38-93.46-.16-140.19.15-11.12-2-18.7-15.42-18.78-3.26,0-6.5-4.93-9.74-7.6Z"/></svg>
+        </div>
+        @endif
         <div class="comment-threadline appearence-toggle shrink">
             <div class="comment-threadline-inner"></div>
         </div>
@@ -15,7 +21,11 @@
     <div class="comment-section">
         <div class="comment-meta">
             <!-- commenter name -->
+            @if($comment->user)
             <span class="commenter-name">{{ $comment->user->fullname }}</span>
+            @else
+            <span class="commenter-name light-gray">{{ __('fibonashi user') }}</span>
+            @endif
             <!-- comment date -->
             <div class="relative tooltip-box">
                 <div class="align-center comment-date tooltip-pointer">

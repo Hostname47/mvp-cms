@@ -87,11 +87,11 @@
                 </div>
                 <div class="author-component author-component-skeleton none">
                     <a href="" class="flex mr6">
-                        <img src="{{ $author->avatar(100) }}" class="author-avatar" alt="">
+                        <img src="" class="author-avatar" alt="">
                     </a>
                     <div>
-                        <span class="name"><a href="" class="blue no-underline fullname">{{ $author->fullname }}</a> - <span class="posts-count">({{ $author->posts()->count() . ' ' . __('posts') }})</span></span>
-                        <span class="username">{{ '@' . $author->username }}</span>
+                        <span class="name"><a href="" class="blue no-underline fullname"></a> - (<span class="posts-count"></span>)</span>
+                        <span class="username"></span>
                     </div>
                 </div>
             </div>
