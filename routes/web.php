@@ -87,7 +87,7 @@ Route::delete('/admin/tags', [TagController::class, 'delete']);
 Route::get('/login/{provider}', [OAuthController::class, 'redirectToProvider']);
 Route::get('/{provider}/callback', [OAuthController::class, 'handleProviderCallback']);
 
-Route::middleware('client.scopes')->group(function() {
+Route::middleware(['client.scopes', 'account.status'])->group(function() {
     Route::middleware(['auth'])->group(function () {
         Route::get('/activities', [UserController::class, 'activities'])->name('user.activities');
         Route::get('/settings/profile', [UserController::class, 'profile_settings'])->name('user.settings');
@@ -98,9 +98,9 @@ Route::middleware('client.scopes')->group(function() {
         Route::post('/settings/password/set', [UserController::class, 'set_password']);
         Route::post('/settings/password/update', [UserController::class, 'update_password']);
 
-        Route::get('/settings/account/activate', [UserController::class, 'activate_account_page'])->withoutMiddleware([AccountStatus::class])->name('user.account.activate');
-        Route::post('/settings/account/activate', [UserController::class, 'activate_account'])->withoutMiddleware([AccountStatus::class]);
-        Route::post('/settings/account/deactivate', [UserController::class, 'deactivate_account'])->withoutMiddleware([AccountStatus::class]);
+        Route::get('/settings/account/activate', [UserController::class, 'activate_account_page'])->withoutMiddleware(['client.scopes','account.status'])->name('user.account.activate');
+        Route::post('/settings/account/activate', [UserController::class, 'activate_account'])->withoutMiddleware(['account.status','client.scopes']);
+        Route::post('/settings/account/deactivate', [UserController::class, 'deactivate_account'])->withoutMiddleware(['account.status','client.scopes']);
 
         Route::post('/comments', [CommentController::class, 'store']);
         Route::patch('/comments', [CommentController::class, 'update']);
@@ -151,6 +151,3 @@ Route::middleware('client.scopes')->group(function() {
     Route::get('/{category:slug}/{post:slug}/v', [PostController::class, 'view'])->name('view.post');
     Route::get('/posts/fetch', [PostController::class, 'fetch']);
 });
-
-Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
-    ->name('logout')->withoutMiddleware([AccountStatus::class]);
