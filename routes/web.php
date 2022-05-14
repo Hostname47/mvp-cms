@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use App\Http\Controllers\{IndexController, AdminController, PostController, CategoryController,
     MediaController, OAuthController, TagController, RoleController, PermissionController, RPManagement,
     NewsletterController, CommentController, ClapController, ReportController, SearchController,
@@ -88,7 +89,6 @@ Route::get('/{provider}/callback', [OAuthController::class, 'handleProviderCallb
 
 Route::middleware('client.scopes')->group(function() {
     Route::middleware(['auth'])->group(function () {
-        Route::get('/users/{user:username}/profile', [UserController::class, 'profile'])->name('user.profile');
         Route::get('/activities', [UserController::class, 'activities'])->name('user.activities');
         Route::get('/settings/profile', [UserController::class, 'profile_settings'])->name('user.settings');
         Route::get('/settings/passwords', [UserController::class, 'password_settings'])->name('password.settings');
@@ -128,6 +128,8 @@ Route::middleware('client.scopes')->group(function() {
     Route::view('/privacy', 'privacy')->name('privacy');
     Route::view('/guidelines', 'guidelines')->name('guidelines');
     Route::view('/credits', 'credits')->name('credits');
+    
+    Route::get('/users/{user:username}/profile', [UserController::class, 'profile'])->name('user.profile');
 
     Route::get('/faqs', [FaqController::class, 'index'])->name('faqs');
     Route::post('/faqs', [FaqController::class, 'store']);
@@ -149,3 +151,6 @@ Route::middleware('client.scopes')->group(function() {
     Route::get('/{category:slug}/{post:slug}/v', [PostController::class, 'view'])->name('view.post');
     Route::get('/posts/fetch', [PostController::class, 'fetch']);
 });
+
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+    ->name('logout')->withoutMiddleware([AccountStatus::class]);
