@@ -1,0 +1,88 @@
+#activities-box {
+    margin: 12px 0 26px 0;
+}
+
+#first-section {
+    display: flex;
+}
+
+#first-section .avatar {
+    width: 140px;
+    height: 140px;
+    border-radius: 3px;
+}
+
+#first-section .fullname {
+    font-size: 32px;
+    font-weight: 400;
+    color: #202224;
+    margin: 0;
+}
+
+#first-section .username {
+    display: flex;
+    font-size: 18px;
+    color: #3d4042;
+    margin-bottom: 8px;
+}
+
+#first-section .about {
+    display: flex;
+    font-size: 14px;
+    color: #3d4042;
+    margin: 14px 0;
+}
+
+#first-section .meta-section {
+    margin-left: 10px;
+}
+
+.metas-wrapper {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.meta-icon {
+    width: 18px;
+    height: 18px;
+    fill: #585d60;
+}
+
+.meta-text {
+    margin-top: 2px;
+    margin-left: 5px;
+    color: #585d60;
+}
+
+#first-section .links {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+    height: max-content;
+}
+
+#activities-section {
+    margin: 26px 0;
+}
+
+#activities-section .links {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 18px;
+}
+
+#activities-section .links .link {
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.tab-selected {
+    background-color: #e5ecf2;
+    padding: 8px 14px;
+    border-radius: 16px;
+    color: #202020 !important;
+}

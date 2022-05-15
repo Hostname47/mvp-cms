@@ -95,6 +95,10 @@ class User extends Authenticatable
         return (bool) $this->permissions()->where('slug', $slug)->count() > 0;
     }
 
+    public function about($empty = '--') {
+        return $this->empty ?? $empty;
+    }
+
     public function getJoinDateHumansAttribute() {
         return (new Carbon($this->updated_at))->diffForHumans();
     }

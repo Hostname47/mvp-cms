@@ -30,10 +30,12 @@ class UserController extends Controller
 
     public function activities(Request $request) {
         $user = auth()->user();
-        $roles = $user->roles;
-        $hasrole = $roles->count() > 0;
-        $hrole = $roles->sortBy('priority')->first();
-        $posts = $user->posts()->with(['author','author.roles','categories','tags'])->orderBy('published_at', 'desc')->paginate(10);
+        $tab = 'clapped-posts';
+        if($request->has('tab')) {
+            $tab = $request->validate([
+                'tab'=>[Rule::in(['clapped-posts','saved-posts','comments','corrections'])]
+            ])['tab'];
+        }
 
         return view('user.activities')
             ->with(compact('user'));
