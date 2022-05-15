@@ -101,6 +101,7 @@ Route::middleware(['client.scopes', 'account.status'])->group(function() {
         Route::get('/settings/account/activate', [UserController::class, 'activate_account_page'])->withoutMiddleware(['client.scopes','account.status'])->name('user.account.activate');
         Route::post('/settings/account/activate', [UserController::class, 'activate_account'])->withoutMiddleware(['account.status','client.scopes']);
         Route::post('/settings/account/deactivate', [UserController::class, 'deactivate_account'])->withoutMiddleware(['account.status','client.scopes']);
+        Route::post('/settings/account/delete', [UserController::class, 'destroy']);
 
         Route::post('/comments', [CommentController::class, 'store']);
         Route::patch('/comments', [CommentController::class, 'update']);

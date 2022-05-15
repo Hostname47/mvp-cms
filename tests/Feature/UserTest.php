@@ -361,4 +361,23 @@ class UserTest extends TestCase
         $this->actingAs($user);
         $this->post('/settings/account/activate', ['password'=>'Hostname47'])->assertForbidden();
     }
+
+    /** @test */
+    public function user_delete_his_account() {
+        $user = User::factory()->create(['password'=>Hash::make('Hostname47')]);
+        $user = $user->refresh();
+        $this->actingAs($user);
+        $this->post('/settings/account/delete', ['password'=>'Hostname47']);
+        $user = User::withTrashed()->find($user->id);
+        $this->assertEquals('deleted', $user->status);
+        $this->assertNotNull($user->deleted_at);
+    }
+
+    /** @test */
+    public function user_cannot_delete_his_account_with_invalid_password() {
+        $user = User::factory()->create(['password'=>Hash::make('Hostname47')]);
+        $this->actingAs($user);
+        $this->post('/settings/account/delete', ['password'=>'Hostname48'])
+            ->assertStatus(422);
+    }
 }

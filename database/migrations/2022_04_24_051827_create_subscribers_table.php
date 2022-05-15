@@ -20,7 +20,7 @@ class CreateSubscribersTable extends Migration
             $table->boolean('status')->default(1);
             $table->ipAddress('ip');
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
             $table->timestamps();
         });
     }
