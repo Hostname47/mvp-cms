@@ -32,7 +32,7 @@
                     <p class="no-margin fs12 light-gray">{{ auth()->user()->username }}</p>
                     <div class="mt8 toggle-container none">
                         <a href="{{ route('user.profile', ['user'=>auth()->user()->username]) }}" class="my8 link">{{__('profile')}}</a>
-                        <a href="" class="my8 link">{{__('activities')}}</a>
+                        <a href="{{ route('user.activities') }}" class="my8 link">{{__('activities')}}</a>
                         <a href="{{ route('user.settings') }}" class="my8 link">{{__('settings')}}</a>
                     </div>
                 </div>
@@ -99,9 +99,9 @@
         </div>
         <span class="section-title">MORE</span>
         <div class="section">
-            <a href="{{ __('faqs') }}" class="link my12" style="margin-top: 0;">{{__('FAQs')}}</a>
-            <a href="{{ __('guidelines') }}" class="link my12">{{__('Guidelines')}}</a>
-            <a href="{{ __('privacy') }}" class="link my12">{{__('Privacy Policy')}}</a>
+            <a href="{{ route('faqs') }}" class="link my12" style="margin-top: 0;">{{__('FAQs')}}</a>
+            <a href="{{ route('guidelines') }}" class="link my12">{{__('Guidelines')}}</a>
+            <a href="{{ route('privacy') }}" class="link my12">{{__('Privacy Policy')}}</a>
         </div>
         <div class="move-to-bottom mr8">
             <div class="flex align-center dark fs13" style="letter-spacing: 1.2px;">

@@ -42,6 +42,7 @@ class FortifyServiceProvider extends ServiceProvider
                 if(Hash::check($request->password, $user->password)) {
                     switch($user->status) {
                         case 'active':
+                        case 'deactivated':
                             return $user;
                             break;
                         case 'deleted':
