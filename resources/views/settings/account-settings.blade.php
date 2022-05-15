@@ -34,7 +34,7 @@
                 <div class="close-parent close-informative-message-style">✖</div>
             </div>
         @endif
-        @if(Session::has('errors'))
+        @if(Session::has('auth-error'))
             <div class="informative-message-container align-center relative my8">
                 <div class="informative-message-container-left-stripe imcls-red"></div>
                 <div class="no-margin fs13 message-text">{!! Session::get('errors')->first() !!}</div>
@@ -114,27 +114,27 @@
                 </div>
 
                 <!-- delete account error container -->
-                <div class="informative-message-container align-center error-container relative none my8">
+                <div id="delete-account-error-container" class="informative-message-container align-center error-container relative none my8">
                     <div class="informative-message-container-left-stripe imcls-red"></div>
                     <div class="no-margin fs13 message-text"></div>
                     <div class="close-parent close-informative-message-style">✖</div>
                 </div>
-
-                <div class="my8 typical-section-style">
-                    <div class="flex">
-                        <svg class="size14 mr8" style="min-width: 14px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
-                        <p class="no-margin bold dark fs13">{{ __("This will permanently, irreversibly remove content from your account and close it permanently") }}.</p>
-                    </div>
-                    <p class="no-margin dark fs13 mt8">{{ __("Once the account is deleted, all your resources and activities will be removed from our system permanently. Your username and email will remain reserved to prevent future impersonations") }}.</p>
-                    <p class="no-margin dark fs13 mt8">{{ __("Please note that if you are an author or has publishing posts permission, your posts will only detached from your account and still published in our website. If you want to remove your posts as well, please contact us") }}.</p>
-                </div>
+                
                 @if(is_null($user->password))
                 <div class="section-style flex my8">
-                    <svg class="size14 mt2 mr8" style="min-width: 14px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="size14 mr8"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"></path></svg>
-                    <p class="no-margin fs12 lh15">{{ __("Deleting account require your account to have an associated password to confirm and make sure you are the one who take this action") }}. <a href="{{ route('user.passwords.settings') }}" class="blue bold fs12 no-underline">{{ __('Click here') }}</a> {{ __('to create a password for your account') }}</p>
+                    <svg class="size14 mt4 mr8" style="min-width: 14px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="size14 mr8"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"></path></svg>
+                    <p class="no-margin fs14 lh15">{{ __("Account deletion require your account to have a password") }}. <a href="{{ route('password.settings') }}" class="blue bold fs12 no-underline">{{ __('Click here') }}</a> {{ __('to create a password for your account') }}</p>
                 </div>
                 @else
                 <div id="delete-account-container">
+                    <div class="my8 typical-section-style">
+                        <div class="flex">
+                            <svg class="size14 mr8" style="min-width: 14px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                            <p class="no-margin bold dark fs13">{{ __("This will permanently, irreversibly remove content from your account and close it permanently") }}.</p>
+                        </div>
+                        <p class="no-margin dark fs13 mt8">• {{ __("Once the account is deleted, all your resources and activities will be removed from our system permanently. Your username and email will remain reserved to prevent future impersonations") }}.</p>
+                        <p class="no-margin dark fs13 mt8">• {{ __("Please note that if you are an author or has publishing posts permission, your posts will only detached from your account and still published in our website. If you want to remove your posts as well, please contact us") }}.</p>
+                    </div>
                     <p class="no-margin mb4 fs13">{{ __("Please make sure you want to delete your account by confirming your password") }}.</p>
                     <div style="margin-top: 14px;">
                         <label for="delete-account-password" class="label">{{ __('Current password') }}</label>
@@ -152,7 +152,7 @@
 
                     <div id="delete-account" class="typical-button-style red-bs red-bs-disabled align-center width-max-content" style="margin-bottom: 24px;">
                         <div class="relative size14 mr4">
-                            <svg class="size12 icon-above-spinner" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M300,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H300a12,12,0,0,0-12,12V404A12,12,0,0,0,300,416ZM464,80H381.59l-34-56.7A48,48,0,0,0,306.41,0H205.59a48,48,0,0,0-41.16,23.3l-34,56.7H48A16,16,0,0,0,32,96v16a16,16,0,0,0,16,16H64V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48h0V128h16a16,16,0,0,0,16-16V96A16,16,0,0,0,464,80ZM203.84,50.91A6,6,0,0,1,209,48h94a6,6,0,0,1,5.15,2.91L325.61,80H186.39ZM400,464H112V128H400ZM188,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H188a12,12,0,0,0-12,12V404A12,12,0,0,0,188,416Z"></path></svg>
+                            <svg class="size12 icon" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M300,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H300a12,12,0,0,0-12,12V404A12,12,0,0,0,300,416ZM464,80H381.59l-34-56.7A48,48,0,0,0,306.41,0H205.59a48,48,0,0,0-41.16,23.3l-34,56.7H48A16,16,0,0,0,32,96v16a16,16,0,0,0,16,16H64V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48h0V128h16a16,16,0,0,0,16-16V96A16,16,0,0,0,464,80ZM203.84,50.91A6,6,0,0,1,209,48h94a6,6,0,0,1,5.15,2.91L325.61,80H186.39ZM400,464H112V128H400ZM188,416h24a12,12,0,0,0,12-12V188a12,12,0,0,0-12-12H188a12,12,0,0,0-12,12V404A12,12,0,0,0,188,416Z"></path></svg>
                             <svg class="spinner size14 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
                                 <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
                                 <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>

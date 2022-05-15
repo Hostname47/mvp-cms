@@ -34,15 +34,29 @@ class FortifyServiceProvider extends ServiceProvider
     public function boot()
     {
         Fortify::authenticateUsing(function (Request $request) {
-            $user = User::where('email', $request->email)
+            $user = User::withTrashed()->where('email', $request->email)
                 ->orWhere('username', $request->email)
                 ->first();
 
-            if($user &&
-                Hash::check($request->password, $user->password)) {
-                return $user;
+            if($user) {
+                if(Hash::check($request->password, $user->password)) {
+                    switch($user->status) {
+                        case 'active':
+                            return $user;
+                            break;
+                        case 'deleted':
+                            \Session::flash('has-auth-error', 1);
+                            \Session::flash('auth-error', __('This account has already been deleted permanently.'));
+                            break;
+                        case 'banned':
+                            /** Handle banned user reaction */
+                            break;
+                    }
+                } else {
+                    \Session::flash('has-auth-error', 1);
+                }
             } else
-                \Session::flash('auth-error', 1);
+                \Session::flash('has-auth-error', 1);
         });
 
         // register new LoginResponse

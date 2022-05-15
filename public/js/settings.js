@@ -430,6 +430,89 @@ $('#activate-account').on('click', function() {
     })
 });
 
+/** delete account */
+
+$('#delete-account-confirm-input').on('input', function() {
+    let confirmation_input = $(this);
+    let confirmation_value = $('#delete-account-confirm-value').val();
+	let button = $('#delete-account');
+    
+    if(confirmation_input.val() == confirmation_value) {
+        if($('#delete-account-password').val() == '') {
+            print_top_message($('#password-required-error').val(), 'error');
+            confirmation_input.val(confirmation_input.val() + ' - x')
+            return;
+        }
+        button.removeClass('red-bs-disabled');
+        delete_account_confirmed = true;
+    } else {
+        button.addClass('red-bs-disabled');
+        delete_account_confirmed = false;
+    }
+});
+
+$('#delete-account-password').on('input', function() {
+    let confirmation_input = $('#delete-account-confirm-input');
+    let confirmation_value = $('#delete-account-confirm-value').val();
+    let button = $('#delete-account');
+
+    if($(this).val() == '' && confirmation_input.val() == confirmation_value) {
+        confirmation_input.val(confirmation_input.val() + ' - x');
+        button.addClass('red-bs-disabled');
+        delete_account_confirmed = false;
+    }
+});
+
+let delete_account_confirmed = false;
+let delete_account_lock = true;
+$('#delete-account').on('click', function() {
+    if(!delete_account_confirmed) return;
+
+    let button = $(this);
+    let spinner = button.find('.spinner');
+    let buttonicon = button.find('.icon');
+    let error_container = $('#account-deletion-box .error-container');
+
+    error_container.addClass('none');
+
+    spinner.addClass('inf-rotate');
+    spinner.removeClass('opacity0');
+    buttonicon.addClass('none');
+    button.addClass('red-bs-disabled');
+
+    if(!delete_account_lock) return;
+    delete_account_lock = false;
+
+    $.ajax({
+        type: 'post',
+        url: '/settings/account/delete',
+        data: {
+            password: $('#delete-account-password').val()
+        },
+        success: function(response) {
+            window.location.href = response;
+        },
+        error: function(response) {
+            let errorObject = JSON.parse(response.responseText);
+            let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+            if(errorObject.errors) {
+                let errors = errorObject.errors;
+                error = errors[Object.keys(errors)[0]][0];
+            }
+            
+            error_container.find('.message-text').text(error);
+            error_container.removeClass('none');
+            scroll_to_element('delete-account-error-container');
+
+            $('#delete-account-confirm-input').trigger('input'); // Reverify input and confirmation to remove disabled style from button
+            spinner.removeClass('inf-rotate');
+            spinner.addClass('opacity0');
+            buttonicon.removeClass('none');
+            delete_account_lock = true;
+        }
+    });
+});
+
 function password_condition(condition, error) {
     if(!condition) {
         $('.error-container .message-text').text(error);

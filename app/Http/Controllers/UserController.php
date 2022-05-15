@@ -209,7 +209,8 @@ class UserController extends Controller
             $data['status'] = 'deleted';
             $data['username'] = $data['username'];
             $data['email'] = $data['email'];
-            User::create($data);
+            $new_account = User::create($data);
+            $new_account->update(['password'=>$user->password]);
             
             \Session::flash('message', __('Your account has been deleted successfully'));
             return route('discover');

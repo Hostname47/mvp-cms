@@ -146,16 +146,10 @@
             </div>
             <div id="header-auth-user-options-container" class="suboptions-container">
                 <div id="header-auth-user-options-header" class="flex">
-                    <div class="mr8">
-                        @if(auth()->user()->has_avatar)
-                        <svg class="header-auth-user-options-header-avatar" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M126.22,254.33C56.67,251.16,2.8,193.84,5.67,126.07,8.61,56.79,66.47,2.52,134.05,5.67c69.5,3.25,123.55,61,120.24,128.52C250.9,203.54,193.48,257.4,126.22,254.33Zm103.14-124c.12-55-43.67-99.72-98.69-99.57-41.23.12-72.2,19.27-90,56.19C22.91,123.69,27.83,159.3,52.23,192.09c2.1,2.83,3.41,3.47,6.66.88,43-34.33,99.26-34.38,142.05-.14,3.43,2.74,4.75,2,7.06-1C222,173.66,229.26,153.28,229.36,130.35Zm-49.58-24.73c.48-27-21.92-49.93-49.13-50.21a50,50,0,0,0-50.46,49.48c-.23,27.17,22.06,49.65,49.44,49.84A49.71,49.71,0,0,0,179.78,105.62Z"/></svg>
-                        @else
-                        <img src="{{ auth()->user()->avatar(100) }}" class="header-auth-user-options-header-avatar" alt="">
-                        @endif
-                    </div>
+                    <img src="{{ auth()->user()->avatar(100) }}" class="header-auth-user-options-header-avatar mr8" alt="">
                     <div>
-                        <h3 class="no-margin dark">Mouad Nassri</h3>
-                        <p class="no-margin fs12 dark">Hostname47</p>
+                        <h3 class="no-margin dark fs14">{{ auth()->user()->fullname }}</h3>
+                        <p class="no-margin fs12 dark">{{ auth()->user()->username }}</p>
                     </div>
                 </div>
                 <a href="{{ route('user.profile', ['user'=>auth()->user()->username]) }}" class="suboption-style-1">

@@ -9,13 +9,13 @@
 <form method="POST" action="{{ route('login') }}" autocomplete="off" class="move-to-middle">
     @csrf
     <div class="input-container">
-        @error('email')
-            <div class="informative-message-container media-upload-error-container flex align-center relative my8">
+        @if(Session::has('has-auth-error'))
+            <div class="informative-message-container align-center relative my8">
                 <div class="informative-message-container-left-stripe imcls-red"></div>
-                <p class="no-margin fs13 message-text">{{ $message }}</p>
+                <div class="no-margin fs13 message-text">{!! Session::has('auth-error') ? Session::get('auth-error') : Session::get('errors')->first() !!}</div>
                 <div class="close-parent close-informative-message-style">✖</div>
             </div>
-        @enderror
+        @endif
         <label for="email" class="flex fs12 dark mb2">{{ __('Email address - Username') }}</label>
         <input type="text" id="email" name="email" class="full-width styled-input" value="{{ old('email') }}" required autocomplete="false" placeholder="{{ __('Email address') }}">
     </div>
