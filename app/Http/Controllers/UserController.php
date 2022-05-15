@@ -202,17 +202,13 @@ class UserController extends Controller
             $data = $user->toArray();
             $user->forceDelete(); // Look at boot method in User model to check cleanups
             /**
-             * I cannot just recreate the same user with the same data for now with 
-             * columns like username and email because they are unique and the test is hang when
-             * using the same email or username even though we force delete the user above.
-             * It looks like the user does not deleted completely from database when the 
-             * following create run due to a transaction issue or something else in our test.
-             * 
-             * For now we'll append asterisk to unique columns just to make it work
+             * Here we force delete the user account to run cascading delete to clean all related
+             * relationships. After that we recreate the user with the same data by mark its account
+             * as deleted (soft delete it and give it deleted status).
              */
             $data['status'] = 'deleted';
-            $data['username'] = $data['username'] . '*';
-            $data['email'] = $data['email'] . '*';
+            $data['username'] = $data['username'];
+            $data['email'] = $data['email'];
             User::create($data);
             
             \Session::flash('message', __('Your account has been deleted successfully'));

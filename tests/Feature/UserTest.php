@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Tests\TestCase;
-use App\Models\{User};
+use App\Models\{User,Category,Post,Comment,Clap,AuthorRequest,ContactMessage,Faq,Permission,Role,Report,Subscriber};
 use Laravel\Socialite\Contracts\Factory as Socialite;
 use Laravel\Socialite\Two\GoogleProvider;
 use Laravel\Socialite\Two\User as SocialUser;
@@ -33,6 +33,7 @@ class UserTest extends TestCase
 
     public function tearDown():void {
         (new Filesystem)->cleanDirectory(storage_path('app/testing'));
+        parent::tearDown();
     }
 
     /** @test */
@@ -379,5 +380,57 @@ class UserTest extends TestCase
         $this->actingAs($user);
         $this->post('/settings/account/delete', ['password'=>'Hostname48'])
             ->assertStatus(422);
+    }
+
+    /** @test */
+    public function cleanup_after_user_delete_his_account() {
+        $user = User::factory()->create(['password'=>Hash::make('Hostname47')]);
+        $user0 = User::factory()->create(['password'=>Hash::make('Hostname47')]);
+        $this->actingAs($user);
+        $post = Post::factory()->create(['user_id'=>$user->id, 'status'=>'published']);
+        $post0 = Post::factory()->create(['user_id'=>$user0->id, 'status'=>'published']);
+        $tecnology = Category::create(['title'=>'tech','title_meta'=>'tech','slug'=>'tech','description'=>'tech']);
+        $permission = Permission::create(['title'=>'Create posts','slug'=>'create-a-post','description'=>'Create a post permission that allows user to create posts','scope'=>'posts']);
+        $role = Role::create(['title'=>'Admin','slug'=>'admin','description'=>'admin description']);
+        $user->permissions()->attach($permission->id);
+        $user->roles()->attach($role->id);
+
+        $this->post('/author-request', ['categories'=>[$tecnology->id],'message'=>'I want to become a pro']);
+        $this->post('/claps', ['clapable_id'=>$post->id, 'clapable_type'=>'post']);
+        $this->post('/comments', ['content'=>'hello', 'post_id'=>$post->id]);
+        $this->post('/contact', ['message'=>'hello darkness']);
+        $this->post('/faqs', ['question'=>'hello darkness ?', 'description'=>'hola amigos']);
+        $this->post('/reports', ['reportable_id'=>$post0->id,'reportable_type'=>'post','type'=>'spam']);
+        $this->post('/newsletter/subscribe');
+
+        $this->assertNull($user->deleted_at);
+        $this->assertTrue($user->status == 'active');
+        $this->assertCount(1, AuthorRequest::all());
+        $this->assertCount(1, Clap::all());
+        $this->assertCount(1, Comment::all());
+        $this->assertCount(1, ContactMessage::all());
+        $this->assertEquals($user->id, Faq::first()->user_id);
+        $this->assertEquals(1, $user->permissions()->count());
+        $this->assertNotNull(Post::first()->user_id);
+        $this->assertCount(1, Report::all());
+        $this->assertEquals(1, $user->roles()->count());
+        $this->assertNotNull(Subscriber::first()->user_id);
+
+        $this->post('/settings/account/delete', ['password'=>'Hostname47']);
+
+        $user = User::withTrashed()->find($user->id);
+        $this->assertNotNull($user->deleted_at);
+        $this->assertTrue($user->status == 'deleted');
+        $this->assertCount(0, AuthorRequest::all());
+        $this->assertCount(0, Clap::all());
+        $this->assertCount(0, Comment::all());
+        $this->assertCount(0, ContactMessage::all());
+        $this->assertNull(Faq::first()->user_id);
+        $this->assertEquals(0, $user->permissions()->count());
+        // Posts will not be deleted but set their user_id to null (on delete set null)
+        $this->assertNull(Post::first()->user_id);
+        $this->assertCount(0, Report::all());
+        $this->assertEquals(0, $user->roles()->count());
+        $this->assertNull(Subscriber::first()->user_id);
     }
 }
