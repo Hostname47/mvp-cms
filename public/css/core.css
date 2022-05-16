@@ -84,6 +84,11 @@ body {
     align-items: flex-end;
 }
 
+.align-start {
+    display: flex;
+    align-items: flex-start !important;
+}
+
 .justify-center {
     display: flex;
     justify-content: center;

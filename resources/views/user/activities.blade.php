@@ -94,7 +94,7 @@
                             <x-user.activities.sections.saved-posts-section />
                             @break
                         @case('comments')
-                            
+                            <x-user.activities.sections.comments-section />
                             @break
                         @case('corrections')
                             
