@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\{Category,Tag, Metadata, Clap};
+use App\Models\{Category,Tag, Metadata, Clap, SavedPost};
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -46,6 +46,12 @@ class Post extends Model
         if(!auth()->user())
             return false;
         return (boolean) $this->claps()->where('user_id', auth()->user()->id)->count();
+    }
+
+    public function getSavedAttribute() {
+        if(!auth()->user())
+            return false;
+        return (boolean) SavedPost::where('user_id', auth()->user()->id)->where('post_id', $this->id)->count();
     }
 
     public function getCreationDateHumansAttribute() {

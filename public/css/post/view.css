@@ -192,7 +192,7 @@ main {
 
 .post-share-stats-section .post-stats-button {
     cursor: pointer;
-    padding: 4px 8px;
+    padding: 6px 8px;
     border-radius: 4px;
 }
 .post-share-stats-section .post-stats-button:hover {
@@ -205,7 +205,7 @@ main {
     margin-right: 6px;
 }
 
-.post-claped {
+.post-claped, .post-saved {
     fill: #007cff;
     color: #007cff;
     background-color: #007cff0d !important;

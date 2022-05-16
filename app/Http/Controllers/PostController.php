@@ -75,11 +75,13 @@ class PostController extends Controller
     public function view(Request $request, Category $category, Post $post) {
         $link = route('view.post', ['category'=>$category->slug, 'post'=>$post->slug]);
         $title = $post->html_title;
+        $saved = $post->saved;
         return view('view-post')
             ->with(compact('category'))
             ->with(compact('post'))
             ->with(compact('title'))
-            ->with(compact('link'));
+            ->with(compact('link'))
+            ->with(compact('saved'));
     }
 
     public function create() {
@@ -371,7 +373,7 @@ class PostController extends Controller
         ];
 
         // Check if user already save this post
-        $already = auth()->user()->posts_saved()->where('post_id', $data['post_id'])->first();
+        $already = SavedPost::where('user_id', auth()->user()->id)->where('post_id', $data['post_id'])->first();
         if($already) {
             $already->delete();
             return 0;

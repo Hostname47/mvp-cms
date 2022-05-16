@@ -91,7 +91,6 @@
                 <div id="post-content">
                     {!! $post->content !!}
                 </div>
-                @include('partials.post.sharer')
             </article>
             <div id="right-panel-container" class="sticky-when-bottom-reached">
                 <!-- published by & publish date & categories -->
