@@ -57,6 +57,14 @@ class User extends Authenticatable
         return $this->hasMany(Faq::class);
     }
 
+    public function posts_claped() {
+        return $this->belongsToMany(Post::class, 'claps', 'user_id', 'clapable_id')
+        ->withTimestamps()
+        ->withPivot('created_at')
+        ->where('clapable_type', 'App\\Models\\Post')
+        ->orderBy('claps.created_at', 'desc');
+    }
+
     public function getHasAvatarAttribute() {
         return (is_null($this->avatar) && !is_null($this->provider_avatar)) || $this->avatar == 'file';
     }

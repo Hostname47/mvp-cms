@@ -38,6 +38,7 @@ class UserController extends Controller
         }
 
         return view('user.activities')
+            ->with(compact('tab'))
             ->with(compact('user'));
     }
 

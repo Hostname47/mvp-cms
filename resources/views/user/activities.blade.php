@@ -7,6 +7,10 @@
 <link rel="stylesheet" href="{{ asset('css/activities.css') }}">
 @endpush
 
+@push('scripts')
+<script src="{{ asset('js/activities.js') }}" type="text/javascript" defer></script>
+@endpush
+
 @section('content')
     <x-layout.left-panel.left-panel />
     <div class="page-padding">
@@ -75,14 +79,35 @@
             </div>
             <div id="activities-section">
                 <div class="links">
-                    <a href="" class="button-style-2 link">{{ __('Clapped posts') }}</a>
-                    <a href="" class="button-style-2 link">{{ __('Saved posts') }}</a>
-                    <a href="" class="button-style-2 link">{{ __('Comments') }}</a>
-                    <a href="" class="button-style-2 link">{{ __('Corrections') }}</a>
+                    <a href="?section=claped-posts" class="button-style-2 link @if($section=='claped-posts') section-selected @endif">{{ __('Claped posts') }}</a>
+                    <a href="?section=saved-posts" class="button-style-2 link @if($section=='saved-posts') section-selected @endif">{{ __('Saved posts') }}</a>
+                    <a href="?section=comments" class="button-style-2 link @if($section=='comments') section-selected @endif">{{ __('Comments') }}</a>
+                    <a href="?section=corrections" class="button-style-2 link @if($section=='corrections') section-selected @endif">{{ __('Corrections') }}</a>
                 </div>
 
                 <div id="activity-content-section">
-                    
+                    @switch($section)
+                        @case('claped-posts')
+                            <x-user.activities.sections.claped-posts-section />
+                            @break
+                        @case('saved-posts')
+                            
+                            @break
+                        @case('comments')
+                            
+                            @break
+                        @case('corrections')
+                            <x-user.activities.sections.claped-posts-section />
+                            @break
+                    @endswitch
+
+                    <div class="full-center">
+                        <div id="section-error-container" class="informative-message-container align-center relative none my8">
+                            <div class="informative-message-container-left-stripe imcls-red"></div>
+                            <div class="no-margin fs13 message-text">strong error</div>
+                            <div class="close-parent close-informative-message-style">✖</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

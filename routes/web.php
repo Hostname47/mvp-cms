@@ -5,14 +5,12 @@ use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use App\Http\Controllers\{IndexController, AdminController, PostController, CategoryController,
     MediaController, OAuthController, TagController, RoleController, PermissionController, RPManagement,
     NewsletterController, CommentController, ClapController, ReportController, SearchController,
-    AuthorRequestController, ContactController, FaqController, UserController};
+    AuthorRequestController, ContactController, FaqController, UserController, ActivitiesController};
 use App\Http\Controllers\Admin\{AdminSearchController};
 use App\Http\Middleware\AccountStatus;
 
 Route::get('/test', function() {
-    for($i=1;$i<=20;$i++) {
-        \DB::statement("INSERT INTO `faqs` (`question`, `answer`, `description`, `status`, `priority`, `user_id`) VALUES ('This is frequently asked question #$i ?', 'response to question #$i', 'ergererh', '1', '$i', '1')");
-    }
+    dd(auth()->user()->posts_clapped()->take(10)->get());
 });
 
 // Roles management
@@ -89,7 +87,9 @@ Route::get('/{provider}/callback', [OAuthController::class, 'handleProviderCallb
 
 Route::middleware(['client.scopes', 'account.status'])->group(function() {
     Route::middleware(['auth'])->group(function () {
-        Route::get('/activities', [UserController::class, 'activities'])->name('user.activities');
+        Route::get('/activities', [ActivitiesController::class, 'activities'])->name('user.activities');
+        Route::get('/activities/section', [ActivitiesController::class, 'section']);
+
         Route::get('/settings/profile', [UserController::class, 'profile_settings'])->name('user.settings');
         Route::get('/settings/passwords', [UserController::class, 'password_settings'])->name('password.settings');
         Route::get('/settings/account', [UserController::class, 'account_settings'])->name('account.settings');

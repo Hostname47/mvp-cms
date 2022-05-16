@@ -72,17 +72,94 @@
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 18px;
+    gap: 12px;
 }
 
 #activities-section .links .link {
+    padding: 8px 14px;
+    border-radius: 16px;
     text-decoration: none;
     font-size: 13px;
 }
 
-.tab-selected {
-    background-color: #e5ecf2;
+#activities-section .links .link:hover {
+    background-color: #f3f4f5;
+}
+
+.section-selected {
+    background-color: #d8ebf7 !important;
     padding: 8px 14px;
     border-radius: 16px;
     color: #202020 !important;
+}
+
+.section-selected:hover {
+    background-color: #bcd5e4 !important;
+}
+
+#activity-content-section {
+    margin-top: 14px;
+}
+
+#activity-content-section .loading-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 36px;
+}
+
+.section-title {
+    margin: 4px 0;
+    color: #202020;
+}
+
+.section-subtitle {
+    margin: 0;
+    color: #32383c;
+}
+
+.section-title-icon {
+    fill: #202020;
+    width: 24px;
+    height: 24px;
+    min-width: 16px;
+    margin-right: 8px;
+}
+
+.pagination-box {
+    margin: 8px 0;
+    display: flex;
+    justify-content: end;
+}
+
+#posts-box {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.line-post-component {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border: 1px solid #dbe0e3;
+    border-radius: 3px;
+}
+
+.line-post-component .stats {
+    display: flex;
+    align-items: center;
+    margin-right: 14px;
+}
+
+.line-post-component .title {
+    text-decoration: none;
+    color: #2777b9;
+    font-weight: bold;
+}
+
+.line-post-component .clap-icon {
+    width: 17px;
+    height: 17px;
+    min-width: 17px;
 }
