@@ -7,7 +7,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
-use App\Models\{Post,Category,Tag};
+use App\Models\{Post,Category,Tag,SavedPost};
 use App\View\Components\Post\PostCard;
 use Carbon\Carbon;
 
@@ -363,6 +363,23 @@ class PostController extends Controller
     }
 
     /** client */
+
+    public function save(Request $request) {
+        $data = [
+            'post_id'=>$request->validate(['post_id'=>'required|exists:posts,id'])['post_id'],
+            'user_id'=>auth()->user()->id
+        ];
+
+        // Check if user already save this post
+        $already = auth()->user()->posts_saved()->where('post_id', $data['post_id'])->first();
+        if($already) {
+            $already->delete();
+            return 0;
+        } else {
+            SavedPost::create($data);
+            return 1;
+        }
+    }
 
     public function fetch(Request $request) {
         $data = $request->validate([

@@ -10,7 +10,7 @@ use App\Http\Controllers\Admin\{AdminSearchController};
 use App\Http\Middleware\AccountStatus;
 
 Route::get('/test', function() {
-    dd(auth()->user()->posts_clapped()->take(10)->get());
+    dd(auth()->user()->posts_saved);
 });
 
 // Roles management
@@ -102,6 +102,8 @@ Route::middleware(['client.scopes', 'account.status'])->group(function() {
         Route::post('/settings/account/activate', [UserController::class, 'activate_account'])->withoutMiddleware(['account.status','client.scopes']);
         Route::post('/settings/account/deactivate', [UserController::class, 'deactivate_account'])->withoutMiddleware(['account.status','client.scopes']);
         Route::post('/settings/account/delete', [UserController::class, 'destroy']);
+
+        Route::post('/posts/save', [PostController::class, 'save']);
 
         Route::post('/comments', [CommentController::class, 'store']);
         Route::patch('/comments', [CommentController::class, 'update']);

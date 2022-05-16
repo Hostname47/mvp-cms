@@ -555,7 +555,6 @@ class PostTest extends TestCase
 
     /** @test */
     public function delete_a_post_permanently() {
-        $this->withoutExceptionHandling();
         $user = User::factory()->create();
         $this->actingAs($user);
 
@@ -563,5 +562,46 @@ class PostTest extends TestCase
         $this->assertCount(1, Post::all());
         $this->delete('/admin/posts', ['post_id'=>$post->id]);
         $this->assertCount(0, Post::all());
+    }
+
+    /** @test */
+    public function save_a_post() {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+        $post = Post::create(['title' => 'foo','title_meta' => 'foo','slug' => 'foo','summary' => 'foo','content' => 'foo', 'status'=> 'published']);
+
+        $this->assertCount(0, $user->posts_saved);
+        $this->post('/posts/save', ['post_id' => $post->id]);
+        $user->refresh();
+        $this->assertCount(1, $user->refresh()->posts_saved);
+    }
+
+    /** @test */
+    public function unsave_a_post() {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+        $post = Post::create(['title' => 'foo','title_meta' => 'foo','slug' => 'foo','summary' => 'foo','content' => 'foo', 'status'=> 'published']);
+
+        $this->assertCount(0, $user->posts_saved);
+        $this->post('/posts/save', ['post_id' => $post->id]);
+        $user->refresh();
+        $this->assertCount(1, $user->refresh()->posts_saved);
+        $this->post('/posts/save', ['post_id' => $post->id]);
+        $user->refresh();
+        $this->assertCount(0, $user->refresh()->posts_saved);
+    }
+
+    /** @test */
+    public function save_post_validation() {
+        $this->post('/logout');
+        $user = User::factory()->create();
+
+        $post = Post::create(['title' => 'foo','title_meta' => 'foo','slug' => 'foo','summary' => 'foo','content' => 'foo', 'status'=> 'published']);
+        $this->post('/posts/save', ['post_id' => $post->id])
+            ->assertRedirect('/login'); // Login is required
+
+        $this->actingAs($user);
+        $this->post('/posts/save', ['post_id' => -1])
+            ->assertSessionHasErrors(['post_id']); // invalid post id
     }
 }
