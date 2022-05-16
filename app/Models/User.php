@@ -58,7 +58,7 @@ class User extends Authenticatable
     }
 
     public function posts_saved() {
-        return $this->belongsToMany(Post::class, 'saved_posts', 'user_id', 'post_id');
+        return $this->belongsToMany(Post::class, 'saved_posts', 'user_id', 'post_id')->withTimestamps()->orderBy('saved_posts.created_at', 'desc');;
     }
 
     public function posts_claped() {

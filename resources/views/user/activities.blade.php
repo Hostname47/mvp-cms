@@ -91,13 +91,13 @@
                             <x-user.activities.sections.claped-posts-section />
                             @break
                         @case('saved-posts')
-                            
+                            <x-user.activities.sections.saved-posts-section />
                             @break
                         @case('comments')
                             
                             @break
                         @case('corrections')
-                            <x-user.activities.sections.claped-posts-section />
+                            
                             @break
                     @endswitch
 
