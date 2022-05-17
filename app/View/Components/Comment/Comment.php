@@ -19,6 +19,11 @@ class Comment extends Component
     {
         $this->comment = $comment;
         $this->claped = isset($data['claped']) ? $data['claped'] : $comment->claped;
+        /**
+         * If user select post link with a comment, all we need to do is to get the root and 
+         * then display it at the top. If the comment selected is too deep we don't need to dig 
+         * deeper as this will need a lot of queries; the user will search for it
+         */
 
         /**
          * Deal with comment children (replies)
@@ -52,8 +57,9 @@ class Comment extends Component
                     default:
                         $order = 'created_at desc';
                 }
-                    
+                
                 $replies = $comment->children()->with('user')->orderByRaw($order)->take(self::MAX_CHILDREN)->get();
+
                 $replies_claped = [];
                 if(auth()->user())
                     $replies_claped = auth()->user()->claps()->whereIn('clapable_id', $replies->pluck('id')->toArray())->where('clapable_type', 'App\Models\Comment')->pluck('clapable_id')->toArray();

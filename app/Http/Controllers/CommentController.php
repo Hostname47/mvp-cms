@@ -142,8 +142,24 @@ class CommentController extends Controller
                  * user clap for every single comment (n queries)
                  */
                 $claped = [];
-                if(auth()->user())
+                if(auth()->user()) {
                     $claped = auth()->user()->claps()->whereIn('clapable_id', $comments->pluck('id')->toArray())->where('clapable_type', 'App\Models\Comment')->pluck('clapable_id')->toArray();
+                }
+                
+                /**
+                 * If user select a post comment by link we need to get the selected comment as well
+                 * as its root to show it within the comments list
+                 */
+                $scomment = null;
+                $scomment_root = null;
+                if($request->has('comment')) {
+                    $scomment = $post->comments()->find($request->get('comment'));
+                    if($scomment) {
+                        $scomment_root = is_null($scomment->parent_comment_id) ? $scomment : $scomment->rootAncestor()->get()->first();
+                        $comments = $comments->filter(function($comment) use ($scomment_root) { return $comment->id != $scomment_root->id; });
+                    }
+                }
+
                 $comments->map(function($comment) use (&$payload, $claped, $data) {
                     $comment = new CommentComponent($comment, [
                         'claped'=>in_array($comment->id, $claped), 'sort'=>$data['sort']
@@ -157,18 +173,15 @@ class CommentController extends Controller
                  * in case it is not within the comments
                  * Also we only show the selected comment in the first fetch (skip = 0)
                  */
-                if($request->has('comment')) {
-                    $comment = $post->comments()->find($request->get('comment'));
+                if($scomment && $data['skip'] == 0) {
+                    $component = new CommentComponent($scomment_root, 
+                        ['claped'=>in_array($scomment_root->id, $claped), 'sort'=>$data['sort']],
+                        ['dig-until-reach'=>true, 'id'=>$scomment->id, 'parent-id'=>$scomment->parent_comment_id],
+                    );
+                    $component = $component->render(get_object_vars($component))->render();
+                    $payload = $component . $payload;
                     
-                    if($comment && $data['skip'] == 0 && !$comments->find($comment->id)) {
-                        while(!is_null($comment->parent_comment_id)) $comment = Comment::find($comment->parent_comment_id);
-                        $comment = new CommentComponent($comment, [
-                            'claped'=>in_array($comment->id, $claped), 'sort'=>$data['sort'], 'expend-until-reach'=>true
-                        ]);
-                        $comment = $comment->render(get_object_vars($comment))->render();
-                        $payload = $comment . $payload;
-                        $count++;
-                    }
+                    $count++;
                 }
                 break;
         }
@@ -176,7 +189,8 @@ class CommentController extends Controller
         return [
             'comments'=>$payload,
             'count'=>$count,
-            'hasmore'=>$hasmore
+            'hasmore'=>$hasmore,
+            'scomment_root'=> $scomment_root ? $scomment_root->id : null
         ];
     }
 

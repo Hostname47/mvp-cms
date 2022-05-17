@@ -567,9 +567,9 @@ function bootstrap_comments(post_id, skip, take, form, sort) {
                     handle_comment_events($(this));
                 });
 
-                if(skip == 0 && $('#comment-id').val()) {
-                    $('#comment-' + $('#comment-id').val()).addClass('comment-shadow');
-                    scroll_to_element('comment-' + $('#comment-id').val(), -70);
+                if(skip == 0 && response.scomment_root) {
+                    $('#comment-' + response.scomment_root).addClass('comment-shadow');
+                    scroll_to_element('comment-' + response.scomment_root, -70);
                 }
             }
 
@@ -607,6 +607,9 @@ $('#comments-fetch-more').on('click', function() {
     let buttonicon = button.find('.icon-above-spinner');
     let present_comments = $('#post-comments-box .comment-component.root').length;
 
+    if($('.comment-component.comment-shadow').length)
+        present_comments--;
+
     spinner.addClass('inf-rotate');
     spinner.removeClass('opacity0');
     buttonicon.addClass('none');
@@ -618,7 +621,8 @@ $('#comments-fetch-more').on('click', function() {
             skip: present_comments,
             take: 10,
             form: 'component',
-            sort: $('#post-comments-sort-key').val()
+            sort: $('#post-comments-sort-key').val(),
+            comment: $('#comment-id').val()
         },
         success: function(response) {
             let comments = response.comments;
