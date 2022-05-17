@@ -99,7 +99,6 @@ class CommentController extends Controller
             'take'=>'required|numeric',
             'sort'=>['required', Rule::in(['newest','oldest','claps'])],
             'form'=>['required', Rule::in(['raw','component'])],
-            'id'=>'sometimes|exists:comments,id'
         ]);
 
         $order = '';
@@ -122,6 +121,7 @@ class CommentController extends Controller
         $comments = $post->comments()->whereNull('parent_comment_id')->with('user')->orderByRaw($order)->skip($data['skip'])->take($data['take']+1)->get();
         $hasmore = $comments->count() > $data['take'];
         $comments = $comments->take($data['take']);
+        $count = $comments->count();
 
         $payload = '';
         switch($data['form']) {
@@ -151,12 +151,31 @@ class CommentController extends Controller
                     $comment = $comment->render(get_object_vars($comment))->render();
                     $payload .= $comment;
                 });
+
+                /**
+                 * Now let's check if the url has a comment parameter; If so we have to get it and prepend it
+                 * in case it is not within the comments
+                 * Also we only show the selected comment in the first fetch (skip = 0)
+                 */
+                if($request->has('comment')) {
+                    $comment = $post->comments()->find($request->get('comment'));
+                    
+                    if($comment && $data['skip'] == 0 && !$comments->find($comment->id)) {
+                        while(!is_null($comment->parent_comment_id)) $comment = Comment::find($comment->parent_comment_id);
+                        $comment = new CommentComponent($comment, [
+                            'claped'=>in_array($comment->id, $claped), 'sort'=>$data['sort'], 'expend-until-reach'=>true
+                        ]);
+                        $comment = $comment->render(get_object_vars($comment))->render();
+                        $payload = $comment . $payload;
+                        $count++;
+                    }
+                }
                 break;
         }
 
         return [
             'comments'=>$payload,
-            'count'=>$comments->count(),
+            'count'=>$count,
             'hasmore'=>$hasmore
         ];
     }

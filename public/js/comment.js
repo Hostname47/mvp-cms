@@ -550,7 +550,8 @@ function bootstrap_comments(post_id, skip, take, form, sort) {
             skip: skip,
             take: take,
             form: form,
-            sort: sort
+            sort: sort,
+            comment: $('#comment-id').val()
         },
         success: function(response) {
             let comments = response.comments;
@@ -561,10 +562,15 @@ function bootstrap_comments(post_id, skip, take, form, sort) {
 
                 let appended_comments = 
                     $('#post-comments-box .comment-component.root').slice(response.count*(-1));
-
+                
                 appended_comments.each(function() {
                     handle_comment_events($(this));
                 });
+
+                if(skip == 0 && $('#comment-id').val()) {
+                    $('#comment-' + $('#comment-id').val()).addClass('comment-shadow');
+                    scroll_to_element('comment-' + $('#comment-id').val(), -70);
+                }
             }
 
             if(hasmore)

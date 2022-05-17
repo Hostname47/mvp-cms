@@ -217,3 +217,10 @@
 .comment-update-box {
     margin: 12px 0;
 }
+
+.comment-shadow {
+    padding: 10px;
+    border: 1px solid #c3cfd7;
+    border-radius: 4px;
+    box-shadow: 0 0 6px 2px #c3cfd747;
+}

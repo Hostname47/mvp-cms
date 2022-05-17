@@ -230,6 +230,9 @@ function handle_global_viewer_close_button(button) {
 }
 
 function scroll_to_element(id, top=-60, scrollable=null) {
+    // If the element does not exists we stop the function
+    if(!$('#'+id).length) return;
+    
     $('#'+id)[0].scrollIntoView(true);
     if(scrollable == null)
         $(window).scrollTop($(window).scrollTop() + top);

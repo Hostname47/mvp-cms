@@ -1,3 +1,8 @@
+let urlprms = new URLSearchParams(window.location.search);
+if(urlprms.has('comment')) {
+    scroll_to_element('comments-section', -70);
+}
+
 $('#post-content-box').append($('.post-share-section').clone(true));
 
 $('.move-to-comments').on('click', function() {

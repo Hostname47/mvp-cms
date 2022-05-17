@@ -15,6 +15,7 @@
 
 @section('content')
     <input type="hidden" id="post-id" value="{{ $post->id }}" autocomplete="off">
+    <input type="hidden" id="comment-id" value="{{ request()->get('comment') }}" autocomplete="off">
     <input type="hidden" id="clap-singular" value="{{ __('clap') }}" autocomplete="off">
     <input type="hidden" id="clap-plural" value="{{ __('claps') }}" autocomplete="off">
     
