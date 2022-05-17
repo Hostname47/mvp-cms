@@ -7,7 +7,7 @@
     <p class="section-subtitle">{{ __("The following comments are unique per post. If you would like to see all your comments click on 'all comments' button") }}</p>
 
     <div class="pagination-box">
-        {{ $comments->appends(request()->query())->onEachSide(0)->links() }}
+        {{ $stats->appends(request()->query())->onEachSide(0)->links() }}
     </div>
     <div id="posts-box">
         @foreach($comments as $comment)
@@ -16,7 +16,10 @@
             <span class="fs10 light-gray">•</span>
             <div>
                 <a href="{{ $comment->post->link . '?comment=' . $comment->id }}" class="title">{{ $comment->content }}</a>
-                <div class="action-date">
+                @if($stats->find($comment->id)->count > 1)
+                <p class="post-meta bold">(+{{ ($stats->find($comment->id)->count - 1) . ' ' . __('other comments on this post') }})</p>
+                @endif
+                <div class="post-meta">
                     <span class="no-wrap">{{ __('commented') }} :</span>
                     <span title="{{ $comment->created_at }}">{{ $comment->created_at }}</span>
                 </div>
@@ -29,6 +32,6 @@
         @endforeach
     </div>
     <div class="pagination-box">
-        {{ $comments->appends(request()->query())->onEachSide(0)->links() }}
+        {{ $stats->appends(request()->query())->onEachSide(0)->links() }}
     </div>
 </div>

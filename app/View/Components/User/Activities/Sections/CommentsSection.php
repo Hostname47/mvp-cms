@@ -3,15 +3,23 @@
 namespace App\View\Components\User\Activities\Sections;
 
 use Illuminate\View\Component;
+use App\Models\{Comment,Post};
 
 class CommentsSection extends Component
 {
     public $comments;
+    public $stats;
     
     public function __construct()
     {
-        $this->comments = auth()->user()->comments()->with(['post', 'post.categories'])
-            ->orderBy('created_at', 'desc')->paginate(10);
+        $stats = auth()->user()->comments()
+            ->select(\DB::raw("MAX(id) as id, COUNT(id) as count"))
+            ->groupBy('post_id')->paginate(10);
+        
+        $this->comments = Comment::whereIn('id', $stats->pluck('id'))
+            ->with(['post', 'post.categories'])
+            ->orderBy('id', 'desc')->get();
+        $this->stats = $stats;
     }
 
     /**

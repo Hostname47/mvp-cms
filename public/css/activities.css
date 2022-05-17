@@ -157,6 +157,7 @@
     text-decoration: none;
     color: #2777b9;
     font-weight: bold;
+    font-size: 15px;
 }
 
 .line-post-component .clap-icon {
@@ -165,7 +166,7 @@
     min-width: 17px;
 }
 
-.line-post-component .action-date {
+.line-post-component .post-meta {
     font-size: 12px;
     margin-top: 4px;
     color: #50575e;
