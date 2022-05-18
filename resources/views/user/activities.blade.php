@@ -97,7 +97,7 @@
                             <x-user.activities.sections.comments-section />
                             @break
                         @case('corrections')
-                            
+                            <x-user.activities.sections.corrections-section />
                             @break
                     @endswitch
 

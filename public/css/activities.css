@@ -170,3 +170,61 @@
     margin-top: 4px;
     color: #50575e;
 }
+
+#corrections-section {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#corrections-section .icon {
+    width: 56px;
+    height: 56px;
+    fill: #212428;
+    margin-bottom: 16px;
+}
+
+#corrections-section .title-icon {
+    width: 15px;
+    height: 15px;
+    margin-right: 6px;
+}
+
+#corrections-section .title {
+    margin: 0;
+    color: #1d2226;
+    font-size: 18px;
+}
+
+#corrections-section .description {
+    letter-spacing: 0.8px;
+    line-height: 1.8;
+    width: 640px;
+    text-align: center;
+}
+
+.empty-activity-section {
+    margin-top: 26px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.empty-activity-section .icon {
+    width: 44px;
+    height: 44px;
+    margin-bottom: 16px;
+}
+
+.empty-activity-section .title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #1d2226;
+    margin: 0;
+}
+
+.empty-activity-section .description {
+    color: #1d2226;
+}
+

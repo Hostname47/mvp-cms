@@ -68,6 +68,6 @@ class OAuthController extends Controller
         if(!is_null($user->deleted_at))
             \Session::flash('error', __('This account has already been deleted permanently.'));
 
-        return redirect('/home');
+        return redirect('/discover');
     }
 }
