@@ -7,6 +7,7 @@ use App\Models\{Comment,Post};
 use Illuminate\Validation\Rule;
 use Illuminate\Database\Eloquent\Builder;
 use App\View\Components\Comment\Comment as CommentComponent;
+use Purifier;
 
 class CommentController extends Controller
 {
@@ -26,6 +27,8 @@ class CommentController extends Controller
         $this->authorize('store', [Comment::class, $data, $post]);
         /** Append authenticated user id into the comment data */
         $data['user_id'] = auth()->user()->id;
+        /** secure the content */
+        $data['content'] = Purifier::clean($data['content']);
         // Then create the comment
         $comment = Comment::create($data);
         /**
@@ -64,8 +67,8 @@ class CommentController extends Controller
         $post = $comment->post;
         abort_if(is_null($post), 404, __('Oops something went wrong.'));
 
-        $this->authorize('update', [Comment::class, $comment]);
-        $comment->update(['content'=>$data['content']]);
+        $this->authorize('update', [Comment::class, $data, $comment]);
+        $comment->update(['content'=>Purifier::clean($data['content'])]);
     }
     public function delete(Request $request) {
         $id = $request->validate(['comment_id'=>'required|exists:comments,id'])['comment_id'];

@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use App\Models\{Comment,Post};
+use Purifier;
 
 class CommentPolicy
 {
@@ -13,6 +14,12 @@ class CommentPolicy
     const COMMENTS_PER_DAY = 160;
     
     public function store(User $user, $data, $post) {
+        // Verify comment content
+        if(Purifier::clean($data['content']) == '') {
+            /** log this unauthorized break */
+            return $this->deny(__('Content field is required.'));
+        }
+
         // If the post is null (not found), then we simply stop the execution
         if(is_null($post)) {
             return $this->deny(__('Post not found.'));
@@ -50,7 +57,12 @@ class CommentPolicy
         return $user->id == $comment->user_id;
     }
 
-    public function update(User $user, $comment) {
+    public function update(User $user, $data, $comment) {
+        // Verify comment content
+        if(Purifier::clean($data['content']) == '') {
+            /** log this unauthorized break */
+            return $this->deny(__('Content field is required.'));
+        }
         /**
          * we check if the comment owner is the one who is trying to update
          */
