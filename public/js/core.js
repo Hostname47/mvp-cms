@@ -425,8 +425,6 @@ function handle_image_center_based_on_higher_dim(image) {
     load_image(image.attr('src'), function() {
         let width = image.width();
         let height = image.height();
-        console.log(width);
-        console.log(height);
         if(width > height)
             image.width('100%');
         else
@@ -447,7 +445,6 @@ function handle_image_center_fill(image) {
          * to make image fill all the parent area (parent should have flex centering styles).
          * I'll go back to it later to handle image loading and dimensions processing
          */
-        console.log($(this).width())
     });
 }
 function fill_image_on_square_container(image) {
@@ -610,10 +607,9 @@ function stretch_image_to_parent_dimensions(image, has_fade) {
             if(has_fade)
                 image.parent().find('.fade-box').remove();
             
-            console.log('error');
         },
         complete: function() {
-            console.log('fisnish');
+            
         }
     });
 }

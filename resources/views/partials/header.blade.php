@@ -295,10 +295,10 @@
                     <span class="no-margin header-discover-section-title">{{__('OTHER LINKS')}}</span>
                 </div>
                 <div class="flex flex-column" style="margin-top: 12px;">
-                    <a href="" class="link">{{__('FAQs')}}</a>
-                    <a href="" class="link">{{__('Privacy Policy')}}</a>
-                    <a href="" class="link">{{__('Terms of use')}}</a>
-                    <a href="" class="link">{{__('Credits')}}</a>
+                    <a href="{{ __('faqs') }}" class="link">{{__('FAQs')}}</a>
+                    <a href="{{ __('privacy') }}" class="link">{{__('Privacy Policy')}}</a>
+                    <a href="{{ __('guidelines') }}" class="link">{{__('Guidelines')}}</a>
+                    <a href="{{ __('credits') }}" class="link">{{__('Credits')}}</a>
                 </div>
             </div>
         </div>

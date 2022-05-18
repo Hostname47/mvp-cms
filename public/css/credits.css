@@ -1,0 +1,33 @@
+.quote-after-title {
+    letter-spacing: 1px;
+    font-size: 13px;
+    margin-top: 4px;
+    color: #15171a;
+    display: flex;
+    justify-content: center;
+}
+
+#credits-main {
+    padding: 12px;
+    margin-bottom: 26px;
+}
+
+#credits-main .text {
+    letter-spacing: 0.5PX;
+    line-height: 1.5;
+    text-align: center;
+}
+
+#privacy-main li {
+    margin: 6px 0;
+}
+
+@media only screen and (max-width: 480px) {
+    #credits-main {
+        padding: 4px;
+    }
+
+    #credits-main .text {
+        font-size: 13px;
+    }
+}
