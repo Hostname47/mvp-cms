@@ -72,6 +72,10 @@ body {
     color: #55bfff;
     fill: #55bfff;
 }
+.header-menu-button-selected {
+    color: #55bfff !important;
+    fill: #55bfff !important;
+}
 .header-menu-button-strip {
     position: absolute;
     top: calc(100% + 2px);

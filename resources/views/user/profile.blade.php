@@ -9,7 +9,12 @@
 @endpush
 
 @section('content')
+    @if(auth()->user() && auth()->user()->id == $user->id)
+    <x-layout.left-panel.left-panel page="user-section" subpage="profile"/>
+    @else
     <x-layout.left-panel.left-panel />
+    @endif
+
     <div class="page-padding">
         <div class="page-path-wrapper align-center">
             <a href="{{ route('root.slash') }}" class="align-center page-path">

@@ -45,6 +45,12 @@ main {
     fill: #414951;
 }
 
+.left-panel-selected-button {
+    fill: #2ca0ff !important;
+    color: #2ca0ff !important;
+    font-weight: bold;
+}
+
 #left-panel-toggle-button .arrow {
     width: 12px;
     height: 12px;
@@ -122,6 +128,7 @@ main {
     background-color: #d8dee6;
     border-radius: 3px;
     padding: 3px 8px;
+    user-select: none;
 }
 #left-panel .tag:hover {
     background-color: #c6cdd6;

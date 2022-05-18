@@ -14,7 +14,7 @@
 
 @section('content')
     @include('partials.viewers.newsletter-viewer')
-    <x-layout.left-panel.left-panel />
+    <x-layout.left-panel.left-panel page="discover" />
     <div class="page-padding flex">
         <div id="discover-main">
             <div class="page-path-wrapper align-center">

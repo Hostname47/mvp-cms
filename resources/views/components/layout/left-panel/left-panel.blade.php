@@ -13,7 +13,7 @@
             <svg class="size13" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M130,249.63q-38.79,0-77.56,0c-24.86,0-42.06-17.09-42.09-41.82,0-27.88.07-55.77,0-83.65-.05-12.75,4.55-23.27,14-31.81Q63.44,56.93,102.51,21.4C119,6.5,140.94,6.45,157.42,21.34c26,23.5,51.85,47.15,77.89,70.59,9.77,8.79,14.43,19.5,14.37,32.59-.13,27.41-.22,54.83,0,82.25.19,21.92-15.28,43.78-43.09,43C181.09,249.07,155.53,249.63,130,249.63Zm-.63-23.08q39,0,78,0c10.76,0,17.06-6.35,17.08-17.13,0-28,0-56.06,0-84.09a21.06,21.06,0,0,0-7.4-16.42q-37.51-34.07-75-68.13c-8.69-7.89-16.76-7.78-25.51.18C91.79,63.47,67.14,86.11,42.11,108.33c-5.52,4.91-7.92,10.11-7.86,17.36.22,27.72.06,55.44.1,83.16,0,11.64,6.2,17.69,17.95,17.7Z"/></svg>
             <span class="ml8">{{__('Home')}}</span>
         </a>
-        <a href="{{ route('discover') }}" class="align-center my8 link">
+        <a href="{{ route('discover') }}" class="align-center my8 link @if($page=='discover') left-panel-selected-button @endif">
             <svg class="size13" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M129.93,253.53c-68-.07-123.6-55.81-123.42-123.74C6.69,61.7,62.5,6.13,130.34,6.48S253.4,62.05,253.49,129.91,197.89,253.6,129.93,253.53Zm.26-24.9A98.63,98.63,0,1,0,31.4,130.47,98.39,98.39,0,0,0,130.19,228.63ZM114.3,110.34a5.81,5.81,0,0,0-3.74,3.27C102.8,133.15,95,152.69,86.88,173.13l59.63-23.74a5.33,5.33,0,0,0,3-3.26c7.72-19.42,15.46-38.83,23.61-59.25C152.81,95,133.57,102.69,114.3,110.34Z"/></svg>
             <span class="ml8">{{__('Discover')}}</span>
         </a>
@@ -27,13 +27,13 @@
                 <div class="toggle-box">
                     <div class="align-center pointer toggle-button">
                         <p class="no-margin dark bold">{{ auth()->user()->fullname }}</p>
-                        <svg class="size7 ml8 mt2 toggle-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02"><path d="M13.4,1.43l9.35,11a4,4,0,0,1,0,5.18l-9.35,11a4,4,0,1,1-6.1-5.18L14.46,15,7.3,6.61a4,4,0,0,1,6.1-5.18Z"/></svg>
+                        <svg class="size7 ml8 mt2 toggle-arrow" @if($page=='user-section') style="transform: rotate(90deg);" @endif xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02"><path d="M13.4,1.43l9.35,11a4,4,0,0,1,0,5.18l-9.35,11a4,4,0,1,1-6.1-5.18L14.46,15,7.3,6.61a4,4,0,0,1,6.1-5.18Z"/></svg>
                     </div>
                     <p class="no-margin fs12 light-gray">{{ auth()->user()->username }}</p>
-                    <div class="mt8 toggle-container none">
-                        <a href="{{ route('user.profile', ['user'=>auth()->user()->username]) }}" class="my8 link">{{__('profile')}}</a>
-                        <a href="{{ route('user.activities') }}" class="my8 link">{{__('activities')}}</a>
-                        <a href="{{ route('user.settings') }}" class="my8 link">{{__('settings')}}</a>
+                    <div class="mt8 toggle-container @if($page != 'user-section') none @endif">
+                        <a href="{{ route('user.profile', ['user'=>auth()->user()->username]) }}" class="my8 link @if($subpage=='profile') left-panel-selected-button @endif">{{__('profile')}}</a>
+                        <a href="{{ route('user.activities') }}" class="my8 link @if($subpage=='activities') left-panel-selected-button @endif">{{__('activities')}}</a>
+                        <a href="{{ route('user.settings') }}" class="my8 link @if($subpage=='settings') left-panel-selected-button @endif">{{__('settings')}}</a>
                     </div>
                 </div>
             </div>
@@ -99,9 +99,9 @@
         </div>
         <span class="section-title">MORE</span>
         <div class="section">
-            <a href="{{ route('faqs') }}" class="link my12" style="margin-top: 0;">{{__('FAQs')}}</a>
-            <a href="{{ route('guidelines') }}" class="link my12">{{__('Guidelines')}}</a>
-            <a href="{{ route('privacy') }}" class="link my12">{{__('Privacy Policy')}}</a>
+            <a href="{{ route('faqs') }}" class="link my12 @if($page=='faqs') left-panel-selected-button @endif" style="margin-top: 0;">{{__('FAQs')}}</a>
+            <a href="{{ route('guidelines') }}" class="link my12 @if($page=='guidelines') left-panel-selected-button @endif">{{__('Guidelines')}}</a>
+            <a href="{{ route('privacy') }}" class="link my12 @if($page=='privacy') left-panel-selected-button @endif">{{__('Privacy Policy')}}</a>
         </div>
         <div class="move-to-bottom mr8">
             <div class="flex align-center dark fs13" style="letter-spacing: 1.2px;">

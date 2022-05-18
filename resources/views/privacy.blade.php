@@ -8,7 +8,7 @@
 @endpush
 
 @section('content')
-    <x-layout.left-panel.left-panel />
+    <x-layout.left-panel.left-panel page="privacy" />
     <div id="about-main" class="page-padding">
         <div class="page-path-wrapper align-center">
             <a href="{{ route('root.slash') }}" class="align-center page-path">
