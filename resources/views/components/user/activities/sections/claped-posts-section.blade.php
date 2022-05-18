@@ -19,7 +19,7 @@
             <span class="fs10 light-gray">•</span>
             <div style="margin-top: -3px;">
                 <a href="{{ $post->link }}" class="title dark-blue">{{ $post->html_title }}</a>
-                <div class="action-date">
+                <div class="meta">
                     <span class="no-wrap">{{ __('claped') }} :</span>
                     <span title="{{ DateHelper::format($post->pivot->created_at) }}">{{ DateHelper::humans($post->pivot->created_at) }}</span>
                 </div>

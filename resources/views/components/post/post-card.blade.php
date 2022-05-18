@@ -14,7 +14,7 @@
                 @if(!$loop->first)
                 <span class="fs10 unselectable dark-blue mt2 mx8">〡</span>
                 @endif
-                <a href="" class="category">{{ $category->title }}</a>
+                <a href="{{ route('discover', ['category'=>$category->slug]) }}" class="category">{{ $category->title }}</a>
             @endforeach
         </div>
         <a href="{{ $post->link }}" class="title">{{ $post->content_title_slice }}</a>

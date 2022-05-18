@@ -10,11 +10,11 @@
     <div id="posts-box">
         @foreach($posts as $post)
         <div class="line-post-component align-start">
-            <svg class="size16 mr6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M400,0H112A48,48,0,0,0,64,48V512L256,400,448,512V48A48,48,0,0,0,400,0Zm0,428.43-144-84-144,84V54a6,6,0,0,1,6-6H394a6,6,0,0,1,6,6Z"/></svg>
+            <svg class="size16" style="min-width: 16px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M400,0H112A48,48,0,0,0,64,48V512L256,400,448,512V48A48,48,0,0,0,400,0Zm0,428.43-144-84-144,84V54a6,6,0,0,1,6-6H394a6,6,0,0,1,6,6Z"/></svg>
             <span class="fs10 light-gray">•</span>
             <div style="margin-top: -3px;">
                 <a href="{{ $post->link }}" class="title dark-blue">{{ $post->html_title }}</a>
-                <div class="action-date">
+                <div class="meta">
                     <span class="no-wrap">{{ __('saved') }} :</span>
                     <span title="{{ DateHelper::format($post->pivot->created_at) }}">{{ DateHelper::humans($post->pivot->created_at) }}</span>
                 </div>

@@ -93,7 +93,7 @@
             </div>
             <div class="tags-wrapper toggle-container none">
                 @foreach($tags as $tag)
-                    <a href="" class="tag">#{{ $tag->slug }}</a>
+                    <a href="{{ route('tag.view', ['tag'=>$tag->slug]) }}" class="tag">#{{ $tag->slug }}</a>
                 @endforeach
             </div>
         </div>

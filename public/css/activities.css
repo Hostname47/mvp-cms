@@ -157,6 +157,12 @@
     text-decoration: none;
     font-weight: bold;
     font-size: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* number of lines to show */
+            line-clamp: 2; 
+    -webkit-box-orient: vertical;
 }
 
 .line-post-component .clap-icon {
@@ -165,9 +171,9 @@
     min-width: 17px;
 }
 
-.line-post-component .post-meta {
+.line-post-component .meta {
     font-size: 12px;
-    margin-top: 4px;
+    margin-top: 2px;
     color: #50575e;
 }
 
@@ -218,6 +224,7 @@
 }
 
 .empty-activity-section .title {
+    text-align: center;
     font-size: 18px;
     font-weight: bold;
     color: #1d2226;
@@ -225,6 +232,47 @@
 }
 
 .empty-activity-section .description {
+    text-align: center;
     color: #1d2226;
 }
 
+@media only screen and (max-width: 740px) {
+    #first-section {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+    #first-section .meta-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-left: 0;
+    }
+   
+    #first-section .metas-wrapper {
+        justify-content: center;
+    }
+    
+    #first-section .links {
+        margin-left: 0;
+    }
+
+    #corrections-section .description {
+        width: calc(100% - 20px);
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .page-padding {
+        padding: 10px;
+    }
+
+    .line-post-component {
+        padding: 8px;
+        gap: 6px;
+    }
+
+    .line-post-component .title {
+        font-size: 13px;
+    }
+}
