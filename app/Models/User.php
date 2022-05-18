@@ -29,6 +29,10 @@ class User extends Authenticatable
             ->withPivot('giver_id');
     }
 
+    public function is_admin() {
+        return (bool) $this->roles()->whereIn('slug', ['admin','site-owner'])->count() > 0;
+    }
+
     public function permissions() {
         return $this->belongsToMany(Permission::class);
     }
@@ -58,7 +62,9 @@ class User extends Authenticatable
     }
 
     public function posts_saved() {
-        return $this->belongsToMany(Post::class, 'saved_posts', 'user_id', 'post_id')->withTimestamps()->orderBy('saved_posts.created_at', 'desc');;
+        return $this->belongsToMany(Post::class, 'saved_posts', 'user_id', 'post_id')
+            ->withTimestamps()
+            ->orderBy('saved_posts.created_at', 'desc');
     }
 
     public function posts_claped() {
