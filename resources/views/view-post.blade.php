@@ -81,7 +81,7 @@
                 <span>{{ $post->slug }}</span>
             </a>
         </div>
-        @if($post->visibility == 'password-protected')
+        @if($post->visibility == 'password-protected' && !Cookie::has('post-'.$post->id.'-password'))
             <div id="password-protected-box">
                 <input type="hidden" id="password-required-message" value="{{ __('password field is required') }}">
 
@@ -103,8 +103,8 @@
                             <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
                         </svg>
                     </div>
-                    <span class="bold fs12 white unselectable">{{__('unlock')}}</span>
-                    <input type="hidden" class="comment-id" autocomplete="off">
+                    <span class="bold fs12 white unselectable">{{ __('unlock') }}</span>
+                    <input type="hidden" class="post-id" value="{{ $post->id }}" autocomplete="off">
                 </div>
             </div>
         @else

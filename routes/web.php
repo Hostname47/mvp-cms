@@ -155,4 +155,5 @@ Route::middleware(['client.scopes', 'account.status'])->group(function() {
     
     Route::get('/{category:slug}/{post:slug}/v', [PostController::class, 'view'])->name('view.post');
     Route::get('/posts/fetch', [PostController::class, 'fetch']);
+    Route::post('/posts/unlock', [PostController::class, 'unlock'])->middleware(['throttle:10-per-minute']);
 });

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\{Post,Category,Tag,SavedPost};
 use App\View\Components\Post\PostCard;
 use Carbon\Carbon;
+use Cookie;
 
 class PostController extends Controller
 {
@@ -364,6 +365,32 @@ class PostController extends Controller
             ->with(compact('title'))
             ->with(compact('link'))
             ->with(compact('saved'));
+    }
+
+    public function unlock(Request $request) {
+        $data = $request->validate([
+            'post_id'=>'required|exists:posts,id',
+            'password'=>'required|max:256'
+        ]);
+        $post = Post::find($data['post_id']);
+
+        /**
+         * Notice that we cannot use policies because guest users are also allowed
+         * to access those locked posts if they have the password
+         */
+        if(is_null($post))
+            abort(404, __('Post not found'));
+
+        if($post->visibility != 'password-protected')
+            abort(403, __('Post already available and does not require a password.'));
+
+        if($data['password'] != $post->metadata['password'])
+            abort(401, __('Invalid password, try again.'));
+        
+        /** If user provide a valid password we store a cookie for 120 minutes that allow that user to access the post */    
+        $cookie = Cookie::make('post-'.$post->id.'-password', $data['password'], 120);
+
+        return redirect($post->link)->withCookie($cookie);
     }
 
     public function save(Request $request) {

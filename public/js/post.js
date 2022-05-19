@@ -125,6 +125,7 @@ $('#unlock-post').on('click', function() {
         type: 'post',
         url: '/posts/unlock',
         data: {
+            post_id: button.find('.post-id').val(),
             password: password.val().trim()
         },
         success: function() {
