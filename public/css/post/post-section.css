@@ -1,6 +1,8 @@
 #post-nav-links-container {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
     padding: 16px 0;
 }
 
@@ -18,7 +20,6 @@
     fill: #2d363e;
     width: 8px;
     height: 8px;
-    margin: 0 6px;
 }
 
 .post-share-section {
@@ -26,6 +27,8 @@
     margin-bottom: 20px;
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
     justify-content: space-between;
     border-bottom: 1px solid #e1e6eb;
 }
@@ -54,7 +57,6 @@
 .share-anchor-icon.twitter:hover { fill: rgb(0, 171, 255); }
 
 .post-share-stats-section {
-    margin-left: auto;
     display: flex;
     align-items: center;
 }
@@ -93,10 +95,111 @@
 
 #post-content a {
     text-decoration: none;
-    font-size: 18px;
     line-height: 1.4;
     margin-bottom: 16px;
+    color: #389ef2;
 }
 #post-content a:hover {
     text-decoration: underline;
+}
+
+@media only screen and (max-width: 1080px) {
+    #right-panel-container {
+        display: none;
+    }
+    
+    #comments-section {
+        width: 100%;
+    }
+
+    #post-content h1 {
+        font-size: 28px;
+        margin: 0 0 28px 0;
+        padding-right: 0px;
+    }
+}
+
+@media only screen and (max-width: 900px) {
+    #feature-image-container {
+        max-height: 320px;
+    }
+
+    #post-box {
+        width: 86%;
+    }
+
+    #post-content h1 {
+        font-size: 24px;
+    }
+
+    #post-content h2 {
+        font-size: 21px;
+    }
+
+    #post-content h3 {
+        font-size: 18px;
+    }
+}
+
+@media only screen and (max-width: 640px) {
+    #feature-image-container {
+        max-height: 290px;
+    }
+
+    #post-box {
+        width: 90%;
+    }
+
+    #post-content-box {
+        padding: 10px;
+    }
+
+    #post-content h1 {
+        font-size: 22px;
+    }
+
+    #post-content h2 {
+        font-size: 19px;
+    }
+
+    #post-content h3 {
+        font-size: 16px;
+    }
+    
+    #post-content p {
+        font-size: 16px;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    #post-box {
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+
+    #feature-image-container {
+        max-height: 220px;
+    }
+
+    #post-nav-links-container {
+        padding-top: 0px;
+        padding-left: 6px;
+    }
+
+    #post-content h1 {
+        font-size: 20px;
+    }
+
+    #post-content h2 {
+        font-size: 17px;
+    }
+
+    #post-content h3 {
+        font-size: 14px;
+    }
+
+    #post-content p {
+        font-size: 14px;
+    }
 }
