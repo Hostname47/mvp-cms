@@ -72,18 +72,6 @@ class PostController extends Controller
             ->with(compact('k'));
     }
 
-    public function view(Request $request, Category $category, Post $post) {
-        $link = route('view.post', ['category'=>$category->slug, 'post'=>$post->slug]);
-        $title = $post->html_title;
-        $saved = $post->saved;
-        return view('view-post')
-            ->with(compact('category'))
-            ->with(compact('post'))
-            ->with(compact('title'))
-            ->with(compact('link'))
-            ->with(compact('saved'));
-    }
-
     public function create() {
         return view('admin.posts.create');
     }
@@ -365,6 +353,18 @@ class PostController extends Controller
     }
 
     /** client */
+
+    public function view(Request $request, Category $category, Post $post) {
+        $link = route('view.post', ['category'=>$category->slug, 'post'=>$post->slug]);
+        $title = $post->html_title;
+        $saved = $post->saved;
+        return view('view-post')
+            ->with(compact('category'))
+            ->with(compact('post'))
+            ->with(compact('title'))
+            ->with(compact('link'))
+            ->with(compact('saved'));
+    }
 
     public function save(Request $request) {
         $data = [

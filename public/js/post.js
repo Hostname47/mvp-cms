@@ -96,3 +96,56 @@ $('.save-post').on('click', function() {
         }
     })
 });
+
+let unlock_post_lock = true;
+$('#unlock-post').on('click', function() {
+    let password = $('#lock-password');
+    let error_container = $('#password-lock-error-container');
+    if(password.val().trim() == '') {
+        error_container.find('.message-text').text($('#password-required-message').val());
+        error_container.removeClass('none');
+        return;
+    }
+    error_container.addClass('none');
+    
+    let button = $(this);
+    let spinner = $(this).find('.spinner');
+    let buttonicon = button.find('.icon');
+
+    if(!unlock_post_lock) return;
+    unlock_post_lock = false;
+
+    button.addClass('dark-bs-disabled');
+    buttonicon.addClass('none');
+    spinner.removeClass('opacity0');
+    spinner.addClass('inf-rotate');
+    password.attr('disabled', true);
+
+    $.ajax({
+        type: 'post',
+        url: '/posts/unlock',
+        data: {
+            password: password.val().trim()
+        },
+        success: function() {
+            location.reload();
+        },
+        error: function(response) {
+            let errorObject = JSON.parse(response.responseText);
+            let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+            if(errorObject.errors) {
+                let errors = errorObject.errors;
+                error = errors[Object.keys(errors)[0]][0];
+            }
+
+            error_container.find('.message-text').text(error);
+            error_container.removeClass('none');
+            unlock_post_lock = true;
+            button.removeClass('dark-bs-disabled');
+            buttonicon.removeClass('none');
+            spinner.addClass('opacity0');
+            spinner.removeClass('inf-rotate');
+            password.attr('disabled', false);
+        },
+    })
+});

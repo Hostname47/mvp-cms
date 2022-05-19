@@ -4,6 +4,7 @@ main {
     flex-direction: column;
     align-items: center;
     color: rgb(28, 32, 34);
+    min-height: 100vh;
 }
 
 #feature-image-container {
@@ -209,4 +210,32 @@ main {
     fill: #007cff;
     color: #007cff;
     background-color: #007cff0d !important;
+}
+
+#password-protected-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#lock-password {
+    width: 320px;
+}
+
+#password-protected-box .lock-logo {
+    width: 40px;
+    height: 40px;
+    margin: 16px 0;
+}
+
+#password-protected-box .title {
+    margin: 0;
+}
+
+#password-protected-box .label {
+    margin: 12px 0;
+}
+
+#unlock-post {
+    margin: 12px 0;
 }
