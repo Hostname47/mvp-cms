@@ -117,6 +117,10 @@
         margin: 0 0 28px 0;
         padding-right: 0px;
     }
+
+    #post-comments-box {
+        overflow-x: auto;
+    }
 }
 
 @media only screen and (max-width: 900px) {

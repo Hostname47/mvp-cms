@@ -117,6 +117,10 @@ class User extends Authenticatable
         return $this->empty ?? $empty;
     }
 
+    public function getProfileAttribute() {
+        
+    }
+
     public function getJoinDateHumansAttribute() {
         return (new Carbon($this->updated_at))->diffForHumans();
     }

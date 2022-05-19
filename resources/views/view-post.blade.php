@@ -202,7 +202,7 @@
                 <!-- comment sorting -->
                 <div id="comment-title-and-sort-container" class="align-center space-between">
                     <span id="comments-title">{{ __('Comments') }} (<span class="post-comments-count">{{ $post->comments_count }}</span>)</span>
-                    <div class="relative">
+                    <div class="relative" id="comments-sortby-box">
                         <div class="align-center">
                             <span id="comments-sortby">{{ __('sort by') }} :</span>
                             <div class="align-center ml4 pointer button-with-suboptions button-style-4">

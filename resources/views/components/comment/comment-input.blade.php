@@ -3,7 +3,7 @@
     <div class="commenter-avatar-and-threadline">
         <!-- commenter avatar (link to its profile) -->
         @if(auth()->user())
-        <a href="" class="commenter-profile-link">
+        <a href="{{ route('user.profile', ['user'=>auth()->user()->username]) }}" class="commenter-profile-link">
             <img src="{{ auth()->user()->avatar(100) }}" class="commenter-avatar" alt="">
         </a>
         @else
@@ -60,7 +60,7 @@
                             <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
                         </svg>
                     </div>
-                    <span class="unselectable">update comment</span>
+                    <span class="unselectable">update</span>
                     <input type="hidden" class="comment-id" value="{{ $comment->id }}" autocomplete="off">
                 </div>
             </div>
