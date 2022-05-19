@@ -17,6 +17,7 @@
     <x-layout.left-panel.left-panel page="discover" />
     <div class="page-padding flex">
         <div id="discover-main">
+            <input type="hidden" id="sort-key" value="{{ $sort }}" autocomplete="off">
             <div class="page-path-wrapper align-center">
                 <a href="{{ route('root.slash') }}" class="align-center page-path">
                     <span>{{__('Home')}}</span>

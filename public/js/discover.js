@@ -14,7 +14,7 @@ if(posts_fetch_more.length) {
                     skip: present_posts,
                     take: 10,
                     form: 'card-component',
-                    sort: 'publish-date'
+                    sort: $('#sort-key').val()
 				},
                 success: function(response) {
 					let posts = response.posts;

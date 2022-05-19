@@ -414,20 +414,31 @@ class PostController extends Controller
         $data = $request->validate([
             'skip'=>'required|numeric',
             'take'=>'required|numeric',
-            'sort'=>['required', Rule::in(['publish-date'])],
+            'sort'=>['required', Rule::in(['publish-date','views','comments','reactions'])],
             'form'=>['required', Rule::in(['raw','card-component'])],
         ]);
 
         $sortby = '';
         switch($data['sort']) {
             case 'publish-date':
-                $sortby = 'published_at';
+                $sortby = 'published_at desc';
+                break;
+            case 'views':
+                $sortby = 'published_at desc'; // We'll handle this later
+                break;
+            case 'comments':
+                $sortby = 'comments_count desc';
+                break;
+            case 'reactions':
+                $sortby = 'reactions_count desc';
+                break;
         }
 
-        $posts = Post::with(['categories', 'author', 'author.roles', 'tags'])->orderBy($sortby, 'desc')->skip($data['skip'])->take($data['take']+1)->get();
+        $posts = Post::with(['categories', 'author', 'author.roles', 'tags'])
+            ->orderByRaw($sortby)->skip($data['skip'])->take($data['take']+1)->get();
         $hasmore = $posts->count() > $data['take'];
         $posts = $posts->take($data['take']);
-        $payload;
+        $payload = "";
         switch($data['form']) {
             case 'raw':
                 $payload = $posts->map(function($post) {
@@ -438,7 +449,6 @@ class PostController extends Controller
                 });
                 break;
             case 'card-component':
-                $payload = "";
                 $posts->map(function($post) use (&$payload) {
                     $postcard = (new PostCard($post));
                     $postcard = $postcard->render(get_object_vars($postcard))->render();

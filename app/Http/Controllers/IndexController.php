@@ -57,7 +57,7 @@ class IndexController extends Controller
                 $posts = $posts->orderBy('published_at', 'desc');
                 break;
             case 'views':
-                // Later when we'll handle posts views
+                $posts = $posts->orderBy('published_at', 'desc');
                 break;
             case 'comments':
                 $posts = $posts->orderBy('comments_count', 'desc');
