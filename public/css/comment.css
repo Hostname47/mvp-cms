@@ -4,6 +4,7 @@
 
 .comment-input-box {
     display: flex;
+    min-width: 230px;
 }
 
 .comment-input-box .error-container {

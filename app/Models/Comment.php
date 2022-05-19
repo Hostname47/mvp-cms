@@ -44,6 +44,12 @@ class Comment extends Model
         return (boolean) $this->claps()->where('user_id', auth()->user()->id)->count();
     }
 
+    public function getLinkAttribute() {
+        if($this->post)
+            return $this->post->link . '?comment=' . $this->id;
+        return '#';
+    }
+
     public function getDateHumansAttribute() {
         return (new Carbon($this->created_at))->diffForHumans();
     }

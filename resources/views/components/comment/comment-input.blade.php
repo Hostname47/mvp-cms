@@ -42,7 +42,7 @@
                             <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
                         </svg>
                     </div>
-                    <span>share comment</span>
+                    <span class="no-wrap">share comment</span>
                     <input type="hidden" class="parent-comment-id" value="{{ $parent_comment_id }}" autocomplete="off">
                 </div>
             </div>
