@@ -37,4 +37,11 @@ class Category extends Model
     public function getHasSubcategoriesAttribute() {
         return (bool) $this->subcategories->count();
     }
+
+    public static function hot_categories() {
+        /**
+         * This should be cached
+         */
+        return Category::withCount('posts')->orderBy('posts_count', 'desc')->take(10)->get();
+    }
 }

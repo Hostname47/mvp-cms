@@ -159,7 +159,7 @@
                     <span class="no-margin">{{__('Admin section')}}</span>
                 </a>
                 @endif
-                <a href="{{ route('user.profile', ['user'=>auth()->user()->username]) }}" class="suboption-style-1">
+                <a href="{{ auth()->user()->profile }}" class="suboption-style-1">
                     <svg class="size15 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M248 104c-53 0-96 43-96 96s43 96 96 96 96-43 96-96-43-96-96-96zm0 144c-26.5 0-48-21.5-48-48s21.5-48 48-48 48 21.5 48 48-21.5 48-48 48zm0-240C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm0 448c-49.7 0-95.1-18.3-130.1-48.4 14.9-23 40.4-38.6 69.6-39.5 20.8 6.4 40.6 9.6 60.5 9.6s39.7-3.1 60.5-9.6c29.2 1 54.7 16.5 69.6 39.5-35 30.1-80.4 48.4-130.1 48.4zm162.7-84.1c-24.4-31.4-62.1-51.9-105.1-51.9-10.2 0-26 9.6-57.6 9.6-31.5 0-47.4-9.6-57.6-9.6-42.9 0-80.6 20.5-105.1 51.9C61.9 339.2 48 299.2 48 256c0-110.3 89.7-200 200-200s200 89.7 200 200c0 43.2-13.9 83.2-37.3 115.9z"></path></svg>
                     <span class="no-margin">{{__('Profile')}}</span>
                 </a>
@@ -225,37 +225,31 @@
         <div id="header-discover-sections-box">
             <div class="header-discover-section header-discover-categories-section">
                 <div class="align-center">
-                    <svg class="size14 mr8" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M250.29,9.76V250.24H9.71V9.76ZM116,116.17V36.55H36.37v79.62Zm27.87-.09h79.62V36.48H143.83ZM36.3,223.56h79.76V144.14H36.3Zm107.43-.05h79.75V144.13H143.73Z"></path></svg>
+                    <svg class="size13 mr8" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M250.29,9.76V250.24H9.71V9.76ZM116,116.17V36.55H36.37v79.62Zm27.87-.09h79.62V36.48H143.83ZM36.3,223.56h79.76V144.14H36.3Zm107.43-.05h79.75V144.13H143.73Z"></path></svg>
                     <span class="header-discover-section-title no-margin">{{__('DISCOVER CATEGORIES')}}</span>
                 </div>
-                <span class="header-discover-section-title fs11 default-weight">{{__('explore all categories and subcategories available')}}</span>
-                <div class="flex flex-column">
-                    <a href="" class="link">● Sports Categories</a>
-                    <a href="" class="link">● Lifestyle Categories</a>
-                    <a href="" class="link">● Music Categories</a>
-                    <a href="" class="link">● Tech Categories</a>
-                    <a href="" class="link">● Travel Categories</a>
-                    <a href="" class="link">● Science Categories</a>
+                <span class="header-discover-section-title fs11 default-weight">{{__('explore categories in different areas')}}</span>
+                <div class="categories-container">
+                    @foreach(\App\Models\Category::hot_categories()->take(6) as $category)
+                    <a href="{{ route('discover', ['category'=>$category->slug]) }}" class="category">● {{ __($category->title) }}</a>
+                    @endforeach
                 </div>
             </div>
-            <div class="header-discover-section header-discover-categories-section">
+            <div class="header-discover-section header-discover-tags-section">
                 <div class="align-center">
-                    <svg class="size16 mr8" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M187.3,11.83c10.68,0,21.37-.11,32,0C235,12,246.7,23.59,246.8,39.2c.13,20.56.06,41.12,0,61.68,0,14.6-5.07,27.3-15.36,37.63Q182.29,187.89,132.85,237c-11,10.91-27.4,10.91-38.4,0Q57.87,200.83,21.68,164.2c-10.91-11-11-27.43-.12-38.4q49.23-49.68,98.84-99c10.08-10,22.55-14.88,36.78-15C167.22,11.77,177.26,11.83,187.3,11.83Zm41.28,60.22c0-10.52.07-21,0-31.58-.06-7-3.19-10.36-10-10.39q-31.09-.12-62.19.06c-9.57,0-17.61,3.86-24.29,10.55Q83.85,89,35.66,137.34c-5.26,5.27-5.22,9.85.06,15.15q35,35.13,70,70.17c5.7,5.69,10.11,5.68,15.87-.06q48-47.88,95.92-95.81c7.35-7.33,11.18-16.09,11.07-26.55C228.51,90.84,228.58,81.45,228.58,72.05ZM208,77a27.27,27.27,0,1,1-26.86-27.35A27.18,27.18,0,0,1,208,77Zm-18.23-.27a9,9,0,1,0-8.72,9.12A8.81,8.81,0,0,0,189.81,76.76Z"/></svg>
+                    <svg class="size15 mr8" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M187.3,11.83c10.68,0,21.37-.11,32,0C235,12,246.7,23.59,246.8,39.2c.13,20.56.06,41.12,0,61.68,0,14.6-5.07,27.3-15.36,37.63Q182.29,187.89,132.85,237c-11,10.91-27.4,10.91-38.4,0Q57.87,200.83,21.68,164.2c-10.91-11-11-27.43-.12-38.4q49.23-49.68,98.84-99c10.08-10,22.55-14.88,36.78-15C167.22,11.77,177.26,11.83,187.3,11.83Zm41.28,60.22c0-10.52.07-21,0-31.58-.06-7-3.19-10.36-10-10.39q-31.09-.12-62.19.06c-9.57,0-17.61,3.86-24.29,10.55Q83.85,89,35.66,137.34c-5.26,5.27-5.22,9.85.06,15.15q35,35.13,70,70.17c5.7,5.69,10.11,5.68,15.87-.06q48-47.88,95.92-95.81c7.35-7.33,11.18-16.09,11.07-26.55C228.51,90.84,228.58,81.45,228.58,72.05ZM208,77a27.27,27.27,0,1,1-26.86-27.35A27.18,27.18,0,0,1,208,77Zm-18.23-.27a9,9,0,1,0-8.72,9.12A8.81,8.81,0,0,0,189.81,76.76Z"/></svg>
                     <span class="header-discover-section-title no-margin">{{__('HOT TAGS')}}</span>
                 </div>
                 <span class="header-discover-section-title fs11 default-weight">{{__('most active tags')}}</span>
-                <div class="flex flex-column">
-                    <a href="" class="link">#artifical-intelligence</a>
-                    <a href="" class="link">#black-friday</a>
-                    <a href="" class="link">#sales</a>
-                    <a href="" class="link">#angel-of-death</a>
-                    <a href="" class="link">#laravel</a>
-                    <a href="" class="link">#interstellar</a>
+                <div class="tags-container">
+                    @foreach(\App\Models\Tag::hot_tags() as $tag)
+                    <a href="{{ $tag->link }}" class="tag">#{{ $tag->title }}</a>
+                    @endforeach
                 </div>
             </div>
             <div class="header-discover-section" id="header-featured-posts-box">
                 <div class="align-center">
-                    <svg class="size20 mx8" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M128,132,57.22,238.11,256,470,454.78,238.11,384,132Zm83,90H104l35.65-53.49Zm-30-60H331l-75,56.25Zm60,90V406.43L108.61,252Zm30,0H403.39L271,406.43Zm30-30,71.32-53.49L408,222ZM482,72V42H452V72H422v30h30v30h30V102h30V72ZM60,372H30v30H0v30H30v30H60V432H90V402H60ZM0,282H30v30H0Zm482-90h30v30H482Z"/></svg>
+                    <svg class="size18 mx8" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M128,132,57.22,238.11,256,470,454.78,238.11,384,132Zm83,90H104l35.65-53.49Zm-30-60H331l-75,56.25Zm60,90V406.43L108.61,252Zm30,0H403.39L271,406.43Zm30-30,71.32-53.49L408,222ZM482,72V42H452V72H422v30h30v30h30V102h30V72ZM60,372H30v30H0v30H30v30H60V432H90V402H60ZM0,282H30v30H0Zm482-90h30v30H482Z"/></svg>
                     <span class="header-discover-section-title no-margin">{{__('FEATURED POSTS')}}</span>
                 </div>
                 <div class="relative">
@@ -298,7 +292,7 @@
             </div>
             <div class="header-discover-section move-to-right">
                 <div class="align-center">
-                    <svg class="size18 mr8" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M255,158.92c-2.53,8.79-5.95,17-13.33,23.09a37.56,37.56,0,0,1-24.16,8.85c-24,.22-48,.08-72,.07a14.67,14.67,0,0,1-2.07-.34V165.92H149q33.11,0,66.2,0c10.16,0,14.79-4.67,14.82-14.87q.06-22.39,0-44.78c0-10.17-4.67-14.82-14.87-14.84q-32.87-.06-65.72,0h-6v-25h5.07c21.91,0,43.82.3,65.72-.09,21-.38,37,12.59,40.25,31.44.05.28.36.51.55.76ZM45.36,66.54c-23.77.1-39.53,16-39.6,39.78q-.06,22.14,0,44.27c0,24.73,15.69,40.4,40.42,40.44q33.08,0,66.16,0h5v-25h-6q-32.85,0-65.68,0c-10.21,0-14.85-4.66-14.88-14.81q-.08-22.14,0-44.28c0-10.86,4.5-15.39,15.25-15.4q33.07,0,66.16,0h5.26v-25C93,66.51,69.19,66.43,45.36,66.54Zm134.48,74.4V116.53h-99v24.41Z"/></svg>
+                    <svg class="size17 mr8" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M255,158.92c-2.53,8.79-5.95,17-13.33,23.09a37.56,37.56,0,0,1-24.16,8.85c-24,.22-48,.08-72,.07a14.67,14.67,0,0,1-2.07-.34V165.92H149q33.11,0,66.2,0c10.16,0,14.79-4.67,14.82-14.87q.06-22.39,0-44.78c0-10.17-4.67-14.82-14.87-14.84q-32.87-.06-65.72,0h-6v-25h5.07c21.91,0,43.82.3,65.72-.09,21-.38,37,12.59,40.25,31.44.05.28.36.51.55.76ZM45.36,66.54c-23.77.1-39.53,16-39.6,39.78q-.06,22.14,0,44.27c0,24.73,15.69,40.4,40.42,40.44q33.08,0,66.16,0h5v-25h-6q-32.85,0-65.68,0c-10.21,0-14.85-4.66-14.88-14.81q-.08-22.14,0-44.28c0-10.86,4.5-15.39,15.25-15.4q33.07,0,66.16,0h5.26v-25C93,66.51,69.19,66.43,45.36,66.54Zm134.48,74.4V116.53h-99v24.41Z"/></svg>
                     <span class="no-margin header-discover-section-title">{{__('OTHER LINKS')}}</span>
                 </div>
                 <div class="flex flex-column" style="margin-top: 12px;">

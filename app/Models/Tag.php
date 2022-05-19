@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Post;
+use App\Models\{Post,Tag};
 
 class Tag extends Model
 {
@@ -27,10 +27,21 @@ class Tag extends Model
         return $this->belongsToMany(Post::class);
     }
 
+    public function hot_tags() {
+        /**
+         * This should be cached
+         */
+        return Tag::withCount('posts')->orderBy('posts_count', 'desc')->take(10)->get();
+    }
+
     public function getPostsCountAttribute() {
         /**
          * This query should be cached because tags posts count is not changed frequently
          */
         return $this->posts()->count();
+    }
+
+    public function getLinkAttribute() {
+        return route('tag.view', ['tag'=>$this->slug]);
     }
 }

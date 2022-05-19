@@ -21,7 +21,7 @@
         @auth
         <div class="auth-section">
             <div class="flex">
-                <a href="" class="size32 mr8">
+                <a href="{{ auth()->user()->profile }}" class="size32 mr8">
                     <img src="{{ auth()->user()->avatar(36) }}" class="rounded size32" alt="">
                 </a>
                 <div class="toggle-box">

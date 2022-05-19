@@ -118,7 +118,7 @@ class User extends Authenticatable
     }
 
     public function getProfileAttribute() {
-        
+        return route('user.profile', ['user'=>$this->username]);
     }
 
     public function getJoinDateHumansAttribute() {

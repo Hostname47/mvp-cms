@@ -194,7 +194,58 @@ body {
 #header-discover-sections-box {
     display: flex;
     margin: 16px 20px;
-    gap: 20px;
+    gap: 30px;
+}
+
+.header-discover-tags-section {
+    max-width: 180px;
+}
+
+.header-discover-categories-section {
+    max-width: 250px;
+}
+
+header .tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+}
+
+header .tags-container .tag {
+    padding: 5px 10px;
+    background-color: #0f0f0f;
+    border-radius: 3px;
+    width: max-content;
+    color: #eee;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    max-width: 120px;
+    line-height: 1.6;
+}
+header .tags-container .tag:hover {
+    background-color: rgb(5, 5, 5);
+}
+
+header .categories-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+header .categories-container .category {
+    padding: 5px 10px;
+    color: rgb(211, 211, 211);
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    line-height: 1.6;
+    word-break: break-all;
+}
+header .categories-container .category:hover {
+    color: rgb(255, 255, 255);
 }
 
 #header-featured-posts-box {
@@ -287,6 +338,21 @@ body {
     font-size: 15px;
     text-decoration: none;
     margin-bottom: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* number of lines to show */
+            line-clamp: 3; 
+    -webkit-box-orient: vertical;
+}
+
+.header-featured-post-content .excerpt {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* number of lines to show */
+            line-clamp: 3; 
+    -webkit-box-orient: vertical;
 }
 
 #header-discover-title {
@@ -298,7 +364,7 @@ body {
     display: block;
     user-select: none;
     cursor: default;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 600;
     letter-spacing: 1.2px;
     color: #dde4ea;
