@@ -385,7 +385,7 @@
         width: calc(50% - 7px);
     }
 
-    .post-component .featured-image-container {
+    .post-component .thumbnail-image-container {
         border-right: none !important;
         width: auto !important;
         border-bottom: 1px solid #c6d0d9;

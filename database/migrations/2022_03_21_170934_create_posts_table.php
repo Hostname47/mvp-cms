@@ -33,6 +33,9 @@ class CreatePostsTable extends Migration
             $table->timestamp('published_at')->nullable();
             $table->timestamps();
             $table->json('metadata')->nullable();
+            /** Thumbnail */
+            $table->unsignedBigInteger('thumbnail_id')->nullable();
+            $table->foreign('thumbnail_id')->references('id')->on('metadata')->onDelete('set null');
             // Soft delete
             $table->softDeletes();
         });

@@ -43,6 +43,10 @@ class Post extends Model
         return $this->morphMany(Report::class, 'reportable');
     }
 
+    public function thumbnail() {
+        return $this->belongsTo(Metadata::class, 'thumbnail_id');
+    }
+
     public function getClapedAttribute() {
         if(!auth()->user())
             return false;
@@ -83,18 +87,15 @@ class Post extends Model
         return (new Carbon($this->published_at))->isoFormat("MMMM D, YYYY");
     }
 
-    public function has_featured_image() {
-        return isset($this->metadata['featured_image']);
+    public function has_thumbnail() {
+        return (bool) $this->thumbnail;
     }
 
-    public function getFeaturedImageAttribute() {
-        if($this->has_featured_image()) {
-            $metadata = Metadata::where('id', $this->metadata['featured_image'])->first();
-            if($metadata && isset($metadata->data['file']))
-                return asset('media-library/'.$metadata->data['file']);
-        }
+    public function getThumbnailImageAttribute() {
+        if($this->thumbnail_id)
+            return asset('media-library/'.$this->thumbnail->data['file']);
 
-        return false;
+        return '';
     }
 
     public function getHtmlTitleAttribute() {
@@ -159,7 +160,7 @@ class Post extends Model
 
     public static function featured_posts() {
         return Cache::remember('featured-posts', 21600, function () { // 6 hours
-            return Post::with(['categories','author','author.roles'])->orderBy('reactions_count', 'desc')->take(10)->get();
+            return Post::with(['categories','author', 'thumbnail', 'author.roles'])->orderBy('reactions_count', 'desc')->take(10)->get();
         });
     }
 }

@@ -105,9 +105,9 @@ class PostController extends Controller
             'tags'=>'sometimes|max:36',
             'tags.*'=>'min:1|max:120'
         ]);
-        // Featured Image
-        $featured_image = $request->validate([
-            'featured_image'=>'sometimes|exists:metadata,id'
+        // Thumbnail Image
+        $thumbnail = $request->validate([
+            'thumbnail'=>'sometimes|exists:metadata,id'
         ]);
         // Checking if post is password protected
         $password = $request->validate([
@@ -138,11 +138,9 @@ class PostController extends Controller
             }
         }
 
-        // Attach featured image to the post
-        if(isset($featured_image['featured_image'])) {
-            $metadata = $post->metadata;
-            $metadata['featured_image'] = $featured_image['featured_image'];
-            $post->update(['metadata'=>$metadata]);
+        // Attach thumbnail to the post
+        if(isset($thumbnail['thumbnail'])) {
+            $post->update(['thumbnail'=>$thumbnail]);
         }
 
         // Create a password for the post if admin specify password locked visibility
@@ -197,12 +195,12 @@ class PostController extends Controller
         ]);
 
         /**
-         * Here in update, we check if featured_image is set by admin; If so then we update
+         * Here in update, we check if thumbnail is set by admin; If so then we update
          * its value to the value specified by admin. In the other hand if the value is missed
-         * we need to remove featured_image from the post metadata
+         * we need to remove thumbnail from the post metadata
          */
-        $featured_image = $request->validate([
-            'featured_image'=>'sometimes|exists:metadata,id'
+        $thumbnail = $request->validate([
+            'thumbnail'=>'sometimes|exists:metadata,id'
         ]);
 
         $categories = $request->validate([
@@ -226,14 +224,10 @@ class PostController extends Controller
         // Update post content and other rlated inputs
         $post->update($postdata);
 
-        // Featured image
-        $metadata = $post->metadata;
-        if(isset($featured_image['featured_image']))
-            $metadata['featured_image'] = $featured_image['featured_image'];
-        else
-            unset($metadata['featured_image']);
-        $post->update(['metadata'=>$metadata]);
-
+        // thumbnail image
+        if(isset($thumbnail['thumbnail'])) {
+            $post->update(['thumbnail'=>$metadata]);
+        }
 
         // Check if visibility is password protected to save the password
         if(isset($password['password'])) {
@@ -296,11 +290,10 @@ class PostController extends Controller
             'password'=>($post->visibility == 'password-protected') ? $post->metadata['password'] : '',
             'categories'=>$post->categories->pluck('id'),
             'tags'=>$post->tags->pluck('title'),
-            'has_featured_image'=>$post->has_featured_image(),
-            'featured_image'=>[
-                'exists' => $post->has_featured_image(),
-                'path' => $post->featured_image,
-                'metadata_id' => $post->has_featured_image() ? $post->metadata['featured_image'] : ''
+            'thumbnail'=>[
+                'exists' => (bool) $post->thumbnail,
+                'path' => $post->thumbnail->path,
+                'metadata_id' => $post->thumbnail_id
             ],
             'summary'=>$post->summary,
             'allow_comments'=>$post->allow_comments,

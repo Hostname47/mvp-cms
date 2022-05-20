@@ -108,9 +108,9 @@
                 </div>
             </div>
         @else
-            @if($fimage = $post->featured_image)
-            <div id="feature-image-container">
-                <img src="{{ $fimage }}" id="feature-image" class="pointer open-image-on-image-viewer" alt="">
+            @if($post->has_thumbnail())
+            <div id="thumbnail-image-container">
+                <img src="{{ $post->thumbnail_image }}" id="thumbnail-image" class="pointer open-image-on-image-viewer" alt="">
             </div>
             @endif
             <div id="body-box">

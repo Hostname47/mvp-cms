@@ -114,7 +114,7 @@
             </div>
             @if($hasmore)
             <div id="posts-fetch-more" class="post-component fetch-more-style">
-                <div class="featured-image-container">
+                <div class="thumbnail-image-container">
                     <div class="fade-box full-dimensions"></div>
                 </div>
                 <div class="content-container">

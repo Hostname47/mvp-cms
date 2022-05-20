@@ -10,7 +10,7 @@ use App\Http\Controllers\Admin\{AdminSearchController};
 use App\Http\Middleware\AccountStatus;
 
 Route::get('/test', function() {
-    
+    dd(\App\Models\Post::find(8)->thumbnail);
 });
 
 Route::middleware(['is-admin'])->group(function() {

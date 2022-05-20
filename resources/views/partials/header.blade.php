@@ -261,8 +261,8 @@
                         <div class="header-featured-post">
                             <div class="header-featured-post-thumbnail-container">
                                 <a href="{{ $post->link }}" class="full-dimensions full-center">
-                                    @if($fi = $post->featured_image)
-                                    <img data-src="{{ $fi }}" alt="" class="lazy-image fill-and-center-image-on-parent header-featured-post-thumbnail-image">
+                                    @if($post->has_thumbnail())
+                                    <img data-src="{{ $post->thumbnail_image }}" alt="" class="lazy-image fill-and-center-image-on-parent header-featured-post-thumbnail-image">
                                     @else
                                     <svg class="f" fill="#818995" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M56.69,31H205.78C204.5,44.71,203.3,57.53,202,71.37L191.28,72c-.83-1.56-1.44-2.25-1.57-3-4-24.39,1.61-21.18-25.79-24.67a135.39,135.39,0,0,0-14.38-.91c-7.85-.15-15.71,0-25,0V120.8c13.22,0,27.24,1.45,40.65-.77,4.86-.81,8.27-10.4,10.27-18.34l12.17-.62v59.62H176.14c-.54-.81-1.35-1.48-1.44-2.24-2.6-21.54-2.58-21.67-25-22.86-8.2-.43-16.44-.07-25.59-.07,0,24.42-.31,48.26.15,72.08.19,9.88,8.6,9,15.49,10,6.07.88,15.59-1.06,11.61,11.47h-94c-1.32-9.18-1.36-10,6.22-10.34,12.28-.49,16.17-6.13,16-18.13-.53-46.73-.38-93.46-.16-140.19.15-11.12-2-18.7-15.42-18.78-3.26,0-6.5-4.93-9.74-7.6Z"/></svg>
                                     @endif

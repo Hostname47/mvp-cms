@@ -63,7 +63,7 @@
         flex-direction: column;
     }
 
-    .post-component .featured-image-container {
+    .post-component .thumbnail-image-container {
         border-right: none !important;
         width: auto !important;
         border-bottom: 1px solid #c6d0d9;

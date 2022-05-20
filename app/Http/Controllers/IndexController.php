@@ -30,9 +30,9 @@ class IndexController extends Controller
          * post model.
          */
         if(is_null($category))
-            $posts = Post::with(['categories', 'author','author.roles']);
+            $posts = Post::with(['categories', 'author', 'thumbnail', 'author.roles']);
         else
-            $posts = $category->posts()->with(['categories', 'author','author.roles']);
+            $posts = $category->posts()->with(['categories', 'author', 'thumbnail', 'author.roles']);
 
         // Handle search if user search for something
         if($request->has('q')) {

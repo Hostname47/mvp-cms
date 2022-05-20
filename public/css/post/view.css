@@ -7,7 +7,7 @@ main {
     min-height: 100vh;
 }
 
-#feature-image-container {
+#thumbnail-image-container {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -16,7 +16,7 @@ main {
     border-radius: 4px;
 }
 
-#feature-image {
+#thumbnail-image {
     width: 100%;
 }
 

@@ -7,7 +7,7 @@
     min-height: 200px;
 }
 
-.post-component .featured-image-container {
+.post-component .thumbnail-image-container {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -106,7 +106,7 @@
         width: calc(50% - 7px);
     }
 
-    .post-component .featured-image-container {
+    .post-component .thumbnail-image-container {
         border-right: none !important;
         width: auto !important;
         border-bottom: 1px solid #c6d0d9;
