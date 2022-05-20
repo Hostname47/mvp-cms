@@ -8,6 +8,7 @@ use App\Models\{Category,Tag, Metadata, Clap, SavedPost};
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Cache;
 
 class Post extends Model
 {
@@ -156,7 +157,9 @@ class Post extends Model
         return route('view.post', ['category'=>$this->categories->first()->slug, 'post'=>$this->slug]);
     }
 
-    public static function featured_posts($length=5) {
-        return Post::with(['categories'])->orderBy('reactions_count', 'desc')->take($length)->get();
+    public static function featured_posts() {
+        return Cache::remember('featured-posts', 21600, function () { // 6 hours
+            return Post::with(['categories','author','author.roles'])->orderBy('reactions_count', 'desc')->take(10)->get();
+        });
     }
 }

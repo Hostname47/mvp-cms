@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Post;
+use Illuminate\Support\Facades\Cache;
 
 class Category extends Model
 {
@@ -42,6 +43,14 @@ class Category extends Model
         /**
          * This should be cached
          */
-        return Category::withCount('posts')->orderBy('posts_count', 'desc')->take(10)->get();
+        return Cache::remember('hot-categories', 21600, function () { // 6 hours
+            return Category::withCount('posts')->orderBy('posts_count', 'desc')->take(10)->get();;
+        });
+    }
+
+    public function as_tree() {
+        return Cache::remember('tree', 86400, function () { // 6 hours
+            return Category::tree()->get()->toTree();
+        });
     }
 }

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\{Post,Tag};
+use Illuminate\Support\Facades\Cache;
 
 class Tag extends Model
 {
@@ -31,7 +32,9 @@ class Tag extends Model
         /**
          * This should be cached
          */
-        return Tag::withCount('posts')->orderBy('posts_count', 'desc')->take(10)->get();
+        return Cache::remember('hot-tags', 21600, function () { // 6 hours
+            return Tag::withCount('posts')->orderBy('posts_count', 'desc')->take(10)->get();
+        });
     }
 
     public function getPostsCountAttribute() {

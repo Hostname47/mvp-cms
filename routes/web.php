@@ -10,7 +10,7 @@ use App\Http\Controllers\Admin\{AdminSearchController};
 use App\Http\Middleware\AccountStatus;
 
 Route::get('/test', function() {
-    dd(auth()->user()->posts_saved);
+    
 });
 
 Route::middleware(['is-admin'])->group(function() {

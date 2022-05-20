@@ -5,15 +5,16 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^7.3",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/fortify": "^1.12",
-        "laravel/framework": "8.75",
+        "laravel/framework": "8.83.5",
         "laravel/sanctum": "^2.11",
         "laravel/socialite": "^5.5",
         "laravel/tinker": "^2.5",
         "mews/purifier": "^3.3",
+        "predis/predis": "^1.1",
         "staudenmeir/laravel-adjacency-list": "^1.0"
     },
     "require-dev": {

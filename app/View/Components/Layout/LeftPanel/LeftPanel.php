@@ -19,11 +19,8 @@ class LeftPanel extends Component
     {
         $this->page = $page;
         $this->subpage = $subpage;
-        $this->categories = Category::tree()->get()->toTree();
-        $this->tags = Tag::withCount('posts')
-            ->withCount('posts as posts_count')
-            ->orderByRaw('posts_count DESC')
-            ->take(8)->get();
+        $this->categories = Category::as_tree(); // cached tree
+        $this->tags = Tag::hot_tags()->take(8); // tags are cached as well
 
         // Search query
         $this->k = ($request->has('k')) ? $request->get('k') : '';
