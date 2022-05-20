@@ -10,19 +10,31 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Filesystem\Filesystem;
-use App\Models\Metadata;
+use App\Models\{Metadata, User, Permission};
 
 class MediasTest extends TestCase
 {
     use DatabaseTransactions;
     
+    public $authuser;
+
     public function setUp():void {
         parent::setUp();
+
+        $admin_access_permission = Permission::factory()->create([
+            'title'=>'Access admin section',
+            'slug'=>'access-admin-section'
+        ]);
+        $user = $this->authuser = User::factory()->create();
+        $this->actingAs($user);
+        User::attach_permission('access-admin-section');
+
         (new Filesystem)->cleanDirectory(storage_path('app/testing'));
     }
 
     public function tearDown():void {
         (new Filesystem)->cleanDirectory(storage_path('app/testing'));
+        parent::tearDown();
     }
 
     /** @test */

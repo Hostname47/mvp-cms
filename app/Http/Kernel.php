@@ -66,6 +66,7 @@ class Kernel extends HttpKernel
         'account.status' => \App\Http\Middleware\AccountStatus::class,
         'client.scopes' => \App\Http\Middleware\ClientScopes::class,
         'is-admin' => \App\Http\Middleware\IsAdmin::class,
+        'able-to-access-admin-section' => \App\Http\Middleware\AbleToAccessAdminSection::class,
     ];
 
     /**

@@ -128,4 +128,11 @@ class User extends Authenticatable
     public function getJoinDateAttribute() {
         return (new Carbon($this->updated_at))->isoFormat("dddd D MMM YYYY");
     }
+
+    public function attach_permission($slug) {
+        $permission = Permission::where('slug', $slug)->first();
+        if($permission && auth()->user()) {
+            auth()->user()->permissions()->syncWithoutDetaching($permission->id);
+        }
+    }
 }

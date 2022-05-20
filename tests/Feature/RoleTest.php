@@ -11,6 +11,18 @@ class RoleTest extends TestCase
 {
     use DatabaseTransactions;
 
+    public function setUp(): void {
+        parent::setUp();
+
+        $admin_access_permission = Permission::factory()->create([
+            'title'=>'Access admin section',
+            'slug'=>'access-admin-section'
+        ]);
+        $user = $this->authuser = User::factory()->create();
+        $this->actingAs($user);
+        User::attach_permission('access-admin-section');
+    }
+
     /**
      * The relation between roles-permissions-users could be messy if we start to attach
      * permissions just randomely without paying care about some tiny details.
@@ -101,9 +113,7 @@ class RoleTest extends TestCase
             ->assertStatus(422);
     }
     /** @test */
-    public function delete_a_role_will_delete_all_associated_users_and_permissions() {
-        $authuser = User::factory()->create();
-        $this->actingAs($authuser);
+    public function delete_a_role_will_delete_all_associated_users_and_its_permissions_on_those_users() {
         $role = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description']);
         $user0 = User::factory()->create();
         $user1 = User::factory()->create();
@@ -120,10 +130,10 @@ class RoleTest extends TestCase
             'permissions'=>[$permission0->id, $permission1->id, $permission2->id]
         ]);
         $this->assertCount(2, RoleUser::all());
-        $this->assertCount(6, PermissionUser::all());
+        $this->assertCount(7, PermissionUser::all()); // Normally 6 but because we are creating access to admin permission in set up function, thyen it is 7
         $this->delete('/admin/roles', ['role_id'=>$role->id]);
         $this->assertCount(0, RoleUser::all());
-        $this->assertCount(0, PermissionUser::all());
+        $this->assertCount(1, PermissionUser::all());
     }
 
     /** @test */
@@ -178,8 +188,6 @@ class RoleTest extends TestCase
 
     /** @test */
     public function attach_permissions_to_role_will_attach_them_to_all_role_owners() {
-        $authuser = User::factory()->create();
-        $this->actingAs($authuser);
         $role = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description']);
 
         $user0 = User::factory()->create();
@@ -207,8 +215,6 @@ class RoleTest extends TestCase
     }
     /** @test */
     public function detach_permissions_from_role_will_detach_them_from_all_role_owners() {
-        $authuser = User::factory()->create();
-        $this->actingAs($authuser);
         $role = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description']);
         $user0 = User::factory()->create();
         $user1 = User::factory()->create();
@@ -240,8 +246,7 @@ class RoleTest extends TestCase
 
     /** @test */
     public function grant_role_to_user() {
-        $authuser = User::factory()->create();
-        $this->actingAs($authuser);
+        $authuser = $this->authuser;
         $role = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description']);
         $user = User::factory()->create();
 
@@ -255,8 +260,6 @@ class RoleTest extends TestCase
     }
     /** @test */
     public function grant_a_role_will_attach_all_its_associated_permissions_to_role_owners() {
-        $authuser = User::factory()->create();
-        $this->actingAs($authuser);
         $role = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description']);
         $user = User::factory()->create();
 
@@ -285,8 +288,6 @@ class RoleTest extends TestCase
     }
     /** @test */
     public function grant_role_to_multiple_users_to_check_permissions_assignments() {
-        $authuser = User::factory()->create();
-        $this->actingAs($authuser);
         $role = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description']);
         $user0 = User::factory()->create();
         $user1 = User::factory()->create();
@@ -307,9 +308,6 @@ class RoleTest extends TestCase
     }
     /** @test */
     public function revoke_role_from_user() {
-        $this->withoutExceptionHandling();
-        $authuser = User::factory()->create();
-        $this->actingAs($authuser);
         $role = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description']);
         $user = User::factory()->create();
 
@@ -326,8 +324,6 @@ class RoleTest extends TestCase
     }
     /** @test */
     public function revoke_role_from_user_will_revoke_all_its_associated_permissions_as_well() {
-        $authuser = User::factory()->create();
-        $this->actingAs($authuser);
         $role = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description']);
         $user = User::factory()->create();
 
@@ -344,8 +340,6 @@ class RoleTest extends TestCase
     }
     /** @test */
     public function revoke_role_from_multiple_users_to_check_permissions_detachments() {
-        $authuser = User::factory()->create();
-        $this->actingAs($authuser);
         $role = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description']);
         $user0 = User::factory()->create();
         $user1 = User::factory()->create();
@@ -367,7 +361,6 @@ class RoleTest extends TestCase
 
     /** @test */
     public function update_roles_priority() {
-        $this->withoutExceptionHandling();
         $admin = Role::create(['title'=>'Admin','slug'=>'admin','description'=>'admin description', 'priority'=>1]);
         $moderator = Role::create(['title'=>'Moderator','slug'=>'moderator','description'=>'moderator description', 'priority'=>2]);
         $author = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description', 'priority'=>3]);

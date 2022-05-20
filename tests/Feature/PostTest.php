@@ -8,13 +8,13 @@ use Illuminate\Support\Str;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
-use App\Models\{User, Category, Post, Tag, Metadata};
+use App\Models\{User, Category, Post, Tag, Metadata, Permission};
 
 class PostTest extends TestCase
 {
     use DatabaseTransactions;
 
-    protected $user;
+    protected $authuser;
 
     public function setUp(): void {
         parent::setUp();
@@ -28,6 +28,14 @@ class PostTest extends TestCase
             'slug'=>'uncategorized'
         ]);
 
+        $admin_access_permission = Permission::factory()->create([
+            'title'=>'Access admin section',
+            'slug'=>'access-admin-section'
+        ]);
+        $user = $this->authuser = User::factory()->create();
+        $this->actingAs($user);
+        User::attach_permission('access-admin-section');
+
         (new Filesystem)->cleanDirectory(storage_path('app/testing'));
     }
 
@@ -39,9 +47,6 @@ class PostTest extends TestCase
 
     /** @test */
     public function creating_a_post() {
-        $user = User::factory()->create();
-        $this->actingAs($user);
-
         $this->assertCount(0, Post::all());
         $this->post('/admin/posts', [
             'title' => 'cool title',
@@ -55,9 +60,6 @@ class PostTest extends TestCase
 
     /** @test */
     public function create_a_post_with_password_protected_visibility() {
-        $user = User::factory()->create();
-        $this->actingAs($user);
-
         $this->post('/admin/posts', [
             'title'=>'pp','title_meta'=>'pp','slug'=>'p-p','content'=>'pp',
             'visibility'=>'password-protected'
@@ -78,12 +80,10 @@ class PostTest extends TestCase
 
     /** @test */
     public function create_a_post_within_a_category() {
-        $user = User::factory()->create();
         $category = Category::factory()->create([
             'title'=>'Technology',
             'slug'=>'technology'
         ]);
-        $this->actingAs($user);
 
         $this->post('/admin/posts', [
             'title' => 'cool title',
@@ -100,9 +100,6 @@ class PostTest extends TestCase
 
     /** @test */
     public function create_a_post_without_category_will_get_uncategorized_category_by_default() {
-        $user = User::factory()->create();
-        $this->actingAs($user);
-
         $this->post('/admin/posts', [
             'title' => 'a','title_meta' => 'b','slug' => 'c','content' => 'd',
         ]);
@@ -113,10 +110,8 @@ class PostTest extends TestCase
 
     /** @test */
     public function create_a_post_with_multiple_categories() {
-        $user = User::factory()->create();
         $category1 = Category::factory()->create(['title'=>'Technology','slug'=>'technology']);
         $category2 = Category::factory()->create(['title'=>'Lifestyle','slug'=>'lifestyle']);
-        $this->actingAs($user);
 
         $this->post('/admin/posts', [
             'title' => 'fa','title_meta' => 'ka','slug' => 'pa','summary' => 'la','content' => 'de',
@@ -128,10 +123,7 @@ class PostTest extends TestCase
 
     /** @test */
     public function create_a_post_with_tags() {
-        $user = User::factory()->create();
         $tag1 = Tag::factory()->create(['title'=>'Dark web','slug'=>'dark-web']);
-        $this->actingAs($user);
-
         /**
          * Here dark web tag is already there, so we expect 2 tags to be at the end; Means only
          * devops will get created in the controller method, because dark web tag will be fetched
@@ -148,8 +140,7 @@ class PostTest extends TestCase
 
     /** @test */
     public function post_creation_data_validation() {
-        $user = User::factory()->create();
-        $this->actingAs($user);
+        $user = $this->authuser;
         $category = Category::factory()->create();
 
         $this->post('/admin/posts')
@@ -167,9 +158,6 @@ class PostTest extends TestCase
 
     /** @test */
     public function create_a_post_with_featured_image() {
-        $user = User::factory()->create();
-        $this->actingAs($user);
-
         $featured_image = UploadedFile::fake()->image('thumbnail.png', 30, 80)->size(200);
         $this->post('/admin/media-library/upload', ['files'=>[$featured_image]]);
         $featured_image_metdata = Metadata::first();
@@ -188,9 +176,6 @@ class PostTest extends TestCase
 
     /** @test */
     public function creating_post_with_already_created_tags() {
-        $user = User::factory()->create();
-        $this->actingAs($user);
-
         Tag::create(['title'=>'mouad', 'title_meta'=>'mouad', 'slug'=>'mouad']);
         $this->assertCount(1, Tag::all());
         $this->post('/admin/posts', [
@@ -204,9 +189,6 @@ class PostTest extends TestCase
 
     /** @test */
     public function creating_post_with_already_created_tag_but_different_case() {
-        $user = User::factory()->create();
-        $this->actingAs($user);
-
         Tag::create(['title'=>'mouad', 'title_meta'=>'mouad', 'slug'=>'mouad']);
         $this->assertCount(1, Tag::all());
         $this->post('/admin/posts', [
@@ -220,9 +202,6 @@ class PostTest extends TestCase
 
     /** @test */
     public function create_post_with_tags_validation() {
-        $user = User::factory()->create();
-        $this->actingAs($user);
-
         $this->post('/admin/posts', [
             'title' => 'a','title_meta' => 'a','slug' => 'a','summary' => 'a','content' => 'a',
             'tags' => ['mouad nassri']
@@ -238,9 +217,6 @@ class PostTest extends TestCase
 
     /** @test */
     public function create_a_post_with_status() {
-        $user = User::factory()->create();
-        $this->actingAs($user);
-
         $this->post('/admin/posts', [
             'title' => 'T','title_meta' => 't','slug' => 'T','content' => 'T',
             'status' => 'draft'
@@ -251,9 +227,6 @@ class PostTest extends TestCase
 
     /** @test */
     public function create_a_post_with_no_status_will_be_awaiting_review_by_default() {
-        $user = User::factory()->create();
-        $this->actingAs($user);
-        
         $this->post('/admin/posts', [
             'title' => 'AR','title_meta' => 'AR','slug' => 'a-r','content' => 'AR content',
         ]);
@@ -263,9 +236,6 @@ class PostTest extends TestCase
 
     /** @test */
     public function update_post_content() {
-        $user = User::factory()->create();
-        $this->actingAs($user);
-
         $post = Post::factory()->create([
             'title' => 'cool title',
             'title_meta' => 'cool-title',
@@ -299,9 +269,6 @@ class PostTest extends TestCase
 
     /** @test */
     public function update_post_content_validation() {
-        $user = User::factory()->create();
-        $this->actingAs($user);
-
         $post = Post::factory()->create();
 
         $this->patch('/admin/posts', ['title' => 'patched title',])
@@ -324,8 +291,6 @@ class PostTest extends TestCase
 
     /** @test */
     public function update_post_visibility() {
-        $user = User::factory()->create();
-        $this->actingAs($user);
 
         $this->post('/admin/posts', [
             'title' => 'foo','title_meta' => 'foo','slug' => 'f-o-o','content' => 'foo content',
@@ -356,8 +321,6 @@ class PostTest extends TestCase
 
     /** @test */
     public function update_post_categories() {
-        $user = User::factory()->create();
-        $this->actingAs($user);
         $category1 = Category::factory()->create(['title'=>'Technology','slug'=>'technology']);
         $category2 = Category::factory()->create(['title'=>'Lifestyle','slug'=>'lifestyle']);
 
@@ -381,8 +344,6 @@ class PostTest extends TestCase
 
     /** @test */
     public function remove_all_post_categories_will_take_uncategorized_as_default() {
-        $user = User::factory()->create();
-        $this->actingAs($user);
         $category1 = Category::factory()->create(['title'=>'Technology','slug'=>'technology']);
         $category2 = Category::factory()->create(['title'=>'Lifestyle','slug'=>'lifestyle']);
 
@@ -405,9 +366,6 @@ class PostTest extends TestCase
 
     /** @test */
     public function update_post_tags() {
-        $user = User::factory()->create();
-        $this->actingAs($user);
-
         $tag1 = Tag::create(['title'=>'mouad', 'title_meta'=>'mouad', 'slug'=>'mouad']);
         $tag2 = Tag::create(['title'=>'thomas', 'title_meta'=>'thomas', 'slug'=>'acquinas']);
 
@@ -437,9 +395,6 @@ class PostTest extends TestCase
 
     /** @test */
     public function update_post_featured_image() {
-        $user = User::factory()->create();
-        $this->actingAs($user);
-
         $featured_image0 = UploadedFile::fake()->image('thumbnail_0.png', 30, 80)->size(200);
         $featured_image1 = UploadedFile::fake()->image('thumbnail_1.png', 30, 80)->size(200);
         $this->post('/admin/media-library/upload', ['files'=>[$featured_image0, $featured_image1]]);
@@ -481,9 +436,6 @@ class PostTest extends TestCase
 
     /** @test */
     public function update_post_comments_and_reactions_switches() {
-        $user = User::factory()->create();
-        $this->actingAs($user);
-
         $this->post('/admin/posts', [
             'title'=>'a','title_meta'=>'a','slug'=>'a','content'=>'a',
         ]);
@@ -508,9 +460,6 @@ class PostTest extends TestCase
 
     /** @test */
     public function update_post_status() {
-        $user = User::factory()->create();
-        $this->actingAs($user);
-
         $this->post('/admin/posts', [
             'title' => 'foo','title_meta' => 'foo','slug' => 'foo','summary' => 'foo','content' => 'foo',
         ]);
@@ -526,9 +475,6 @@ class PostTest extends TestCase
 
     /** @test */
     public function trash_a_post() {
-        $user = User::factory()->create();
-        $this->actingAs($user);
-
         $post = Post::create(['title' => 'foo','title_meta' => 'foo','slug' => 'foo','summary' => 'foo','content' => 'foo']);
 
         $this->assertNull($post->deleted_at);
@@ -541,9 +487,6 @@ class PostTest extends TestCase
 
     /** @test */
     public function untrash_a_post() {
-        $user = User::factory()->create();
-        $this->actingAs($user);
-
         $post = Post::create(['title' => 'foo','title_meta' => 'foo','slug' => 'foo','summary' => 'foo','content' => 'foo']);
         $this->post('/admin/posts/trash', ['post_id'=>$post->id]);
         $post->refresh();
@@ -555,9 +498,6 @@ class PostTest extends TestCase
 
     /** @test */
     public function delete_a_post_permanently() {
-        $user = User::factory()->create();
-        $this->actingAs($user);
-
         $post = Post::create(['title' => 'foo','title_meta' => 'foo','slug' => 'foo','summary' => 'foo','content' => 'foo']);
         $this->assertCount(1, Post::all());
         $this->delete('/admin/posts', ['post_id'=>$post->id]);
@@ -566,8 +506,7 @@ class PostTest extends TestCase
 
     /** @test */
     public function save_a_post() {
-        $user = User::factory()->create();
-        $this->actingAs($user);
+        $user = $this->authuser;
         $post = Post::create(['title' => 'foo','title_meta' => 'foo','slug' => 'foo','summary' => 'foo','content' => 'foo', 'status'=> 'published']);
 
         $this->assertCount(0, $user->posts_saved);
@@ -578,8 +517,7 @@ class PostTest extends TestCase
 
     /** @test */
     public function unsave_a_post() {
-        $user = User::factory()->create();
-        $this->actingAs($user);
+        $user = $this->authuser;
         $post = Post::create(['title' => 'foo','title_meta' => 'foo','slug' => 'foo','summary' => 'foo','content' => 'foo', 'status'=> 'published']);
 
         $this->assertCount(0, $user->posts_saved);

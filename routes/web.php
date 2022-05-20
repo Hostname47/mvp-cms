@@ -13,7 +13,7 @@ Route::get('/test', function() {
     dd(\App\Models\Post::find(8)->thumbnail);
 });
 
-Route::middleware(['is-admin'])->group(function() {
+Route::middleware(['able-to-access-admin-section'])->group(function() {
     // Roles management
     Route::post('/admin/roles', [RoleController::class, 'store']);
     Route::patch('/admin/roles', [RoleController::class, 'update']);

@@ -16,15 +16,20 @@ class PermissionTest extends TestCase
     public function setUp(): void {
         parent::setUp();
 
+        $admin_access_permission = Permission::factory()->create([
+            'title'=>'Access admin section',
+            'slug'=>'access-admin-section'
+        ]);
         $user = $this->authuser = User::factory()->create();
         $this->actingAs($user);
+        User::attach_permission('access-admin-section');
     }
 
     /** @test */
     public function create_a_permission() {
-        $this->assertCount(0, Permission::all());
+        $this->assertCount(1, Permission::all()); // 1 creeated in setUp()
         $this->post('/admin/permissions', ['title'=>'Create posts','slug'=>'create-a-post','description'=>'Create a post permission that allows user to create posts','scope'=>'posts']);
-        $this->assertCount(1, Permission::all());
+        $this->assertCount(2, Permission::all());
     }
 
     /** @test */
@@ -78,9 +83,9 @@ class PermissionTest extends TestCase
         $this->withoutExceptionHandling();
         $permission = Permission::create(['title'=>'Create posts','slug'=>'create-a-post','description'=>'Create a post permission that allows user to create posts','scope'=>'posts']);
 
-        $this->assertCount(1, Permission::all());
+        $this->assertCount(2, Permission::all());
         $this->delete('/admin/permissions', ['permission_id'=>$permission->id]);
-        $this->assertCount(0, Permission::all());
+        $this->assertCount(1, Permission::all());
     }
 
     /** @test */

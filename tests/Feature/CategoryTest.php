@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Models\{Post,Category,User};
+use App\Models\{Post,Category,User,Permission};
 
 class CategoryTest extends TestCase
 {
@@ -17,8 +17,13 @@ class CategoryTest extends TestCase
     public function setUp(): void {
         parent::setUp();
 
+        $admin_access_permission = Permission::factory()->create([
+            'title'=>'Access admin section',
+            'slug'=>'access-admin-section'
+        ]);
         $user = $this->authuser = User::factory()->create();
         $this->actingAs($user);
+        User::attach_permission('access-admin-section');
 
         $this->uncategorized = Category::factory()->create([
             'title'=>'Uncategorized',
