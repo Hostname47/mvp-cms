@@ -11,6 +11,8 @@ class RoleTest extends TestCase
 {
     use DatabaseTransactions;
 
+    public $authuser;
+
     public function setUp(): void {
         parent::setUp();
 

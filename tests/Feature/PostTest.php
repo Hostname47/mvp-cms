@@ -157,21 +157,21 @@ class PostTest extends TestCase
     }
 
     /** @test */
-    public function create_a_post_with_featured_image() {
-        $featured_image = UploadedFile::fake()->image('thumbnail.png', 30, 80)->size(200);
-        $this->post('/admin/media-library/upload', ['files'=>[$featured_image]]);
-        $featured_image_metdata = Metadata::first();
+    public function create_a_post_with_a_thumbnail() {
+        $thumbnail = UploadedFile::fake()->image('thumbnail.png', 30, 80)->size(200);
+        $this->post('/admin/media-library/upload', ['files'=>[$thumbnail]]);
+        $thumbnail_metdata = Metadata::first();
         $this->post('/admin/posts', [
             'title' => 'Foo','title_meta' => 'foo','slug' => 'foo-boo','summary' => 'foo','content' => 'foo',
-            'featured_image' => $featured_image_metdata->id
+            'thumbnail_id' => $thumbnail_metdata->id
         ]);
         $post = Post::first();
-        $this->assertEquals($featured_image_metdata->id, $post->metadata['featured_image']);
-        // The following featured id does not exist, so we expect an error
+        $this->assertEquals($thumbnail_metdata->id, $post->thumbnail_id);
+        // The following thumbnail id (id of metadata) does not exist, so we expect an error
         $this->post('/admin/posts', [
             'title' => 'Boo','title_meta' => 'boo','slug' => 'boo-foo','summary' => 'boo','content' => 'boo',
-            'featured_image' => 8547875
-        ])->assertRedirect()->assertSessionHasErrors(['featured_image']);
+            'thumbnail_id' => 8547875
+        ])->assertRedirect()->assertSessionHasErrors(['thumbnail_id']);
     }
 
     /** @test */
@@ -394,44 +394,45 @@ class PostTest extends TestCase
     }
 
     /** @test */
-    public function update_post_featured_image() {
-        $featured_image0 = UploadedFile::fake()->image('thumbnail_0.png', 30, 80)->size(200);
-        $featured_image1 = UploadedFile::fake()->image('thumbnail_1.png', 30, 80)->size(200);
-        $this->post('/admin/media-library/upload', ['files'=>[$featured_image0, $featured_image1]]);
-
-        $fi0metadata = Metadata::all()[0];
-        $fi1metadata = Metadata::all()[1];
+    public function update_post_thumbnail_image() {
+        $thumbnail_image0 = UploadedFile::fake()->image('thumbnail_0.png', 30, 80)->size(200);
+        $thumbnail_image1 = UploadedFile::fake()->image('thumbnail_1.png', 30, 80)->size(200);
+        /** Upload thumbnails to media library */
+        $this->post('/admin/media-library/upload', ['files'=>[$thumbnail_image0, $thumbnail_image1]]);
+        /** Retrieve metadata of thumbnails */
+        $thumbnail0_metadata = Metadata::all()[0];
+        $thumbnail1_metadata = Metadata::all()[1];
 
         $this->post('/admin/posts', [
             'title' => 'Foo','title_meta' => 'foo','slug' => 'foo-boo','content' => 'foo',
-            'featured_image' => $fi0metadata->id
+            'thumbnail_id' => $thumbnail0_metadata->id
         ]);
         $post = Post::first();
-        $this->assertEquals($fi0metadata->id, $post->metadata['featured_image']);
+        $this->assertEquals($thumbnail0_metadata->id, $post->thumbnail_id);
         
         $this->patch('/admin/posts', [
             'post_id'=>$post->id,
-            'featured_image'=>$fi1metadata->id
+            'thumbnail_id'=>$thumbnail1_metadata->id
         ]);
         $post->refresh();
-        $this->assertEquals($fi1metadata->id, $post->metadata['featured_image']);
+        $this->assertEquals($thumbnail1_metadata->id, $post->thumbnail_id);
 
         $this->patch('/admin/posts', [
             'post_id'=>$post->id,
-            'featured_image'=>5842557
-        ])->assertRedirect()->assertSessionHasErrors(['featured_image']); // INVALIDE featured image metadata id
+            'thumbnail_id'=>5842557
+        ])->assertRedirect()->assertSessionHasErrors(['thumbnail_id']); // INVALIDE thumbnail image metadata id
 
         /**
          * Here in update phase, If the post has a feautured_image, and the admin remove it from edit ui,
-         * then the featured_image_metadata_id will be null in the hidden input. Si in terms of backend,
-         * If the featured_image is not present in the request data, or it is null, then the post featured_image
-         * will be cleared from post metadata
+         * then the thumbnail_id will be null in the hidden input. Si in terms of backend, If the thumbnail image
+         * is not present in the request data, or it is null, then the post thumbnail_id will be null
          */
         $this->patch('/admin/posts', [
             'post_id'=>$post->id,
+            'thumbnail_id'=>null
         ]);
         $post->refresh();
-        $this->assertTrue(!isset($post->metadata['featured_image']));
+        $this->assertTrue(is_null($post->thumbnail_id));
     }
 
     /** @test */

@@ -5,12 +5,14 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Models\{User,Tag,Post,Category};
+use App\Models\{User,Tag,Post,Category,Permission};
 
 class TagTest extends TestCase
 {
     use DatabaseTransactions;
 
+    public $authuser;
+    
     public function setUp(): void {
         parent::setUp();
 
@@ -22,14 +24,19 @@ class TagTest extends TestCase
             'title'=>'Uncategorized',
             'slug'=>'uncategorized'
         ]);
+
+        $admin_access_permission = Permission::factory()->create([
+            'title'=>'Access admin section',
+            'slug'=>'access-admin-section'
+        ]);
+        $user = $this->authuser = User::factory()->create();
+        $this->actingAs($user);
+        User::attach_permission('access-admin-section');
     }
 
     /** @test */
     public function create_a_tag()
     {
-        $user = User::factory()->create();
-        $this->actingAs($user);
-
         $this->assertCount(0, Tag::all());
         $this->post('/admin/tags', [
             'title'=>'Websockets',
@@ -42,8 +49,6 @@ class TagTest extends TestCase
 
     /** @test */
     public function create_tags_validation() {
-        $user = User::factory()->create();
-        $this->actingAs($user);
         Tag::create(['title'=>'foo', 'title_meta'=>'foo', 'slug'=>'f-o-o']);
 
         $this->post('/admin/tags', [
@@ -67,8 +72,6 @@ class TagTest extends TestCase
 
     /** @test */
     public function update_a_tag() {
-        $user = User::factory()->create();
-        $this->actingAs($user);
         $tag = Tag::create(['title'=>'foo', 'title_meta'=>'foo', 'slug'=>'f-o-o']);
 
         $this->patch('/admin/tags', [
@@ -87,9 +90,6 @@ class TagTest extends TestCase
 
     /** @test */
     public function update_a_tag_validation() {
-        $user = User::factory()->create();
-        $this->actingAs($user);
-
         $tag1 = Tag::create(['title'=>'foo', 'title_meta'=>'foo', 'slug'=>'f-o-o']);
         $tag2 = Tag::create(['title'=>'boo', 'title_meta'=>'boo', 'slug'=>'b-o-o']);
 
@@ -108,8 +108,6 @@ class TagTest extends TestCase
 
     /** @test */
     public function delete_a_tag() {
-        $user = User::factory()->create();
-        $this->actingAs($user);
         $tag = Tag::create(['title'=>'foo', 'title_meta'=>'foo', 'slug'=>'f-o-o']);
 
         $this->assertCount(1, Tag::all());
@@ -119,9 +117,6 @@ class TagTest extends TestCase
 
     /** @test */
     public function tag_deletion_checks() {
-        $this->withoutExceptionHandling();
-        $user = User::factory()->create();
-        $this->actingAs($user);
         $tag = Tag::create(['title'=>'foo', 'title_meta'=>'foo', 'slug'=>'f-o-o']);
 
         $this->post('/admin/posts', [

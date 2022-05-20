@@ -88,6 +88,7 @@ class PostController extends Controller
             'content'=>'required|max:50000',
             'allow_reactions'=>['sometimes', Rule::in([0, 1])],
             'allow_comments'=>['sometimes', Rule::in([0, 1])],
+            'thumbnail_id'=>'sometimes|exists:metadata,id'
         ]);
         $postdata['user_id'] = auth()->user()->id;
         // Handle published at if status is published
@@ -104,10 +105,6 @@ class PostController extends Controller
         $tags = $request->validate([
             'tags'=>'sometimes|max:36',
             'tags.*'=>'min:1|max:120'
-        ]);
-        // Thumbnail Image
-        $thumbnail = $request->validate([
-            'thumbnail'=>'sometimes|exists:metadata,id'
         ]);
         // Checking if post is password protected
         $password = $request->validate([
@@ -136,11 +133,6 @@ class PostController extends Controller
                     ['title'=>$tag, 'title_meta'=>$tag, 'slug'=>Str::slug($tag, '-'), 'description' => '--']
                 )->id);
             }
-        }
-
-        // Attach thumbnail to the post
-        if(isset($thumbnail['thumbnail'])) {
-            $post->update(['thumbnail'=>$thumbnail]);
         }
 
         // Create a password for the post if admin specify password locked visibility
@@ -192,15 +184,7 @@ class PostController extends Controller
             'content'=>'sometimes|max:50000',
             'allow_reactions'=>['sometimes', Rule::in([0, 1])],
             'allow_comments'=>['sometimes', Rule::in([0, 1])],
-        ]);
-
-        /**
-         * Here in update, we check if thumbnail is set by admin; If so then we update
-         * its value to the value specified by admin. In the other hand if the value is missed
-         * we need to remove thumbnail from the post metadata
-         */
-        $thumbnail = $request->validate([
-            'thumbnail'=>'sometimes|exists:metadata,id'
+            'thumbnail_id'=>'nullable|exists:metadata,id'
         ]);
 
         $categories = $request->validate([
