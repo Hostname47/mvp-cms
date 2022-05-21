@@ -4,27 +4,27 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 
 class AuthorController extends Controller
 {
     public function dashboard(Request $request) {
-        $statistics = \DB::select("
-            SELECT 'all' as k, COUNT(*) as v FROM posts
-            union all
-            SELECT ANY_VALUE(status) as k, COUNT(*) AS v FROM posts GROUP BY status
-        ");
-        $temp = [];
-        foreach($statistics as $stats) $temp[$stats->k] = $stats->v;
-        $statistics = $temp;
+        $user = auth()->user();
+        $statistics = [
+            'all' => $user->posts()->withoutGlobalScopes()->count(),
+            'published' => $user->posts()->withoutGlobalScopes()->where('status', 'published')->count(),
+            'awaiting-review' => $user->posts()->withoutGlobalScopes()->where('status', 'awaiting-review')->count(),
+            'draft' => $user->posts()->withoutGlobalScopes()->where('status', 'draft')->count(),
+            'deleted' => $user->posts()->withoutGlobalScopes()->whereNotNull('deleted_at')->count(),
+        ];
 
         $tab = 'all';
         if($request->has('tab')) {
             $tab = $request->validate([
-                'tab'=>[Rule::in(['all','published','awaiting-review','draft'])]
+                'tab'=>[Rule::in(['all','published','awaiting-review','draft','deleted'])]
             ])['tab'];
         }
 
-        $user = auth()->user();
         $posts = $user->posts()->withoutGlobalScopes()->with(['thumbnail','categories','tags']);
         switch($tab) {
             case 'all':
@@ -38,6 +38,9 @@ class AuthorController extends Controller
                 break;
             case 'draft':
                 $posts = $posts->where('status', 'draft');
+                break;
+            case 'deleted':
+                $posts = $posts->whereNotNull('deleted_at');
                 break;
         }
         $posts = $posts->paginate(10);
