@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->string('password')->nullable();
             $table->rememberToken();
             $table->string('status')->default('active');
+            $table->boolean('elected_author')->default(0);
             $table->timestamps();
             // Soft delete
             $table->softDeletes();

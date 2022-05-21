@@ -5,7 +5,8 @@ use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use App\Http\Controllers\{IndexController, AdminController, PostController, CategoryController,
     MediaController, OAuthController, TagController, RoleController, PermissionController, RPManagement,
     NewsletterController, CommentController, ClapController, ReportController, SearchController,
-    AuthorRequestController, ContactController, FaqController, UserController, ActivitiesController};
+    AuthorRequestController, ContactController, FaqController, UserController, ActivitiesController, 
+    AuthorController};
 use App\Http\Controllers\Admin\{AdminSearchController};
 use App\Http\Middleware\AccountStatus;
 
@@ -115,6 +116,10 @@ Route::middleware(['client.scopes', 'account.status'])->group(function() {
 
         Route::get('/reports/viewer', [ReportController::class, 'viewer']);
         Route::post('/reports', [ReportController::class, 'report']);
+
+        Route::middleware(['elected-author'])->group(function () {
+            Route::get('/author/dashboard', [AuthorController::class, 'dashboard'])->name('author.dashboard');
+        });
     });
 
     Route::get('/search', [SearchController::class, 'search'])->name('search');
