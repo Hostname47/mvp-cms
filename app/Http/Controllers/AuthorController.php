@@ -50,4 +50,8 @@ class AuthorController extends Controller
             ->with(compact('statistics'))
             ->with(compact('posts'));
     }
+
+    public function create_post(Request $request) {
+        return view('user.author.create-post');
+    }
 }

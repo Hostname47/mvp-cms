@@ -102,3 +102,17 @@ h2 {
     height: 80px;
     margin-bottom: 8px;
 }
+
+.statistics-box {
+    margin-top: 6px;
+    font-size: 12px;
+}
+
+.statistics-container {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 8px;
+    margin-left: 14px;
+}

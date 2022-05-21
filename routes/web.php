@@ -119,6 +119,7 @@ Route::middleware(['client.scopes', 'account.status'])->group(function() {
 
         Route::middleware(['elected-author'])->group(function () {
             Route::get('/author/dashboard', [AuthorController::class, 'dashboard'])->name('author.dashboard');
+            Route::get('/author/posts/create', [AuthorController::class, 'create_post'])->name('author.create.post');
         });
     });
 
