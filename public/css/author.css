@@ -10,7 +10,7 @@ h2 {
 }
 
 .post-component {
-    padding: 8px;
+    padding: 10px;
     border: 1px solid gainsboro;
     border-radius: 3px;
 }
@@ -32,11 +32,32 @@ h2 {
     gap: 8px;
 }
 
+.post-component .categories-container {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+
+.post-component .categories-container .category {
+    font-size: 12px;
+    color: #2777b9;
+    text-decoration: none;
+}
+.post-component .categories-container .category:hover {
+    color: #0d4e83;
+}
+
 #author-header-links {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     gap: 6px;
+}
+
+#create-post-button {
+    margin-left: auto;
 }
 
 .status-and-actions-box {

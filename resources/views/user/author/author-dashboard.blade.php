@@ -7,6 +7,10 @@
 <link rel="stylesheet" href="{{ asset('css/author.css') }}">
 @endpush
 
+@push('scripts')
+<script src="{{ asset('js/author.js') }}" type="text/javascript" defer></script>
+@endpush
+
 @section('content')
     <x-layout.left-panel.left-panel />
 
@@ -48,7 +52,7 @@
         @endif
 
         <h2>{{ __('My posts') }}</h2>
-        @include('user.author.partials.author-header-links')
+        @include('user.author.partials.author-header-links', ['tab'=>$tab])
 
         <div id="posts-box">
             @foreach($posts as $post)
@@ -56,6 +60,11 @@
                     $scolor = ($post->status == 'published') ? 'green' : 'gray';
                 @endphp
                 <div class="post-component">
+                    <div class="categories-container">
+                        @foreach($post->categories as $category)
+                        <a href="{{ $category->link }}" class="category">{{ $category->title }}</a>
+                        @endforeach
+                    </div>
                     <a href="{{ $post->link }}" class="title">{{ $post->title }}</a>
                     <div class="status-and-actions-box">
                         <div class="status-and-visibility-container">
@@ -84,12 +93,12 @@
                                     <span>Edit</span>
                                 </a>
                                 <span class="fs11 dark unselectable">〡</span>
-                                <span class="fs12 red pointer align-center trash-post">
+                                <span class="fs12 red pointer align-center delete-post">
                                     <svg class="spinner size12 mr4 none" fill="none" viewBox="0 0 16 16">
                                         <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
                                         <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
                                     </svg>
-                                    <span>Trash</span>
+                                    <span>Delete</span>
                                     <input type="hidden" class="post-id" value="{{ $post->id }}" autocomplete="off">
                                 </span>
                                 <span class="fs11 dark unselectable">〡</span>
@@ -111,7 +120,7 @@
 
         <div class="flex mt8" style="margin-bottom: 16px;">
             <div class="move-to-right">
-                {{ $posts->onEachSide(0)->links() }}
+                {{ $posts->appends(request()->query())->onEachSide(0)->links() }}
             </div>
         </div>
     </div>

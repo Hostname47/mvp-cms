@@ -39,12 +39,16 @@ class Category extends Model
         return (bool) $this->subcategories->count();
     }
 
+    public function getLinkAttribute() {
+        return route('discover', ['category'=>$this->slug]);
+    }
+
     public static function hot_categories() {
         /**
          * This should be cached
          */
         return Cache::remember('hot-categories', 21600, function () { // 6 hours
-            return Category::withCount('posts')->orderBy('posts_count', 'desc')->take(10)->get();;
+            return Category::withCount('posts')->orderBy('posts_count', 'desc')->take(10)->get();
         });
     }
 
