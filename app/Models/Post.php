@@ -158,6 +158,14 @@ class Post extends Model
         return route('view.post', ['category'=>$this->categories->first()->slug, 'post'=>$this->slug]);
     }
 
+    public function getHstatusAttribute() {
+        return ucfirst(str_replace('-', ' ', $this->status));
+    }
+
+    public function getHvisibilityAttribute() {
+        return ucfirst(str_replace('-', ' ', $this->visibility));
+    }
+
     public static function featured_posts() {
         return Cache::remember('featured-posts', 21600, function () { // 6 hours
             return Post::with(['categories','author', 'thumbnail', 'author.roles'])->orderBy('reactions_count', 'desc')->take(10)->get();

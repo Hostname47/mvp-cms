@@ -1096,6 +1096,21 @@ textarea {
     background-color: #f7f7f7;
 }
 
+.button-style-5 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    cursor: pointer;
+    text-decoration: none;
+    color: #080808;
+    padding: 4px 6px;
+    border-radius: 3px;
+}
+.button-style-5:hover {
+    background-color: #f7f7f7;
+}
+
 #basic-bottom-left-notification-container {
     position: fixed;
     display: flex;

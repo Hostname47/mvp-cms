@@ -1,0 +1,55 @@
+h2 {
+    margin-bottom: 6px;
+}
+
+#posts-box {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 12px;
+}
+
+.post-component {
+    padding: 8px;
+    border: 1px solid gainsboro;
+    border-radius: 3px;
+}
+
+.post-component .title {
+    text-decoration: none;
+    color: #1d1f20;
+    font-weight: bold;
+    font-size: 16px;
+}
+.post-component .title:hover {
+    color: black;
+}
+
+.post-component .post-options-container {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+#author-header-links {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.status-and-actions-box {
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+.status-and-visibility-container {
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
