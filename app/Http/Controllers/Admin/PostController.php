@@ -19,26 +19,31 @@ class PostController extends Controller
         if($request->has('status'))
             $status = $request->validate(['status'=>Rule::in(['all', 'published', 'draft', 'private', 'trashed', 'awaiting-review'])])['status'];
 
-        $statistics = DB::select("
-            SELECT 'all' as k, COUNT(*) as v FROM posts
-            union all
-            SELECT 'trashed' as k, COUNT(*) as v FROM posts WHERE deleted_at IS NOT NULL
-            union all
-            SELECT ANY_VALUE(visibility) as k, COUNT(*) AS v FROM posts GROUP BY visibility
-            union all
-            SELECT ANY_VALUE(status) as k, COUNT(*) AS v FROM posts GROUP BY status
-        ");
-        $temp = [];
-        foreach($statistics as $stats) $temp[$stats->k] = $stats->v;
-        $statistics = $temp;
+        // $statistics = DB::select("
+        //     SELECT 'all' as k, COUNT(*) as v FROM posts
+        //     union all
+        //     SELECT 'trashed' as k, COUNT(*) as v FROM posts WHERE deleted_at IS NOT NULL
+        //     union all
+        //     SELECT ANY_VALUE(visibility) as k, COUNT(*) AS v FROM posts GROUP BY visibility
+        //     union all
+        //     SELECT ANY_VALUE(status) as k, COUNT(*) AS v FROM posts GROUP BY status
+        // ");
+        $statistics = [
+            'all'=>Post::withoutGlobalScopes()->count(),
+            'published' => Post::withoutGlobalScopes()->where('status', 'published')->count(),
+            'awaiting-review' => Post::withoutGlobalScopes()->where('status', 'awaiting-review')->count(),
+            'draft' => Post::withoutGlobalScopes()->where('status', 'draft')->count(),
+            'private' => Post::withoutGlobalScopes()->where('visibility', 'private')->count(),
+            'trashed' => Post::withoutGlobalScopes()->whereNotNull('deleted_at')->count(),
+        ];
 
+        $posts = Post::withoutGlobalScopes();
         if($request->has('k')) {
             $k = $request->validate(['k'=>'max:1200'])['k'];
-            $posts = Post::withoutGlobalScopes()->where('title', 'like', "%$k%")
+            $posts = $posts->where('title', 'like', "%$k%")
                 ->orWhere('slug', 'like', "%$k%")
                 ->orWhere('content', 'like', "%$k%");
         } else {
-            $posts = Post::query();
             switch($status) {
                 case 'all':
                     /**
@@ -297,6 +302,7 @@ class PostController extends Controller
         $post_id = $request->validate(['post_id'=>'required|exists:posts,id'])['post_id'];
         $post = Post::withoutGlobalScopes()->find($post_id);
 
+        $post->update(['status'=>'trashed']);
         $post->delete();
         Session::flash('message', '
             <div class="align-center">
@@ -318,7 +324,8 @@ class PostController extends Controller
         $post = Post::withoutGlobalScopes()->find($post_id);
 
         $post->restore();
-        Session::flash('message', 'Post has been restored successfully.');
+        $post->update(['status'=>'draft']);
+        Session::flash('message', 'Post has been restored successfully. The post is marked as draft.');
     }
 
     public function destroy(Request $request) {

@@ -484,6 +484,7 @@ class PostTest extends TestCase
             'post_id'=>$post->id
         ]);
         $post->refresh();
+        $this->assertEquals('trashed', $post->status);
         $this->assertNotNull($post->deleted_at);
     }
 
@@ -495,6 +496,7 @@ class PostTest extends TestCase
         $this->assertNotNull($post->deleted_at);
         $this->post('/admin/posts/untrash', ['post_id'=>$post->id]);
         $post->refresh();
+        $this->assertEquals('draft', $post->status);
         $this->assertNull($post->deleted_at);
     }
 
