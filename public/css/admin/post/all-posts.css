@@ -22,8 +22,8 @@
 .posts-table-tags-column {
     width: 15%;
 }
-.posts-table-comments-column {
-    width: 56px;
+.posts-table-stats-column {
+    width: 8%;
 }
 .posts-table-date-column {
     width: max-content;

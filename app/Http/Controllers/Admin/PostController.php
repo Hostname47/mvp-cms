@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Models\{Post,Category,Tag};
 use Carbon\Carbon;
+use Purifier;
 
 class PostController extends Controller
 {
@@ -59,10 +60,40 @@ class PostController extends Controller
                     break;
             }
         }
+
+        $order_key = 'date-newest-first';
+        if($request->has('order')) {
+            $order_key = Purifier::clean($request->get('order'));
+            
+            switch($order_key) {
+                case 'last-updated':
+                    $order = 'updated_at desc';
+                    break;
+                case 'date-newest-first':
+                    $order = 'created_at desc';
+                    break;
+                case 'date-oldest-first':
+                    $order = 'created_at asc';
+                    break;
+                case 'views':
+                    $order = 'views desc';
+                    break;
+                case 'comments':
+                    $order = 'comments_count desc';
+                    break;
+                case 'reactions':
+                    $order = 'reactions_count desc';
+                    break;
+            }
+
+            $posts = $posts->orderByRaw($order);
+        }
+
         $posts = $posts->with(['author','categories','tags'])->orderBy('updated_at', 'desc')->paginate(12);
         
         return view('admin.posts.all')
             ->with(compact('posts'))
+            ->with(compact('order_key'))
             ->with(compact('status'))
             ->with(compact('statistics'))
             ->with(compact('k'));

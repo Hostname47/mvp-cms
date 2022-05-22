@@ -915,6 +915,7 @@ textarea {
 }
 
 .suboption-style-2 {
+    display: flex;
     cursor: pointer;
     text-decoration: none;
     color: rgb(14, 15, 15);
