@@ -47,6 +47,7 @@ class PostTest extends TestCase
 
     /** @test */
     public function creating_a_post() {
+        $this->withoutExceptionHandling();
         $this->assertCount(0, Post::all());
         $this->post('/admin/posts', [
             'title' => 'cool title',

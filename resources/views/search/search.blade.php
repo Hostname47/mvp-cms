@@ -83,11 +83,11 @@
                     <div id="authors-section">
                         @foreach($authors as $author)
                         <div class="author-component">
-                            <a href="" class="flex mr6">
+                            <a href="{{ $author->profile }}" class="flex mr6">
                                 <img src="{{ $author->avatar(100) }}" class="author-avatar" alt="">
                             </a>
                             <div>
-                                <span class="name"><a href="" class="blue no-underline">{{ $author->fullname }}</a> - <span class="posts-count">({{ $author->posts()->count() . ' ' . __('posts') }})</span></span>
+                                <span class="name"><a href="{{ $author->profile }}" class="blue no-underline">{{ $author->fullname }}</a> - <span class="posts-count">({{ $author->posts()->count() . ' ' . __('posts') }})</span></span>
                                 <span class="username">{{ '@' . $author->username }}</span>
                             </div>
                         </div>

@@ -8,6 +8,7 @@ use App\Http\Controllers\{IndexController, AdminController, PostController, Cate
     AuthorRequestController, ContactController, FaqController, UserController, ActivitiesController, 
     AuthorController};
 use App\Http\Controllers\Admin\{AdminSearchController};
+use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Middleware\AccountStatus;
 
 Route::get('/test', function() {
@@ -62,18 +63,18 @@ Route::middleware(['able-to-access-admin-section'])->group(function() {
     Route::delete('/admin/media', [MediaController::class, 'delete_media']);
 
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-    Route::get('/admin/posts', [PostController::class, 'all'])->name('admin.all.posts');
-    Route::get('/admin/posts/create', [PostController::class, 'create'])->name('create.new.post');
-    Route::post('/admin/posts', [PostController::class, 'store']);
-    Route::get('/admin/posts/edit', [PostController::class, 'edit'])->name('edit.post');
-    Route::patch('/admin/posts', [PostController::class, 'update']);
-    Route::get('/admin/posts/search', [AdminSearchController::class, 'posts_search']);
-    Route::get('/admin/posts/data', [PostController::class, 'post_data']); // Used to restore post default content and data in edit page
-    Route::get('/admin/posts/preview', [PostController::class, 'preview'])->name('preview.post');
-    Route::patch('/admin/posts/status', [PostController::class, 'update_status']);
-    Route::post('/admin/posts/trash', [PostController::class, 'delete']);
-    Route::post('/admin/posts/untrash', [PostController::class, 'restore']);
-    Route::delete('/admin/posts', [PostController::class, 'destroy']);
+    Route::get('/admin/posts', [AdminPostController::class, 'all'])->name('admin.all.posts');
+    Route::get('/admin/posts/create', [AdminPostController::class, 'create'])->name('create.new.post');
+    Route::post('/admin/posts', [AdminPostController::class, 'store']);
+    Route::get('/admin/posts/edit', [AdminPostController::class, 'edit'])->name('edit.post');
+    Route::patch('/admin/posts', [AdminPostController::class, 'update']);
+    Route::get('/admin/posts/search', [AdminPostController::class, 'posts_search']);
+    Route::get('/admin/posts/data', [AdminPostController::class, 'post_data']); // Used to restore post default content and data in edit page
+    Route::get('/admin/posts/preview', [AdminPostController::class, 'preview'])->name('preview.post');
+    Route::patch('/admin/posts/status', [AdminPostController::class, 'update_status']);
+    Route::post('/admin/posts/trash', [AdminPostController::class, 'delete']);
+    Route::post('/admin/posts/untrash', [AdminPostController::class, 'restore']);
+    Route::delete('/admin/posts', [AdminPostController::class, 'destroy']);
 
     Route::get('/admin/users/search', [AdminSearchController::class, 'users_search']);
     Route::get('/admin/users/search/fetchmore', [AdminSearchController::class, 'users_search_fetchmore']);
