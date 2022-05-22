@@ -331,11 +331,14 @@ class PostController extends Controller
     }
 
     /** client */
-
     public function view(Request $request, Category $category, Post $post) {
         $link = route('view.post', ['category'=>$category->slug, 'post'=>$post->slug]);
         $title = $post->html_title;
         $saved = $post->saved;
+        if($post->visibility != 'password-protected' || Cookie::has('post-'.$post->id.'-password')) {
+            $post->increment('views');
+        }
+        
         return view('view-post')
             ->with(compact('category'))
             ->with(compact('post'))

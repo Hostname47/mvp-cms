@@ -107,6 +107,7 @@
     font-weight: bold;
     font-size: 15px;
     display: block;
+    margin-top: -2px;
 }
 
 .comment-date {

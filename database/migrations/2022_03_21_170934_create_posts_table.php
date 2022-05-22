@@ -25,6 +25,7 @@ class CreatePostsTable extends Migration
             $table->integer('allow_reactions')->default(1);
             $table->unsignedBigInteger('comments_count')->default(0);
             $table->unsignedBigInteger('reactions_count')->default(0);
+            $table->unsignedBigInteger('views')->default(0);
             $table->text('summary')->nullable();
 
             $table->unsignedBigInteger('user_id')->nullable();

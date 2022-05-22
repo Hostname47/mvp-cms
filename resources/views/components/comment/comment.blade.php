@@ -22,7 +22,7 @@
         <div class="comment-meta">
             <!-- commenter name -->
             @if($comment->user)
-            <span class="commenter-name">{{ $comment->user->fullname }}</span>
+            <a href="{{ $comment->user->profile }}" class="commenter-name dark no-underline">{{ $comment->user->fullname }}</a>
             @else
             <span class="commenter-name light-gray">{{ __('fibonashi user') }}</span>
             @endif
