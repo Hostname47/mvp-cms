@@ -1,0 +1,28 @@
+body {
+    margin-right: 260px;
+}
+
+#post-management-panel {
+    position: fixed;
+    overflow-y: auto;
+    top: 51px;
+    right: 0;
+    height: 100%;
+    width: 260px;
+    background-color: white;
+    border-left: 1px solid #d0dae1;
+}
+
+.post-management-panel-section-header {
+    padding: 10px;
+    background-color: #F9FAFB;
+    border-bottom: 1px solid #d0dae1;
+}
+.post-management-panel-section-header:hover {
+    background-color: #F3F5F7;
+}
+
+.post-management-panel-section-content {
+    padding: 9px;
+    border-bottom: 1px solid #d0dae1;
+}

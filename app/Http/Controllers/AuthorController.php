@@ -45,13 +45,15 @@ class AuthorController extends Controller
         }
         $posts = $posts->paginate(10);
 
-        return view('user.author.author-dashboard')
+        return view('author.author-dashboard')
             ->with(compact('tab'))
             ->with(compact('statistics'))
             ->with(compact('posts'));
     }
 
     public function create_post(Request $request) {
-        return view('user.author.create-post');
+        $post = null;
+        return view('author.create-post')
+            ->with(compact('post'));
     }
 }
