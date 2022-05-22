@@ -68,7 +68,7 @@ Route::middleware(['able-to-access-admin-section'])->group(function() {
     Route::post('/admin/posts', [AdminPostController::class, 'store']);
     Route::get('/admin/posts/edit', [AdminPostController::class, 'edit'])->name('edit.post');
     Route::patch('/admin/posts', [AdminPostController::class, 'update']);
-    Route::get('/admin/posts/search', [AdminPostController::class, 'posts_search']);
+    Route::get('/admin/posts/search', [AdminSearchController::class, 'posts_search']);
     Route::get('/admin/posts/data', [AdminPostController::class, 'post_data']); // Used to restore post default content and data in edit page
     Route::get('/admin/posts/preview', [AdminPostController::class, 'preview'])->name('preview.post');
     Route::patch('/admin/posts/status', [AdminPostController::class, 'update_status']);

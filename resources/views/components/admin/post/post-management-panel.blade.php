@@ -7,8 +7,8 @@
     <x-admin.post.panel-management-sections.categories-section :post="$post" />
     <!-- tags section -->
     <x-admin.post.panel-management-sections.tags-section :post="$post" />
-    <!-- featured image section -->
-    <x-admin.post.panel-management-sections.featured-image-section :post="$post" />
+    <!-- thumbnail image section -->
+    <x-admin.post.panel-management-sections.thumbnail-image-section :post="$post" />
     <!-- summary section -->
     <x-admin.post.panel-management-sections.summary-section :post="$post" />
     <!-- post comments & reactions section -->

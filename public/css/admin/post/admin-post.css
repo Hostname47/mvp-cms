@@ -96,7 +96,7 @@
     cursor: pointer;
 }
 
-.featured-image-upload-box {
+.thumbnail-image-upload-box {
     position: relative;
     cursor: pointer;
     padding: 14px;
@@ -107,10 +107,10 @@
     border: 1px solid #dae2e6;
     border-radius: 2px;
 }
-.featured-image-upload-box:hover {
+.thumbnail-image-upload-box:hover {
     background-color: #eaeef1;
 }
-.selected-featured-image-container {
+.selected-thumbnail-image-container {
     display: flex;
     border-radius: 3px;
     width: 100%;

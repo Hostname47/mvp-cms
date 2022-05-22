@@ -9,10 +9,10 @@
 @section('content')
 <div class="full-center">
     <article id="post-box">
-            @if($post->has_featured_image())
+            @if($post->has_thumbnail())
             <section>
-                <img src="{{ $post->featured_image }}" id="post-featured-image" alt="">
-            </section> <!-- featured image -->
+                <img src="{{ $post->thumbnail_image }}" id="post-thumbnail-image" alt="">
+            </section> <!-- thumbnail image -->
             @endif
             {!! $post->content !!}
         </article>

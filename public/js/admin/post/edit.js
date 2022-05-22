@@ -208,8 +208,8 @@ $('.update-post').on('click', function() {
 		tags: tags
     };
 
-    if($('#post-featured-image-metadata-id').val() != '')
-        data.featured_image = $('#post-featured-image-metadata-id').val();
+    if($('#post-thumbnail-image-metadata-id').val() != '')
+        data.thumbnail_id = $('#post-thumbnail-image-metadata-id').val();
     
     if($('#post-summary').val() != '')
         data.summary = $('#post-summary').val();
@@ -286,18 +286,18 @@ $('.restore-post-content').on('click', function() {
 			$('#allow-reactions').prop('checked', post.allow_reactions==1);
 			// Summary section
 			$('#post-summary').val(post.summary);
-			// Featured image section
-			if(post.featured_image.exists) {
-				$('.featured-image-upload-box').addClass('none');
-				$('.uploaded-featured-image-box').removeClass('none');
-				$('#post-featured-image-metadata-id').val(post.featured_image.metadata_id);
-				$('.uploaded-featured-image-box .selected-featured-image').attr('src', post.featured_image.path);
-				handle_image_center_fill($('.selected-featured-image'));
+			// thumbnail image section
+			if(post.thumbnail_image.exists) {
+				$('.thumbnail-image-upload-box').addClass('none');
+				$('.uploaded-thumbnail-image-box').removeClass('none');
+				$('#post-thumbnail-image-metadata-id').val(post.thumbnail_image.metadata_id);
+				$('.uploaded-thumbnail-image-box .selected-thumbnail-image').attr('src', post.thumbnail_image.path);
+				handle_image_center_fill($('.selected-thumbnail-image'));
 			} else {
-				$('.featured-image-upload-box').removeClass('none');
-				$('.uploaded-featured-image-box').addClass('none');
-				$('#post-featured-image-metadata-id').val('');
-				$('.uploaded-featured-image-box .selected-featured-image').attr('src', '');
+				$('.thumbnail-image-upload-box').removeClass('none');
+				$('.uploaded-thumbnail-image-box').addClass('none');
+				$('#post-thumbnail-image-metadata-id').val('');
+				$('.uploaded-thumbnail-image-box .selected-thumbnail-image').attr('src', '');
 			}
 			// Tags
 			$('.post-tags-wrapper .post-tag-item').remove();

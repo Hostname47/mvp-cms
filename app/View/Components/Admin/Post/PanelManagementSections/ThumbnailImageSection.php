@@ -4,7 +4,7 @@ namespace App\View\Components\Admin\Post\PanelManagementSections;
 
 use Illuminate\View\Component;
 
-class FeaturedImageSection extends Component
+class ThumbnailImageSection extends Component
 {
     public $post;
     
@@ -20,6 +20,6 @@ class FeaturedImageSection extends Component
      */
     public function render($data=[])
     {
-        return view('components.admin.post.panel-management-sections.featured-image-section', $data);
+        return view('components.admin.post.panel-management-sections.thumbnail-image-section', $data);
     }
 }

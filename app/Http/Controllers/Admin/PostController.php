@@ -19,15 +19,6 @@ class PostController extends Controller
         if($request->has('status'))
             $status = $request->validate(['status'=>Rule::in(['all', 'published', 'draft', 'private', 'trashed', 'awaiting-review'])])['status'];
 
-        // $statistics = DB::select("
-        //     SELECT 'all' as k, COUNT(*) as v FROM posts
-        //     union all
-        //     SELECT 'trashed' as k, COUNT(*) as v FROM posts WHERE deleted_at IS NOT NULL
-        //     union all
-        //     SELECT ANY_VALUE(visibility) as k, COUNT(*) AS v FROM posts GROUP BY visibility
-        //     union all
-        //     SELECT ANY_VALUE(status) as k, COUNT(*) AS v FROM posts GROUP BY status
-        // ");
         $statistics = [
             'all'=>Post::withoutGlobalScopes()->count(),
             'published' => Post::withoutGlobalScopes()->where('status', 'published')->count(),
@@ -246,7 +237,7 @@ class PostController extends Controller
             }
         }
 
-        Session::flash('message', 'Post has been <strong>updated</strong> successfully. <a href="" class="link-style">click here</a> to view the post');
+        Session::flash('message', 'Post has been <strong>updated</strong> successfully. <a href="'. $post->link .'" class="link-style">click here</a> to view the post');
     }
 
     public function update_status(Request $request) {
