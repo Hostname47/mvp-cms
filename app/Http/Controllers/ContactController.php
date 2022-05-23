@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ContactMessage;
 use Illuminate\Support\Facades\Auth;
+use Purifier;
 
 class ContactController extends Controller
 {
@@ -29,6 +30,7 @@ class ContactController extends Controller
     public function store(Request $request) {
         if(Auth::check()) {
             $data = $request->validate(['message'=>'required|min:10|max:4000']);
+            $data['message'] = Purifier::clean($data['message']);
             $data['user_id'] = auth()->user()->id;
         } else {
             $data = $request->validate([
@@ -37,6 +39,8 @@ class ContactController extends Controller
                 'email'=>'required|email|max:320',
                 'message'=>'required|min:10|max:4000'
             ]);
+
+            foreach($data as $k => $v) $data[$k] = Purifier::clean($v);
         }
 
         /**
