@@ -301,8 +301,8 @@ class PostController extends Controller
             'categories'=>$post->categories->pluck('id'),
             'tags'=>$post->tags->pluck('title'),
             'thumbnail'=>[
-                'exists' => (bool) $post->thumbnail,
-                'path' => $post->thumbnail->path,
+                'exists' => (bool) $post->thumbnail_id,
+                'path' => ($post->thumbnail_id) ? $post->thumbnail_image : '',
                 'metadata_id' => $post->thumbnail_id
             ],
             'summary'=>$post->summary,
@@ -312,10 +312,8 @@ class PostController extends Controller
     }
 
     public function preview(Request $request) {
-        $post = null;
-        if($request->has('post'))
-            $post = Post::withoutGlobalScopes()->find($request->get('post'));
-
+        $post = $request->validate(['post'=>'required|exists:posts,id'])['post'];
+        $post = Post::withoutGlobalScopes()->find($post);
         return view('admin.posts.preview')
             ->with(compact('post'));
     }

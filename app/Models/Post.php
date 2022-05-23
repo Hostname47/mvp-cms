@@ -87,6 +87,19 @@ class Post extends Model
         return (new Carbon($this->published_at))->isoFormat("MMMM D, YYYY");
     }
 
+    public function getScolorAttribute() {
+        switch($this->status) {
+            case 'published':
+                return 'green';
+            case 'awaiting-review':
+                return 'gray';
+            case 'trashed':
+                return 'red';
+            default:
+                return 'dark';
+        }
+    }
+
     public function has_thumbnail() {
         return (bool) $this->thumbnail;
     }

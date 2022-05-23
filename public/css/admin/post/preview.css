@@ -1,0 +1,48 @@
+#main-box {
+    padding: 0 40px;
+    margin: 46px 0;
+}
+
+#raw-post-content {
+    white-space: pre-wrap;
+    line-height: 2.4;
+    margin-top: 0;
+    font-size: 16px;
+    max-height: 420px;
+    overflow: hidden;
+}
+
+#thumbnail-image {
+    width: 100%;
+}
+
+#thumbnail-image-container {
+    display: flex;
+    align-items: center;
+    max-height: 300px;
+    overflow: hidden;
+}
+
+.section-title {
+    margin-bottom: 8px;
+    color: #2CA0FF;
+}
+
+#display-switch {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#display-switch .icon {
+    width: 14px;
+    height: 14px;
+    padding: 15px;
+    border-radius: 50%;
+    fill: #262626;
+    cursor: pointer;
+}
+
+#display-switch .icon:hover {
+    background-color: #ebebeb;
+}

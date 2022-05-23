@@ -15,7 +15,7 @@
             <div class="align-center">
                 <span class="block white fs11">{{ auth()->user()->username }}</span>
                 <span class="mx8 white unselectable">•</span>
-                <span class="bold fs11" style="color: #6ed6ff">Site owner</span>
+                <span class="bold fs11" style="color: #6ed6ff">{{ auth()->user()->high_role()->title }}</span>
             </div>
         </div>
     </div>

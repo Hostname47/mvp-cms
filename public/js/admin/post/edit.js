@@ -287,11 +287,11 @@ $('.restore-post-content').on('click', function() {
 			// Summary section
 			$('#post-summary').val(post.summary);
 			// thumbnail image section
-			if(post.thumbnail_image.exists) {
+			if(post.thumbnail.exists) {
 				$('.thumbnail-image-upload-box').addClass('none');
 				$('.uploaded-thumbnail-image-box').removeClass('none');
-				$('#post-thumbnail-image-metadata-id').val(post.thumbnail_image.metadata_id);
-				$('.uploaded-thumbnail-image-box .selected-thumbnail-image').attr('src', post.thumbnail_image.path);
+				$('#post-thumbnail-image-metadata-id').val(post.thumbnail.metadata_id);
+				$('.uploaded-thumbnail-image-box .selected-thumbnail-image').attr('src', post.thumbnail.path);
 				handle_image_center_fill($('.selected-thumbnail-image'));
 			} else {
 				$('.thumbnail-image-upload-box').removeClass('none');
