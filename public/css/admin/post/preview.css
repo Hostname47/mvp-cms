@@ -4,11 +4,11 @@
 }
 
 #raw-post-content {
-    white-space: pre-wrap;
+    white-space: pre-line;
     line-height: 2.4;
-    margin-top: 0;
+    margin-top: -20px;
     font-size: 16px;
-    max-height: 420px;
+    max-height: 360px;
     overflow: hidden;
 }
 
@@ -25,7 +25,7 @@
 
 .section-title {
     margin-bottom: 8px;
-    color: #2CA0FF;
+    color: #2c5270;
 }
 
 #display-switch {
@@ -45,4 +45,88 @@
 
 #display-switch .icon:hover {
     background-color: #ebebeb;
+}
+
+#post-content-box {
+    max-width: 720px;
+}
+
+h1 {
+    color: #2CA0FF;
+}
+
+.post-meta-text {
+    color: #2d363e;
+    font-size: 12px;
+    letter-spacing: 1.2px;
+    font-weight: bold;
+}
+
+#post-author {
+    display: flex;
+    align-items: center;
+    margin: 18px 0;
+}
+
+#author-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+#author-name {
+    display: block;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 15px;
+    letter-spacing: 1.2px;
+    color: #007cff;
+}
+#author-role {
+    font-size: 11px;
+    font-weight: bold;
+    color: #405466;
+    letter-spacing: 1.1px;
+}
+
+#post-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 18px 0;
+}
+
+#post-categories .category {
+    text-decoration: none;
+    color: #389ef2;
+}
+#post-categories .category:hover {
+    color: #2f85cc;
+}
+
+#post-categories .category-separator {
+    font-size: 10px;
+    user-select: none;
+    color: #57636c;
+}
+
+#post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 18px 0;
+}
+#post-tags .tag {
+    font-size: 12px;
+    font-weight: bold;
+    color: #325979;
+    text-decoration: none;
+    padding: 4px 8px;
+    background-color: #e9f2fb;
+    border-radius: 3px;
+}
+#post-tags .tag:hover {
+    color: #2b4e6b;
+    background-color: #deeaf7;
 }

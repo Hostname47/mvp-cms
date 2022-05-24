@@ -314,8 +314,12 @@ class PostController extends Controller
     public function preview(Request $request) {
         $post = $request->validate(['post'=>'required|exists:posts,id'])['post'];
         $post = Post::withoutGlobalScopes()->find($post);
+
+        $clean_content = Purifier::clean($post->content);
+
         return view('admin.posts.preview')
-            ->with(compact('post'));
+            ->with(compact('post'))
+            ->with(compact('clean_content'));
     }
 
     public function delete(Request $request) {
