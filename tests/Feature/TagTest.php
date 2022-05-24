@@ -25,13 +25,15 @@ class TagTest extends TestCase
             'slug'=>'uncategorized'
         ]);
 
-        $admin_access_permission = Permission::factory()->create([
-            'title'=>'Access admin section',
-            'slug'=>'access-admin-section'
-        ]);
+        $permissions = [
+            'access-admin-section' => Permission::factory()->create(['title'=>'aas', 'slug'=>'access-admin-section']),
+            'create-post' => Permission::factory()->create(['title'=>'cp', 'slug'=>'create-post']),
+        ];
+
         $user = $this->authuser = User::factory()->create();
         $this->actingAs($user);
-        User::attach_permission('access-admin-section');
+        $user->attach_permission('access-admin-section');
+        $user->attach_permission('create-post');
     }
 
     /** @test */

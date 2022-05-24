@@ -22,7 +22,7 @@ class RoleTest extends TestCase
         ]);
         $user = $this->authuser = User::factory()->create();
         $this->actingAs($user);
-        User::attach_permission('access-admin-section');
+        $user->attach_permission('access-admin-section');
     }
 
     /**

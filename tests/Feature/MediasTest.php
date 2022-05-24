@@ -27,7 +27,7 @@ class MediasTest extends TestCase
         ]);
         $user = $this->authuser = User::factory()->create();
         $this->actingAs($user);
-        User::attach_permission('access-admin-section');
+        $user->attach_permission('access-admin-section');
 
         (new Filesystem)->cleanDirectory(storage_path('app/testing'));
     }

@@ -17,19 +17,21 @@ class CategoryTest extends TestCase
     public function setUp(): void {
         parent::setUp();
 
-        $admin_access_permission = Permission::factory()->create([
-            'title'=>'Access admin section',
-            'slug'=>'access-admin-section'
-        ]);
-        $user = $this->authuser = User::factory()->create();
-        $this->actingAs($user);
-        User::attach_permission('access-admin-section');
-
         $this->uncategorized = Category::factory()->create([
             'title'=>'Uncategorized',
             'title_meta'=>'Uncategorized',
             'slug'=>'uncategorized',
         ]);
+
+        $permissions = [
+            'access-admin-section' => Permission::factory()->create(['title'=>'aas', 'slug'=>'access-admin-section']),
+            'create-post' => Permission::factory()->create(['title'=>'cp', 'slug'=>'create-post']),
+        ];
+
+        $user = $this->authuser = User::factory()->create();
+        $this->actingAs($user);
+        $user->attach_permission('access-admin-section');
+        $user->attach_permission('create-post');
     }
 
     /** @test */
@@ -306,7 +308,8 @@ class CategoryTest extends TestCase
     }
 
     /** @test */
-    public function delete_a_category_will_turn_posts_with_only_this_category_uncategorized() {
+    public function delete_a_category_will_turn_posts_with_only_this_category_to_uncategorized() {
+        $this->withoutExceptionHandling();
         $uncategorized = $this->uncategorized;
         // categories
         $category0 = Category::create(['title'=>'c0','title_meta'=>'c0','slug'=>'c0','description'=>'c0','priority'=>1]);
