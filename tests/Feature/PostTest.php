@@ -28,13 +28,26 @@ class PostTest extends TestCase
             'slug'=>'uncategorized'
         ]);
 
-        $admin_access_permission = Permission::factory()->create([
-            'title'=>'Access admin section',
-            'slug'=>'access-admin-section'
-        ]);
         $user = $this->authuser = User::factory()->create();
         $this->actingAs($user);
-        User::attach_permission('access-admin-section');
+
+        $permissions = [
+            'access-admin-section' => Permission::factory()->create(['title'=>'aas', 'slug'=>'access-admin-section']),
+            'create-post' => Permission::factory()->create(['title'=>'cp', 'slug'=>'create-post']),
+            'update-post' => Permission::factory()->create(['title'=>'up', 'slug'=>'update-post']),
+            'change-post-status' => Permission::factory()->create(['title'=>'ups', 'slug'=>'change-post-status']),
+            'trash-post' => Permission::factory()->create(['title'=>'tp', 'slug'=>'trash-post']),
+            'restore-post' => Permission::factory()->create(['title'=>'rp', 'slug'=>'restore-post']),
+            'destroy-post' => Permission::factory()->create(['title'=>'dsp', 'slug'=>'destroy-post']),
+        ];
+
+        $user->attach_permission('access-admin-section');
+        $user->attach_permission('create-post');
+        $user->attach_permission('update-post');
+        $user->attach_permission('change-post-status');
+        $user->attach_permission('trash-post');
+        $user->attach_permission('restore-post');
+        $user->attach_permission('destroy-post');
 
         (new Filesystem)->cleanDirectory(storage_path('app/testing'));
     }
@@ -47,7 +60,6 @@ class PostTest extends TestCase
 
     /** @test */
     public function creating_a_post() {
-        $this->withoutExceptionHandling();
         $this->assertCount(0, Post::all());
         $this->post('/admin/posts', [
             'title' => 'cool title',
@@ -57,6 +69,30 @@ class PostTest extends TestCase
             'content' => 'hello world',
         ]);
         $this->assertCount(1, Post::all());
+    }
+
+    /** @test */
+    public function creating_posts_require_permission() {
+        $authuser = $this->authuser;
+        $authuser->detach_permission('create-post');
+
+        $this->post('/admin/posts', [
+            'title' => 'cool title',
+            'title_meta' => 'cool-title',
+            'slug' => 'cool title',
+            'content' => 'hello world',
+        ])->assertForbidden();
+    }
+
+    /** @test */
+    public function post_slug_should_be_unique() {
+        $this->post('/admin/posts', [
+            'title' => 'title','title_meta' => 'meta title','slug' => 'slug','content' => 'content',
+        ])->assertOk();
+
+        $this->post('/admin/posts', [
+            'title' => 'title','title_meta' => 'meta title','slug' => 'slug','content' => 'content',
+        ])->assertSessionHasErrors(['slug']);
     }
 
     /** @test */
@@ -90,7 +126,6 @@ class PostTest extends TestCase
             'title' => 'cool title',
             'title_meta' => 'cool-title',
             'slug' => 'cool title',
-            'summary' => 'hello world',
             'content' => 'hello world',
             'categories' => [$category->id]
         ]);
@@ -211,7 +246,7 @@ class PostTest extends TestCase
         $this->assertEquals('mouad-nassri', $tag->slug);
 
         $this->post('/admin/posts', [
-            'title' => 'a','title_meta' => 'a','slug' => 'a','summary' => 'a','content' => 'a',
+            'title' => 'b','title_meta' => 'b','slug' => 'b','summary' => 'b','content' => 'b',
             'tags' => ['e','a','b','b','b','e','b','b','b', 'b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b']
         ])->assertRedirect()->assertSessionHasErrors(['tags']); // Exceed the maximum
     }
@@ -269,7 +304,30 @@ class PostTest extends TestCase
     }
 
     /** @test */
-    public function update_post_content_validation() {
+    public function update_post_require_permission() {
+        $post = Post::factory()->create([
+            'title' => 'cool title',
+            'title_meta' => 'cool-title',
+            'slug' => 'cool title',
+            'summary' => 'hello world',
+            'content' => 'hello world',
+        ]);
+
+        $authuser = $this->authuser;
+        $authuser->detach_permission('update-post');
+
+        $this->patch('/admin/posts', [
+            'post_id'=>$post->id,
+            'title' => 'patched title',
+            'title_meta' => 'patched-title',
+            'slug' => 'patched slug',
+            'summary' => 'patched world',
+            'content' => 'patched content',
+        ])->assertForbidden();
+    }
+
+    /** @test */
+    public function update_post_validation() {
         $post = Post::factory()->create();
 
         $this->patch('/admin/posts', ['title' => 'patched title',])
@@ -291,8 +349,24 @@ class PostTest extends TestCase
     }
 
     /** @test */
-    public function update_post_visibility() {
+    public function update_slug_to_an_already_taken_slug_will_end_with_error() {
+        $post0 = Post::factory()->create(['title' => 'a','title_meta' => 'a','slug' => 'a','content' => 'a']);
+        $post1 = Post::factory()->create(['title' => 'b','title_meta' => 'b','slug' => 'b','content' => 'b']);
 
+        $this->patch('/admin/posts', [
+            'post_id' => $post1->id,
+            'slug' => 'a', // there is a post already exists with slug: a (post0)
+        ])->assertRedirect()->assertSessionHasErrors(['slug']);
+
+        $this->patch('/admin/posts', [
+            'post_id' => $post1->id,
+            'slug' => 'c',
+        ])->assertOk();
+        $this->assertEquals('c', $post1->refresh()->slug);
+    }
+
+    /** @test */
+    public function update_post_visibility() {
         $this->post('/admin/posts', [
             'title' => 'foo','title_meta' => 'foo','slug' => 'f-o-o','content' => 'foo content',
         ]);
@@ -476,6 +550,30 @@ class PostTest extends TestCase
     }
 
     /** @test */
+    public function update_post_status_require_permission() {
+        $post = Post::factory()->create([
+            'title' => 'cool title',
+            'title_meta' => 'cool-title',
+            'slug' => 'cool title',
+            'summary' => 'hello world',
+            'content' => 'hello world',
+        ]);
+
+        $this->patch('/admin/posts/status', [
+            'post_id'=>$post->id,
+            'status'=>'published'
+        ])->assertOk();
+
+        $authuser = $this->authuser;
+        $authuser->detach_permission('change-post-status');
+
+        $this->patch('/admin/posts/status', [
+            'post_id'=>$post->id,
+            'status'=>'published'
+        ])->assertForbidden();
+    }
+
+    /** @test */
     public function trash_a_post() {
         $post = Post::create(['title' => 'foo','title_meta' => 'foo','slug' => 'foo','summary' => 'foo','content' => 'foo']);
 
@@ -489,7 +587,19 @@ class PostTest extends TestCase
     }
 
     /** @test */
+    public function trash_a_post_require_permission() {
+        $post = Post::create(['title' => 'foo','title_meta' => 'foo','slug' => 'foo','summary' => 'foo','content' => 'foo']);
+        $this->authuser->detach_permission('trash-post');
+
+        $this->post('/admin/posts/trash', [
+            'post_id'=>$post->id
+        ])->assertForbidden();
+    }
+
+    /** @test */
     public function untrash_a_post() {
+        $this->withoutExceptionHandling();
+
         $post = Post::create(['title' => 'foo','title_meta' => 'foo','slug' => 'foo','summary' => 'foo','content' => 'foo']);
         $this->post('/admin/posts/trash', ['post_id'=>$post->id]);
         $post->refresh();
@@ -501,11 +611,43 @@ class PostTest extends TestCase
     }
 
     /** @test */
+    public function untrash_a_post_require_permission() {
+        $post = Post::create(['title' => 'foo','title_meta' => 'foo','slug' => 'foo','summary' => 'foo','content' => 'foo']);
+        $this->authuser->detach_permission('restore-post');
+        // Trash
+        $this->post('/admin/posts/trash', [
+            'post_id'=>$post->id
+        ]);
+        $post->refresh();
+        $this->assertNotNull($post->deleted_at);
+        $this->assertEquals('trashed', $post->status);
+
+        $this->post('/admin/posts/untrash', [
+            'post_id'=>$post->id
+        ])->assertForbidden();
+        
+        $this->authuser->attach_permission('restore-post');
+
+        $this->post('/admin/posts/untrash', [
+            'post_id'=>$post->id
+        ])->assertOk();
+    }
+
+    /** @test */
     public function delete_a_post_permanently() {
         $post = Post::create(['title' => 'foo','title_meta' => 'foo','slug' => 'foo','summary' => 'foo','content' => 'foo']);
         $this->assertCount(1, Post::all());
         $this->delete('/admin/posts', ['post_id'=>$post->id]);
         $this->assertCount(0, Post::all());
+    }
+
+    /** @test */
+    public function delete_a_post_permanently_require_permission() {
+        $post = Post::create(['title' => 'foo','title_meta' => 'foo','slug' => 'foo','summary' => 'foo','content' => 'foo']);
+        $this->authuser->detach_permission('destroy-post');
+        $this->delete('/admin/posts', ['post_id'=>$post->id])->assertForbidden();
+        $this->authuser->attach_permission('destroy-post');
+        $this->delete('/admin/posts', ['post_id'=>$post->id])->assertOk();
     }
 
     /** @test */

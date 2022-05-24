@@ -109,7 +109,7 @@ class PostController extends Controller
         $postdata = $request->validate([
             'title'=>'required|max:1200',
             'title_meta'=>'required|max:1200',
-            'slug'=>'required|max:1200',
+            'slug'=>'required|unique:posts,slug|max:1200',
             'summary'=>'sometimes|max:2000',
             'status'=>['sometimes', Rule::in(['draft', 'published', 'awaiting-review'])],
             'visibility'=>['sometimes', Rule::in(['public', 'private', 'password-protected'])],
@@ -211,7 +211,7 @@ class PostController extends Controller
         $postdata = $request->validate([
             'title'=>'sometimes|max:1200',
             'title_meta'=>'sometimes|max:1200',
-            'slug'=>'sometimes|max:1200',
+            'slug'=>"sometimes|unique:posts,slug,$post_id|max:1200",
             'summary'=>'sometimes|max:2000',
             'visibility'=>['sometimes', Rule::in(['public', 'private', 'password-protected'])],
             'content'=>'sometimes|max:50000',

@@ -131,8 +131,11 @@ class User extends Authenticatable
 
     public function attach_permission($slug) {
         $permission = Permission::where('slug', $slug)->first();
-        if($permission && auth()->user()) {
-            auth()->user()->permissions()->syncWithoutDetaching($permission->id);
-        }
+        $this->permissions()->syncWithoutDetaching($permission->id);
+    }
+
+    public function detach_permission($slug) {
+        $permission = Permission::where('slug', $slug)->first();
+        $this->permissions()->detach($permission->id);
     }
 }

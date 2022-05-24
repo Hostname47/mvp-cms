@@ -205,14 +205,10 @@ $('.update-post').on('click', function() {
         allow_comments: $('#allow-comments').is(':checked') ? 1 : 0,
         allow_reactions: $('#allow-reactions').is(':checked') ? 1 : 0,
 		categories: categories,
-		tags: tags
+		tags: tags,
+		thumbnail_id: $('#post-thumbnail-image-metadata-id').val(),
+		summary: $('#post-summary').val()
     };
-
-    if($('#post-thumbnail-image-metadata-id').val() != '')
-        data.thumbnail_id = $('#post-thumbnail-image-metadata-id').val();
-    
-    if($('#post-summary').val() != '')
-        data.summary = $('#post-summary').val();
 
     if($('#post-visibility').val() == 'password-protected') {
         if($('#post-password-input').val() == '') {
