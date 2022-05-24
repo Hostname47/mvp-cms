@@ -96,7 +96,7 @@
             </div>
         </div>
         @if($k)
-        <div class="typical-section-style my4">
+        <div class="my12">
             <p class="dark fs15 bold no-margin">Search result for : "<strong class="blue fs14">{{ $k }}</strong>" ({{ $posts->total() }})</p>
         </div>
         @endif

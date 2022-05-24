@@ -104,6 +104,8 @@ class PostController extends Controller
     }
 
     public function store(Request $request) {
+        $this->authorize('store', [Post::class]);
+
         $postdata = $request->validate([
             'title'=>'required|max:1200',
             'title_meta'=>'required|max:1200',
@@ -188,15 +190,20 @@ class PostController extends Controller
     }
 
     public function edit(Request $request) {
+
         $post = null;
         if($request->has('post'))
             $post = Post::withoutGlobalScopes()->find($request->post);
 
+        if($post)
+            $this->authorize('update', [Post::class]);
+        
         return view('admin.posts.edit')
             ->with(compact('post'));
     }
 
     public function update(Request $request) {
+        $this->authorize('update', [Post::class]);
         // Get the post
         $post_id = $request->validate(['post_id'=>'required|exists:posts,id'])['post_id'];
         $post = Post::withoutGlobalScopes()->find($post_id);
@@ -272,6 +279,8 @@ class PostController extends Controller
     }
 
     public function update_status(Request $request) {
+        $this->authorize('update_status', [Post::class]);
+
         $data = $request->validate([
             'post_id'=>'required|exists:posts,id',
             'status'=>['required', Rule::in(['draft', 'published', 'awaiting-review'])],
@@ -312,6 +321,8 @@ class PostController extends Controller
     }
 
     public function preview(Request $request) {
+        $this->authorize('preview', [Post::class]);
+        
         $post = $request->validate(['post'=>'required|exists:posts,id'])['post'];
         $post = Post::withoutGlobalScopes()->find($post);
 
@@ -323,6 +334,8 @@ class PostController extends Controller
     }
 
     public function delete(Request $request) {
+        $this->authorize('trash', [Post::class]);
+
         $post_id = $request->validate(['post_id'=>'required|exists:posts,id'])['post_id'];
         $post = Post::withoutGlobalScopes()->find($post_id);
 
@@ -344,6 +357,8 @@ class PostController extends Controller
     }
 
     public function restore(Request $request) {
+        $this->authorize('restore', [Post::class]);
+
         $post_id = $request->validate(['post_id'=>'required|exists:posts,id'])['post_id'];
         $post = Post::withoutGlobalScopes()->find($post_id);
 
@@ -353,6 +368,8 @@ class PostController extends Controller
     }
 
     public function destroy(Request $request) {
+        $this->authorize('destroy', [Post::class]);
+
         $post_id = $request->validate(['post_id'=>'required|exists:posts,id'])['post_id'];
         $post = Post::withoutGlobalScopes()->find($post_id);
 
