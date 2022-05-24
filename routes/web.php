@@ -7,7 +7,7 @@ use App\Http\Controllers\{IndexController, AdminController, PostController, Cate
     NewsletterController, CommentController, ClapController, ReportController, SearchController,
     AuthorRequestController, ContactController, FaqController, UserController, ActivitiesController, 
     AuthorController};
-use App\Http\Controllers\Admin\{AdminSearchController};
+use App\Http\Controllers\Admin\{AdminSearchController, AdminCommentController};
 use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Middleware\AccountStatus;
 
@@ -43,7 +43,7 @@ Route::middleware(['able-to-access-admin-section'])->group(function() {
     Route::get('/admin/roles/viewers/revoke-viewer', [RPManagement::class, 'get_role_revoke_viewer']);
     Route::get('/admin/roles/viewers/grant-viewer', [RPManagement::class, 'get_role_grant_viewer']);
     // Comments
-    Route::get('/admin/comments', [])->name('admin.comments.management');
+    Route::get('/admin/comments', [AdminCommentController::class, 'index'])->name('admin.comments.management');
 
     Route::get('/admin/categories', [CategoryController::class, 'manage'])->name('admin.categories.management');
     Route::get('/admin/categories/hierarchy/select-one-category-viewer', [CategoryController::class, 'get_select_one_category_viewer']);
