@@ -66,4 +66,16 @@ class Comment extends Model
     public function getAtAttribute() {
         return (new Carbon($this->created_at))->isoFormat("dddd D MMM YYYY - H:mm A");
     }
+
+    
+    public function getScolorAttribute() {
+        switch($this->status) {
+            case 'published':
+                return 'green';
+            case 'trashed':
+                return 'red';
+            default:
+                return 'dark';
+        }
+    }
 }

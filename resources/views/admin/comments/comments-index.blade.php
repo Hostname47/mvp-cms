@@ -44,17 +44,36 @@
 
         <h2 class="dark" style="margin: 0 0 12px 0;">Comments</h2>
 
+        <!-- search section -->
+        <div class="my12">
+            <form action="" class="align-center relative">
+                <svg class="search-icon-style-1" fill="#5b5b5b" enable-background="new 0 0 515.558 515.558" viewBox="0 0 515.558 515.558" xmlns="http://www.w3.org/2000/svg"><path d="m378.344 332.78c25.37-34.645 40.545-77.2 40.545-123.333 0-115.484-93.961-209.445-209.445-209.445s-209.444 93.961-209.444 209.445 93.961 209.445 209.445 209.445c46.133 0 88.692-15.177 123.337-40.547l137.212 137.212 45.564-45.564c0-.001-137.214-137.213-137.214-137.213zm-168.899 21.667c-79.958 0-145-65.042-145-145s65.042-145 145-145 145 65.042 145 145-65.043 145-145 145z"></path></svg>
+                <input type="text" required name="k" class="search-input-style-1" style="width: 360px;" placeholder="search for comments" @if($k) value="{{ $k }}" @endif>
+                <button class="search-button-style-1">
+                    <span>Search Comments</span>
+                </button>
+            </form>
+        </div>
+
+        @if($k)
+            <h3 class="dark">Search result for : "<span class="blue">{{ $k }}</span>" ({{ $comments->total() }})</h3>
+        @endif
+
         <div class="flex space-between">
             <div class="align-center fs13">
-                <a href="{{ route('admin.all.posts') }}" class="no-underline dark-blue">
+                <a href="?tab=all" class="no-underline dark-blue">
                     All <span class="dark default-weight">({{ $statistics['all'] }})</span>
                 </a>
                 <span class="fs7 bold light-gray unselectable mx8">〡</span>
-                <a href="{{ route('admin.all.posts', ['status'=>'published']) }}" class="no-underline dark-blue">
+                <a href="?tab=published" class="no-underline dark-blue">
                     Published <span class="dark default-weight">({{ $statistics['published'] }})</span>
                 </a>
                 <span class="fs7 bold light-gray unselectable mx8">〡</span>
-                <a href="{{ route('admin.all.posts', ['status'=>'trashed']) }}" class="no-underline dark-blue">
+                <a href="?tab=draft" class="no-underline dark-blue">
+                    Draft <span class="dark default-weight">({{ $statistics['draft'] }})</span>
+                </a>
+                <span class="fs7 bold light-gray unselectable mx8">〡</span>
+                <a href="?tab=trashed" class="no-underline dark-blue">
                     Trash <span class="dark default-weight">({{ $statistics['trashed'] }})</span>
                 </a>
             </div>
@@ -100,6 +119,10 @@
                         </td>
                         <!-- comment -->
                         <td class="comments-table-comment-column">
+                            <div class="align-center mb8">
+                                <svg class="size6 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M84.56,5.05c0,1-.85,1.29-1.38,1.82C73.12,17,63.08,27.08,52.94,37.08c-1.63,1.61-1.91,2.39-.1,4.19q44.23,44,88.34,88.15-44.29,44.13-88.49,88.35c-1.39,1.39-1.73,2.07-.11,3.66C63,231.64,73.26,242,83.52,252.33c1.16,1.17,1.75,1.29,3,0Q147.17,191.6,208,131c1.41-1.4,1-2-.13-3.18Q147.4,67.44,87.07,7c-.58-.58-1.54-.93-1.54-2Z"></path></svg>
+                                <span class="fs11 bold {{ $comment->scolor }}">{{ $comment->status }}</span>
+                            </div>
                             <div class="comment-content">
                                 {{ $comment->content }}
                             </div>
@@ -116,7 +139,23 @@
                                     <input type="hidden" class="comment-id" value="{{ $comment->id }}" autocomplete="off">
                                 </div>
                                 @else
-
+                                <div class="fs12 green pointer align-center restore-comment-button">
+                                    <svg class="spinner size12 mr4 none" fill="none" viewBox="0 0 16 16">
+                                        <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                        <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                    </svg>
+                                    <span>Restore</span>
+                                    <input type="hidden" class="comment-id" value="{{ $comment->id }}" autocomplete="off">
+                                </div>
+                                <span class="fs11 dark unselectable">〡</span>
+                                <div class="fs12 red pointer align-center delete-comment-button">
+                                    <svg class="spinner size12 mr4 none" fill="none" viewBox="0 0 16 16">
+                                        <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                        <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                    </svg>
+                                    <span>Delete permanently</span>
+                                    <input type="hidden" class="comment-id" value="{{ $comment->id }}" autocomplete="off">
+                                </div>
                                 @endif
                             </div>
                         </td>
@@ -141,12 +180,17 @@
                 <tr>
                     <td colspan="7" class="full-center">
                         <svg class="size14 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
-                        <p class="bold dark fs13 my4">You don't have any comments for the moment.</p>
+                        <p class="bold dark fs13 my4">You don't have any comments in this tab for the moment.</p>
                     </td>
                 </tr>
                 @endif
             </tbody>
         </table>
+        <div class="flex my12">
+            <div class="move-to-right">
+                {{ $comments->appends(request()->query())->onEachSide(0)->links() }}
+            </div>
+        </div>
     </div>
 </main>
 @endsection

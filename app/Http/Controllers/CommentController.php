@@ -80,7 +80,7 @@ class CommentController extends Controller
 
         $this->authorize('delete', [Comment::class, $comment, $post]);
 
-        $comment->delete();
+        $comment->forceDelete();
         /**
          * After deleting the comment we have to update parent post comments count; We get the new post
          * comments count and store the values to use it in update as well as returning it to front end
