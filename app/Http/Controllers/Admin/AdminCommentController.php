@@ -14,7 +14,7 @@ class AdminCommentController extends Controller
         $statistics = [
             'all' => Comment::withoutGlobalScopes()->count(),
             'published' => Comment::count(),
-            'draft' => Comment::withoutGlobalScopes()->where('status', 'draft')->count(),
+            'pending' => Comment::withoutGlobalScopes()->where('status', 'pending')->count(),
             'trashed' => Comment::withoutGlobalScopes()->where('status', 'trashed')->count()
         ];
 
@@ -31,6 +31,9 @@ class AdminCommentController extends Controller
                     /** In case of all we don't have to attach any condition */
                     case 'published':
                         $comments = $comments->where('status', 'published');
+                        break;
+                    case 'pending':
+                        $comments = $comments->where('status', 'pending');
                         break;
                     case 'trashed':
                         $comments = $comments->where('status', 'trashed');
@@ -57,5 +60,27 @@ class AdminCommentController extends Controller
         $comment->update(['status'=>'trashed']);
         $comment->delete();
         Session::flash('message', 'Comment trashed successfully.');
+    }
+
+    public function untrash(Request $request) {
+        $this->authorize('untrash', [Comment::class]);
+
+        $comment_id = $request->validate(['comment_id'=>'required|exists:comments,id'])['comment_id'];
+        $comment = Comment::withoutGlobalScopes()->find($comment_id);
+
+        $comment->update(['status'=>'pending']);
+        Session::flash('message', 'Comment untrashed and marked as pending for further review.');
+    }
+
+    public function restore(Request $request) {
+        $this->authorize('restore', [Comment::class]);
+
+        $comment_id = $request->validate(['comment_id'=>'required|exists:comments,id'])['comment_id'];
+        $comment = Comment::withoutGlobalScopes()->find($comment_id);
+
+        $comment->update(['status'=>'published']);
+        $comment->restore();
+
+        Session::flash('message', 'Comment restored and marked as pending for review.');
     }
 }

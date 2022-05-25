@@ -45,6 +45,8 @@ Route::middleware(['able-to-access-admin-section'])->group(function() {
     // Comments
     Route::get('/admin/comments', [AdminCommentController::class, 'index'])->name('admin.comments.management');
     Route::post('/admin/comments/trash', [AdminCommentController::class, 'trash']);
+    Route::post('/admin/comments/untrash', [AdminCommentController::class, 'untrash']);
+    Route::post('/admin/comments/restore', [AdminCommentController::class, 'restore']);
 
     Route::get('/admin/categories', [CategoryController::class, 'manage'])->name('admin.categories.management');
     Route::get('/admin/categories/hierarchy/select-one-category-viewer', [CategoryController::class, 'get_select_one_category_viewer']);

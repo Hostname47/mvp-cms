@@ -74,7 +74,7 @@ class Comment extends Model
                 return 'green';
             case 'trashed':
                 return 'red';
-            case 'draft':
+            case 'pending':
                 return 'light-gray';
             default:
                 return 'dark';

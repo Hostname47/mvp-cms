@@ -69,8 +69,8 @@
                     Published <span class="dark default-weight">(<span class="published-count">{{ $statistics['published'] }}</span>)</span>
                 </a>
                 <span class="fs7 bold light-gray unselectable mx8">〡</span>
-                <a href="?tab=draft" class="no-underline @if($tab=='draft') dark bold @else dark-blue @endif">
-                    Draft <span class="dark default-weight">(<span class="draft-count">{{ $statistics['draft'] }}</span>)</span>
+                <a href="?tab=pending" class="no-underline @if($tab=='pending') dark bold @else dark-blue @endif">
+                    Pending <span class="dark default-weight">(<span class="pending-count">{{ $statistics['pending'] }}</span>)</span>
                 </a>
                 <span class="fs7 bold light-gray unselectable mx8">〡</span>
                 <a href="?tab=trashed" class="no-underline @if($tab=='trashed') dark bold @else dark-blue @endif">
@@ -144,23 +144,34 @@
                                     <input type="hidden" class="comment-id" value="{{ $comment->id }}" autocomplete="off">
                                 </div>
                                 @else
-                                <div class="fs12 green pointer align-center restore-comment-button">
-                                    <svg class="spinner size12 mr4 none" fill="none" viewBox="0 0 16 16">
-                                        <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
-                                        <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
-                                    </svg>
-                                    <span>Restore</span>
-                                    <input type="hidden" class="comment-id" value="{{ $comment->id }}" autocomplete="off">
-                                </div>
-                                <span class="fs11 dark unselectable">〡</span>
-                                <div class="fs12 red pointer align-center delete-comment-button">
-                                    <svg class="spinner size12 mr4 none" fill="none" viewBox="0 0 16 16">
-                                        <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
-                                        <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
-                                    </svg>
-                                    <span>Delete permanently</span>
-                                    <input type="hidden" class="comment-id" value="{{ $comment->id }}" autocomplete="off">
-                                </div>
+                                    @if($comment->status == 'pending')
+                                    <div class="fs12 green pointer align-center restore-comment-button">
+                                        <svg class="spinner size12 mr4 none" fill="none" viewBox="0 0 16 16">
+                                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                            <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                        </svg>
+                                        <span>Publish</span>
+                                        <input type="hidden" class="comment-id" value="{{ $comment->id }}" autocomplete="off">
+                                    </div>
+                                    @else
+                                    <div class="fs12 dark pointer align-center untrash-comment-button">
+                                        <svg class="spinner size12 mr4 none" fill="none" viewBox="0 0 16 16">
+                                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                            <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                        </svg>
+                                        <span>Untrash</span>
+                                        <input type="hidden" class="comment-id" value="{{ $comment->id }}" autocomplete="off">
+                                    </div>
+                                    @endif
+                                    <span class="fs11 dark unselectable">〡</span>
+                                    <div class="fs12 red pointer align-center delete-comment-button">
+                                        <svg class="spinner size12 mr4 none" fill="none" viewBox="0 0 16 16">
+                                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                            <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                        </svg>
+                                        <span>Delete permanently</span>
+                                        <input type="hidden" class="comment-id" value="{{ $comment->id }}" autocomplete="off">
+                                    </div>
                                 @endif
                             </div>
                         </td>

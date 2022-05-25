@@ -107,4 +107,20 @@ class CommentPolicy
 
         return true;
     }
+
+    public function untrash(User $user) {
+        if(!$user->has_permission('untrash-comment')) {
+            return $this->deny("Unauthorized action due to lack of permissions.");
+        }
+
+        return true;
+    }
+
+    public function restore(User $user) {
+        if(!$user->has_permission('restore-comment')) {
+            return $this->deny("Unauthorized action due to lack of permissions.");
+        }
+
+        return true;
+    }
 }

@@ -20,12 +20,16 @@ class CommentTest extends TestCase
             'access-admin-section' => Permission::factory()->create(['title'=>'aas', 'slug'=>'access-admin-section']),
             'create-post' => Permission::factory()->create(['title'=>'cp', 'slug'=>'create-post']),
             'trash-comment' => Permission::factory()->create(['title'=>'tc', 'slug'=>'trash-comment']),
+            'untrash-comment' => Permission::factory()->create(['title'=>'utc', 'slug'=>'untrash-comment']),
+            'restore-comment' => Permission::factory()->create(['title'=>'rc', 'slug'=>'restore-comment']),
         ];
 
         $user = $this->authuser = User::factory()->create();
         $this->actingAs($user);
         $user->attach_permission('access-admin-section');
         $user->attach_permission('trash-comment');
+        $user->attach_permission('untrash-comment');
+        $user->attach_permission('restore-comment');
     }
 
     // ========== Admin ==========
@@ -56,8 +60,71 @@ class CommentTest extends TestCase
         ]);
 
         $user->detach_permission('trash-comment');
-        
+
         $this->post('/admin/comments/trash', [
+            'comment_id'=>$comment->id
+        ])->assertForbidden();
+    }
+
+    /** @test */
+    public function untrash_a_comment() {
+        $this->withoutExceptionHandling();
+        $user = $this->authuser;
+        $post = Post::factory()->create(['status'=>'published']);
+        $comment = Comment::factory()->create(['user_id'=>$user->id,'post_id'=>$post->id]);
+
+        $this->post('/admin/comments/trash', [
+            'comment_id'=>$comment->id
+        ]);
+        $this->assertEquals('trashed', $comment->refresh()->status);
+        $this->post('/admin/comments/untrash', [
+            'comment_id'=>$comment->id
+        ]);
+        $this->assertEquals('pending', $comment->refresh()->status);
+    }
+
+    /** @test */
+    public function untrash_comment_require_permission() {
+        $user = $this->authuser;
+        $post = Post::factory()->create(['status'=>'published']);
+        $comment = Comment::factory()->create(['user_id'=>$user->id, 'post_id'=>$post->id]);
+
+        $user->detach_permission('untrash-comment');
+
+        $this->post('/admin/comments/untrash', [
+            'comment_id'=>$comment->id
+        ])->assertForbidden();
+    }
+
+    /** @test */
+    public function restore_a_comment() {
+        $this->withoutExceptionHandling();
+        $user = $this->authuser;
+        $post = Post::factory()->create(['status'=>'published']);
+        $comment = Comment::factory()->create(['user_id'=>$user->id,'post_id'=>$post->id]);
+
+        $this->post('/admin/comments/trash', [
+            'comment_id'=>$comment->id
+        ]);
+        $this->assertEquals('trashed', $comment->refresh()->status);
+        $this->post('/admin/comments/restore', [
+            'comment_id'=>$comment->id
+        ]);
+        $this->assertEquals('published', $comment->refresh()->status);
+    }
+
+    /** @test */
+    public function restore_comment_require_permission() {
+        $user = $this->authuser;
+        $post = Post::factory()->create(['status'=>'published']);
+        $comment = Comment::factory()->create(['user_id'=>$user->id,'post_id'=>$post->id]);
+
+        $this->post('/admin/comments/trash', [
+            'comment_id'=>$comment->id
+        ]);
+        $this->assertEquals('trashed', $comment->refresh()->status);
+        $user->detach_permission('restore-comment');
+        $this->post('/admin/comments/restore', [
             'comment_id'=>$comment->id
         ])->assertForbidden();
     }
