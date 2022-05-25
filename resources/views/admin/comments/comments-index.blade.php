@@ -42,8 +42,24 @@
         </div>
         @endif
 
-        <h2 class="dark no-margin">Comments</h2>
+        <h2 class="dark" style="margin: 0 0 12px 0;">Comments</h2>
 
+        <div class="flex space-between">
+            <div class="align-center fs13">
+                <a href="{{ route('admin.all.posts') }}" class="no-underline dark-blue">
+                    All <span class="dark default-weight">({{ $statistics['all'] }})</span>
+                </a>
+                <span class="fs7 bold light-gray unselectable mx8">〡</span>
+                <a href="{{ route('admin.all.posts', ['status'=>'published']) }}" class="no-underline dark-blue">
+                    Published <span class="dark default-weight">({{ $statistics['published'] }})</span>
+                </a>
+                <span class="fs7 bold light-gray unselectable mx8">〡</span>
+                <a href="{{ route('admin.all.posts', ['status'=>'trashed']) }}" class="no-underline dark-blue">
+                    Trash <span class="dark default-weight">({{ $statistics['trashed'] }})</span>
+                </a>
+            </div>
+            {{ $comments->appends(request()->query())->onEachSide(0)->links() }}
+        </div>
         <table class="full-width comments-table mt8">
             <thead>
                 <tr class="flex">
@@ -90,7 +106,7 @@
                             <div class="comment-actions-links">
                                 @if(is_null($comment->deleted_at))
                                 <a href="{{ $comment->link }}" target="_blank" class="dark-blue link">View</a>
-                                <span class="fs11 dark">〡</span>
+                                <span class="fs11 dark unselectable">〡</span>
                                 <div class="fs12 red pointer align-center trash-comment-button">
                                     <svg class="spinner size12 mr4 none" fill="none" viewBox="0 0 16 16">
                                         <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
@@ -100,14 +116,14 @@
                                     <input type="hidden" class="comment-id" value="{{ $comment->id }}" autocomplete="off">
                                 </div>
                                 @else
-                                
+
                                 @endif
                             </div>
                         </td>
                         <!-- in response to -->
                         <td class="comments-table-in-response-to-column">
                             <div class="comment-post-box">
-                                <p class="fs12 no-margin mb4 dark bold">Post :<span class="fs11 light-gray ml4 default-weight">({{ $comment->post->comments_count }} comments)</span></p>
+                                <p class="fs11 no-margin mb4 dark bold">Post :<span class="light-gray ml4 default-weight">({{ $comment->post->comments_count }} comments)</span></p>
                                 <a href="{{ route('edit.post', ['post'=>$comment->post->id]) }}" class="title">{{ $comment->post->html_title }}</a>
                                 <a href="{{ $comment->post->link }}" target="_blank" class="align-center no-underline dark">
                                     <svg class="size14 ml4 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M5.22,125.75c1.87-7.6,6.32-13.64,11.46-19.33C37.14,83.8,60,64.32,88.3,52.11c34.75-15,67.81-10,99.59,8.71,22.8,13.44,42.16,30.92,59,51.26,8.74,10.6,9.54,24.93,1.1,35.4-21.67,26.89-47.28,49.07-79.57,62.46-33.49,13.89-65.44,8.84-96.08-8.82-23.52-13.55-43.4-31.42-60.46-52.39-3.05-3.74-4.45-8.82-6.61-13.28ZM131.91,62.67a83.6,83.6,0,0,0-32.8,6.14c-29.08,11.73-52,31.52-71.88,55.27-3.87,4.62-3.66,8.68.4,13.55,16.4,19.67,35.28,36.45,58,48.57,21.45,11.45,43.83,16.45,67.68,8.4,32.51-10.95,57.36-32.39,78.83-58.28,3.4-4.1,2.86-8.18-.95-12.77-14.87-18-32-33.4-52.07-45.28C163.91,69.28,147.79,63,131.91,62.67Zm-2.06,19.42A48.5,48.5,0,1,1,80.91,130,48.62,48.62,0,0,1,129.85,82.09Zm-.42,77.6a29.1,29.1,0,1,0-29.12-29.31A29.19,29.19,0,0,0,129.43,159.69Z"></path></svg>
