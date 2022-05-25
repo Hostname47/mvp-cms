@@ -74,6 +74,8 @@ class Comment extends Model
                 return 'green';
             case 'trashed':
                 return 'red';
+            case 'draft':
+                return 'light-gray';
             default:
                 return 'dark';
         }

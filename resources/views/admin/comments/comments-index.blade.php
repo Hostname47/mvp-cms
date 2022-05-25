@@ -61,19 +61,19 @@
 
         <div class="flex space-between">
             <div class="align-center fs13">
-                <a href="?tab=all" class="no-underline dark-blue">
+                <a href="?tab=all" class="no-underline @if($tab=='all') dark bold @else dark-blue @endif">
                     All <span class="dark default-weight">(<span class="trash-count">{{ $statistics['all'] }}</span>)</span>
                 </a>
                 <span class="fs7 bold light-gray unselectable mx8">〡</span>
-                <a href="?tab=published" class="no-underline dark-blue">
+                <a href="?tab=published" class="no-underline @if($tab=='published') dark bold @else dark-blue @endif">
                     Published <span class="dark default-weight">(<span class="published-count">{{ $statistics['published'] }}</span>)</span>
                 </a>
                 <span class="fs7 bold light-gray unselectable mx8">〡</span>
-                <a href="?tab=draft" class="no-underline dark-blue">
+                <a href="?tab=draft" class="no-underline @if($tab=='draft') dark bold @else dark-blue @endif">
                     Draft <span class="dark default-weight">(<span class="draft-count">{{ $statistics['draft'] }}</span>)</span>
                 </a>
                 <span class="fs7 bold light-gray unselectable mx8">〡</span>
-                <a href="?tab=trashed" class="no-underline dark-blue">
+                <a href="?tab=trashed" class="no-underline @if($tab=='trashed') dark bold @else dark-blue @endif">
                     Trash <span class="dark default-weight">(<span class="trash-count">{{ $statistics['trashed'] }}</span>)</span>
                 </a>
             </div>
@@ -102,7 +102,7 @@
             <tbody>
                 @if($comments->count())
                     @foreach($comments as $comment)
-                    <tr class="flex comment-row">
+                    <tr class="flex comment-row" id="comment-row-{{ $comment->id }}">
                         <!-- comment selection -->
                         <td class="comments-table-selection-column">
                             <input type="checkbox" autocomplete="off" class="comment-selection-input">
@@ -128,10 +128,13 @@
                             </div>
                             <div class="comment-actions-links">
                                 @if(is_null($comment->deleted_at))
+                                <!-- view comment -->
                                 <a href="{{ $comment->link }}" target="_blank" class="dark-blue link">View</a>
                                 <span class="fs11 dark unselectable">〡</span>
+                                <!-- reply -->
                                 <span class="dark-blue link pointer">Reply</span>
                                 <span class="fs11 dark unselectable">〡</span>
+                                <!-- trash a comment -->
                                 <div class="fs12 red pointer align-center trash-comment-button">
                                     <svg class="spinner size12 mr4 none" fill="none" viewBox="0 0 16 16">
                                         <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
