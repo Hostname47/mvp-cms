@@ -9,7 +9,7 @@ use App\Models\Comment;
 class AdminCommentController extends Controller
 {
     public function index(Request $request) {
-        $comments = Comment::withoutGlobalScopes()->paginate(20);
+        $comments = Comment::withoutGlobalScopes()->with(['user', 'post', 'post.categories'])->orderBy('created_at', 'desc')->paginate(20);
 
         return view('admin.comments.comments-index')
             ->with(compact('comments'));

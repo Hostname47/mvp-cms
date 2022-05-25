@@ -61,4 +61,8 @@ class Comment extends Model
     public function getUpdatedAttribute() {
         return !$this->created_at->equalTo($this->updated_at);
     }
+
+    public function getAtAttribute() {
+        return (new Carbon($this->created_at))->isoFormat("dddd D MMM YYYY - H:mm A");
+    }
 }
