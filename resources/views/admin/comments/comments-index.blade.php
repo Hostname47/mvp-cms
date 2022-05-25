@@ -62,19 +62,19 @@
         <div class="flex space-between">
             <div class="align-center fs13">
                 <a href="?tab=all" class="no-underline dark-blue">
-                    All <span class="dark default-weight">({{ $statistics['all'] }})</span>
+                    All <span class="dark default-weight">(<span class="trash-count">{{ $statistics['all'] }}</span>)</span>
                 </a>
                 <span class="fs7 bold light-gray unselectable mx8">〡</span>
                 <a href="?tab=published" class="no-underline dark-blue">
-                    Published <span class="dark default-weight">({{ $statistics['published'] }})</span>
+                    Published <span class="dark default-weight">(<span class="published-count">{{ $statistics['published'] }}</span>)</span>
                 </a>
                 <span class="fs7 bold light-gray unselectable mx8">〡</span>
                 <a href="?tab=draft" class="no-underline dark-blue">
-                    Draft <span class="dark default-weight">({{ $statistics['draft'] }})</span>
+                    Draft <span class="dark default-weight">(<span class="draft-count">{{ $statistics['draft'] }}</span>)</span>
                 </a>
                 <span class="fs7 bold light-gray unselectable mx8">〡</span>
                 <a href="?tab=trashed" class="no-underline dark-blue">
-                    Trash <span class="dark default-weight">({{ $statistics['trashed'] }})</span>
+                    Trash <span class="dark default-weight">(<span class="trash-count">{{ $statistics['trashed'] }}</span>)</span>
                 </a>
             </div>
             {{ $comments->appends(request()->query())->onEachSide(0)->links() }}
@@ -129,6 +129,8 @@
                             <div class="comment-actions-links">
                                 @if(is_null($comment->deleted_at))
                                 <a href="{{ $comment->link }}" target="_blank" class="dark-blue link">View</a>
+                                <span class="fs11 dark unselectable">〡</span>
+                                <span class="dark-blue link pointer">Reply</span>
                                 <span class="fs11 dark unselectable">〡</span>
                                 <div class="fs12 red pointer align-center trash-comment-button">
                                     <svg class="spinner size12 mr4 none" fill="none" viewBox="0 0 16 16">

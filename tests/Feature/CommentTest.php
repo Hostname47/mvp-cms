@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Models\{User,Post,Comment};
+use App\Models\{User,Post,Comment,Permission};
 
 class CommentTest extends TestCase
 {
@@ -16,9 +16,53 @@ class CommentTest extends TestCase
     public function setUp():void {
         parent::setUp();
         
-        $this->authuser = $authuser = User::factory()->create();
-        $this->actingAs($authuser);
+        $permissions = [
+            'access-admin-section' => Permission::factory()->create(['title'=>'aas', 'slug'=>'access-admin-section']),
+            'create-post' => Permission::factory()->create(['title'=>'cp', 'slug'=>'create-post']),
+            'trash-comment' => Permission::factory()->create(['title'=>'tc', 'slug'=>'trash-comment']),
+        ];
+
+        $user = $this->authuser = User::factory()->create();
+        $this->actingAs($user);
+        $user->attach_permission('access-admin-section');
+        $user->attach_permission('trash-comment');
     }
+
+    // ========== Admin ==========
+
+    /** @test */
+    public function trash_a_comment() {
+        $user = $this->authuser;
+        $post = Post::factory()->create(['status'=>'published']);
+        $comment = Comment::factory()->create([
+            'user_id'=>$user->id,
+            'post_id'=>$post->id
+        ]);
+
+        $this->assertNull($comment->deleted_at);
+        $this->post('/admin/comments/trash', [
+            'comment_id'=>$comment->id
+        ]);
+        $this->assertNotNull($comment->refresh()->deleted_at);
+    }
+
+    /** @test */
+    public function trash_comment_require_permission() {
+        $user = $this->authuser;
+        $post = Post::factory()->create(['status'=>'published']);
+        $comment = Comment::factory()->create([
+            'user_id'=>$user->id,
+            'post_id'=>$post->id
+        ]);
+
+        $user->detach_permission('trash-comment');
+        
+        $this->post('/admin/comments/trash', [
+            'comment_id'=>$comment->id
+        ])->assertForbidden();
+    }
+
+    // ===========================
 
     /** @test */
     public function write_a_comment_on_a_post() {

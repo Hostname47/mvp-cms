@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Comment;
+use Illuminate\Support\Facades\Session;
 use Purifier;
 
 class AdminCommentController extends Controller
@@ -45,5 +46,16 @@ class AdminCommentController extends Controller
             ->with(compact('tab'))
             ->with(compact('k'))
             ->with(compact('comments'));
+    }
+
+    public function trash(Request $request) {
+        $this->authorize('trash', [Comment::class]);
+
+        $comment_id = $request->validate(['comment_id'=>'required|exists:comments,id'])['comment_id'];
+        $comment = Comment::withoutGlobalScopes()->find($comment_id);
+
+        $comment->update(['status'=>'trashed']);
+        $comment->delete();
+        Session::flash('message', 'Comment trashed successfully.');
     }
 }

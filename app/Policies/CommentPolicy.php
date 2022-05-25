@@ -96,4 +96,15 @@ class CommentPolicy
     public function able_to_report(User $user, $comment) {
         return $user->id != $comment->user_id;
     }
+
+    /**
+     * Admin actions
+     */
+    public function trash(User $user) {
+        if(!$user->has_permission('trash-comment')) {
+            return $this->deny("Unauthorized action due to lack of permissions.");
+        }
+
+        return true;
+    }
 }
