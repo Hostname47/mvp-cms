@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Comment;
+use App\Models\{Comment,Post};
 use Illuminate\Support\Facades\Session;
 use Purifier;
 
@@ -80,6 +80,19 @@ class AdminCommentController extends Controller
 
         $comment->update(['status'=>'published']);
         $comment->restore();
+
+        Session::flash('message', 'Comment restored and marked as pending for review.');
+    }
+
+    public function destroy(Request $request) {
+        $this->authorize('destroy', [Comment::class]);
+
+        $comment_id = $request->validate(['comment_id'=>'required|exists:comments,id'])['comment_id'];
+        $comment = Comment::withoutGlobalScopes()->find($comment_id);
+        $post = Post::withoutGlobalScopes()->find($comment->post_id);
+
+        $comment->forceDelete();
+        $post->update(['comments_count'=>$post->comments()->count()]);
 
         Session::flash('message', 'Comment restored and marked as pending for review.');
     }

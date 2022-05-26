@@ -22,6 +22,7 @@ class CommentTest extends TestCase
             'trash-comment' => Permission::factory()->create(['title'=>'tc', 'slug'=>'trash-comment']),
             'untrash-comment' => Permission::factory()->create(['title'=>'utc', 'slug'=>'untrash-comment']),
             'restore-comment' => Permission::factory()->create(['title'=>'rc', 'slug'=>'restore-comment']),
+            'destroy-comment' => Permission::factory()->create(['title'=>'dc', 'slug'=>'destroy-comment']),
         ];
 
         $user = $this->authuser = User::factory()->create();
@@ -30,6 +31,7 @@ class CommentTest extends TestCase
         $user->attach_permission('trash-comment');
         $user->attach_permission('untrash-comment');
         $user->attach_permission('restore-comment');
+        $user->attach_permission('destroy-comment');
     }
 
     // ========== Admin ==========
@@ -125,6 +127,42 @@ class CommentTest extends TestCase
         $this->assertEquals('trashed', $comment->refresh()->status);
         $user->detach_permission('restore-comment');
         $this->post('/admin/comments/restore', [
+            'comment_id'=>$comment->id
+        ])->assertForbidden();
+    }
+
+    /** @test */
+    public function destroy_a_comment() {
+        $user = $this->authuser;
+        $post = Post::factory()->create(['status'=>'published', 'comments_count'=>1]);
+        $comment = Comment::factory()->create(['user_id'=>$user->id, 'post_id'=>$post->id]);
+
+        $this->post('/admin/comments/trash', [
+            'comment_id'=>$comment->id
+        ]);
+
+        $this->assertEquals(1, $post->comments_count);
+        $this->assertCount(1, Comment::withoutGlobalScopes()->get());
+        $this->post('/admin/comments/destroy', [
+            'comment_id'=>$comment->id
+        ]);
+        $this->assertEquals(0, $post->refresh()->comments_count);
+        $this->assertCount(0, Comment::all());
+    }
+
+    /** @test */
+    public function destroy_a_comment_require_permission() {
+        $user = $this->authuser;
+        $post = Post::factory()->create(['status'=>'published', 'comments_count'=>1]);
+        $comment = Comment::factory()->create(['user_id'=>$user->id, 'post_id'=>$post->id]);
+
+        $this->post('/admin/comments/trash', [
+            'comment_id'=>$comment->id
+        ]);
+
+        $user->detach_permission('destroy-comment');
+
+        $this->post('/admin/comments/destroy', [
             'comment_id'=>$comment->id
         ])->assertForbidden();
     }

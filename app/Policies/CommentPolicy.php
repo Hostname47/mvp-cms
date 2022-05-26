@@ -123,4 +123,13 @@ class CommentPolicy
 
         return true;
     }
+
+    
+    public function destroy(User $user) {
+        if(!$user->has_permission('destroy-comment')) {
+            return $this->deny("Unauthorized action due to lack of permissions.");
+        }
+
+        return true;
+    }
 }
