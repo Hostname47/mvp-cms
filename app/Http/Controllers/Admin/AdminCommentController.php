@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\{Comment,Post};
+use App\Models\{User,Comment,Post};
 use Illuminate\Support\Facades\Session;
 use Purifier;
 
@@ -44,11 +44,30 @@ class AdminCommentController extends Controller
 
         $comments = $comments->orderBy('created_at', 'desc')->paginate(24);
 
-        return view('admin.comments.comments-index')
+        return view('admin.comments.index')
             ->with(compact('statistics'))
             ->with(compact('tab'))
             ->with(compact('k'))
             ->with(compact('comments'));
+    }
+
+    public function manage(Request $request) {
+        $comment = null;
+        $commenter = null;
+        $post = null;
+        if($request->has('comment')) {
+            $comment = $request->validate(['comment'=>'exists:comments,id'])['comment'];
+            $comment = Comment::withoutGlobalScopes()->find($comment);
+            if($comment) {
+                $commenter = User::withoutGlobalScopes()->find($comment->user_id);
+                $post = Post::withoutGlobalScopes()->find($comment->post_id);
+                
+            }
+        }
+        return view('admin.comments.manage')
+            ->with(compact('comment'))
+            ->with(compact('commenter'))
+            ->with(compact('post'));
     }
 
     public function trash(Request $request) {

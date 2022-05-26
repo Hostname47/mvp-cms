@@ -43,7 +43,8 @@ Route::middleware(['able-to-access-admin-section'])->group(function() {
     Route::get('/admin/roles/viewers/revoke-viewer', [RPManagement::class, 'get_role_revoke_viewer']);
     Route::get('/admin/roles/viewers/grant-viewer', [RPManagement::class, 'get_role_grant_viewer']);
     // Comments
-    Route::get('/admin/comments', [AdminCommentController::class, 'index'])->name('admin.comments.management');
+    Route::get('/admin/comments', [AdminCommentController::class, 'index'])->name('admin.comments.dashboard');
+    Route::get('/admin/comments/manage', [AdminCommentController::class, 'manage'])->name('admin.comments.manage');
     Route::post('/admin/comments/trash', [AdminCommentController::class, 'trash']);
     Route::post('/admin/comments/untrash', [AdminCommentController::class, 'untrash']);
     Route::post('/admin/comments/restore', [AdminCommentController::class, 'restore']);

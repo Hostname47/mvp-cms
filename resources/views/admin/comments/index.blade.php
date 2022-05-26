@@ -11,7 +11,7 @@
 @endpush
 
 @section('left-panel')
-    @include('partials.admin.left-panel', ['page'=>'comments.management'])
+    @include('partials.admin.left-panel', ['page'=>'admin.comments', 'subpage'=>'admin.comments.dashboard'])
 @endsection
 
 @section('content')
@@ -169,12 +169,11 @@
                                 {{ $comment->content }}
                             </div>
                             <div class="comment-actions-links">
+                                <a href="{{ route('admin.comments.manage', ['comment'=>$comment->id]) }}" target="_blank" class="dark-blue link">Manage</a>
+                                <span class="fs11 dark unselectable">〡</span>
                                 @if(is_null($comment->deleted_at))
                                 <!-- view comment -->
                                 <a href="{{ $comment->link }}" target="_blank" class="dark-blue link">View</a>
-                                <span class="fs11 dark unselectable">〡</span>
-                                <!-- reply -->
-                                <span class="dark-blue link pointer">Reply</span>
                                 <span class="fs11 dark unselectable">〡</span>
                                 <!-- trash a comment -->
                                 <div class="fs12 red pointer align-center trash-comment-button">
