@@ -54,12 +54,21 @@ class AdminCommentController extends Controller
     public function trash(Request $request) {
         $this->authorize('trash', [Comment::class]);
 
-        $comment_id = $request->validate(['comment_id'=>'required|exists:comments,id'])['comment_id'];
-        $comment = Comment::withoutGlobalScopes()->find($comment_id);
+        $comments = $this->validate($request, [
+            'comments'=>'required',
+            'comments.*'=>'exists:comments,id',
+        ], [
+            'comments.required'=>'At least one comment should be selected'
+        ])['comments'];
+        $comments = Comment::withoutGlobalScopes()->findMany($comments);
+        
+        foreach($comments as $comment) {
+            $comment->update(['status'=>'trashed']);
+            $comment->delete();
+        }
 
-        $comment->update(['status'=>'trashed']);
-        $comment->delete();
-        Session::flash('message', 'Comment trashed successfully.');
+        $message = $comments->count() . ' ' . ($comments->count() > 1 ? 'comments' : 'comment') . ' trashed successfully.';
+        Session::flash('message', $message);
     }
 
     public function untrash(Request $request) {

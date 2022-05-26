@@ -169,3 +169,53 @@ $('.destroy-comment-button').on('click', function(event) {
     })
 });
 
+/** bulk actions */
+let bulk_action_lock = true;
+$('#trash-comments-bulk').on('click', function() {
+    let comments = [];
+    $('.comment-selection-input:checked').each(function() {
+        comments.push($(this).val());
+    });
+    if(!check_bulk_selection(comments)) return;
+
+    let button = $(this);
+    let spinner = button.find('.spinner');
+    
+    spinner.addClass('inf-rotate');
+    spinner.removeClass('none');
+    
+    if(!bulk_action_lock) return;
+    bulk_action_lock = false;
+    
+    $.ajax({
+        type: 'post',
+        url: '/admin/comments/trash',
+        data: { comments: comments },
+        success: function(response) {
+            location.reload();
+        },
+        error: function(response) {
+            spinner.removeClass('inf-rotate');
+            spinner.addClass('none');
+
+            let errorObject = JSON.parse(response.responseText);
+            let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+            if (errorObject.errors) {
+                let errors = errorObject.errors;
+                error = errors[Object.keys(errors)[0]][0];
+            }
+            print_top_message(error, 'error');
+
+            bulk_action_lock = true;
+        }
+    });
+});
+
+function check_bulk_selection(comments) {
+    if(!comments.length) {
+        print_top_message('Please select at least one comment before performing any bulk action', 'error');
+        return false;
+    }
+
+    return true;
+}

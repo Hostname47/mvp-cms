@@ -40,14 +40,11 @@ class CommentTest extends TestCase
     public function trash_a_comment() {
         $user = $this->authuser;
         $post = Post::factory()->create(['status'=>'published']);
-        $comment = Comment::factory()->create([
-            'user_id'=>$user->id,
-            'post_id'=>$post->id
-        ]);
+        $comment = Comment::factory()->create(['user_id'=>$user->id,'post_id'=>$post->id]);
 
         $this->assertNull($comment->deleted_at);
         $this->post('/admin/comments/trash', [
-            'comment_id'=>$comment->id
+            'comments'=>[$comment->id]
         ]);
         $this->assertNotNull($comment->refresh()->deleted_at);
     }
@@ -64,7 +61,7 @@ class CommentTest extends TestCase
         $user->detach_permission('trash-comment');
 
         $this->post('/admin/comments/trash', [
-            'comment_id'=>$comment->id
+            'comments'=>[$comment->id]
         ])->assertForbidden();
     }
 
@@ -76,7 +73,7 @@ class CommentTest extends TestCase
         $comment = Comment::factory()->create(['user_id'=>$user->id,'post_id'=>$post->id]);
 
         $this->post('/admin/comments/trash', [
-            'comment_id'=>$comment->id
+            'comments'=>[$comment->id]
         ]);
         $this->assertEquals('trashed', $comment->refresh()->status);
         $this->post('/admin/comments/untrash', [
@@ -106,7 +103,7 @@ class CommentTest extends TestCase
         $comment = Comment::factory()->create(['user_id'=>$user->id,'post_id'=>$post->id]);
 
         $this->post('/admin/comments/trash', [
-            'comment_id'=>$comment->id
+            'comments'=>[$comment->id]
         ]);
         $this->assertEquals('trashed', $comment->refresh()->status);
         $this->post('/admin/comments/restore', [
@@ -122,7 +119,7 @@ class CommentTest extends TestCase
         $comment = Comment::factory()->create(['user_id'=>$user->id,'post_id'=>$post->id]);
 
         $this->post('/admin/comments/trash', [
-            'comment_id'=>$comment->id
+            'comments'=>[$comment->id]
         ]);
         $this->assertEquals('trashed', $comment->refresh()->status);
         $user->detach_permission('restore-comment');
@@ -138,7 +135,7 @@ class CommentTest extends TestCase
         $comment = Comment::factory()->create(['user_id'=>$user->id, 'post_id'=>$post->id]);
 
         $this->post('/admin/comments/trash', [
-            'comment_id'=>$comment->id
+            'comments'=>[$comment->id]
         ]);
 
         $this->assertEquals(1, $post->comments_count);
@@ -157,7 +154,7 @@ class CommentTest extends TestCase
         $comment = Comment::factory()->create(['user_id'=>$user->id, 'post_id'=>$post->id]);
 
         $this->post('/admin/comments/trash', [
-            'comment_id'=>$comment->id
+            'comments'=>[$comment->id]
         ]);
 
         $user->detach_permission('destroy-comment');

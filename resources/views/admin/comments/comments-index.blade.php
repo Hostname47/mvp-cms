@@ -61,6 +61,32 @@
 
         <div class="flex space-between">
             <div class="align-center fs13">
+                <div class="relative">
+                    <div class="button-with-suboptions typical-button-style white-bs align-center">
+                        <span class="unselectable">Bulk Actions</span>
+                        <svg class="size7 ml8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"></path></svg>
+                    </div>
+                    <div class="suboptions-container typical-suboptions-container">
+                        <div id="trash-comments-bulk" class="suboption-style-2 align-center mb2">
+                            <svg class="spinner size12 mr4 none" fill="none" viewBox="0 0 16 16">
+                                <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                            </svg>
+                            <span>Trash</span>
+                        </div>
+                        <div class="suboption-style-2 mb2">
+                            <span>Untrash</span>
+                        </div>
+                        <div class="suboption-style-2 mb2">
+                            <span>Restore</span>
+                        </div>
+                        <div class="simple-line-separator my4"></div>
+                        <div class="suboption-style-2 mb2">
+                            <span class="red">Delete permanently</span>
+                        </div>
+                    </div>
+                </div>
+                <span class="fs7 bold light-gray unselectable mx8">〡</span>
                 <a href="?tab=all" class="no-underline @if($tab=='all') dark bold @else dark-blue @endif">
                     All <span class="dark default-weight">(<span class="trash-count">{{ $statistics['all'] }}</span>)</span>
                 </a>
@@ -83,7 +109,7 @@
             <thead>
                 <tr class="flex">
                     <th class="comments-table-selection-column">
-                        <input type="checkbox" autocomplete="off" class="comment-selection-input" disabled>
+                        <input type="checkbox" autocomplete="off" class="comment-selection-input opacity0" disabled>
                     </th>
                     <th class="comments-table-commenter-column">
                         <span class="dark">Commenter</span>
@@ -105,7 +131,7 @@
                     <tr class="flex comment-row" id="comment-row-{{ $comment->id }}">
                         <!-- comment selection -->
                         <td class="comments-table-selection-column">
-                            <input type="checkbox" autocomplete="off" class="comment-selection-input">
+                            <input type="checkbox" autocomplete="off" class="comment-selection-input" value="{{ $comment->id }}">
                         </td>
                         <!-- commenter -->
                         <td class="comments-table-commenter-column">
