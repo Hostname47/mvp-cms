@@ -42,7 +42,7 @@ class AdminCommentController extends Controller
             }
         }
 
-        $comments = $comments->orderBy('created_at', 'desc')->paginate(20);
+        $comments = $comments->orderBy('created_at', 'desc')->paginate(24);
 
         return view('admin.comments.comments-index')
             ->with(compact('statistics'))
@@ -81,7 +81,7 @@ class AdminCommentController extends Controller
         $comment->update(['status'=>'published']);
         $comment->restore();
 
-        Session::flash('message', 'Comment restored and marked as pending for review.');
+        Session::flash('message', 'Comment has been restored successfully.');
     }
 
     public function destroy(Request $request) {
@@ -94,6 +94,6 @@ class AdminCommentController extends Controller
         $comment->forceDelete();
         $post->update(['comments_count'=>$post->comments()->count()]);
 
-        Session::flash('message', 'Comment restored and marked as pending for review.');
+        Session::flash('message', 'Comment has been deleted permanently.');
     }
 }

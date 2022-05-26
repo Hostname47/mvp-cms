@@ -150,11 +150,11 @@
                                             <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
                                             <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
                                         </svg>
-                                        <span>Publish</span>
+                                        <span>Restore</span>
                                         <input type="hidden" class="comment-id" value="{{ $comment->id }}" autocomplete="off">
                                     </div>
                                     @else
-                                    <div class="fs12 dark pointer align-center untrash-comment-button">
+                                    <div class="fs12 dark-green pointer align-center untrash-comment-button">
                                         <svg class="spinner size12 mr4 none" fill="none" viewBox="0 0 16 16">
                                             <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
                                             <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
@@ -164,7 +164,7 @@
                                     </div>
                                     @endif
                                     <span class="fs11 dark unselectable">〡</span>
-                                    <div class="fs12 red pointer align-center delete-comment-button">
+                                    <div class="fs12 red pointer align-center destroy-comment-button">
                                         <svg class="spinner size12 mr4 none" fill="none" viewBox="0 0 16 16">
                                             <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
                                             <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
