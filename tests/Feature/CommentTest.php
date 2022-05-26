@@ -67,7 +67,6 @@ class CommentTest extends TestCase
 
     /** @test */
     public function untrash_a_comment() {
-        $this->withoutExceptionHandling();
         $user = $this->authuser;
         $post = Post::factory()->create(['status'=>'published']);
         $comment = Comment::factory()->create(['user_id'=>$user->id,'post_id'=>$post->id]);
@@ -77,7 +76,7 @@ class CommentTest extends TestCase
         ]);
         $this->assertEquals('trashed', $comment->refresh()->status);
         $this->post('/admin/comments/untrash', [
-            'comment_id'=>$comment->id
+            'comments'=>[$comment->id]
         ]);
         $this->assertEquals('pending', $comment->refresh()->status);
     }
@@ -91,7 +90,7 @@ class CommentTest extends TestCase
         $user->detach_permission('untrash-comment');
 
         $this->post('/admin/comments/untrash', [
-            'comment_id'=>$comment->id
+            'comment'=>[$comment->id]
         ])->assertForbidden();
     }
 
@@ -107,7 +106,7 @@ class CommentTest extends TestCase
         ]);
         $this->assertEquals('trashed', $comment->refresh()->status);
         $this->post('/admin/comments/restore', [
-            'comment_id'=>$comment->id
+            'comments'=>[$comment->id]
         ]);
         $this->assertEquals('published', $comment->refresh()->status);
     }
@@ -124,7 +123,7 @@ class CommentTest extends TestCase
         $this->assertEquals('trashed', $comment->refresh()->status);
         $user->detach_permission('restore-comment');
         $this->post('/admin/comments/restore', [
-            'comment_id'=>$comment->id
+            'comments'=>[$comment->id]
         ])->assertForbidden();
     }
 
@@ -141,7 +140,7 @@ class CommentTest extends TestCase
         $this->assertEquals(1, $post->comments_count);
         $this->assertCount(1, Comment::withoutGlobalScopes()->get());
         $this->post('/admin/comments/destroy', [
-            'comment_id'=>$comment->id
+            'comments'=>[$comment->id]
         ]);
         $this->assertEquals(0, $post->refresh()->comments_count);
         $this->assertCount(0, Comment::all());
@@ -160,7 +159,7 @@ class CommentTest extends TestCase
         $user->detach_permission('destroy-comment');
 
         $this->post('/admin/comments/destroy', [
-            'comment_id'=>$comment->id
+            'comments'=>[$comment->id]
         ])->assertForbidden();
     }
 

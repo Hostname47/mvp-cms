@@ -27,7 +27,7 @@ $('.trash-comment-button').on('click', function(event) {
     $.ajax({
         type: 'post',
         url: '/admin/comments/trash',
-        data: { comment_id: comment_id },
+        data: { comments: [comment_id] },
         success: function(response) {
             location.reload();
         },
@@ -67,7 +67,7 @@ $('.untrash-comment-button').on('click', function(event) {
     $.ajax({
         type: 'post',
         url: '/admin/comments/untrash',
-        data: { comment_id: comment_id },
+        data: { comments: [comment_id] },
         success: function(response) {
             location.reload();
         },
@@ -107,7 +107,7 @@ $('.restore-comment-button').on('click', function(event) {
     $.ajax({
         type: 'post',
         url: '/admin/comments/restore',
-        data: { comment_id: comment_id },
+        data: { comments: [comment_id] },
         success: function(response) {
             location.reload();
         },
@@ -147,7 +147,7 @@ $('.destroy-comment-button').on('click', function(event) {
     $.ajax({
         type: 'post',
         url: '/admin/comments/destroy',
-        data: { comment_id: comment_id },
+        data: { comments: [comment_id] },
         success: function(response) {
             location.reload();
         },
@@ -171,7 +171,8 @@ $('.destroy-comment-button').on('click', function(event) {
 
 /** bulk actions */
 let bulk_action_lock = true;
-$('#trash-comments-bulk').on('click', function() {
+$('.bulk-action').on('click', function() {
+    let action = $(this).find('.action').val();
     let comments = [];
     $('.comment-selection-input:checked').each(function() {
         comments.push($(this).val());
@@ -189,7 +190,7 @@ $('#trash-comments-bulk').on('click', function() {
     
     $.ajax({
         type: 'post',
-        url: '/admin/comments/trash',
+        url: '/admin/comments/' + action,
         data: { comments: comments },
         success: function(response) {
             location.reload();
@@ -216,6 +217,5 @@ function check_bulk_selection(comments) {
         print_top_message('Please select at least one comment before performing any bulk action', 'error');
         return false;
     }
-
     return true;
 }

@@ -67,22 +67,38 @@
                         <svg class="size7 ml8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"></path></svg>
                     </div>
                     <div class="suboptions-container typical-suboptions-container">
-                        <div id="trash-comments-bulk" class="suboption-style-2 align-center mb2">
-                            <svg class="spinner size12 mr4 none" fill="none" viewBox="0 0 16 16">
+                        <div class="suboption-style-2 align-center mb2 bulk-action">
+                            <svg class="spinner size12 mr6 none" fill="none" viewBox="0 0 16 16">
                                 <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
                                 <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
                             </svg>
                             <span>Trash</span>
+                            <input type="hidden" class="action" autocomplete="off" value="trash">
                         </div>
-                        <div class="suboption-style-2 mb2">
+                        <div class="suboption-style-2 align-center mb2 bulk-action">
+                            <svg class="spinner size12 mr6 none" fill="none" viewBox="0 0 16 16">
+                                <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                            </svg>
                             <span>Untrash</span>
+                            <input type="hidden" class="action" autocomplete="off" value="untrash">
                         </div>
-                        <div class="suboption-style-2 mb2">
+                        <div class="suboption-style-2 align-center mb2 bulk-action">
+                            <svg class="spinner size12 mr6 none" fill="none" viewBox="0 0 16 16">
+                                <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                            </svg>
                             <span>Restore</span>
+                            <input type="hidden" class="action" autocomplete="off" value="restore">
                         </div>
                         <div class="simple-line-separator my4"></div>
-                        <div class="suboption-style-2 mb2">
+                        <div class="suboption-style-2 mb2 red bulk-action">
+                            <svg class="spinner size12 mr6 mt2 none" style="min-width: 12px;" fill="none" viewBox="0 0 16 16">
+                                <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                            </svg>
                             <span class="red">Delete permanently</span>
+                            <input type="hidden" class="action" autocomplete="off" value="destroy">
                         </div>
                     </div>
                 </div>

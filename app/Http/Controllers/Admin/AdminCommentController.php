@@ -74,35 +74,60 @@ class AdminCommentController extends Controller
     public function untrash(Request $request) {
         $this->authorize('untrash', [Comment::class]);
 
-        $comment_id = $request->validate(['comment_id'=>'required|exists:comments,id'])['comment_id'];
-        $comment = Comment::withoutGlobalScopes()->find($comment_id);
+        $comments = $this->validate($request, [
+            'comments'=>'required',
+            'comments.*'=>'exists:comments,id',
+        ], [
+            'comments.required'=>'At least one comment should be selected'
+        ])['comments'];
+        $comments = Comment::withoutGlobalScopes()->findMany($comments);
 
-        $comment->update(['status'=>'pending']);
-        Session::flash('message', 'Comment untrashed and marked as pending for further review.');
+        foreach($comments as $comment) {
+            $comment->update(['status'=>'pending']);
+        }
+
+        $message = $comments->count() . ' ' . ($comments->count() > 1 ? 'comments' : 'comment') . ' untrashed and marked as pending for further review';
+        Session::flash('message', $message);
     }
 
     public function restore(Request $request) {
         $this->authorize('restore', [Comment::class]);
 
-        $comment_id = $request->validate(['comment_id'=>'required|exists:comments,id'])['comment_id'];
-        $comment = Comment::withoutGlobalScopes()->find($comment_id);
+        $comments = $this->validate($request, [
+            'comments'=>'required',
+            'comments.*'=>'exists:comments,id',
+        ], [
+            'comments.required'=>'At least one comment should be selected'
+        ])['comments'];
+        $comments = Comment::withoutGlobalScopes()->findMany($comments);
 
-        $comment->update(['status'=>'published']);
-        $comment->restore();
+        foreach($comments as $comment) {
+            $comment->update(['status'=>'published']);
+            $comment->restore();
+        }
 
-        Session::flash('message', 'Comment has been restored successfully.');
+        $message = $comments->count() . ' ' . ($comments->count() > 1 ? 'comments' : 'comment') . ' restored successfully';
+        Session::flash('message', $message);
     }
 
     public function destroy(Request $request) {
         $this->authorize('destroy', [Comment::class]);
 
-        $comment_id = $request->validate(['comment_id'=>'required|exists:comments,id'])['comment_id'];
-        $comment = Comment::withoutGlobalScopes()->find($comment_id);
-        $post = Post::withoutGlobalScopes()->find($comment->post_id);
+        $comments = $this->validate($request, [
+            'comments'=>'required',
+            'comments.*'=>'exists:comments,id',
+        ], [
+            'comments.required'=>'At least one comment should be selected'
+        ])['comments'];
+        $comments = Comment::withoutGlobalScopes()->findMany($comments);
 
-        $comment->forceDelete();
-        $post->update(['comments_count'=>$post->comments()->count()]);
+        foreach($comments as $comment) {
+            $post = Post::withoutGlobalScopes()->find($comment->post_id);
+            $comment->forceDelete();
+            $post->update(['comments_count'=>$post->comments()->count()]);
+        }
 
-        Session::flash('message', 'Comment has been deleted permanently.');
+        $message = $comments->count() . ' ' . ($comments->count() > 1 ? 'comments' : 'comment') . ' deleted permanently with success';
+        Session::flash('message', $message);
     }
 }
