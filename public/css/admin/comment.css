@@ -110,3 +110,15 @@
     max-width: 240px;
     min-width: 240px;
 }
+
+.comment-bottom-section {
+    background-color: white;
+}
+
+.open-edit-container {
+    display: flex;
+    align-items: center;
+    color: #171717;
+    fill: #171717;
+    cursor: pointer;
+}

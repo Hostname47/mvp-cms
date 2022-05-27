@@ -219,3 +219,14 @@ function check_bulk_selection(comments) {
     }
     return true;
 }
+
+$('.open-edit-container').on('click', function() {
+    $('.comment-edit-box').removeClass('none');
+    $('.comment-to-manage .content').addClass('none');
+});
+
+$('.cancel-comment-update').on('click', function() {
+    $('.comment-edit-box').addClass('none');
+    $('.comment-to-manage .content').removeClass('none');
+    $('.comment-update-content').val($('#comment-content').val());
+});
