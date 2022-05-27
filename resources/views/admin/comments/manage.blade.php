@@ -63,13 +63,13 @@
                     </div>
                 </div>
                 <input type="hidden" id="comment-content" value="{{ $comment->content }}" autocomplete="off">
-                <div class="content">
+                <div class="typical-section-style content">
                     {{ $comment->content }}
                 </div>
                 <div class="comment-edit-box my8 none">
                     <div class="comment-input-container">
                         <!-- error container -->
-                        <div class="informative-message-container align-center relative error-container none">
+                        <div class="informative-message-container align-center relative error-container my8 mx8 none">
                             <div class="informative-message-container-left-stripe imcls-red"></div>
                             <div class="no-margin fs13 error"></div>
                             <div class="close-parent close-informative-message-style">✖</div>

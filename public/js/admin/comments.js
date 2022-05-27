@@ -230,3 +230,74 @@ $('.cancel-comment-update').on('click', function() {
     $('.comment-to-manage .content').removeClass('none');
     $('.comment-update-content').val($('#comment-content').val());
 });
+
+$('.update-comment').on('click', function() {
+    let button = $(this);
+    let spinner = button.find('.spinner');
+    let buttonicon = button.find('.icon-above-spinner');
+    let comment_id = button.find('.comment-id').val();
+    
+    let comment_component = $('.comment-to-manage');
+    let content = comment_component.find('.comment-update-content').val().trim();
+    let original_content = $('#comment-content').val().trim();
+    // Before checking update content input we hide the error container
+    let error_container = $('.comment-edit-box .error-container');
+    error_container.addClass('none');
+
+    // Then if the content input is empty we show the error
+    if(content == '') {
+        console.log(error_container);
+        error_container.find('.error').text('comment content field is required');
+        error_container.removeClass('none');
+        return;
+    }
+
+    /**
+     * If the user open the update section but the content is the same as the original
+     * then we don't have to run patch request
+     */
+    if(content == original_content) {
+        comment_component.find('.cancel-comment-update').trigger('click');
+        return;
+    }
+
+    if(button.hasClass('in-progress')) return;
+    button.addClass('in-progress');
+
+    button.addClass('update-comment-disabled');
+    spinner.addClass('inf-rotate');
+    spinner.removeClass('opacity0');
+    buttonicon.addClass('none');
+
+    $.ajax({
+        type: 'patch',
+        url: '/comments',
+        data: {
+            comment_id: comment_id,
+            content: content
+        },
+        success: function() {
+            $('#comment-content').val(content);
+            $('.comment-to-manage .content').text(content);
+            comment_component.find('.cancel-comment-update').trigger('click');
+            left_bottom_notification('Comment updated successfully.');
+        },
+        error: function(response) {
+            let errorObject = JSON.parse(response.responseText);
+            let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+            if(errorObject.errors) {
+                let errors = errorObject.errors;
+                error = errors[Object.keys(errors)[0]][0];
+            }
+            print_top_message(error, 'error');
+        },
+        complete: function() {
+            button.removeClass('in-progress');
+
+            spinner.addClass('opacity0');
+            spinner.removeClass('inf-rotate');
+            buttonicon.removeClass('none');
+            button.removeClass('update-comment-disabled');
+        }
+    })
+});

@@ -67,8 +67,10 @@ class CommentPolicy
          * we check if the comment owner is the one who is trying to update
          */
         if($user->id != $comment->user_id) {
-            /** Log this authorization break */
-            return $this->deny(__('Unauthorized action. A snapshot of details is sent to admins to review'));
+            if(!$user->has_permission('update-comment')) {
+                /** Log this authorization break */
+                return $this->deny(__('Unauthorized action. A snapshot of details is sent to admins to review'));
+            }
         }
 
         return true;
@@ -123,7 +125,6 @@ class CommentPolicy
 
         return true;
     }
-
     
     public function destroy(User $user) {
         if(!$user->has_permission('destroy-comment')) {
