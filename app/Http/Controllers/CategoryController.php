@@ -144,7 +144,7 @@ class CategoryController extends Controller
     public function manage(Request $request) {
         $category = null;
         $category_hierarchy = [];
-        $categories = [];
+        $categories = collect([]);
         $data = $request->validate(['category'=>'sometimes|exists:categories,slug']);
         if(isset($data['category'])) {
             $category = Category::where('slug', $data['category'])->first();
@@ -160,7 +160,7 @@ class CategoryController extends Controller
         }
         
         if(is_null($category))
-            $categories = Category::whereNull('parent_category_id')->where('slug', '<>', 'uncategorized')->orderBy('priority', 'asc')->get();
+            $categories = Category::withoutGlobalScopes()->tree()->get()->toTree()->sortBy('priority');
 
         return view('admin.categories.manage')
             ->with(compact('categories'))

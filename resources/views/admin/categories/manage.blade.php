@@ -47,13 +47,53 @@
             </div>
             <div class="full-center relative">
                 <div class="global-viewer-content-box full-dimensions y-auto-overflow" style="padding: 14px; min-height: 200px; max-height: 450px">
-                    
-                </div>
-                <div class="loading-box full-center absolute" style="margin-top: -20px">
-                    <svg class="loading-spinner size24 black" fill="none" viewBox="0 0 16 16">
-                        <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
-                        <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
-                    </svg>
+                    <h2 class="fs16 dark no-margin mb4">Categories hierarchy</h2>
+                    <p class="no-margin fs13 dark">The following hierarchy represents the categories and their subcategories. Select a category to set it as the parent of the current category</p>
+                    <style>
+                        .hierarchy-category-wrapper {
+                            padding: 6px;
+                        }
+
+                        .categories-hierarchy-level {
+                            padding: 6px;
+                            background-color: #f4f5f782;
+                            border: 1px solid #dde0e6;
+                            border-radius: 3px;
+                        }
+
+                        .expand-subcategories-button {
+                            height: 16px;
+                            width: 16px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            background-color: #1f2324;
+                            fill: white;
+                            border-radius: 50%;
+                            margin-left: 4px;
+                            padding: 1px;
+                        }
+
+                        .angle-before-subcategories-box {
+                            height: 12px;
+                            width: 12px;
+                            position: absolute;
+                            left: -16px;
+                            top: -5px;
+                        }
+                    </style>
+                    @if($categories->count())
+                        <div class="categories-hierarchy-level mt4">
+                            @foreach($categories as $c)
+                            <x-admin.category.hierarchy.selection.select-one-category :category="$c" inputname="create-category-parent-category" inputclass="create-category-parent-category" />
+                            @endforeach
+                        </div>
+                    @else
+                    <div class="typical-section-style flex align-center mt8">
+                        <svg class="size14 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                        <p class="fs12 dark no-margin">This blog has no categories for the moment. Please create a new one in create category page.</p>
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>
