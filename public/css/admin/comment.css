@@ -85,7 +85,7 @@
     margin-bottom: 4px;
 }
 
-.comment-to-manage .avatar {
+.comment-to-manage .avatar, .report-box .avatar {
     width: 36px;
     height: 36px;
     margin-right: 6px;
@@ -96,4 +96,17 @@
     margin: 8px 0;
     line-height: 1.4;
     font-size: 16px;
+}
+
+.report-box {
+    display: flex;
+    margin: 8px 0;
+    gap: 6px;
+    padding: 10px;
+    border: 1px solid #c6ccd2;
+}
+
+.reporter-box {
+    max-width: 240px;
+    min-width: 240px;
 }

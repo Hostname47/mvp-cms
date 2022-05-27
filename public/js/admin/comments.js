@@ -149,7 +149,7 @@ $('.destroy-comment-button').on('click', function(event) {
         url: '/admin/comments/destroy',
         data: { comments: [comment_id] },
         success: function(response) {
-            location.reload();
+            window.location.href = response;
         },
         error: function(response) {
             comment.removeClass('action-in-progress');

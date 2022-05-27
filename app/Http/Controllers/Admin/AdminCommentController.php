@@ -55,18 +55,20 @@ class AdminCommentController extends Controller
         $comment = null;
         $commenter = null;
         $post = null;
+        $reports = collect([]);
         if($request->has('comment')) {
             $comment = $request->validate(['comment'=>'exists:comments,id'])['comment'];
             $comment = Comment::withoutGlobalScopes()->find($comment);
             if($comment) {
                 $commenter = User::withoutGlobalScopes()->find($comment->user_id);
                 $post = Post::withoutGlobalScopes()->find($comment->post_id);
-                
+                $reports = $comment->reports()->with(['report_user'])->orderBy('created_at', 'desc')->paginate(10);
             }
         }
         return view('admin.comments.manage')
             ->with(compact('comment'))
             ->with(compact('commenter'))
+            ->with(compact('reports'))
             ->with(compact('post'));
     }
 
@@ -148,5 +150,7 @@ class AdminCommentController extends Controller
 
         $message = $comments->count() . ' ' . ($comments->count() > 1 ? 'comments' : 'comment') . ' deleted permanently with success';
         Session::flash('message', $message);
+
+        return route('admin.comments.dashboard');
     }
 }

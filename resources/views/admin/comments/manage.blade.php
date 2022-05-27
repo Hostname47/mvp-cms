@@ -57,7 +57,7 @@
                 <div class="commenter-box flex">
                     <img src="{{ $commenter->avatar(100) }}" class="avatar" alt="">
                     <div>
-                        <span class="block bold">{{ $commenter->fullname }}</span>
+                        <span class="block bold">{{ $commenter->fullname }} - <a href="" class="blue bold no-underline">manage</a></span>
                         <span class="block fs13">{{ $commenter->username }}</span>
                     </div>
                 </div>
@@ -76,6 +76,8 @@
                         <svg class="size14 mr6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M73.59,195.36c-6.65,0-12.82,0-19,0-17.48-.15-30.21-12.5-30.31-30q-.22-49.08,0-98.15c.1-17.81,12.88-30,31.2-30,32.71-.09,65.42,0,98.14,0H209.2c20.13,0,32.25,12.15,32.27,32.28q.06,47,0,94c0,19.85-12.2,31.9-32.12,31.92-23,0-46-.07-69,.1a12.43,12.43,0,0,0-7,2.44c-14.14,11-28.13,22.1-42.1,33.29-3.73,3-7.53,4.94-12.25,2.53s-5.54-6.56-5.47-11.35C73.69,213.61,73.59,204.82,73.59,195.36Zm19.68,9.1c2.17-1.64,3.48-2.58,4.76-3.59,8.45-6.71,17-13.31,25.28-20.24a20.56,20.56,0,0,1,14.27-5.06c23.91.24,47.82.13,71.73.09,8.82,0,12.45-3.62,12.46-12.27V69c0-8.34-3.46-11.84-11.82-11.84H55.86C47.48,57.13,44,60.62,44,68.89v94.88c0,8.09,3.72,11.82,11.89,11.89,8.64.07,17.28,0,25.92,0,8.08.07,11.42,3.46,11.48,11.64,0,5.37,0,10.7,0,17.16Z"/></svg>
                         <span class="bold fs11">{{ $post->comments_count }} replies</span>
                     </div>
+                    <span class="mx4 ligh-gray fs12 unselectable">〡</span>
+                    <div class="fs13">status : <span class="bold {{ $comment->scolor }}">{{ $comment->status }}</span></div>
                 </div>
             </div>
         </div>
@@ -83,10 +85,91 @@
         <div class="flex dark mt8 ml8">
             <svg class="size12" style="margin-right: 14px; min-width: 12px;" fill="#d2d2d2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 284.93 284.93"><polygon points="281.33 281.49 281.33 246.99 38.25 246.99 38.25 4.75 3.75 4.75 3.75 281.5 38.25 281.5 38.25 281.49 281.33 281.49"></polygon></svg>
             <span class="bold mr6 no-wrap">post :</span>
-            <a href="{{ route('edit.post', ['post'=>$post->id]) }}" class="blue no-underline bold">{{ $post->html_title }}</a>
+            <a href="{{ $post->link }}" target="_blank" class="blue no-underline bold">{{ $post->html_title }}</a>
         </div>
-
         <div class="simple-line-separator my12"></div>
+        <!-- actions -->
+        <div class="align-center">
+            <span class="bold dark mr8 no-wrap">actions :</span>
+            @if($comment->trashed())
+                @if($comment->status == 'pending')
+                <div class="fs12 green pointer align-center restore-comment-button">
+                    <svg class="spinner size12 mr4 none" fill="none" viewBox="0 0 16 16">
+                        <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                        <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                    </svg>
+                    <span>Restore</span>
+                    <input type="hidden" class="comment-id" value="{{ $comment->id }}" autocomplete="off">
+                </div>
+                @else
+                <div class="fs12 dark-green pointer align-center untrash-comment-button">
+                    <svg class="spinner size12 mr4 none" fill="none" viewBox="0 0 16 16">
+                        <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                        <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                    </svg>
+                    <span>Untrash</span>
+                    <input type="hidden" class="comment-id" value="{{ $comment->id }}" autocomplete="off">
+                </div>
+                @endif
+                <span class="fs11 dark unselectable mx8">〡</span>
+                <div class="fs12 red pointer align-center destroy-comment-button">
+                    <svg class="spinner size12 mr4 none" fill="none" viewBox="0 0 16 16">
+                        <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                        <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                    </svg>
+                    <span>Delete permanently</span>
+                    <input type="hidden" class="comment-id" value="{{ $comment->id }}" autocomplete="off">
+                </div>
+            @else
+            <!-- view comment -->
+            <a href="{{ $comment->link }}" target="_blank" class="dark-blue fs12 no-underline">View</a>
+            <span class="fs11 dark unselectable mx8">〡</span>
+            <!-- trash a comment -->
+            <div class="fs12 red pointer align-center trash-comment-button">
+                <svg class="spinner size12 mr4 none" fill="none" viewBox="0 0 16 16">
+                    <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                    <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                </svg>
+                <span>Trash</span>
+                <input type="hidden" class="comment-id" value="{{ $comment->id }}" autocomplete="off">
+            </div>
+            @endif
+        </div>
+        <!-- reports -->
+        <div class="my12">
+            <span class="bold dark">reports - {{ $reports->total() }}</span>
+            @if($reports->count())
+                @foreach($reports as $report)
+                <div class="report-box">
+                    <div class="flex reporter-box">
+                        <span class="bold no-wrap mr6">reporter :</span>
+                        <img src="{{ $report->report_user->avatar(100) }}" class="avatar" alt="">
+                        <div>
+                            <span class="block bold">{{ $report->report_user->fullname }}</span>
+                            <span class="block fs13">{{ $report->report_user->username }}</span>
+                        </div>
+                    </div>
+                    <span class="mx4 light-gray fs12 unselectable">〡</span>
+                    <div>
+                        <div class="fs11 light-gray"><span class="bold mr6">reported : </span> {{ $report->date }}</div>
+                        <div class="mt4"><span class="bold mr6">type : </span> {{ $report->htype }}</div>
+                        @if($report->type == 'moderator-intervention')
+                        <div class="flex mt8">
+                            <svg class="size10 ml8 mr8" style="min-width: 10px;" fill="#575757" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 284.93 284.93"><polygon points="281.33 281.49 281.33 246.99 38.25 246.99 38.25 4.75 3.75 4.75 3.75 281.5 38.25 281.5 38.25 281.49 281.33 281.49"></polygon></svg>
+                            <span class="bold no-wrap mr6">message : </span> {{ $report->body }}
+                        </div>
+                        @endif
+                    </div>
+
+                </div>
+                @endforeach
+            @else
+            <div class="typical-section-style align-center my12">
+                <svg class="size14 mr4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M433.73,49.92,178.23,305.37,78.91,206.08.82,284.17,178.23,461.56,511.82,128Z" style="fill:#52c563"/></svg>
+                <span class="green fs14 bold">clean comment with no reports</span>
+            </div>
+            @endif
+        </div>
         @endif
     </div>
 </main>
