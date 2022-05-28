@@ -266,9 +266,10 @@ $('#set-category-as-root').on('click', function() {
 
     $.ajax({
         type: 'patch',
-        url: '/admin/category/set-as-root',
+        url: '/admin/category',
         data: {
-            category_id: button.find('.category-id').val(),
+            category_id: $('#category-id').val(),
+            parent_category_id: null,
         },
         success: function(response) {
             location.reload();

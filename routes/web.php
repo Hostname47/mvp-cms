@@ -12,7 +12,7 @@ use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Middleware\AccountStatus;
 
 Route::get('/test', function() {
-    dd(\App\Models\Post::find(8)->thumbnail);
+    dd(\App\Models\Category::find(2)->descendantsAndSelf()->pluck('id'));
 });
 
 Route::middleware(['able-to-access-admin-section'])->group(function() {
@@ -57,7 +57,6 @@ Route::middleware(['able-to-access-admin-section'])->group(function() {
     Route::patch('/admin/category', [CategoryController::class, 'update']);
     Route::patch('/categories/priorities', [CategoryController::class, 'update_categories_priorities']);
     Route::patch('/admin/category/status', [CategoryController::class, 'update_status']);
-    Route::patch('/admin/category/set-as-root', [CategoryController::class, 'set_as_root']);
     Route::get('/admin/categories/manage', [CategoryController::class, 'manage'])->name('category.manage');
     Route::delete('/admin/categories', [CategoryController::class, 'delete']);
 

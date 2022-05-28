@@ -44,7 +44,7 @@ class CategoryController extends Controller
             'slug'=>"sometimes|min:2|unique:categories,slug,$category_id|max:1000",
             'description'=>'sometimes|min:2|max:4000',
             'priority'=>'sometimes|numeric',
-            'parent_category_id'=>'sometimes|exists:categories,id',
+            'parent_category_id'=>'sometimes|nullable|exists:categories,id',
         ]);
         
         if(isset($data['parent_category_id'])) {
@@ -115,16 +115,21 @@ class CategoryController extends Controller
             abort(422, 'This category could not be deleted');
 
         /**
-         * Before delete the category we have to check the posts that have only this category and
-         * set them as uncategorized. Also if the after_hook require to delete the subcategories as well
-         * instead of set them as root (no parents); then we have to perform the same operation for
-         * each descendant category.
+         * When a category get deleted, we have to handle a special case regarding posts.
+         * 1. If the admin select to delete only the current category, then we have top loop through
+         * every post within the category, and see if the post has only the deleted category; If so
+         * then we have to set it under uncategorized.
+         * 2. If the admin decide to delete the category and all its subcategories, then we have to
+         * handle the case for the category and every subcategory; We check if every post has one category
+         * outside the self and descendent because all subcategories will be deleted in cascading;
+         * If the post belong only to the deleted category or one of its subcategories (or both or many)
+         * then we have to put it under uncategorized
          */
         $uncategorized = Category::where('slug', 'uncategorized')->first();
-        
+
         switch($data['type']) {
             case 'delete-category-only':
-                $category->posts()->chunk(100, function ($posts) use ($uncategorized) { // Avoid memory overflow
+                $category->posts()->chunk(40, function ($posts) use ($uncategorized) { // Avoid memory overflow
                     foreach ($posts as $post) {
                         if($post->categories()->count() == 1)
                             $post->categories()->attach($uncategorized->id);
@@ -133,10 +138,11 @@ class CategoryController extends Controller
                 $category->delete();
                 break;
             case 'delete-category-and-subcategories':
+                $categories = $category->descendantsAndSelf()->pluck('id');
                 foreach($category->descendantsAndSelf as $subcategory) {
-                    $subcategory->posts()->chunk(40, function ($posts) use ($uncategorized) {
+                    $subcategory->posts()->chunk(40, function ($posts) use ($uncategorized, $categories) {
                         foreach ($posts as $post) {
-                            if($post->categories()->count() == 1) {
+                            if($post->categories()->whereNotIn('categories.id', $categories)->count() == 0) {
                                 $post->categories()->attach($uncategorized->id);
                             }
                         }
@@ -173,13 +179,6 @@ class CategoryController extends Controller
             ->with(compact('categories'))
             ->with(compact('category'))
             ->with(compact('category_hierarchy'));
-    }
-
-    public function set_as_root(Request $request) {
-        $category_id = $request->validate(['category_id'=>'required|exists:categories,id'])['category_id'];
-        $category = Category::find($category_id);
-        $category->update(['parent_category_id'=>null]);
-        Session::flash('message', '"'.$category->title.'" category is now a root category.');
     }
 
     public function update_categories_priorities(Request $request) {

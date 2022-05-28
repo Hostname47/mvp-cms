@@ -324,8 +324,9 @@ class CategoryTest extends TestCase
         $parent = Category::create(['title'=>'p1','title_meta'=>'p1','slug'=>'p1','description'=>'p1', 'priority'=>6]);
         $category = Category::create(['title'=>'cool category','title_meta'=>'cool category','slug'=>'cool-category','description'=>'cool description', 'priority'=>6, 'parent_category_id'=>$parent->id]);
         $this->assertEquals($parent->id, $category->parent_category_id);
-        $response = $this->patch('/admin/category/set-as-root', [
+        $response = $this->patch('/admin/category', [
             'category_id'=>$category->id,
+            'parent_category_id'=>null
         ]);
         $this->assertEquals($category->refresh()->parent_category_id, null);
     }
@@ -381,17 +382,52 @@ class CategoryTest extends TestCase
     }
 
     /** @test */
-    public function delete_a_category_will_turn_posts_with_only_this_category_to_uncategorized() {
+    public function orphaned_posts_after_deleting_only_category_will_be_under_uncategorized() {
+        $this->withoutExceptionHandling();
+        /** Read docs in delete controller method */
+        $uncategorized = $this->uncategorized;
+        // categories
+        $category0 = Category::create(['title'=>'c0','title_meta'=>'c0','slug'=>'c0','description'=>'c0','priority'=>1]);
+        $category1 = Category::create(['title'=>'c1','title_meta'=>'c1','slug'=>'c1','description'=>'c1','priority'=>1]);
+        // Create a post in each category
+        $this->post('/admin/posts', [
+            'title'=>'p0','title_meta'=>'p0','slug'=>'p0','content'=>'content','categories'=>[$category0->id]
+        ]);
+        $this->post('/admin/posts', [
+            'title'=>'p1','title_meta'=>'p1','slug'=>'p1','content'=>'content','categories'=>[$category0->id]
+        ]);
+        $this->post('/admin/posts', [
+            'title'=>'p2','title_meta'=>'p2','slug'=>'p2','content'=>'content','categories'=>[$category0->id, $category1->id]
+        ]);
+
+        $post2 = Post::where('slug', 'p2')->first();
+        
+        $this->assertCount(0, $uncategorized->posts);
+        $this->delete('/admin/categories', [
+            'category_id'=>$category0->id,
+            'type'=>'delete-category-and-subcategories'
+        ]);
+        $this->assertCount(2, $uncategorized->refresh()->posts);
+        $this->assertCount(1, $post2->categories);
+        /**
+         * Notice that p2 post will not be under uncategorized because it has other category ($category1) which is 
+         * not a descendent of the deleted category ($category0).
+         */
+    }
+
+    /** @test */
+    public function orphaned_posts_after_deleting_category_and_subcategories_will_be_under_uncategorized() {
+        /** Read docs in delete controller method */
         $uncategorized = $this->uncategorized;
         // categories
         $category0 = Category::create(['title'=>'c0','title_meta'=>'c0','slug'=>'c0','description'=>'c0','priority'=>1]);
         $category1 = Category::create(['title'=>'c1','title_meta'=>'c1','slug'=>'c1','description'=>'c1','parent_category_id'=>$category0->id]);
         $category2 = Category::create(['title'=>'c2','title_meta'=>'c2','slug'=>'c2','description'=>'c2','parent_category_id'=>$category1->id]);
         $category3 = Category::create(['title'=>'c3','title_meta'=>'c3','slug'=>'c3','description'=>'c3','parent_category_id'=>$category2->id]);
-        $other_category = Category::create(['title'=>'c3','title_meta'=>'c3','slug'=>'c3','description'=>'c3']);
+        $category4 = Category::create(['title'=>'c4','title_meta'=>'c4','slug'=>'c4','description'=>'c4']);
         // Create a post in each category
         $this->post('/admin/posts', [
-            'title'=>'p0','title_meta'=>'p0','slug'=>'p0','content'=>'content','categories'=>[$category0->id]
+            'title'=>'p0','title_meta'=>'p0','slug'=>'p0','content'=>'content','categories'=>[$category0->id, $category1->id]
         ]);
         $this->post('/admin/posts', [
             'title'=>'p1','title_meta'=>'p1','slug'=>'p1','content'=>'content','categories'=>[$category1->id]
@@ -403,18 +439,20 @@ class CategoryTest extends TestCase
             'title'=>'p3','title_meta'=>'p3','slug'=>'p3','content'=>'content','categories'=>[$category3->id]
         ]);
         $this->post('/admin/posts', [
-            'title'=>'p4','title_meta'=>'p4','slug'=>'p4','content'=>'content','categories'=>[$category3->id, $other_category->id]
+            'title'=>'p4','title_meta'=>'p4','slug'=>'p4','content'=>'content','categories'=>[$category3->id, $category4->id]
         ]);
         
+        /**
+         * Notice that p0 has 2 categories but it will be uncategrized because when category0 is deleted,
+         * category1 will be deleted in cascading and the p0 will not have any category after deletion.
+         * p4 in the other hand has a category that is outside self-and-subcategories area; means it will
+         * not be under uncategorized category
+         */
         $this->assertEquals(0, $uncategorized->posts->count());
         $this->delete('/admin/categories', [
             'category_id'=>$category0->id,
             'type'=>'delete-category-and-subcategories'
         ]);
         $this->assertEquals(4, $uncategorized->refresh()->posts->count());
-        /**
-         * Notice that p4 post will not be under uncategorized because it has other category ($other_category) which is 
-         * not a descendent of the deleted category ($c0).
-         */
     }
 }
