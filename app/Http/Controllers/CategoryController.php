@@ -17,6 +17,8 @@ class CategoryController extends Controller
     }
 
     public function store(Request $request) {
+        $this->authorize('store', [Category::class]);
+
         $data = $request->validate([
             'title'=>'required|unique:categories|max:600',
             'title_meta'=>'required|unique:categories|max:600',
@@ -33,6 +35,8 @@ class CategoryController extends Controller
     }
 
     public function update(Request $request) {
+        $this->authorize('update', [Category::class]);
+
         $category_id = $request->validate(['category_id'=>'required|exists:categories,id'])['category_id'];
         $data = $request->validate([
             'title'=>"sometimes|unique:categories,title,$category_id|min:2|max:600",
@@ -65,6 +69,8 @@ class CategoryController extends Controller
     }
 
     public function update_status(Request $request) {
+        $this->authorize('update', [Category::class]);
+
         $data = $request->validate([
             'category_id'=>'required|exists:categories,id',
             'status'=>['required', Rule::in(['awaiting review', 'hidden', 'live'])]
@@ -96,6 +102,8 @@ class CategoryController extends Controller
     }
 
     public function delete(Request $request) {
+        $this->authorize('delete', [Category::class]);
+
         $data = $request->validate([
             'category_id'=>'required|exists:categories,id',
             'type'=>['required', Rule::in(['delete-category-only', 'delete-category-and-subcategories'])]
@@ -175,6 +183,8 @@ class CategoryController extends Controller
     }
 
     public function update_categories_priorities(Request $request) {
+        $this->authorize('update', [Category::class]);
+
         $data = $request->validate([
             'categories_ids'=>'required',
             'categories_ids.*'=>'exists:categories,id',

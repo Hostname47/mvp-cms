@@ -26,12 +26,18 @@ class CategoryTest extends TestCase
         $permissions = [
             'access-admin-section' => Permission::factory()->create(['title'=>'aas', 'slug'=>'access-admin-section']),
             'create-post' => Permission::factory()->create(['title'=>'cp', 'slug'=>'create-post']),
+            'create-category' => Permission::factory()->create(['title'=>'cc', 'slug'=>'create-category']),
+            'update-category' => Permission::factory()->create(['title'=>'uc', 'slug'=>'update-category']),
+            'delete-category' => Permission::factory()->create(['title'=>'dc', 'slug'=>'delete-category']),
         ];
 
         $user = $this->authuser = User::factory()->create();
         $this->actingAs($user);
         $user->attach_permission('access-admin-section');
         $user->attach_permission('create-post');
+        $user->attach_permission('create-category');
+        $user->attach_permission('update-category');
+        $user->attach_permission('delete-category');
     }
 
     /** @test */
@@ -44,6 +50,24 @@ class CategoryTest extends TestCase
             'description'=>'cool description'
         ]);
         $this->assertCount(2, Category::all());
+    }
+
+    /** @test */
+    public function create_a_category_require_permission() {
+        $this->authuser->detach_permission('create-category');
+        $this->post('/admin/categories', [
+            'title'=>'cool category',
+            'title_meta'=>'cool category',
+            'slug'=>'cool-category',
+            'description'=>'cool description'
+        ])->assertForbidden();
+        $this->authuser->attach_permission('create-category');
+        $this->post('/admin/categories', [
+            'title'=>'cool category',
+            'title_meta'=>'cool category',
+            'slug'=>'cool-category',
+            'description'=>'cool description'
+        ])->assertOk();
     }
 
     /** @test */
@@ -133,6 +157,19 @@ class CategoryTest extends TestCase
     }
 
     /** @test */
+    public function changing_categories_priorities_requires_permission() {
+        $category1 = Category::create(['title'=>'category 1','title_meta'=>'category 1','slug'=>'category 1','description'=>'category 1 description','priority'=>1]);
+        $category2 = Category::create(['title'=>'category 2','title_meta'=>'category 2','slug'=>'category 2','description'=>'category 2 description','priority'=>2]);
+
+        $this->authuser->detach_permission('update-category');
+
+        $this->patch('/categories/priorities', [
+            'categories_ids'=>[$category1->id, $category2->id],
+            'categories_priorities'=>[2, 1]
+        ])->assertForbidden();
+    }
+
+    /** @test */
     public function categories_priorities_update_validation() {
         // priority should be numeric and categories ids should exist
         $this->patch('/categories/priorities', [
@@ -172,6 +209,20 @@ class CategoryTest extends TestCase
     }
 
     /** @test */
+    public function update_a_category_requires_permission() {
+        $this->authuser->detach_permission('update-category');
+        $category = Category::create(['title'=>'cool category','title_meta'=>'cool category','slug'=>'cool-category','description'=>'cool description', 'priority'=>6]);
+        $this->patch('/admin/category', [
+            'category_id'=>$category->id,
+            'title'=>'new category',
+            'title_meta'=>'new category',
+            'slug'=>'new-category',
+            'description'=>'new description',
+            'priority'=>9,
+        ])->assertForbidden();
+    }
+
+    /** @test */
     public function update_a_category_validation() {
         $category = Category::create(['title'=>'cool category','title_meta'=>'cool category','slug'=>'cool-category','description'=>'cool description', 'priority'=>6]);
         $this->patch('/admin/category', [
@@ -205,6 +256,17 @@ class CategoryTest extends TestCase
             'status'=>'live'
         ]);
         $this->assertEquals('live', $category->refresh()->status);
+    }
+
+    /** @test */
+    public function updating_category_status_requires_permission() {
+        $category = Category::create(['title'=>'cool category','title_meta'=>'cool category','slug'=>'cool-category','description'=>'cool description', 'status'=>'awaiting review', 'priority'=>6]);
+        $this->authuser->detach_permission('update-category');
+
+        $this->patch('/admin/category/status', [
+            'category_id'=>$category->id,
+            'status'=>'live'
+        ])->assertForbidden();
     }
 
     /** @test */
@@ -280,6 +342,17 @@ class CategoryTest extends TestCase
     }
 
     /** @test */
+    public function delete_a_category_requires_permission() {
+        $category = Category::create(['title'=>'cool category','title_meta'=>'cool category','slug'=>'cool-category','description'=>'cool description', 'priority'=>6]);
+        $this->authuser->detach_permission('delete-category');
+        
+        $this->delete('/admin/categories', [
+            'category_id'=>$category->id,
+            'type'=>'delete-category-only'
+        ])->assertForbidden();
+    }
+
+    /** @test */
     public function delete_a_category_will_make_all_its_subcategories_roots() {
         $category0 = Category::create(['title'=>'c0','title_meta'=>'c0','slug'=>'c0','description'=>'c0', 'priority'=>1]);
         $category1 = Category::create(['title'=>'c1','title_meta'=>'c1','slug'=>'c1','description'=>'c1', 'priority'=>2, 'parent_category_id'=>$category0->id]);
@@ -309,7 +382,6 @@ class CategoryTest extends TestCase
 
     /** @test */
     public function delete_a_category_will_turn_posts_with_only_this_category_to_uncategorized() {
-        $this->withoutExceptionHandling();
         $uncategorized = $this->uncategorized;
         // categories
         $category0 = Category::create(['title'=>'c0','title_meta'=>'c0','slug'=>'c0','description'=>'c0','priority'=>1]);
