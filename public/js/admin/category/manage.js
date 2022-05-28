@@ -1,12 +1,14 @@
 $('#sort-categories-components-by-priority').on('click', function() {
-    $('#categories-to-manager-box .categories-hierarchy-level').each(function() {
+    $('#categories-to-manage-section .categories-hierarchy-level').each(function() {
         // First check if admin enter an invalide priority value by mistake (character or empty string)
         let invalid_priority = false;
-        let categories = $(this).find('.category-box').not($(this).find('.subcategories-box .category-box'));
+        console.log($(this));
+        let categories = $(this).children('.category-box');
+
+        console.log(categories);
         categories.each(function() {
             if(!parseInt($(this).find('.category-priority').first().val())) {
                 invalid_priority = true;
-                console.log($(this).find('.category-priority').first().val());
                 return false;
             }
         });
@@ -38,7 +40,7 @@ $('#sort-categories-components-by-priority').on('click', function() {
 
 let update_categories_priorities_lock = true;
 $('#update-categories-priorities').on('click', function() {
-    let categories = $('#categories-to-manager-box .category-box');
+    let categories = $('#categories-to-manage-section .category-box');
     let invalid_priority = false;
     categories.each(function() {
         if(!parseInt($(this).find('.category-priority').first().val())) {
@@ -186,10 +188,6 @@ $('.update-category-status').on('click', function() {
 });
 
 $('#open-category-parent-confirmation-dialog').on('click', function() {
-    if(!category_parent_selection_opened) {
-        print_top_message('Please open selection viewer and select the new parent category first', 'error');
-        return;
-    }
     if($('.hierarchy-category-id:checked').length == 0) {
         print_top_message('Please chose a parent category from selection viewer before confirming the change', 'error');
         return;

@@ -93,7 +93,6 @@ $('.is-sub-category-toggle-button').on('click', function() {
 });
 
 let open_category_parent_lock = true;
-let category_parent_selection_opened = false;
 $('.open-select-one-category-viewer').on('click', function() {
     if($(this).hasClass('action-denied')) return;
 

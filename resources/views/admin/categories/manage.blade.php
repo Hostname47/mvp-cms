@@ -49,40 +49,6 @@
                 <div class="global-viewer-content-box full-dimensions y-auto-overflow" style="padding: 14px; min-height: 200px; max-height: 450px">
                     <h2 class="fs16 dark no-margin mb4">Categories hierarchy</h2>
                     <p class="no-margin fs13 dark">The following hierarchy represents the categories and their subcategories. Select a category to set it as the parent of the current category</p>
-                    <style>
-                        .hierarchy-category-wrapper {
-                            padding: 6px;
-                        }
-
-                        .categories-hierarchy-level {
-                            padding: 6px;
-                            background-color: #f4f5f782;
-                            border: 1px solid #dde0e6;
-                            border-radius: 3px;
-                        }
-
-                        .expand-subcategories-button {
-                            height: 16px;
-                            width: 16px;
-                            min-width: 16px;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            background-color: #1f2324;
-                            fill: white;
-                            border-radius: 50%;
-                            margin-left: 4px;
-                            padding: 1px;
-                        }
-
-                        .angle-before-subcategories-box {
-                            height: 12px;
-                            width: 12px;
-                            position: absolute;
-                            left: -16px;
-                            top: -5px;
-                        }
-                    </style>
                     @if($categories->count())
                         <div class="categories-hierarchy-level mt4">
                             @foreach($categories as $c)
@@ -183,7 +149,7 @@
                     </div>
                 </div>
                 @if($categories->count())
-                <div id="categories-to-manager-box" class="categories-hierarchy-level">
+                <div class="categories-hierarchy-level">
                     @foreach($categories as $category)
                     <x-admin.category.hierarchy.selection.select-by-click-category :category="$category"/>
                     @endforeach
@@ -396,7 +362,7 @@
                     </div>
                     <div style="margin-left: 12px;">
                         <!-- render hierarchy -->
-                        <p class="no-margin fs13 dark my4">The following diagram show the ategory ancestors as well as its direct subcategories.</p>                      
+                        <p class="no-margin fs13 dark my4">The following diagram show the category ancestors as well as its direct subcategories.</p>                      
                         @foreach($category_hierarchy as $ch)
                             <div class="flex hierarchy-item" style="margin-left: calc({{ $loop->index }}*12px)">
                                 @if(!$loop->first)

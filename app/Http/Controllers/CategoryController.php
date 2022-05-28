@@ -159,8 +159,7 @@ class CategoryController extends Controller
             }
         }
         
-        if(is_null($category))
-            $categories = Category::withoutGlobalScopes()->tree()->get()->toTree()->sortBy('priority');
+        $categories = Category::withoutGlobalScopes()->tree()->get()->toTree()->sortBy('priority');
 
         return view('admin.categories.manage')
             ->with(compact('categories'))
