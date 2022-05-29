@@ -78,7 +78,7 @@ $('#create-tag-button').on('click', function() {
             green_message_container.addClass('none');
             error_container.find('.message-text').text(error);
             error_container.removeClass('none');
-            print_top_message(error, 'error');
+            scroll_to_element('tag-create-error-container');
         },
         complete: function(response) {
             create_tag_lock = true;

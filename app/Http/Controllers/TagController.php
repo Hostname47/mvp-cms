@@ -27,6 +27,8 @@ class TagController extends Controller
             ->with(compact('tags'));
     }
     public function store(Request $request) {
+        $this->authorize('store', [Tag::class]);
+
         $data = $this->validate($request, [
             'title'=>'required|unique:tags,title|max:600',
             'title_meta'=>'required|unique:tags,title_meta|max:600',
@@ -55,6 +57,8 @@ class TagController extends Controller
         return Tag::find($tag_id);
     }
     public function update(Request $request) {
+        $this->authorize('update', [Tag::class]);
+
         $tag_id = $request->validate(['tag_id'=>'required|exists:tags,id'])['tag_id'];
         $data = $request->validate([
             'title'=>"sometimes|unique:tags,title,$tag_id|min:2|max:600",
@@ -67,6 +71,8 @@ class TagController extends Controller
         $tag->update($data);
     }
     public function delete(Request $request) {
+        $this->authorize('delete', [Tag::class]);
+
         $tag_id = $request->validate(['tag_id'=>'required|exists:tags,id'])['tag_id'];
         Tag::find($tag_id)->delete();
     }
@@ -92,8 +98,7 @@ class TagController extends Controller
             ->with(compact('k'));
     }
 
-    public function view($slug) {
-        $tag = Tag::where('slug', $slug)->first();
+    public function view(Tag $tag) {
         $posts = collect([]);
         $perpage = 10;
 
@@ -102,7 +107,6 @@ class TagController extends Controller
 
         return view('tags.view')
             ->with(compact('tag'))
-            ->with(compact('slug'))
             ->with(compact('posts'));
     }
 }

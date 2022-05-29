@@ -99,6 +99,32 @@
     margin: 12px 0 10px 0;
 }
 
+#no-posts-found-box {
+    padding: 16px;
+    margin: 30px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+#no-posts-found-box .bold-text {
+    font-size: 16px;
+    color: #17181A;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+#no-posts-found-box .desc-text {
+    text-align: center;
+    font-size: 13px;
+    color: #27292c;
+    margin-bottom: 4px;
+}
+#no-posts-found-box .icon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 8px;
+}
+
 @media only screen and (max-width: 870px) {
     #tags-main {
         width: 100%;

@@ -187,7 +187,7 @@
                                 <span class="dark fs13">Description</span>
                             </th>
                             <th class="tags-table-count-column">
-                                <span class="dark fs13">Count</span>
+                                <span class="dark fs13">Posts</span>
                             </th>
                         </tr>
                     </thead>
@@ -219,7 +219,7 @@
                                         <input type="hidden" class="tag-id" value="{{ $tag->id }}" autocomplete="off">
                                     </span>
                                     <span class="fs11 mx8 dark">〡</span>
-                                    <a href="" class="fs12 dark-blue no-underline tag-link">
+                                    <a href="{{ route('tag.view', ['tag'=>$tag->slug]) }}" target="_blank" class="fs12 dark-blue no-underline tag-link">
                                         <span>View</span>
                                     </a>
                                 </div>
@@ -234,7 +234,7 @@
                             </td>
                             <!-- tags posts count -->
                             <td class="tags-table-count-column">
-                                <a href="" class="dark-blue bold no-underline tag-link tag-count">0</a>
+                                <a href="" class="dark-blue bold no-underline tag-link tag-count">{{ $tag->posts()->withoutGlobalScopes()->count() }}</a>
                             </td>
                         </tr>
                         @endforeach
@@ -270,7 +270,7 @@
                                         <input type="hidden" class="tag-id" value="" autocomplete="off">
                                     </span>
                                     <span class="fs11 mx8 dark">〡</span>
-                                    <a href="" class="fs12 dark-blue no-underline tag-link">
+                                    <a href="" target="_blank" class="fs12 dark-blue no-underline tag-link">
                                         <span>View</span>
                                     </a>
                                 </div>

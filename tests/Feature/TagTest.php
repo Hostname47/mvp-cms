@@ -28,12 +28,18 @@ class TagTest extends TestCase
         $permissions = [
             'access-admin-section' => Permission::factory()->create(['title'=>'aas', 'slug'=>'access-admin-section']),
             'create-post' => Permission::factory()->create(['title'=>'cp', 'slug'=>'create-post']),
+            'create-tag' => Permission::factory()->create(['title'=>'ct', 'slug'=>'create-tag']),
+            'update-tag' => Permission::factory()->create(['title'=>'ut', 'slug'=>'update-tag']),
+            'delete-tag' => Permission::factory()->create(['title'=>'dt', 'slug'=>'delete-tag']),
         ];
 
         $user = $this->authuser = User::factory()->create();
         $this->actingAs($user);
         $user->attach_permission('access-admin-section');
         $user->attach_permission('create-post');
+        $user->attach_permission('create-tag');
+        $user->attach_permission('update-tag');
+        $user->attach_permission('delete-tag');
     }
 
     /** @test */
@@ -47,6 +53,17 @@ class TagTest extends TestCase
             'description'=>'websockets desc'
         ]);
         $this->assertCount(1, Tag::all());
+    }
+
+    /** @test */
+    public function create_a_tag_requires_permission() {
+        $this->authuser->detach_permission('create-tag');
+        $this->post('/admin/tags', [
+            'title'=>'Websockets',
+            'title_meta'=>'Websockets',
+            'slug'=>'websockets',
+            'description'=>'websockets desc'
+        ])->assertForbidden();
     }
 
     /** @test */
@@ -91,6 +108,20 @@ class TagTest extends TestCase
     }
 
     /** @test */
+    public function update_a_tag_requires_permission() {
+        $tag = Tag::create(['title'=>'foo', 'title_meta'=>'foo', 'slug'=>'f-o-o']);
+        $this->authuser->detach_permission('update-tag');
+
+        $this->patch('/admin/tags', [
+            'tag_id'=>$tag->id,
+            'title'=>'boo',
+            'title_meta'=>'boo',
+            'slug'=>'b-o-o',
+            'description'=>'boo description'
+        ])->assertForbidden();
+    }
+
+    /** @test */
     public function update_a_tag_validation() {
         $tag1 = Tag::create(['title'=>'foo', 'title_meta'=>'foo', 'slug'=>'f-o-o']);
         $tag2 = Tag::create(['title'=>'boo', 'title_meta'=>'boo', 'slug'=>'b-o-o']);
@@ -115,6 +146,14 @@ class TagTest extends TestCase
         $this->assertCount(1, Tag::all());
         $this->delete('/admin/tags', ['tag_id'=>$tag->id]);
         $this->assertCount(0, Tag::all());
+    }
+
+    /** @test */
+    public function delete_a_tag_requires_permission() {
+        $tag = Tag::create(['title'=>'foo', 'title_meta'=>'foo', 'slug'=>'f-o-o']);
+        $this->authuser->detach_permission('delete-tag');
+
+        $this->delete('/admin/tags', ['tag_id'=>$tag->id])->assertForbidden();
     }
 
     /** @test */
