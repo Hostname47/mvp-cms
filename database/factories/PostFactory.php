@@ -19,6 +19,8 @@ class PostFactory extends Factory
             'slug' => $this->faker->slug(),
             'summary' => $this->faker->text(),
             'content' => $this->faker->text(),
+            'visibility' => 'public',
+            'status' => 'published'
         ];
     }
 }

@@ -234,7 +234,7 @@
                             </td>
                             <!-- tags posts count -->
                             <td class="tags-table-count-column">
-                                <a href="" class="dark-blue bold no-underline tag-link tag-count">{{ $tag->posts()->withoutGlobalScopes()->count() }}</a>
+                                <a href="{{ route('tag.view', ['tag'=>$tag->slug]) }}" target="_blank" class="dark-blue bold no-underline tag-link tag-count">{{ $tag->posts()->withoutGlobalScopes()->count() }}</a>
                             </td>
                         </tr>
                         @endforeach

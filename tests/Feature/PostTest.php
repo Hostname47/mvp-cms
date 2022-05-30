@@ -15,6 +15,7 @@ class PostTest extends TestCase
     use DatabaseTransactions;
 
     protected $authuser;
+    protected $uncategorized;
 
     public function setUp(): void {
         parent::setUp();
@@ -23,9 +24,10 @@ class PostTest extends TestCase
          * If an admin does not specify a category for the post, then uncategorized category
          * will be attached to the post as a default category.
          */
-        Category::factory()->create([
+        $this->uncategorized = Category::factory()->create([
             'title'=>'Uncategorized',
-            'slug'=>'uncategorized'
+            'slug'=>'uncategorized',
+            'status'=>'live'
         ]);
 
         $user = $this->authuser = User::factory()->create();
@@ -654,6 +656,7 @@ class PostTest extends TestCase
     public function save_a_post() {
         $user = $this->authuser;
         $post = Post::create(['title' => 'foo','title_meta' => 'foo','slug' => 'foo','summary' => 'foo','content' => 'foo', 'status'=> 'published']);
+        $post->categories()->attach($this->uncategorized->id);
 
         $this->assertCount(0, $user->posts_saved);
         $this->post('/posts/save', ['post_id' => $post->id]);
@@ -665,7 +668,8 @@ class PostTest extends TestCase
     public function unsave_a_post() {
         $user = $this->authuser;
         $post = Post::create(['title' => 'foo','title_meta' => 'foo','slug' => 'foo','summary' => 'foo','content' => 'foo', 'status'=> 'published']);
-
+        $post->categories()->attach($this->uncategorized->id);
+        
         $this->assertCount(0, $user->posts_saved);
         $this->post('/posts/save', ['post_id' => $post->id]);
         $user->refresh();

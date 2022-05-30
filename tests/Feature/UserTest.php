@@ -384,11 +384,15 @@ class UserTest extends TestCase
 
     /** @test */
     public function cleanup_after_user_delete_his_account() {
+        $uncategorized = Category::factory()->create(['slug'=>'uncategorized']);
         $user = User::factory()->create(['password'=>Hash::make('Hostname47')]);
         $user0 = User::factory()->create(['password'=>Hash::make('Hostname47')]);
         $this->actingAs($user);
         $post = Post::factory()->create(['user_id'=>$user->id, 'status'=>'published']);
+        $post->categories()->attach($uncategorized->id);
         $post0 = Post::factory()->create(['user_id'=>$user0->id, 'status'=>'published']);
+        $post0->categories()->attach($uncategorized->id);
+        
         $tecnology = Category::create(['title'=>'tech','title_meta'=>'tech','slug'=>'tech','description'=>'tech']);
         $permission = Permission::create(['title'=>'Create posts','slug'=>'create-a-post','description'=>'Create a post permission that allows user to create posts','scope'=>'posts']);
         $role = Role::create(['title'=>'Admin','slug'=>'admin','description'=>'admin description']);

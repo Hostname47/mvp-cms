@@ -5,18 +5,24 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Models\{User,Post,Comment,Clap};
+use App\Models\{User,Category,Post,Comment,Clap};
 
 class ClapTest extends TestCase
 {
     use DatabaseTransactions;
 
     public $authuser;
+    public $uncategorized;
 
     public function setUp():void {
         parent::setUp();
         
         $this->authuser = $authuser = User::factory()->create();
+        $this->uncategorized = Category::factory()->create([
+            'title'=>'Uncategorized',
+            'slug'=>'uncategorized',
+            'status'=>'live'
+        ]);
         $this->actingAs($authuser);
     }
 
@@ -24,6 +30,7 @@ class ClapTest extends TestCase
     public function clap() {
         $user = $this->authuser;
         $post = Post::factory()->create(['status'=>'published']);
+        $post->categories()->attach($this->uncategorized->id);
         $comment = Comment::factory()->create(['user_id'=>$user->id,'post_id'=>$post->id]);
 
         $this->assertCount(0, $comment->claps);

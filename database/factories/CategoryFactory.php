@@ -18,6 +18,7 @@ class CategoryFactory extends Factory
             'title_meta' => $this->faker->sentence(),
             'slug' => $this->faker->slug(),
             'description' => $this->faker->sentence(),
+            'status' => 'live'
         ];
     }
 }

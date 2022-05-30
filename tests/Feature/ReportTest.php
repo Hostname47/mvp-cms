@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Models\{User,Post,Comment,Report};
+use App\Models\{User,Post,Comment,Report,Category};
 
 class ReportTest extends TestCase
 {
@@ -46,6 +46,7 @@ class ReportTest extends TestCase
         $user = $this->authuser;
         $author = User::factory()->create();
         $post = Post::factory()->create(['status'=>'published']);
+        $post->categories()->attach(Category::factory()->create(['slug'=>'uncategorized']));
 
         $this->assertCount(0, $post->reports);
         $this->post('/reports', [

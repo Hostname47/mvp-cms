@@ -5,17 +5,23 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Models\{User,Post,Comment,Permission};
+use App\Models\{User,Category,Post,Comment,Permission};
 
 class CommentTest extends TestCase
 {
     use DatabaseTransactions;
 
     public $authuser;
+    public $uncategorized;
 
     public function setUp():void {
         parent::setUp();
         
+        $this->uncategorized = Category::factory()->create([
+            'title'=>'Uncategorized',
+            'slug'=>'uncategorized',
+        ]);
+
         $permissions = [
             'access-admin-section' => Permission::factory()->create(['title'=>'aas', 'slug'=>'access-admin-section']),
             'create-post' => Permission::factory()->create(['title'=>'cp', 'slug'=>'create-post']),
@@ -96,7 +102,6 @@ class CommentTest extends TestCase
 
     /** @test */
     public function restore_a_comment() {
-        $this->withoutExceptionHandling();
         $user = $this->authuser;
         $post = Post::factory()->create(['status'=>'published']);
         $comment = Comment::factory()->create(['user_id'=>$user->id,'post_id'=>$post->id]);
@@ -168,7 +173,7 @@ class CommentTest extends TestCase
     /** @test */
     public function write_a_comment_on_a_post() {
         $post = Post::factory()->create(['status'=>'published']);
-        
+        $post->categories()->attach($this->uncategorized->id);
         $this->assertCount(0, Comment::all());
         $this->post('/comments', [
             'content'=>'hello darkness my old friend',
@@ -182,6 +187,7 @@ class CommentTest extends TestCase
     /** @test */
     public function comment_validation() {
         $post = Post::factory()->create(['status'=>'published']);
+        $post->categories()->attach($this->uncategorized->id);
         
         $this->post('/comments', ['content'=>'hello','post_id'=>-1])
             ->assertSessionHasErrors(['post_id']); // post_id does not exist
@@ -216,6 +222,7 @@ class CommentTest extends TestCase
     public function comments_limit() {
         $user = $this->authuser;
         $post = Post::factory()->create(['status'=>'published']);
+        $post->categories()->attach($this->uncategorized->id);
         $comments = Comment::factory(159)->create([
             'user_id'=>$user->id,
             'post_id'=>$post->id
@@ -230,6 +237,7 @@ class CommentTest extends TestCase
     public function unauthenticated_user_cannot_comment() {
         $this->post('/logout');
         $post = Post::factory()->create(['status'=>'published']);
+        $post->categories()->attach($this->uncategorized->id);
 
         $this->post('/comments', [
             'content'=>'hello darkness my old friend',
@@ -241,6 +249,7 @@ class CommentTest extends TestCase
     public function reply_to_a_comment() {
         $user = $this->authuser;
         $post = Post::factory()->create(['status'=>'published']);
+        $post->categories()->attach($this->uncategorized->id);
         $comment = Comment::factory()->create([
             'user_id'=>$user->id,
             'post_id'=>$post->id
@@ -260,6 +269,7 @@ class CommentTest extends TestCase
     public function update_a_comment() {
         $user = $this->authuser;
         $post = Post::factory()->create(['status'=>'published']);
+        $post->categories()->attach($this->uncategorized->id);
         $comment = Comment::create([
             'content'=>'hello world',
             'user_id'=>$user->id,
@@ -285,6 +295,7 @@ class CommentTest extends TestCase
         $user = $this->authuser;
         $other = User::factory()->create();
         $post = Post::factory()->create(['status'=>'published']);
+        $post->categories()->attach($this->uncategorized->id);
         $comment = Comment::create([
             'content'=>'hello world',
             'user_id'=>$other->id,
@@ -307,6 +318,7 @@ class CommentTest extends TestCase
     public function unauthenticated_user_cannot_update_a_comment() {
         $this->post('/logout');
         $post = Post::factory()->create(['status'=>'published']);
+        $post->categories()->attach($this->uncategorized->id);
 
         $this->patch('/comments', [
             'content'=>'hello darkness my old friend',
@@ -332,6 +344,7 @@ class CommentTest extends TestCase
     public function delete_a_comment() {
         $user = $this->authuser;
         $post = Post::factory()->create(['status'=>'published']);
+        $post->categories()->attach($this->uncategorized->id);
         $comment = Comment::create([
             'content'=>'hello world',
             'user_id'=>$user->id,
@@ -355,6 +368,7 @@ class CommentTest extends TestCase
         $commenter = User::factory()->create();
         $third = User::factory()->create();
         $post = Post::factory()->create(['status'=>'published', 'user_id'=>$author->id]);
+        $post->categories()->attach($this->uncategorized->id);
         $comment = Comment::create([
             'content'=>'hello world',
             'user_id'=>$commenter->id,
@@ -383,6 +397,7 @@ class CommentTest extends TestCase
     public function delete_a_comment_will_delete_all_its_subcomments() {
         $user = $this->authuser;
         $post = Post::factory()->create(['status'=>'published']);
+        $post->categories()->attach($this->uncategorized->id);
         $c0 = Comment::create(['content'=>'hello world','user_id'=>$user->id,'post_id'=>$post->id]);
         // Following 2 are direct replies to c0
         $c00 = Comment::create(['content'=>'c00','user_id'=>$user->id,'post_id'=>$post->id, 'parent_comment_id'=>$c0->id]);
@@ -397,8 +412,11 @@ class CommentTest extends TestCase
 
     /** @test */
     public function comment_post_comments_count_is_reduced_once_comment_get_deleted() {
+        $this->withoutExceptionHandling();
         $user = $this->authuser;
         $post = Post::factory()->create(['status'=>'published']);
+        $post->categories()->attach($this->uncategorized->id);
+        
         $this->post('/comments', ['content'=>'c0','post_id'=>$post->id]);
         $this->post('/comments', ['content'=>'c1','post_id'=>$post->id]);
         $c0 = Comment::where('content', 'c0')->first();
