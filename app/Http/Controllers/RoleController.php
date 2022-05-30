@@ -9,6 +9,7 @@ use App\Models\{User,Role};
 class RoleController extends Controller
 {
     public function store(Request $request) {
+        $this->authorize('store', [Role::class]);
         $data = $request->validate([
             'title'=>'required|max:255|unique:roles,title',
             'slug'=>'required|max:255|unique:roles,slug',
@@ -27,6 +28,8 @@ class RoleController extends Controller
         return route('admin.rp.manage.roles');
     }
     public function update(Request $request) {
+        $this->authorize('update', [Role::class]);
+
         $role_id = $request->validate(['role_id'=>'required|exists:roles,id'])['role_id'];
         $data = $request->validate([
             'title'=>"sometimes|max:255|unique:roles,title,$role_id",
@@ -41,6 +44,8 @@ class RoleController extends Controller
         return route('admin.rp.manage.roles', ['role'=>$role->refresh()->slug]);
     }
     public function update_priorities(Request $request) {
+        $this->authorize('update', [Role::class]);
+
         $data = $request->validate([
             'roles'=>'required',
             'roles.*'=>'exists:roles,id',
@@ -57,6 +62,8 @@ class RoleController extends Controller
         Session::flash('message', 'Roles priorities have been updated successfully.');
     }
     public function delete(Request $request) {
+        $this->authorize('delete', [Role::class]);
+
         $role_id = $request->validate(['role_id'=>'required|exists:roles,id'])['role_id'];
         // Get role and its permissions (ids)
         $role = Role::find($role_id);
@@ -77,6 +84,7 @@ class RoleController extends Controller
         return route('admin.rp.manage.roles');
     }
     public function attach_permissions(Request $request) {
+        $this->authorize('attach_permission', [Role::class]);
         $data = $request->validate([
             'role'=>'required|exists:roles,id',
             'permissions'=>'required',
@@ -92,6 +100,7 @@ class RoleController extends Controller
         Session::flash('message', 'Permissions have been attached to "' . $role->title . '" role successfully.');
     }
     public function detach_permissions(Request $request) {
+        $this->authorize('detach_permission', [Role::class]);
         $data = $request->validate([
             'role'=>'required|exists:roles,id',
             'permissions'=>'required',
@@ -110,6 +119,7 @@ class RoleController extends Controller
         Session::flash('message', 'Permissions have been detached from "' . $role->title . '" role successfully.');
     }
     public function grant(Request $request) {
+        $this->authorize('grant', [Role::class]);
         $data = $request->validate([
             'role'=>'required|exists:roles,id',
             'users'=>'required',
@@ -130,6 +140,7 @@ class RoleController extends Controller
         Session::flash('message', "Role '$role->title' has been granted to users successfully.");
     }
     public function revoke(Request $request) {
+        $this->authorize('revoke', [Role::class]);
         $data = $request->validate([
             'role'=>'required|exists:roles,id',
             'users'=>'required',

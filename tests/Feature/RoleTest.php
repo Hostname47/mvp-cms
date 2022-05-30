@@ -16,13 +16,27 @@ class RoleTest extends TestCase
     public function setUp(): void {
         parent::setUp();
 
-        $admin_access_permission = Permission::factory()->create([
-            'title'=>'Access admin section',
-            'slug'=>'access-admin-section'
-        ]);
+        $permissions = [
+            'access-admin-section' => Permission::factory()->create(['title'=>'aas', 'slug'=>'access-admin-section']),
+            'create-role' => Permission::factory()->create(['title'=>'cr', 'slug'=>'create-role']),
+            'update-role' => Permission::factory()->create(['title'=>'ur', 'slug'=>'update-role']),
+            'delete-role' => Permission::factory()->create(['title'=>'dr', 'slug'=>'delete-role']),
+            'attach-permission-to-role' => Permission::factory()->create(['title'=>'aptr', 'slug'=>'attach-permission-to-role']),
+            'detach-permission-from-role' => Permission::factory()->create(['title'=>'dpfr', 'slug'=>'detach-permission-from-role']),
+            'grant-role' => Permission::factory()->create(['title'=>'gr', 'slug'=>'grant-role']),
+            'revoke-role' => Permission::factory()->create(['title'=>'rvkr', 'slug'=>'revoke-role']),
+        ];
+
         $user = $this->authuser = User::factory()->create();
         $this->actingAs($user);
         $user->attach_permission('access-admin-section');
+        $user->attach_permission('create-role');
+        $user->attach_permission('update-role');
+        $user->attach_permission('delete-role');
+        $user->attach_permission('attach-permission-to-role');
+        $user->attach_permission('detach-permission-from-role');
+        $user->attach_permission('grant-role');
+        $user->attach_permission('revoke-role');
     }
 
     /**
@@ -60,6 +74,14 @@ class RoleTest extends TestCase
         $this->post('/admin/roles', ['title'=>'Admin','slug'=>'admin','description'=>'admin description']);
         $this->assertCount(1, Role::all());
     }
+
+    /** @test */
+    public function create_a_role_require_permission() {
+        $this->authuser->detach_permission('create-role');
+        $this->post('/admin/roles', ['title'=>'Admin','slug'=>'admin','description'=>'admin description'])
+            ->assertForbidden();
+    }
+
     /** @test */
     public function create_a_role_validation() {
         Role::create(['title'=>'Admin','slug'=>'admin','description'=>'admin description']);
@@ -88,6 +110,19 @@ class RoleTest extends TestCase
         $this->assertEquals($role->slug, 'admin');
         $this->assertEquals($role->description, 'admin description');
     }
+
+    /** @test */
+    public function update_a_role_requires_permission() {
+        Role::create(['title'=>'Admib','slug'=>'admib','description'=>'admib description']);
+        $role = Role::first();
+        $this->authuser->detach_permission('update-role');
+
+        $this->patch('/admin/roles', [
+            'role_id'=>$role->id,
+            'title'=>'Admin','slug'=>'admin','description'=>'admin description'
+        ])->assertForbidden();
+    }
+
     /** @test */
     public function update_a_role_validation() {
         $siteowner = Role::create(['title'=>'Site Owner','slug'=>'site-owner','description'=>'site owner description']);
@@ -108,6 +143,13 @@ class RoleTest extends TestCase
         $this->assertCount(0, Role::all());
     }
     /** @test */
+    public function delete_a_role_requires_permission() {
+        $role = Role::create(['title'=>'Admin','slug'=>'admin','description'=>'admin description']);
+        $this->authuser->detach_permission('delete-role');
+        
+        $this->delete('/admin/roles', ['role_id'=>$role->id])->assertForbidden();
+    }
+    /** @test */
     public function delete_site_owner_role_is_not_possible() {
         $role = Role::create(['title'=>'Site Owner','slug'=>'site-owner','description'=>'Site owner description']);
 
@@ -115,7 +157,7 @@ class RoleTest extends TestCase
             ->assertStatus(422);
     }
     /** @test */
-    public function delete_a_role_will_delete_all_associated_users_and_its_permissions_on_those_users() {
+    public function delete_a_role_will_delete_all_associated_users_and_permissions_pivot_records() {
         $role = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description']);
         $user0 = User::factory()->create();
         $user1 = User::factory()->create();
@@ -131,11 +173,12 @@ class RoleTest extends TestCase
             'role'=>$role->id,
             'permissions'=>[$permission0->id, $permission1->id, $permission2->id]
         ]);
-        $this->assertCount(2, RoleUser::all());
-        $this->assertCount(7, PermissionUser::all()); // Normally 6 but because we are creating access to admin permission in set up function, thyen it is 7
+        $roleusers = RoleUser::count();
+        $permissionusers = PermissionUser::count();
+        
         $this->delete('/admin/roles', ['role_id'=>$role->id]);
-        $this->assertCount(0, RoleUser::all());
-        $this->assertCount(1, PermissionUser::all());
+        $this->assertEquals($roleusers-2, RoleUser::count()); // -2 : role user for $user0 and $user1
+        $this->assertEquals($permissionusers-6, PermissionUser::count()); // -6 : because role has 3 permission and each user will take the 3 after getting the role
     }
 
     /** @test */
@@ -165,6 +208,17 @@ class RoleTest extends TestCase
         ])->assertRedirect()->assertSessionHasErrors(['permissions.*']);
     }
     /** @test */
+    public function attach_permissions_to_role_requires_permission() {
+        $permission = Permission::create(['title'=>'Create posts','slug'=>'create-a-post','description'=>'Create a post permission that allows user to create posts','scope'=>'posts']);
+        $role = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description']);
+        $this->authuser->detach_permission('attach-permission-to-role');
+
+        $this->post('/admin/roles/attach-permissions', [
+            'role'=>$role->id,
+            'permissions'=>[$permission->id]
+        ])->assertForbidden();
+    }
+    /** @test */
     public function detach_permission_from_role() {
         $permission0 = Permission::create(['title'=>'Create posts','slug'=>'create-a-post','description'=>'Create a post permission that allows user to create posts','scope'=>'posts']);
         $permission1 = Permission::create(['title'=>'Update posts','slug'=>'update-a-post','description'=>'Update a post permission that allows user to create posts','scope'=>'posts']);
@@ -187,7 +241,18 @@ class RoleTest extends TestCase
         ]);
         $this->assertCount(1, $role->refresh()->permissions);
     }
+    /** @test */
+    public function detach_permission_from_role_requires_permission() {
+        $permission = Permission::create(['title'=>'Create posts','slug'=>'create-a-post','description'=>'Create a post permission that allows user to create posts','scope'=>'posts']);
+        $role = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description']);
+        $role->permissions()->attach([$permission->id]);
+        $this->authuser->detach_permission('detach-permission-from-role');
 
+        $this->post('/admin/roles/detach-permissions', [
+            'role'=>$role->id,
+            'permissions'=>[$permission->id]
+        ])->assertForbidden();
+    }
     /** @test */
     public function attach_permissions_to_role_will_attach_them_to_all_role_owners() {
         $role = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description']);
@@ -261,6 +326,17 @@ class RoleTest extends TestCase
         $this->assertEquals($authuser->id, $user->refresh()->roles->first()->pivot->giver->id);
     }
     /** @test */
+    public function grant_role_to_user_requires_permission() {
+        $role = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description']);
+        $user = User::factory()->create();
+
+        $this->authuser->detach_permission('grant-role');
+        $this->post('/admin/roles/grant-to-users', [
+            'role'=>$role->id,
+            'users'=>[$user->id]
+        ])->assertForbidden();
+    }
+    /** @test */
     public function grant_a_role_will_attach_all_its_associated_permissions_to_role_owners() {
         $role = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description']);
         $user = User::factory()->create();
@@ -325,6 +401,22 @@ class RoleTest extends TestCase
         $this->assertCount(0, $user->refresh()->roles);
     }
     /** @test */
+    public function revoke_role_from_user_requires_permission() {
+        $role = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description']);
+        $user = User::factory()->create();
+
+        $this->post('/admin/roles/grant-to-users', [
+            'role'=>$role->id,
+            'users'=>[$user->id]
+        ]);
+        $this->assertCount(1, $user->refresh()->roles);
+        $this->authuser->detach_permission('revoke-role');
+        $this->post('/admin/roles/revoke-from-users', [
+            'role'=>$role->id,
+            'users'=>[$user->id]
+        ])->assertForbidden();
+    }
+    /** @test */
     public function revoke_role_from_user_will_revoke_all_its_associated_permissions_as_well() {
         $role = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description']);
         $user = User::factory()->create();
@@ -379,5 +471,18 @@ class RoleTest extends TestCase
         $this->assertTrue($admin->refresh()->priority == 3);
         $this->assertTrue($moderator->refresh()->priority == 2);
         $this->assertTrue($author->refresh()->priority == 1);
+    }
+    /** @test */
+    public function update_roles_priorities_requires_permission() {
+        $admin = Role::create(['title'=>'Admin','slug'=>'admin','description'=>'admin description', 'priority'=>1]);
+        $moderator = Role::create(['title'=>'Moderator','slug'=>'moderator','description'=>'moderator description', 'priority'=>2]);
+        $author = Role::create(['title'=>'Author','slug'=>'author','description'=>'author description', 'priority'=>3]);
+
+        $this->authuser->detach_permission('update-role');
+
+        $this->patch('/admin/roles/priorities', [
+            'roles'=>[$admin->id, $moderator->id, $author->id],
+            'priorities'=>[3, 2, 1]
+        ])->assertForbidden();
     }
 }
