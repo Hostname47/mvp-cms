@@ -1,0 +1,33 @@
+#user-avatar {
+    width: 146px;
+    border-radius: 4px;
+    height: max-content;
+}
+
+#user-meta-box {
+    margin-left: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#user-meta-box .fullname {
+    color: #323639;
+}
+
+#user-meta-box .username {
+    font-size: 18px;
+}
+
+#user-meta-box .meta {
+    font-size: 13px;
+}
+
+.column-sections-box {
+    display: flex;
+    gap: 14px;
+}
+
+.column-section {
+    width: 50%;
+}

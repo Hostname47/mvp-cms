@@ -158,3 +158,14 @@ function create_user_to_manage_search_component(user) {
 
 	return usercomponent;
 }
+
+$('.um-ban-type').on('change', function() {
+    let type = $(this).val();
+    if(type == 'temporary') {
+        $('#ban-box').find('.temporary-ban-box').removeClass('none');
+        $('#ban-box').find('.permanent-ban-box').addClass('none');
+    } else {
+        $('#ban-box').find('.permanent-ban-box').removeClass('none');
+        $('#ban-box').find('.temporary-ban-box').addClass('none');
+    }
+});

@@ -129,6 +129,18 @@ class User extends Authenticatable
         return (new Carbon($this->updated_at))->isoFormat("dddd D MMM YYYY");
     }
 
+    public function getScolorAttribute() {
+        switch($this->status) {
+            case 'active':
+                return 'green';
+            case 'banned':
+            case 'deleted':
+                return 'red';
+            default:
+                return 'dark';
+        }
+    }
+
     public function attach_permission($slug) {
         $permission = Permission::where('slug', $slug)->first();
         $this->permissions()->syncWithoutDetaching($permission->id);
