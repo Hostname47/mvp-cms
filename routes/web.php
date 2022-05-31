@@ -7,7 +7,7 @@ use App\Http\Controllers\{IndexController, AdminController, PostController, Cate
     NewsletterController, CommentController, ClapController, ReportController, SearchController,
     AuthorRequestController, ContactController, FaqController, UserController, ActivitiesController, 
     AuthorController};
-use App\Http\Controllers\Admin\{AdminSearchController, AdminCommentController};
+use App\Http\Controllers\Admin\{AdminSearchController, AdminCommentController, AdminUserController};
 use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Middleware\AccountStatus;
 
@@ -59,6 +59,8 @@ Route::middleware(['able-to-access-admin-section'])->group(function() {
     Route::patch('/admin/category/status', [CategoryController::class, 'update_status']);
     Route::get('/admin/categories/manage', [CategoryController::class, 'manage'])->name('category.manage');
     Route::delete('/admin/categories', [CategoryController::class, 'delete']);
+
+    Route::get('/admin/users', [AdminUserController::class, 'manage'])->name('admin.users.management');
 
     Route::get('/admin/media/fetch', [MediaController::class, 'fetch_media']);
     Route::get('/admin/media/set/components', [MediaController::class, 'fetch_media_set_components']);

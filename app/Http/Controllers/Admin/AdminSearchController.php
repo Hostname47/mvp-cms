@@ -68,7 +68,8 @@ class AdminSearchController extends Controller
                 'username'=>$user->username,
                 'avatar'=>$user->avatar(36),
                 'role'=>($hr = $user->high_role()) ? $hr->title : null,
-                'rp_management_link'=>route('admin.rp.manage.users', ['user'=>$user->username])
+                'rp_management_link'=>route('admin.rp.manage.users', ['user'=>$user->username]),
+                'user_management_link'=>route('admin.users.management', ['user'=>$user->username])
             ];
         });
 
