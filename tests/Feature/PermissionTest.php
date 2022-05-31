@@ -16,20 +16,38 @@ class PermissionTest extends TestCase
     public function setUp(): void {
         parent::setUp();
 
-        $admin_access_permission = Permission::factory()->create([
-            'title'=>'Access admin section',
-            'slug'=>'access-admin-section'
-        ]);
         $user = $this->authuser = User::factory()->create();
         $this->actingAs($user);
+
+        $permissions = [
+            'access-admin-section' => Permission::factory()->create(['title'=>'aas', 'slug'=>'access-admin-section']),
+            'create-permission' => Permission::factory()->create(['title'=>'cprm', 'slug'=>'create-permission']),
+            'update-permission' => Permission::factory()->create(['title'=>'uprm', 'slug'=>'update-permission']),
+            'delete-permission' => Permission::factory()->create(['title'=>'dprm', 'slug'=>'delete-permission']),
+            'attach-permission-to-user' => Permission::factory()->create(['title'=>'aptu', 'slug'=>'attach-permission-to-user']),
+            'detach-permission-from-user' => Permission::factory()->create(['title'=>'dpfu', 'slug'=>'detach-permission-from-user']),
+        ];
+
         $user->attach_permission('access-admin-section');
+        $user->attach_permission('create-permission');
+        $user->attach_permission('update-permission');
+        $user->attach_permission('delete-permission');
+        $user->attach_permission('attach-permission-to-user');
+        $user->attach_permission('detach-permission-from-user');
     }
 
     /** @test */
     public function create_a_permission() {
-        $this->assertCount(1, Permission::all()); // 1 creeated in setUp()
+        $count = Permission::count();
         $this->post('/admin/permissions', ['title'=>'Create posts','slug'=>'create-a-post','description'=>'Create a post permission that allows user to create posts','scope'=>'posts']);
-        $this->assertCount(2, Permission::all());
+        $this->assertCount($count+1, Permission::all());
+    }
+
+    /** @test */
+    public function create_a_permission_requires_permission() {
+        $this->authuser->detach_permission('create-permission');
+        $this->post('/admin/permissions', ['title'=>'foo','slug'=>'foo','description'=>'foo','scope'=>'foo'])
+            ->assertForbidden();
     }
 
     /** @test */
@@ -67,6 +85,19 @@ class PermissionTest extends TestCase
     }
 
     /** @test */
+    public function update_a_permission_require_permission() {
+        $permission = Permission::create(['title'=>'foo','slug'=>'foo','description'=>'foo','scope'=>'foo']);
+        $this->authuser->detach_permission('update-permission');
+        $this->patch('/admin/permissions', [
+            'permission_id'=>$permission->id,
+            'title'=>'Create tags',
+            'slug'=>'create-tags',
+            'description'=>'create tags description',
+            'scope'=>'tags',
+        ])->assertForbidden();
+    }
+
+    /** @test */
     public function update_a_permission_validation() {
         $create_posts = Permission::create(['title'=>'Create posts','slug'=>'create-a-post','description'=>'Create a post permission that allows user to create posts','scope'=>'posts']);
         $create_tags = Permission::create(['title'=>'Create tags','slug'=>'create-a-tag','description'=>'Create a tag permission that allows user to create posts','scope'=>'tags']);
@@ -80,12 +111,19 @@ class PermissionTest extends TestCase
 
     /** @test */
     public function delete_a_permission() {
-        $this->withoutExceptionHandling();
-        $permission = Permission::create(['title'=>'Create posts','slug'=>'create-a-post','description'=>'Create a post permission that allows user to create posts','scope'=>'posts']);
-
-        $this->assertCount(2, Permission::all());
+        $permission = Permission::create(['title'=>'foo','slug'=>'foo','description'=>'foo','scope'=>'foo']);
+        $count = Permission::count();
         $this->delete('/admin/permissions', ['permission_id'=>$permission->id]);
-        $this->assertCount(1, Permission::all());
+        $this->assertCount($count-1, Permission::all());
+    }
+
+    /** @test */
+    public function delete_a_permission_require_permission() {
+        $permission = Permission::create(['title'=>'foo','slug'=>'foo','description'=>'foo','scope'=>'foo']);
+        $this->authuser->detach_permission('delete-permission');
+
+        $this->delete('/admin/permissions', ['permission_id'=>$permission->id])
+            ->assertForbidden();
     }
 
     /** @test */
@@ -104,15 +142,28 @@ class PermissionTest extends TestCase
         $this->assertCount(2, $user0->refresh()->permissions);
         $this->assertCount(2, $user1->refresh()->permissions);
         // Validation
-        $this->post('/admin/roles/attach-permissions', [
+        $this->post('/admin/users/attach-permissions', [
             'users'=>[$user0->id,$user1->id],
             'permissions'=>[$permission0->id, -85]
         ])->assertRedirect()->assertSessionHasErrors(['permissions.*']);
     }
 
     /** @test */
+    public function attach_permissions_to_users_require_permission() {
+        $user0 = User::factory()->create();
+        $user1 = User::factory()->create();
+        $permission0 = Permission::create(['title'=>'P0 title','slug'=>'p-0','description'=>'p0 desc','scope'=>'p0']);
+        $permission1 = Permission::create(['title'=>'P1 title','slug'=>'p-1','description'=>'p1 desc','scope'=>'p1']);
+        $this->authuser->detach_permission('attach-permission-to-user');
+
+        $this->post('/admin/users/attach-permissions', [
+            'permissions'=>[$permission0->id, $permission1->id],
+            'users'=>[$user0->id,$user1->id]
+        ])->assertForbidden();
+    }
+
+    /** @test */
     public function detach_permissions_from_users() {
-        $this->withoutExceptionHandling();
         $user0 = User::factory()->create();
         $user1 = User::factory()->create();
         $permission0 = Permission::create(['title'=>'P0 title','slug'=>'p-0','description'=>'p0 desc','scope'=>'p0']);
@@ -129,5 +180,23 @@ class PermissionTest extends TestCase
         ]);
         $this->assertCount(0, $user0->refresh()->permissions);
         $this->assertCount(0, $user1->refresh()->permissions);
+    }
+
+    
+    /** @test */
+    public function detach_permissions_from_users_require_permission() {
+        $user0 = User::factory()->create();
+        $user1 = User::factory()->create();
+        $permission0 = Permission::create(['title'=>'P0 title','slug'=>'p-0','description'=>'p0 desc','scope'=>'p0']);
+        $permission1 = Permission::create(['title'=>'P1 title','slug'=>'p-1','description'=>'p1 desc','scope'=>'p1']);
+
+        $user0->permissions()->attach([$permission0->id,$permission1->id]);
+        $user1->permissions()->attach([$permission0->id,$permission1->id]);
+        $this->authuser->detach_permission('detach-permission-from-user');
+
+        $this->post('/admin/users/detach-permissions', [
+            'permissions'=>[$permission0->id, $permission1->id],
+            'users'=>[$user0->id,$user1->id]
+        ])->assertForbidden();
     }
 }
