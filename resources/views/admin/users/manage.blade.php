@@ -58,7 +58,7 @@
                             <div class="fs13 dark username">hostname47</div>
                         </div>
                     </a>
-                    <div id="user-search-fetch-more-results" class="full-center none" style='height: 32px;'>
+                    <div id="user-search-fetch-more-results" class="full-center my12 none" style='height: 32px;'>
                         <svg class="spinner size20" fill="none" viewBox="0 0 16 16">
                             <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
                             <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>

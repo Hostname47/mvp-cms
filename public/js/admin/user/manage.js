@@ -11,6 +11,7 @@ $('#search-for-user-button').on('click', function(event) {
 	let loading_block = resultbox.find('.search-loading');
 	let no_results_box = resultbox.find('.no-results-found-box')
 	let spinner = loading_block.find('.spinner');
+    let fetch_more = $('#user-search-fetch-more-results');
 
 	let query = $('#user-search-input').val().trim();
 
@@ -27,7 +28,7 @@ $('#search-for-user-button').on('click', function(event) {
 	if(!user_search_lock) return;
 	user_search_lock = false;
 
-	$('#user-search-fetch-more-results').addClass('none no-fetch');
+	fetch_more.addClass('none no-fetch');
 
 	results.html('');
 	no_results_box.addClass('none'); // Hide no results box if it is displayed before
@@ -55,14 +56,13 @@ $('#search-for-user-button').on('click', function(event) {
 
 				// After handling all users components we have to check if search has more results
 				if(hasmore) {
-					let loadmore = $('#role-users-fetch-more-results');
-					loadmore.removeClass('none no-fetch')
+					fetch_more.removeClass('none no-fetch')
 				} else {
 					// no-fetch prevent the scroll event from proceeding when no more results are there
-					$('#role-users-fetch-more-results').addClass('none no-fetch');
+					fetch_more.addClass('none no-fetch');
 				}
 			} else {
-				// Results not founf
+				// Results not found
 				results.addClass('none');
 				no_results_box.removeClass('none');
 			}
@@ -70,7 +70,7 @@ $('#search-for-user-button').on('click', function(event) {
 
 			results.removeClass('none');
 			resultbox.removeClass('none');
-            
+
 			last_user_search_query = query;
 			$('#user-to-manage-k').val(query); // This is used in fetch more
 		},
@@ -91,6 +91,61 @@ $('#search-for-user-button').on('click', function(event) {
 		}
 	})
 });
+$('#user-search-input').on('keyup', function(event) {
+	if(event.key === 'Enter' || event.keyCode === 13)
+		$('#search-for-user-button').trigger('click');
+});
+
+let user_search_fetch_more = $('#user-search-fetch-more-results');
+let user_search_results_box = $('#user-search-result-box');
+let user_search_fetch_more_lock = true;
+if(user_search_results_box.length) {
+    user_search_results_box.on('DOMContentLoaded scroll', function() {
+        if(user_search_results_box.scrollTop() + user_search_results_box.innerHeight() + 50 >= user_search_results_box[0].scrollHeight) {
+            if(!user_search_fetch_more_lock || user_search_fetch_more.hasClass('no-fetch')) return;
+            user_search_fetch_more_lock=false;
+            
+			let results_container = $('#user-search-result-box .results-container');
+			let spinner = user_search_fetch_more.find('.spinner');
+			// Notice we don't count directly role members from scrollable because it will count factory components as well
+            let present_search_members = results_container.find('.search-entity').length;
+			spinner.addClass('inf-rotate');
+            $.ajax({
+				url: '/admin/users/search',
+				data: {
+					skip: present_search_members,
+					take: 10,
+					k: $('#user-to-manage-k').val()
+				},
+                success: function(response) {
+					let users = response.users;
+					let hasmore = response.hasmore;
+
+					if(users.length) {
+						for(let i = 0; i < users.length; i++) {
+							let usercomponent = create_user_to_manage_search_component(users[i]);
+							results_container.append(usercomponent);
+						}
+		
+						// After handling all users components we have to check if search has more results
+						if(hasmore)
+							user_search_fetch_more.removeClass('none no-fetch');
+						else
+							// no-fetch prevent the scroll event from proceeding when no more results are there
+							user_search_fetch_more.addClass('none no-fetch');
+					} else {
+						// If scrolling does not find any data for some reason then we hide spinner
+						user_search_fetch_more.addClass('none no-fetch');
+					}
+                },
+                complete: function() {
+                    user_search_fetch_more_lock = true;
+					spinner.removeClass('inf-rotate');
+                }
+            });
+        }
+    });
+}
 
 function create_user_to_manage_search_component(user) {
     let usercomponent = $('#user-search-result-box .search-entity-factory').clone(true);
