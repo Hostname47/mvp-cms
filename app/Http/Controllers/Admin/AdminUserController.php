@@ -13,17 +13,23 @@ class AdminUserController extends Controller
     public function manage(Request $request) {
         $user = null;
         $highrole = 'Normal User';
+        $ban = null;
+        $banned = false;
         $banreasons = collect([]);
         if($request->has('user')) {
             $user = User::withoutGlobalScopes()->where('username', $request->user)->first();
             if($user) {
                 $highrole = ($hr = $user->high_role(true)) ? $hr->title : $highrole;
+                $banned = $user->is_banned();
+                $ban = $user->bans()->orderBy('created_at', 'desc')->first();
                 $banreasons = BanReason::all();
             }
         }
         
         return view('admin.users.manage')
             ->with(compact('user'))
+            ->with(compact('banned'))
+            ->with(compact('ban'))
             ->with(compact('banreasons'))
             ->with(compact('highrole'));
     }

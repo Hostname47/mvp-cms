@@ -54,6 +54,10 @@ class UserPolicy
             return $this->deny("User already banned");
         }
 
+        if($user->id == $u->id) {
+            return $this->deny("You cannot ban your account.");
+        }
+
         return true;
     }
 }

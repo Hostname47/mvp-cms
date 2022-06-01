@@ -160,17 +160,17 @@ class User extends Authenticatable
         switch($this->status) {
             case 'banned':
                 return true;
-            // case 'temp-banned':
-            //     /**
-            //      * Here because we're using soft deleting in userban models we have to check whether it exists a userban
-            //      * record that is not soft deleted and not expired
-            //      */
-            //     if($ban=$this->bans()->orderBy('created_at', 'desc')->first()) {
-            //         $now_in_seconds = Carbon::now()->timestamp;
-            //         $deadline_in_seconds = $ban->created_at->addDays($ban->ban_duration)->timestamp;
-            //         return $deadline_in_seconds - $now_in_seconds > 0; // user is banned if ban deadline is greather than the current(now) timestamp
-            //     }
-            //     return false;
+            case 'temp-banned':
+                /**
+                 * Here because we're using soft deleting in userban models we have to check whether it exists a userban
+                 * record that is not soft deleted and not expired
+                 */
+                if($ban=$this->bans()->orderBy('created_at', 'desc')->first()) {
+                    $now_in_seconds = Carbon::now()->timestamp;
+                    $deadline_in_seconds = $ban->created_at->addDays($ban->ban_duration)->timestamp;
+                    return $deadline_in_seconds - $now_in_seconds > 0; // user is banned if ban deadline is greather than the current(now) timestamp
+                }
+                return false;
         }
 
         return false;
