@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use App\Models\{Category,Post,User};
 use App\Scopes\{ExcludePrivatePosts,OnlyLiveCategories,OnlyPublishedPosts,
-    HasAtLeastOneCategory, ExcludeDeactivatedUsers};
+    HasAtLeastOneCategory, OnlyActiveUsers};
 
 class ClientScopes
 {
@@ -20,7 +20,7 @@ class ClientScopes
             HasAtLeastOneCategory::class,
         ],
         User::class => [
-            ExcludeDeactivatedUsers::class
+            OnlyActiveUsers::class
         ]
     ];
 

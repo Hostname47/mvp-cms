@@ -50,7 +50,8 @@ class FortifyServiceProvider extends ServiceProvider
                             \Session::flash('auth-error', __('This account has already been deleted permanently.'));
                             break;
                         case 'banned':
-                            /** Handle banned user reaction */
+                            \Session::flash('has-auth-error', 1);
+                            \Session::flash('auth-error', __('Your account has been banned permanently.'));
                             break;
                     }
                 } else {
