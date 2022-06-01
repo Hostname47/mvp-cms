@@ -219,3 +219,44 @@ $('#ban-user-button').on('click', function() {
         }
     });
 });
+
+let clean_expired_ban_lock = true;
+$('#clean-expired-ban-button').on('click', function() {
+    if(!clean_expired_ban_lock) return;
+    clean_expired_ban_lock = false;
+
+    let button = $(this);
+    let buttonicon = button.find('.icon-above-spinner');
+    let spinner = button.find('.spinner');
+
+    button.addClass('dark-bs-disabled');
+    buttonicon.addClass('none');
+    spinner.removeClass('opacity0');
+    spinner.addClass('inf-rotate');
+
+    $.ajax({
+        type: 'post',
+        url: `/admin/users/bans/clean-expired`,
+        data: {
+            user_id: $('#user-id').val()
+        },
+        success: function(response) {
+            left_bottom_notification('Expired ban record has been cleaned successfully');
+            location.reload();
+        },
+        error: function(response) {
+            let errorObject = JSON.parse(response.responseText);
+            let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+            if(errorObject.errors) {
+                let errors = errorObject.errors;
+                error = errors[Object.keys(errors)[0]][0];
+            }
+            print_top_message(error, 'error');
+
+            button.removeClass('dark-bs-disabled');
+            buttonicon.removeClass('none');
+            spinner.addClass('opacity0');
+            clean_expired_ban_lock = true;
+        },
+    });
+});

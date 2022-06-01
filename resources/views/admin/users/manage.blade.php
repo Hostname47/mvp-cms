@@ -115,105 +115,137 @@
                 <div>
                     <h2 class="dark">Account settings</h2>
                     @if($banned)
-                    <!-- unban user section -->
-                    <div class="typical-section-style">
-                        <div class="align-center">
-                            <svg class="size14 mr6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M3.53,137.79a8.46,8.46,0,0,1,8.7-4c2.1.23,4.28-.18,6.37.09,3.6.47,4.61-.68,4.57-4.46-.28-24.91,7.59-47.12,23-66.65C82.8,16.35,151.92,9.31,197.09,47.21c3,2.53,3.53,4,.63,7.08-5.71,6.06-11,12.5-16.28,19-2.13,2.63-3.37,3.21-6.4.73-42.11-34.47-103.77-13.24-116,39.81a72.6,72.6,0,0,0-1.61,17c0,2.36.76,3.09,3.09,3,4.25-.17,8.51-.19,12.75,0,5.46.25,8.39,5.55,4.94,9.66-12,14.24-24.29,28.18-36.62,42.39L4.91,143.69c-.37-.43-.5-1.24-1.38-1Z"></path><path d="M216.78,81.86l35.71,41c1.93,2.21,3.13,4.58,1.66,7.58s-3.91,3.54-6.9,3.58c-3.89.06-8.91-1.65-11.33.71-2.1,2-1.29,7-1.8,10.73-6.35,45.41-45.13,83.19-90.81,88.73-28.18,3.41-53.76-3-76.88-19.47-2.81-2-3.61-3.23-.85-6.18,6-6.45,11.66-13.26,17.26-20.09,1.79-2.19,2.87-2.46,5.39-.74,42.83,29.26,99.8,6.7,111.17-43.93,2.2-9.8,2.2-9.8-7.9-9.8-1.63,0-3.27-.08-4.9,0-3.2.18-5.94-.6-7.29-3.75s.13-5.61,2.21-8c7.15-8.08,14.21-16.24,21.31-24.37C207.43,92.59,212,87.31,216.78,81.86Z"></path></svg>
-                            <h3 class="no-margin dark">Unban user</h3>
-                        </div>
-
-                        @if($ban->type == 'permanent')
-                            <!-- permanently banned -->
-                            <h4 class="no-margin my12 dark">User's account is currently banned <span class="red">permanently</span></h4>
-                        @else
-                            <!-- temporarily banned -->
-                            <h4 class="no-margin my12 dark">User's account is currently banned <span class="red">temorarily</span></h4>
-                        @endif
-
-                        <p class="fs13 my8"><strong>banned by :</strong> <a href="{{ route('admin.users.management', ['user'=>$ban->banner->username]) }}" class="blue bold no-underline">{{ $ban->banner->username }}</a></p>
-                        <p class="fs13 my8"><strong>reason for ban :</strong> {{ $ban->reason->title }}</p>
-                        <!-- Only show duration and expiration if the ban is temporary -->
-                        @if($ban->type == 'temporary')
-                        <p class="fs13 my8"><strong>banned at :</strong> {{ $ban->bandate }}</p>
-                        <p class="fs13 my8"><strong>ban duration :</strong> {{ $ban->ban_duration_hummans }}</p>
-                        <p class="fs13 my8"><strong>expired at :</strong> {{ $ban->expired_at }}</p>
-                        @endif
-
-                        <p class="no-margin gray lh15 my12">If this ban was random, performed by mistake, or you decide to unban this user, press unban button below. This will make user account to live but keep ban records history.</p>
-                        
-                        <div id="unban-user-button" class="typical-button-style dark-bs align-center width-max-content">
-                            <div class="relative size14 mr4">
-                                <svg class="size14 icon-above-spinner" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M2.22,214.12a4.7,4.7,0,0,1,4.22-4.69c12.34-1.16,23.78-11.69,25.38-24.57.43-3.47,1.27-5,5-4.58,3.08.37,6.61-.72,9.26.42,2.87,1.25,1.36,5.3,2.31,8,4.13,11.79,12.09,19,24.46,20.77,3,.45,4.58,1.24,4,4.47a6.53,6.53,0,0,0,0,1c0,3,.73,6.27-.35,8.78-1.18,2.72-5,1.3-7.59,2.16-12.24,4.07-19.57,12.2-21.33,25-.36,2.6-1,4-3.87,3.58a10.41,10.41,0,0,0-1.48,0c-3,0-6.26.73-8.78-.35-2.72-1.18-1.4-5-2.2-7.58-3.62-11.73-13.56-20.11-24.9-21.22a4.67,4.67,0,0,1-4.14-4.68Zm85.73-11c9.07,19.26,23.66,31.67,44.88,35.55,2.65.49,3.85,1.41,3.31,4.07-.86,4.27,1.28,5.9,5.15,7.11,27.62,8.63,56.87-.32,74.69-23.28,6.78-8.72,11.91-18.47,16.91-28.31,1.77-3.48.7-4.29-2.31-5.37q-44.46-16-88.84-32.34c-3.22-1.19-4.3-.54-5.78,2.41-6.78,13.57-17.81,21.47-32.82,24.13-7.29,1.3-14.41-.75-22.39-.38C83.34,192.66,85.52,198,88,203.13Zm56.59-62.94c-1.47,3.76-1.3,5.53,3,7,12.45,4.16,24.72,8.85,37.05,13.34,17.43,6.35,34.84,12.73,52.29,19,1.16.41,3,2.48,4-.29,2-5.38,4.24-10.69,3-16.71-2-9.76-8.1-15.59-17.35-18.22-3.64-1-5.5-2.74-5.77-6.63a14.74,14.74,0,0,0-4.64-9.59c-2.47-2.34-2.44-4.38-1.33-7.34q18.66-50.06,37.11-100.2c3.4-9.18,3.31-8.92-5.47-12.57-4.38-1.81-5.67-.53-7.16,3.57C226.62,46.38,213.67,81.14,200.92,116c-1,2.78-2.28,4.31-5.43,4.48a15.76,15.76,0,0,0-10.56,4.81c-2.4,2.49-4.53,2.44-7.37,1.18-3.61-1.6-7.38-2.79-9.95-2.81C156.3,123.68,148.63,129.76,144.54,140.19ZM121.36,124.1c.21-2.28-.71-3-3-3.4C102.68,118.09,95,110.37,92,94c-.63-3.48-2.94-2.94-4.68-2.49-3.54.9-9.42-3.16-10.45,2.41C74,109.49,65.48,118.57,49.81,120.77c-4.58.64-2.75,4.22-2.42,6.11.53,3.06-3.17,7.89,2.34,9.1,16.85,3.7,23.69,10.18,26.79,26.92.64,3.43,2.9,3,4.68,2.53,3.54-.92,8.22,3,10.68-2.42a3.8,3.8,0,0,0,.11-1c2.06-14.33,11.52-23.79,26.2-25.83,2.6-.37,3.41-1.32,3.17-3.73-.13-1.3,0-2.63,0-3.94C121.34,127.06,121.23,125.57,121.36,124.1Z"/></svg>
-                                <svg class="spinner size14 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
-                                    <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
-                                    <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
-                                </svg>
-                            </div>
-                            <span class="bold unselectable fs13">Unban user</span>
-                        </div>
-                    </div>
-                    @else
-                    <!-- ban user section -->
-                    <div id="ban-box" class="typical-section-style">
-                        <div class="align-center">
-                            <svg class="size14 mr6" fill='#d23a3a' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M2.19,144V114.32c2.06-1.67,1.35-4.2,1.78-6.3Q19.81,30.91,94.83,7.28c6.61-2.07,13.5-3.26,20.26-4.86h26.73c1.44,1.93,3.6.92,5.39,1.2C215,14.2,261.83,74.5,254.91,142.49c-6.25,61.48-57.27,110-119,113.3A127.13,127.13,0,0,1,4.9,155.18C4.09,151.45,4.42,147.42,2.19,144Zm126.75-30.7c-19.8,0-39.6.08-59.4-.08-3.24,0-4.14.82-4.05,4,.24,8.08.21,16.17,0,24.25-.07,2.83.77,3.53,3.55,3.53q59.89-.14,119.8,0c2.8,0,3.6-.74,3.53-3.54-.18-8.08-.23-16.17,0-24.25.1-3.27-.85-4.06-4.06-4C168.55,113.4,148.75,113.33,128.94,113.33Z"></path></svg>
-                            <h3 class="no-margin red">Ban user</h3>
-                        </div>
-                        <p class="mt8 lh15 dark">If the user behavior does not respect our guidelines and rules, ban the user. You need to select whether the ban is temporary or permanent using the section below</p>
-
-                        <div class="bold dark">Select ban type :</div>
-                        <div class="flex align-center fs12 my8">
-                            <div class="flex align-center">
-                                <input type="radio" name="user-ban-type" id="um-temporarily-ban" class="um-ban-type no-margin" checked="checked" autocomplete="off" value="temporary">
-                                <label for="um-temporarily-ban" class="bold ml4 dark">Temporary ban</label>
-                            </div>
-                            <div class="flex align-center" style="margin-left: 12px">
-                                <input type="radio" name="user-ban-type" id="um-permanent-ban" class="um-ban-type no-margin" autocomplete="off" value="permanent">
-                                <label for="um-permanent-ban" class="bold ml4 dark">Permanent ban</label>
-                            </div>
-                        </div>
+                        <!-- unban user section -->
                         <div class="typical-section-style">
-                            <!-- temporary ban box -->
-                            <div class="temporary-ban-box">
-                                <h4 class="no-margin dark mb4">Temporary ban</h4>
-                                <span class="fs13">This type of ban will prevent the user from doing all activities for a selected period of time.</span>
-                                <div class="flex align-center mt4">
-                                    <p class="no-margin bold fs11 dark mr8">Select ban duration :</p>
-                                    <select id="ban-duration">
-                                        <option value="7">7 days</option>
-                                        <option value="14">14 days</option>
-                                        <option value="30">1 month</option>
-                                        <option value="60">2 month</option>
-                                    </select>
+                            <div class="align-center">
+                                <svg class="size14 mr6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M3.53,137.79a8.46,8.46,0,0,1,8.7-4c2.1.23,4.28-.18,6.37.09,3.6.47,4.61-.68,4.57-4.46-.28-24.91,7.59-47.12,23-66.65C82.8,16.35,151.92,9.31,197.09,47.21c3,2.53,3.53,4,.63,7.08-5.71,6.06-11,12.5-16.28,19-2.13,2.63-3.37,3.21-6.4.73-42.11-34.47-103.77-13.24-116,39.81a72.6,72.6,0,0,0-1.61,17c0,2.36.76,3.09,3.09,3,4.25-.17,8.51-.19,12.75,0,5.46.25,8.39,5.55,4.94,9.66-12,14.24-24.29,28.18-36.62,42.39L4.91,143.69c-.37-.43-.5-1.24-1.38-1Z"></path><path d="M216.78,81.86l35.71,41c1.93,2.21,3.13,4.58,1.66,7.58s-3.91,3.54-6.9,3.58c-3.89.06-8.91-1.65-11.33.71-2.1,2-1.29,7-1.8,10.73-6.35,45.41-45.13,83.19-90.81,88.73-28.18,3.41-53.76-3-76.88-19.47-2.81-2-3.61-3.23-.85-6.18,6-6.45,11.66-13.26,17.26-20.09,1.79-2.19,2.87-2.46,5.39-.74,42.83,29.26,99.8,6.7,111.17-43.93,2.2-9.8,2.2-9.8-7.9-9.8-1.63,0-3.27-.08-4.9,0-3.2.18-5.94-.6-7.29-3.75s.13-5.61,2.21-8c7.15-8.08,14.21-16.24,21.31-24.37C207.43,92.59,212,87.31,216.78,81.86Z"></path></svg>
+                                <h3 class="no-margin dark">Unban user</h3>
+                            </div>
+
+                            @if($ban->type == 'permanent')
+                                <!-- permanently banned -->
+                                <h4 class="no-margin my12 dark">User's account is currently banned <span class="red">permanently</span></h4>
+                            @else
+                                <!-- temporarily banned -->
+                                <h4 class="no-margin my12 dark">User's account is currently banned <span class="red">temorarily</span></h4>
+                            @endif
+
+                            <p class="fs13 my8"><strong>banned by :</strong> <a href="{{ route('admin.users.management', ['user'=>$ban->banner->username]) }}" class="blue bold no-underline">{{ $ban->banner->username }}</a></p>
+                            <p class="fs13 my8"><strong>reason for ban :</strong> {{ $ban->reason->title }}</p>
+                            <!-- Only show duration and expiration if the ban is temporary -->
+                            @if($ban->type == 'temporary')
+                            <p class="fs13 my8"><strong>banned at :</strong> {{ $ban->bandate }}</p>
+                            <p class="fs13 my8"><strong>ban duration :</strong> {{ $ban->ban_duration_hummans }}</p>
+                            <p class="fs13 my8"><strong>expired at :</strong> {{ $ban->expired_at }}</p>
+                            @endif
+
+                            <p class="no-margin gray lh15 my12">If this ban was random, performed by mistake, or you decide to unban this user, press unban button below. This will make user account to live but keep ban records history.</p>
+                            
+                            <div id="unban-user-button" class="typical-button-style dark-bs align-center width-max-content">
+                                <div class="relative size14 mr4">
+                                    <svg class="size14 icon-above-spinner" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M2.22,214.12a4.7,4.7,0,0,1,4.22-4.69c12.34-1.16,23.78-11.69,25.38-24.57.43-3.47,1.27-5,5-4.58,3.08.37,6.61-.72,9.26.42,2.87,1.25,1.36,5.3,2.31,8,4.13,11.79,12.09,19,24.46,20.77,3,.45,4.58,1.24,4,4.47a6.53,6.53,0,0,0,0,1c0,3,.73,6.27-.35,8.78-1.18,2.72-5,1.3-7.59,2.16-12.24,4.07-19.57,12.2-21.33,25-.36,2.6-1,4-3.87,3.58a10.41,10.41,0,0,0-1.48,0c-3,0-6.26.73-8.78-.35-2.72-1.18-1.4-5-2.2-7.58-3.62-11.73-13.56-20.11-24.9-21.22a4.67,4.67,0,0,1-4.14-4.68Zm85.73-11c9.07,19.26,23.66,31.67,44.88,35.55,2.65.49,3.85,1.41,3.31,4.07-.86,4.27,1.28,5.9,5.15,7.11,27.62,8.63,56.87-.32,74.69-23.28,6.78-8.72,11.91-18.47,16.91-28.31,1.77-3.48.7-4.29-2.31-5.37q-44.46-16-88.84-32.34c-3.22-1.19-4.3-.54-5.78,2.41-6.78,13.57-17.81,21.47-32.82,24.13-7.29,1.3-14.41-.75-22.39-.38C83.34,192.66,85.52,198,88,203.13Zm56.59-62.94c-1.47,3.76-1.3,5.53,3,7,12.45,4.16,24.72,8.85,37.05,13.34,17.43,6.35,34.84,12.73,52.29,19,1.16.41,3,2.48,4-.29,2-5.38,4.24-10.69,3-16.71-2-9.76-8.1-15.59-17.35-18.22-3.64-1-5.5-2.74-5.77-6.63a14.74,14.74,0,0,0-4.64-9.59c-2.47-2.34-2.44-4.38-1.33-7.34q18.66-50.06,37.11-100.2c3.4-9.18,3.31-8.92-5.47-12.57-4.38-1.81-5.67-.53-7.16,3.57C226.62,46.38,213.67,81.14,200.92,116c-1,2.78-2.28,4.31-5.43,4.48a15.76,15.76,0,0,0-10.56,4.81c-2.4,2.49-4.53,2.44-7.37,1.18-3.61-1.6-7.38-2.79-9.95-2.81C156.3,123.68,148.63,129.76,144.54,140.19ZM121.36,124.1c.21-2.28-.71-3-3-3.4C102.68,118.09,95,110.37,92,94c-.63-3.48-2.94-2.94-4.68-2.49-3.54.9-9.42-3.16-10.45,2.41C74,109.49,65.48,118.57,49.81,120.77c-4.58.64-2.75,4.22-2.42,6.11.53,3.06-3.17,7.89,2.34,9.1,16.85,3.7,23.69,10.18,26.79,26.92.64,3.43,2.9,3,4.68,2.53,3.54-.92,8.22,3,10.68-2.42a3.8,3.8,0,0,0,.11-1c2.06-14.33,11.52-23.79,26.2-25.83,2.6-.37,3.41-1.32,3.17-3.73-.13-1.3,0-2.63,0-3.94C121.34,127.06,121.23,125.57,121.36,124.1Z"/></svg>
+                                    <svg class="spinner size14 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
+                                        <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                        <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                    </svg>
+                                </div>
+                                <span class="bold unselectable fs13">Unban user</span>
+                            </div>
+                        </div>
+                    @else
+                        <!-- ban user section -->
+
+                        <!-- 
+                            Special case:
+                            Sometimes a user is temporarily banned, and the ban duration is expired and the account is
+                            ready to be used, but the user does not access his account; when the account is temporarily banned,
+                            and the ban duration is expired, we cleared the ban and change the user status to active again.
+                            But If the user does not access his account (AccountStatus middleware is not accessed),
+                            the admin should be aware of that by displaying clear expired ban section
+                        -->
+                        @if($user->status == 'temp-banned')
+                        <div class="typical-section-style dark">
+                            <p class="no-margin lh15 fs13">This user <strong>was temporarily banned</strong>, and the ban duration is expired, but he still has temporary ban status and he needs to login to his account to update the status and delete the last ban record.</p>
+                            <p class="my8 lh15 fs13">You can force this action by clean the expired temporary ban record, and change the user account status to active.</p>
+                            <div class="simple-line-separator my8"></div>
+                            <p class="my8 fs12"><strong>reason for ban :</strong> {{ $ban->reason->reason }}</p>
+                            <p class="my8 fs12"><strong>ban duration :</strong> {{ $ban->ban_duration_hummans }}</p>
+                            <p class="my8 fs12"><strong>banned at :</strong> {{ $ban->bandate }}</p>
+                            <p class="my8 fs12"><strong>expired at :</strong> {{ $ban->expired_at }}</p>
+
+                            <div id="clean-expired-ban-button" class="typical-button-style dark-bs align-center width-max-content my12">
+                                <div class="relative size14 mr4">
+                                    <svg class="size14 icon-above-spinner" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M2.22,214.12a4.7,4.7,0,0,1,4.22-4.69c12.34-1.16,23.78-11.69,25.38-24.57.43-3.47,1.27-5,5-4.58,3.08.37,6.61-.72,9.26.42,2.87,1.25,1.36,5.3,2.31,8,4.13,11.79,12.09,19,24.46,20.77,3,.45,4.58,1.24,4,4.47a6.53,6.53,0,0,0,0,1c0,3,.73,6.27-.35,8.78-1.18,2.72-5,1.3-7.59,2.16-12.24,4.07-19.57,12.2-21.33,25-.36,2.6-1,4-3.87,3.58a10.41,10.41,0,0,0-1.48,0c-3,0-6.26.73-8.78-.35-2.72-1.18-1.4-5-2.2-7.58-3.62-11.73-13.56-20.11-24.9-21.22a4.67,4.67,0,0,1-4.14-4.68Zm85.73-11c9.07,19.26,23.66,31.67,44.88,35.55,2.65.49,3.85,1.41,3.31,4.07-.86,4.27,1.28,5.9,5.15,7.11,27.62,8.63,56.87-.32,74.69-23.28,6.78-8.72,11.91-18.47,16.91-28.31,1.77-3.48.7-4.29-2.31-5.37q-44.46-16-88.84-32.34c-3.22-1.19-4.3-.54-5.78,2.41-6.78,13.57-17.81,21.47-32.82,24.13-7.29,1.3-14.41-.75-22.39-.38C83.34,192.66,85.52,198,88,203.13Zm56.59-62.94c-1.47,3.76-1.3,5.53,3,7,12.45,4.16,24.72,8.85,37.05,13.34,17.43,6.35,34.84,12.73,52.29,19,1.16.41,3,2.48,4-.29,2-5.38,4.24-10.69,3-16.71-2-9.76-8.1-15.59-17.35-18.22-3.64-1-5.5-2.74-5.77-6.63a14.74,14.74,0,0,0-4.64-9.59c-2.47-2.34-2.44-4.38-1.33-7.34q18.66-50.06,37.11-100.2c3.4-9.18,3.31-8.92-5.47-12.57-4.38-1.81-5.67-.53-7.16,3.57C226.62,46.38,213.67,81.14,200.92,116c-1,2.78-2.28,4.31-5.43,4.48a15.76,15.76,0,0,0-10.56,4.81c-2.4,2.49-4.53,2.44-7.37,1.18-3.61-1.6-7.38-2.79-9.95-2.81C156.3,123.68,148.63,129.76,144.54,140.19ZM121.36,124.1c.21-2.28-.71-3-3-3.4C102.68,118.09,95,110.37,92,94c-.63-3.48-2.94-2.94-4.68-2.49-3.54.9-9.42-3.16-10.45,2.41C74,109.49,65.48,118.57,49.81,120.77c-4.58.64-2.75,4.22-2.42,6.11.53,3.06-3.17,7.89,2.34,9.1,16.85,3.7,23.69,10.18,26.79,26.92.64,3.43,2.9,3,4.68,2.53,3.54-.92,8.22,3,10.68-2.42a3.8,3.8,0,0,0,.11-1c2.06-14.33,11.52-23.79,26.2-25.83,2.6-.37,3.41-1.32,3.17-3.73-.13-1.3,0-2.63,0-3.94C121.34,127.06,121.23,125.57,121.36,124.1Z"/></svg>
+                                    <svg class="spinner size14 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
+                                        <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                        <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                    </svg>
+                                </div>
+                                <span class="bold unselectable">Clean expired ban & active account</span>
+                            </div>
+                        </div>
+                        @else
+                        <div id="ban-box" class="typical-section-style">
+                            <div class="align-center">
+                                <svg class="size14 mr6" fill='#d23a3a' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M2.19,144V114.32c2.06-1.67,1.35-4.2,1.78-6.3Q19.81,30.91,94.83,7.28c6.61-2.07,13.5-3.26,20.26-4.86h26.73c1.44,1.93,3.6.92,5.39,1.2C215,14.2,261.83,74.5,254.91,142.49c-6.25,61.48-57.27,110-119,113.3A127.13,127.13,0,0,1,4.9,155.18C4.09,151.45,4.42,147.42,2.19,144Zm126.75-30.7c-19.8,0-39.6.08-59.4-.08-3.24,0-4.14.82-4.05,4,.24,8.08.21,16.17,0,24.25-.07,2.83.77,3.53,3.55,3.53q59.89-.14,119.8,0c2.8,0,3.6-.74,3.53-3.54-.18-8.08-.23-16.17,0-24.25.1-3.27-.85-4.06-4.06-4C168.55,113.4,148.75,113.33,128.94,113.33Z"></path></svg>
+                                <h3 class="no-margin red">Ban user</h3>
+                            </div>
+                            <p class="mt8 lh15 dark">If the user behavior does not respect our guidelines and rules, ban the user. You need to select whether the ban is temporary or permanent using the section below</p>
+
+                            <div class="bold dark">Select ban type :</div>
+                            <div class="flex align-center fs12 my8">
+                                <div class="flex align-center">
+                                    <input type="radio" name="user-ban-type" id="um-temporarily-ban" class="um-ban-type no-margin" checked="checked" autocomplete="off" value="temporary">
+                                    <label for="um-temporarily-ban" class="bold ml4 dark">Temporary ban</label>
+                                </div>
+                                <div class="flex align-center" style="margin-left: 12px">
+                                    <input type="radio" name="user-ban-type" id="um-permanent-ban" class="um-ban-type no-margin" autocomplete="off" value="permanent">
+                                    <label for="um-permanent-ban" class="bold ml4 dark">Permanent ban</label>
                                 </div>
                             </div>
-                            <!-- permanent ban box -->
-                            <div class="permanent-ban-box none">
-                                <h4 class="no-margin dark mb4">Permanent ban</h4>
-                                <span class="fs13">Permanent ban will prevent the user from accessing his account permanently.</span>
+                            <div class="typical-section-style">
+                                <!-- temporary ban box -->
+                                <div class="temporary-ban-box">
+                                    <h4 class="no-margin dark mb4">Temporary ban</h4>
+                                    <span class="fs13">This type of ban will prevent the user from doing all activities for a selected period of time.</span>
+                                    <div class="flex align-center mt4">
+                                        <p class="no-margin bold fs11 dark mr8">Select ban duration :</p>
+                                        <select id="ban-duration">
+                                            <option value="7">7 days</option>
+                                            <option value="14">14 days</option>
+                                            <option value="30">1 month</option>
+                                            <option value="60">2 month</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- permanent ban box -->
+                                <div class="permanent-ban-box none">
+                                    <h4 class="no-margin dark mb4">Permanent ban</h4>
+                                    <span class="fs13">Permanent ban will prevent the user from accessing his account permanently.</span>
+                                </div>
+                            </div>
+
+                            <div class="align-center mt8">
+                                <div class="bold dark mr8 no-wrap">Select reason for ban :</div>
+                                <select id="ban-reason" class="styled-input" autocomplete="off">
+                                    @foreach($banreasons as $banreason)
+                                    <option value="{{ $banreason->id }}">{{ $banreason->title }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div id="ban-user-button" class="typical-button-style red-bs align-center width-max-content mt8">
+                                <div class="relative size14 mr4">
+                                    <svg class="size12 icon-above-spinner" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M2.19,144V114.32c2.06-1.67,1.35-4.2,1.78-6.3Q19.81,30.91,94.83,7.28c6.61-2.07,13.5-3.26,20.26-4.86h26.73c1.44,1.93,3.6.92,5.39,1.2C215,14.2,261.83,74.5,254.91,142.49c-6.25,61.48-57.27,110-119,113.3A127.13,127.13,0,0,1,4.9,155.18C4.09,151.45,4.42,147.42,2.19,144Zm126.75-30.7c-19.8,0-39.6.08-59.4-.08-3.24,0-4.14.82-4.05,4,.24,8.08.21,16.17,0,24.25-.07,2.83.77,3.53,3.55,3.53q59.89-.14,119.8,0c2.8,0,3.6-.74,3.53-3.54-.18-8.08-.23-16.17,0-24.25.1-3.27-.85-4.06-4.06-4C168.55,113.4,148.75,113.33,128.94,113.33Z"></path></svg>
+                                    <svg class="spinner size14 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
+                                        <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                        <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                    </svg>
+                                </div>
+                                <span class="bold unselectable">Ban user</span>
                             </div>
                         </div>
-
-                        <div class="align-center mt8">
-                            <div class="bold dark mr8 no-wrap">Select reason for ban :</div>
-                            <select id="ban-reason" class="styled-input" autocomplete="off">
-                                @foreach($banreasons as $banreason)
-                                <option value="{{ $banreason->id }}">{{ $banreason->title }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div id="ban-user-button" class="typical-button-style red-bs align-center width-max-content mt8">
-                            <div class="relative size14 mr4">
-                                <svg class="size12 icon-above-spinner" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M2.19,144V114.32c2.06-1.67,1.35-4.2,1.78-6.3Q19.81,30.91,94.83,7.28c6.61-2.07,13.5-3.26,20.26-4.86h26.73c1.44,1.93,3.6.92,5.39,1.2C215,14.2,261.83,74.5,254.91,142.49c-6.25,61.48-57.27,110-119,113.3A127.13,127.13,0,0,1,4.9,155.18C4.09,151.45,4.42,147.42,2.19,144Zm126.75-30.7c-19.8,0-39.6.08-59.4-.08-3.24,0-4.14.82-4.05,4,.24,8.08.21,16.17,0,24.25-.07,2.83.77,3.53,3.55,3.53q59.89-.14,119.8,0c2.8,0,3.6-.74,3.53-3.54-.18-8.08-.23-16.17,0-24.25.1-3.27-.85-4.06-4.06-4C168.55,113.4,148.75,113.33,128.94,113.33Z"></path></svg>
-                                <svg class="spinner size14 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
-                                    <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
-                                    <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
-                                </svg>
-                            </div>
-                            <span class="bold unselectable">Ban user</span>
-                        </div>
-                    </div>
+                        @endif
                     @endif
                 </div>
             </div>

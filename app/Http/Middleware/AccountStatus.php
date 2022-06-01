@@ -24,7 +24,15 @@ class AccountStatus
                 case 'deactivated':
                     return redirect()->route('user.account.activate');
                 case 'temp-banned':
-                    /** React to temporary ban */
+                    /**
+                     * We check if the duration of temporary ban is experid; If so we have to delete ban 
+                     * record (soft delete it), and set user account status to live
+                     */
+                    $ban = $user->bans()->orderBy('created_at', 'desc')->where('ban_duration', '<>', -1)->first();
+                    if(is_null($ban) || $ban->is_expired) {
+                        $user->update(['status'=>'active']);
+                        $ban->delete();
+                    }
                     break;
                 case 'deleted':
                 case 'banned':

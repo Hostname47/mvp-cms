@@ -24,6 +24,7 @@ class CreateBansTable extends Migration
             $table->foreign('admin_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('ban_reason')->references('id')->on('ban_reasons')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
