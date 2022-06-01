@@ -138,6 +138,7 @@ class User extends Authenticatable
             case 'active':
                 return 'green';
             case 'banned':
+            case 'temp-banned':
             case 'deleted':
                 return 'red';
             default:

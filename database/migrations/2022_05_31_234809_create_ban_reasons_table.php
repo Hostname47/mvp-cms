@@ -15,9 +15,8 @@ class CreateBanReasonsTable extends Migration
     {
         Schema::create('ban_reasons', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
             $table->string('slug');
-            $table->string('reason');
+            $table->string('title');
         });
     }
 

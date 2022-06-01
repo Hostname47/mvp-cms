@@ -18,7 +18,7 @@ class AdminUserController extends Controller
             $user = User::withoutGlobalScopes()->where('username', $request->user)->first();
             if($user) {
                 $highrole = ($hr = $user->high_role(true)) ? $hr->title : $highrole;
-
+                $banreasons = BanReason::all();
             }
         }
         

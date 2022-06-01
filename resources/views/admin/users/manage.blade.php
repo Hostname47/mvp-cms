@@ -142,7 +142,7 @@
                                 <span class="fs13">This type of ban will prevent the user from doing all activities for a selected period of time.</span>
                                 <div class="flex align-center mt4">
                                     <p class="no-margin bold fs11 dark mr8">Select ban duration :</p>
-                                    <select class="ban-duration">
+                                    <select id="ban-duration">
                                         <option value="7">7 days</option>
                                         <option value="14">14 days</option>
                                         <option value="30">1 month</option>
@@ -158,8 +158,8 @@
                         </div>
 
                         <div class="align-center mt8">
-                            <div class="bold dark mr8">Select reason for ban :</div>
-                            <select name="" id="ban-reason">
+                            <div class="bold dark mr8 no-wrap">Select reason for ban :</div>
+                            <select id="ban-reason" class="styled-input" autocomplete="off">
                                 @foreach($banreasons as $banreason)
                                 <option value="{{ $banreason->id }}">{{ $banreason->title }}</option>
                                 @endforeach
