@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Tests\TestCase;
-use App\Models\{User,Category,Post,Comment,Clap,AuthorRequest,ContactMessage,Faq,Permission,Role,Report,Subscriber};
+use App\Models\{User,Category,Post,Comment,Clap,AuthorRequest,ContactMessage,Faq,Permission,Role,Report,Subscriber,BanReason,Ban};
 use Laravel\Socialite\Contracts\Factory as Socialite;
 use Laravel\Socialite\Two\GoogleProvider;
 use Laravel\Socialite\Two\User as SocialUser;

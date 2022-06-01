@@ -44,4 +44,16 @@ class UserPolicy
         
         return true;
     }
+
+    public function ban_user(User $user, $u) {
+        if(!$user->has_permission('ban-user')) {
+            return $this->deny("Unauthorized action due to lack of permissions.");
+        }
+
+        if($u->is_banned()) {
+            return $this->deny("User already banned");
+        }
+
+        return true;
+    }
 }

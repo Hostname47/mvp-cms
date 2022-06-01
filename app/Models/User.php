@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\{Role,RoleUser,Comment,Clap,Report,ContactMessage,Faq,SavedPost};
+use App\Models\{Role,RoleUser,Comment,Clap,Report,ContactMessage,Faq,SavedPost,Ban};
 use Carbon\Carbon;
 
 class User extends Authenticatable
@@ -59,6 +59,10 @@ class User extends Authenticatable
 
     public function faqs() {
         return $this->hasMany(Faq::class);
+    }
+
+    public function bans() {
+        return $this->hasMany(Ban::class);
     }
 
     public function posts_saved() {
@@ -149,5 +153,25 @@ class User extends Authenticatable
     public function detach_permission($slug) {
         $permission = Permission::where('slug', $slug)->first();
         $this->permissions()->detach($permission->id);
+    }
+
+    public function is_banned() {
+        switch($this->status) {
+            case 'banned':
+                return true;
+            // case 'temp-banned':
+            //     /**
+            //      * Here because we're using soft deleting in userban models we have to check whether it exists a userban
+            //      * record that is not soft deleted and not expired
+            //      */
+            //     if($ban=$this->bans()->orderBy('created_at', 'desc')->first()) {
+            //         $now_in_seconds = Carbon::now()->timestamp;
+            //         $deadline_in_seconds = $ban->created_at->addDays($ban->ban_duration)->timestamp;
+            //         return $deadline_in_seconds - $now_in_seconds > 0; // user is banned if ban deadline is greather than the current(now) timestamp
+            //     }
+            //     return false;
+        }
+
+        return false;
     }
 }
