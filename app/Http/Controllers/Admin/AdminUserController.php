@@ -66,6 +66,17 @@ class AdminUserController extends Controller
         Session::flash('message', $user->username . ' has been banned successfully');
     }
 
+    public function unban(Request $request) {
+        $this->authorize('unban_user', [User::class]);
+        $data = $request->validate(['user_id'=>'required|exists:users,id']);
+        $user = User::withoutGlobalScopes()->find($data['user_id']);
+        // Delete all bans records (soft delete)
+        $user->bans()->delete();
+        // Then we change account status to active
+        $user->update(['status'=>'active']);
+        Session::flash('message', $user->username . '\'s account has been unbaned and restored successfully');
+    }
+
     public function clear_expired_ban(Request $request) {
         $user_id = $request->validate(['user_id'=>'required|exists:users,id'])['user_id'];
         $user = User::withoutGlobalScopes()->find($user_id);
@@ -74,6 +85,6 @@ class AdminUserController extends Controller
         $user->bans()->where('ban_duration', '<>', -1)->orderBy('created_at', 'desc')->first()->delete();
         $user->update(['status'=>'active']);
 
-        \Session::flash('message', 'Expired ban has been cleared successfully along with setting the account status to active');
+        Session::flash('message', 'Expired ban has been cleared successfully along with setting the account status to active');
     }
 }

@@ -220,6 +220,46 @@ $('#ban-user-button').on('click', function() {
     });
 });
 
+let unban_user_lock = true;
+$('#unban-user-button').on('click', function() {
+    let button = $(this);
+    let spinner = button.find('.spinner');
+    let buttonicon = button.find('.icon-above-spinner');
+
+    spinner.addClass('inf-rotate');
+    spinner.removeClass('opacity0');
+    buttonicon.addClass('none');
+    button.addClass('dark-bs-disabled');
+    
+    $.ajax({
+        type: 'post',
+        url: `/admin/users/unban`,
+        data: {
+            user_id: $('#user-id').val(),
+        },
+        success: function(response) {
+            left_bottom_notification('User unbanned successfully.');
+            location.reload();
+        },
+        error: function(response) {
+            let errorObject = JSON.parse(response.responseText);
+            let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+            if(errorObject.errors) {
+                let errors = errorObject.errors;
+                error = errors[Object.keys(errors)[0]][0];
+            }
+            print_top_message(error, 'error');
+
+            spinner.addClass('opacity0');
+            spinner.removeClass('inf-rotate');
+            buttonicon.removeClass('none');
+            button.removeClass('dark-bs-disabled');
+
+            ban_user_lock = true;
+        }
+    });
+});
+
 let clean_expired_ban_lock = true;
 $('#clean-expired-ban-button').on('click', function() {
     if(!clean_expired_ban_lock) return;

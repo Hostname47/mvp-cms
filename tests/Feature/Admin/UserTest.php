@@ -159,4 +159,47 @@ class UserTest extends TestCase
             'user_id'=>$user->id
         ])->assertForbidden();
     }
+
+    /** @test */
+    public function unban_a_user() {
+        $user0 = User::factory()->create(['password'=>Hash::make('Hostname47')]);
+        $user1 = User::factory()->create(['password'=>Hash::make('Hostname47')]);
+        $banreason = BanReason::create(['title'=>'foo','slug'=>'foo']);
+
+        // Permanent ban
+        $this->post('/admin/users/ban', [
+            'user_id'=>$user0->id, 'ban_reason'=>$banreason->id, 'type'=>'permanent'
+        ]);
+        // Temporary ban
+        $this->post('/admin/users/ban', [
+            'user_id'=>$user1->id, 'ban_reason'=>$banreason->id, 'ban_duration'=>7, 'type'=>'temporary'
+        ]);
+        $this->assertEquals('banned', $user0->refresh()->status);
+        $this->assertEquals('temp-banned', $user1->refresh()->status);
+        $this->assertCount(2, Ban::all());
+        
+        $this->post('/admin/users/unban', ['user_id'=>$user0->id]);
+        
+        $this->assertEquals('active', $user0->refresh()->status);
+        $this->assertCount(1, Ban::all());
+
+        $this->post('/admin/users/unban', ['user_id'=>$user1->id]);
+        
+        $this->assertEquals('active', $user1->refresh()->status);
+        $this->assertCount(0, Ban::all());
+    }
+
+    /** @test */
+    public function unban_a_user_requires_permission() {
+        $user0 = User::factory()->create(['password'=>Hash::make('Hostname47')]);
+        $user1 = User::factory()->create(['password'=>Hash::make('Hostname47')]);
+        $banreason = BanReason::create(['title'=>'foo','slug'=>'foo']);
+        $this->authuser->detach_permission('unban-user');
+
+        // Permanent ban
+        $this->post('/admin/users/ban', ['user_id'=>$user0->id, 'ban_reason'=>$banreason->id, 'type'=>'permanent']);
+        // Unban
+        $this->post('/admin/users/unban', ['user_id'=>$user0->id])
+            ->assertForbidden();
+    }
 }

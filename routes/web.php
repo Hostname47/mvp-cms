@@ -62,6 +62,7 @@ Route::middleware(['able-to-access-admin-section'])->group(function() {
 
     Route::get('/admin/users', [AdminUserController::class, 'manage'])->name('admin.users.management');
     Route::post('/admin/users/ban', [AdminUserController::class, 'ban']);
+    Route::post('/admin/users/unban', [AdminUserController::class, 'unban']);
     Route::post('/admin/users/bans/clear-expired', [AdminUserController::class, 'clear_expired_ban']);
 
     Route::get('/admin/media/fetch', [MediaController::class, 'fetch_media']);

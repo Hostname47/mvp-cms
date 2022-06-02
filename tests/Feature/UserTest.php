@@ -369,7 +369,7 @@ class UserTest extends TestCase
         $user = $user->refresh();
         $this->actingAs($user);
         $this->post('/settings/account/delete', ['password'=>'Hostname47']);
-        $user = User::withTrashed()->find($user->id);
+        $user = User::withoutGlobalScopes()->find($user->id);
         $this->assertEquals('deleted', $user->status);
         $this->assertNotNull($user->deleted_at);
     }
@@ -422,7 +422,7 @@ class UserTest extends TestCase
 
         $this->post('/settings/account/delete', ['password'=>'Hostname47']);
 
-        $user = User::withTrashed()->find($user->id);
+        $user = User::withoutGlobalScopes()->find($user->id);
         $this->assertNotNull($user->deleted_at);
         $this->assertTrue($user->status == 'deleted');
         $this->assertCount(0, AuthorRequest::all());

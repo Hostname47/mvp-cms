@@ -126,11 +126,11 @@ class User extends Authenticatable
     }
 
     public function getJoinDateHumansAttribute() {
-        return (new Carbon($this->updated_at))->diffForHumans();
+        return (new Carbon($this->created_at))->diffForHumans();
     }
 
     public function getJoinDateAttribute() {
-        return (new Carbon($this->updated_at))->isoFormat("dddd D MMM YYYY");
+        return (new Carbon($this->created_at))->isoFormat("dddd D MMM YYYY");
     }
 
     public function getScolorAttribute() {
