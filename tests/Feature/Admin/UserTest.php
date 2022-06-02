@@ -38,7 +38,7 @@ class UserTest extends TestCase
     /** @test */
     public function ban_a_user_permanently() {
         $user = User::factory()->create(['password'=>Hash::make('Hostname47')]);
-        $banreason = BanReason::create(['title'=>'foo','slug'=>'foo','reason'=>'foo']);
+        $banreason = BanReason::create(['title'=>'foo','slug'=>'foo']);
         $profile = route('user.profile', ['user' => $user->username]);
         $this->assertEquals('active', $user->status);
         $this->assertCount(0, Ban::all());
@@ -57,7 +57,7 @@ class UserTest extends TestCase
     /** @test */
     public function ban_a_user_requires_permission() {
         $user = User::factory()->create(['password'=>Hash::make('Hostname47')]);
-        $banreason = BanReason::create(['title'=>'foo','slug'=>'foo','reason'=>'foo']);
+        $banreason = BanReason::create(['title'=>'foo','slug'=>'foo']);
         $this->authuser->detach_permission('ban-user');
 
         $this->post('/admin/users/ban', [

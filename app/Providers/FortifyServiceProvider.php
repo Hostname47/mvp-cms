@@ -49,6 +49,22 @@ class FortifyServiceProvider extends ServiceProvider
                             \Session::flash('has-auth-error', 1);
                             \Session::flash('auth-error', __('This account has already been deleted permanently.'));
                             break;
+                        case 'temp-banned':
+                            /**
+                             * We check if the duration of temporary ban is experid; If so we have to delete ban 
+                             * record (soft delete it), and set user account status to live
+                             */
+                            $ban = $user->bans()->orderBy('created_at', 'desc')->where('ban_duration', '<>', -1)->first();
+                            if(is_null($ban) || $ban->is_expired) {
+                                $user->update(['status'=>'active']);
+                                $ban->delete();
+
+                                \Session::flash('message', __('Your account is active now. Frequent bans and strikes may cause your account to be terminated permanently.'));
+                                return $user;
+                            }
+                            break;
+                            \Session::flash('has-auth-error', 1);
+                            \Session::flash('auth-error', __('Your account has been banned temporarily.'));
                         case 'banned':
                             \Session::flash('has-auth-error', 1);
                             \Session::flash('auth-error', __('Your account has been banned permanently.'));

@@ -168,7 +168,7 @@
                             <p class="no-margin lh15 fs13">This user <strong>was temporarily banned</strong>, and the ban duration is expired, but he still has temporary ban status and he needs to login to his account to update the status and delete the last ban record.</p>
                             <p class="my8 lh15 fs13">You can force this action by clean the expired temporary ban record, and change the user account status to active.</p>
                             <div class="simple-line-separator my8"></div>
-                            <p class="my8 fs12"><strong>reason for ban :</strong> {{ $ban->reason->reason }}</p>
+                            <p class="my8 fs12"><strong>reason for ban :</strong> {{ $ban->reason->title }}</p>
                             <p class="my8 fs12"><strong>ban duration :</strong> {{ $ban->ban_duration_hummans }}</p>
                             <p class="my8 fs12"><strong>banned at :</strong> {{ $ban->bandate }}</p>
                             <p class="my8 fs12"><strong>expired at :</strong> {{ $ban->expired_at }}</p>
