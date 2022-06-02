@@ -300,3 +300,43 @@ $('#clean-expired-ban-button').on('click', function() {
         },
     });
 });
+
+let delete_account_lock = true;
+$('#delete-account-button').on('click', function() {
+    if(!delete_account_lock) return;
+    delete_account_lock = false;
+
+    let button = $(this);
+    let buttonicon = button.find('.icon-above-spinner');
+    let spinner = button.find('.spinner');
+
+    button.addClass('red-bs-disabled');
+    buttonicon.addClass('none');
+    spinner.removeClass('opacity0');
+    spinner.addClass('inf-rotate');
+
+    $.ajax({
+        type: 'delete',
+        url: `/admin/users`,
+        data: {
+            user_id: $('#user-id').val()
+        },
+        success: function() {
+            location.reload();
+        },
+        error: function(response) {
+            let errorObject = JSON.parse(response.responseText);
+            let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+            if(errorObject.errors) {
+                let errors = errorObject.errors;
+                error = errors[Object.keys(errors)[0]][0];
+            }
+            print_top_message(error, 'error');
+
+            button.removeClass('red-bs-disabled');
+            buttonicon.removeClass('none');
+            spinner.addClass('opacity0');
+            delete_account_lock = true;
+        },
+    });
+});

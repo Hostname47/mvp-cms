@@ -68,4 +68,16 @@ class UserPolicy
 
         return true;
     }
+
+    public function delete(User $user, $u) {
+        if(!$user->has_permission('delete-user')) {
+            return $this->deny("Unauthorized action due to lack of permissions.");
+        }
+        
+        if($user->id == $u->id) {
+            return $this->deny("You cannot delete your own account.");
+        }
+
+        return true;
+    }
 }

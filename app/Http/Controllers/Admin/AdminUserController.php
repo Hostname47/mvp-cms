@@ -87,4 +87,23 @@ class AdminUserController extends Controller
 
         Session::flash('message', 'Expired ban has been cleared successfully along with setting the account status to active');
     }
+
+    public function delete(Request $request) {
+        $id = $request->validate(['user_id'=>'required|exists:users,id'])['user_id'];
+        $user = User::withoutGlobalScopes()->find($id);
+        $this->authorize('delete', [User::class, $user]);
+
+        $user->delete();
+        $data = $user->toArray();
+        $user->forceDelete(); // Look at boot method in User model to check cleanups
+        /**
+         * Here we force delete the user account to run cascading delete to clean all related
+         * relationships. After that we recreate the user with the same data by mark its account
+         * as deleted (soft delete it and give it deleted status).
+         */
+        $data['status'] = 'deleted';
+        $new_account = User::create($data);
+        
+        Session::flash('message', 'User account has been deleted successfully. A record with username and email will be preserved to prevent future impersonation.');
+    }
 }

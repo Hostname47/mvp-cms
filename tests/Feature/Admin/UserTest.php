@@ -29,6 +29,7 @@ class UserTest extends TestCase
             'access-admin-section' => Permission::factory()->create(['title'=>'aas', 'slug'=>'access-admin-section']),
             'ban-user' => Permission::factory()->create(['title'=>'bu', 'slug'=>'ban-user']),
             'unban-user' => Permission::factory()->create(['title'=>'uu', 'slug'=>'unban-user']),
+            'delete-user' => Permission::factory()->create(['title'=>'du', 'slug'=>'delete-user']),
         ];
 
         $user = $this->authuser = User::factory()->create();
@@ -36,6 +37,7 @@ class UserTest extends TestCase
         $user->attach_permission('access-admin-section');
         $user->attach_permission('ban-user');
         $user->attach_permission('unban-user');
+        $user->attach_permission('delete-user');
     }
 
     /** @test */
@@ -201,5 +203,25 @@ class UserTest extends TestCase
         // Unban
         $this->post('/admin/users/unban', ['user_id'=>$user0->id])
             ->assertForbidden();
+    }
+
+    /** @test */
+    public function delete_user_account() {
+        $user = User::factory()->create(['password'=>Hash::make('Hostname47')]);
+        $this->assertEquals('active', $user->status);
+        $this->delete('/admin/users', [
+            'user_id'=>$user->id
+        ]);
+        $this->assertEquals('deleted', $user->refresh()->status);
+        $this->assertNotNull($user->deleted_at);
+    }
+
+    /** @test */
+    public function delete_user_account_requires_permission() {
+        $user = User::factory()->create(['password'=>Hash::make('Hostname47')]);
+        $this->authuser->detach_permission('delete-user');
+        $this->delete('/admin/users', [
+            'user_id'=>$user->id
+        ])->assertForbidden();
     }
 }

@@ -64,6 +64,7 @@ Route::middleware(['able-to-access-admin-section'])->group(function() {
     Route::post('/admin/users/ban', [AdminUserController::class, 'ban']);
     Route::post('/admin/users/unban', [AdminUserController::class, 'unban']);
     Route::post('/admin/users/bans/clear-expired', [AdminUserController::class, 'clear_expired_ban']);
+    Route::delete('/admin/users', [AdminUserController::class, 'delete']);
 
     Route::get('/admin/media/fetch', [MediaController::class, 'fetch_media']);
     Route::get('/admin/media/set/components', [MediaController::class, 'fetch_media_set_components']);

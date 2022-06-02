@@ -62,4 +62,28 @@ class Ban extends Model
         $deadline = $this->created_at->addDays($this->ban_duration)->timestamp;
         return  $now - $deadline > 0;
     }
+
+    public function getTimeRemainingAttribute($value) {
+        $now = Carbon::now()->timestamp;
+        $deadline = $this->created_at->addDays($this->ban_duration)->timestamp;
+        $timeremaining = $deadline - $now;
+
+        $months = floor($timeremaining/2592000);
+        $days = floor(($timeremaining%2592000)/86400);
+        $hours = floor(($timeremaining%86400)/3600);
+        
+        $timeremaining = "";
+        if($months) 
+            $timeremaining .= $months . ' ' . __('months') . ' ';
+        if($days) {
+            if($months) $timeremaining .= __('and') . ' ';
+            $timeremaining .= $days . ' ' . __('days') . ' ';
+        }
+        if($hours) {
+            if($days) $timeremaining .= __('and') . ' ';
+            $timeremaining .= $hours . ' ' . __('hours');
+        }
+
+        return trim($timeremaining);
+    }
 }

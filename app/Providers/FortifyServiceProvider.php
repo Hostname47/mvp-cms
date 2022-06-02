@@ -63,7 +63,7 @@ class FortifyServiceProvider extends ServiceProvider
                                 return $user;
                             }
                             \Session::flash('has-auth-error', 1);
-                            \Session::flash('auth-error', __('Your account has been banned temporarily.'));
+                            \Session::flash('auth-error', __('Your account has been banned temporarily for ' . $ban->ban_duration_hummans . ' starting at : ' . $ban->bandate . ' - time remaining: ' . $ban->time_remaining));
                             break;
                         case 'banned':
                             \Session::flash('has-auth-error', 1);
