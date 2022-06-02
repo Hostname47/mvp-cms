@@ -62,9 +62,9 @@ class FortifyServiceProvider extends ServiceProvider
                                 \Session::flash('message', __('Your account is active now. Frequent bans and strikes may cause your account to be terminated permanently.'));
                                 return $user;
                             }
-                            break;
                             \Session::flash('has-auth-error', 1);
                             \Session::flash('auth-error', __('Your account has been banned temporarily.'));
+                            break;
                         case 'banned':
                             \Session::flash('has-auth-error', 1);
                             \Session::flash('auth-error', __('Your account has been banned permanently.'));

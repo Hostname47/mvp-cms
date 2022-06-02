@@ -65,4 +65,15 @@ class AdminUserController extends Controller
 
         Session::flash('message', $user->username . ' has been banned successfully');
     }
+
+    public function clear_expired_ban(Request $request) {
+        $user_id = $request->validate(['user_id'=>'required|exists:users,id'])['user_id'];
+        $user = User::withoutGlobalScopes()->find($user_id);
+        $this->authorize('unban_user', [User::class]);
+        
+        $user->bans()->where('ban_duration', '<>', -1)->orderBy('created_at', 'desc')->first()->delete();
+        $user->update(['status'=>'active']);
+
+        \Session::flash('message', 'Expired ban has been cleared successfully along with setting the account status to active');
+    }
 }

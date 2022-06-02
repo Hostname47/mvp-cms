@@ -11,6 +11,8 @@ class Ban extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $guarded = [];
+
     public function banner() {
         return $this->belongsTo(User::class, 'admin_id');
     }

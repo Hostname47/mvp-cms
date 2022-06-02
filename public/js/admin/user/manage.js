@@ -236,7 +236,7 @@ $('#clean-expired-ban-button').on('click', function() {
 
     $.ajax({
         type: 'post',
-        url: `/admin/users/bans/clean-expired`,
+        url: `/admin/users/bans/clear-expired`,
         data: {
             user_id: $('#user-id').val()
         },
