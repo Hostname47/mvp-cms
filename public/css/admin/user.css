@@ -38,7 +38,7 @@
     gap: 8px;
 }
 
-.post-component {
+.post-component, .comment-component {
     padding: 8px;
     border: 1px solid gainsboro;
     border-radius: 3px;
@@ -48,4 +48,21 @@
     text-decoration: none;
     color: #191a1b;
     font-weight: bold;
+}
+
+.comment-component .content {
+    font-size: 12px;
+    font-weight: bold;
+    color: #191a1b;
+    text-decoration: none;
+}
+
+.comment-component .meta {
+    font-size: 11px;
+    color: #292d30;
+}
+
+.comment-component .post-title {
+    font-size: 12px;
+    text-decoration: none;
 }

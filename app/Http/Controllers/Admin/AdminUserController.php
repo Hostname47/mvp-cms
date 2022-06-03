@@ -32,10 +32,10 @@ class AdminUserController extends Controller
 
                 switch($tab) {
                     case 'comments':
-                        $resources = $user->comments()->withoutGlobalScopes()->paginate(12);
+                        $resources = $user->comments()->with(['post'])->withoutGlobalScopes()->orderBy('created_at', 'desc')->paginate(12);
                         break;
                     default:
-                        $resources = $user->posts()->with(['categories'])->withoutGlobalScopes()->paginate(12);
+                        $resources = $user->posts()->with(['categories'])->withoutGlobalScopes()->orderBy('created_at', 'desc')->paginate(12);
                         break;
                 }
             }
