@@ -38,7 +38,7 @@
     gap: 8px;
 }
 
-.post-component, .comment-component {
+.post-component, .comment-component, .ban-component {
     padding: 8px;
     border: 1px solid gainsboro;
     border-radius: 3px;
@@ -65,4 +65,15 @@
 .comment-component .post-title {
     font-size: 12px;
     text-decoration: none;
+}
+
+.ban-component {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.ban-component .meta {
+    margin: 0;
+    font-size: 12px;
 }

@@ -34,6 +34,9 @@ class AdminUserController extends Controller
                     case 'comments':
                         $resources = $user->comments()->with(['post'])->withoutGlobalScopes()->orderBy('created_at', 'desc')->paginate(12);
                         break;
+                    case 'bans':
+                        $resources = $user->bans()->with(['banner','reason'])->withoutGlobalScopes()->orderBy('created_at', 'desc')->paginate(6);
+                        break;
                     default:
                         $resources = $user->posts()->with(['categories'])->withoutGlobalScopes()->orderBy('created_at', 'desc')->paginate(12);
                         break;
