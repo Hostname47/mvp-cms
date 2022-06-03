@@ -18,6 +18,7 @@ class AdminUserController extends Controller
         $banreasons = collect([]);
         $tab = 'posts';
         $resources = collect([]);
+        $statistics = [];
         if($request->has('user')) {
             $user = User::withoutGlobalScopes()->where('username', $request->user)->first();
             if($user) {
@@ -31,16 +32,22 @@ class AdminUserController extends Controller
                 }
 
                 switch($tab) {
+                    case 'posts':
+                        $resources = $user->posts()->with(['categories'])->withoutGlobalScopes()->orderBy('created_at', 'desc')->paginate(12);
+                        break;
                     case 'comments':
                         $resources = $user->comments()->with(['post'])->withoutGlobalScopes()->orderBy('created_at', 'desc')->paginate(12);
                         break;
                     case 'bans':
                         $resources = $user->bans()->with(['banner','reason'])->withoutGlobalScopes()->orderBy('created_at', 'desc')->paginate(6);
                         break;
-                    default:
-                        $resources = $user->posts()->with(['categories'])->withoutGlobalScopes()->orderBy('created_at', 'desc')->paginate(12);
-                        break;
                 }
+
+                $statistics = [
+                    'posts'=>($tab == 'posts') ? $resources->total() : $user->posts()->withoutGlobalScopes()->count(),
+                    'comments'=>($tab == 'comments') ? $resources->total() : $user->comments()->withoutGlobalScopes()->count(),
+                    'bans'=>($tab == 'bans') ? $resources->total() : $user->bans()->withoutGlobalScopes()->count(),
+                ];
             }
         }
         
@@ -51,7 +58,8 @@ class AdminUserController extends Controller
             ->with(compact('banreasons'))
             ->with(compact('highrole'))
             ->with(compact('tab'))
-            ->with(compact('resources'));
+            ->with(compact('resources'))
+            ->with(compact('statistics'));
     }
 
     public function ban(Request $request) {

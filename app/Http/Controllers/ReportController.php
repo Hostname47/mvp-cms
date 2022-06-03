@@ -56,4 +56,11 @@ class ReportController extends Controller
         $report_form = $report_form->render(get_object_vars($report_form))->render();
         return $report_form;
     }
+
+    /**
+     * Admin section
+     */
+    public function manage(Request $request) {
+        return view('admin.reports.manage');
+    }
 }

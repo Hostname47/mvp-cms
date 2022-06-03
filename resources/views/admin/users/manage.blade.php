@@ -117,13 +117,13 @@
                 <h2 class="dark">Activities</h2>
                 <div class="align-center mb4" style="gap: 6px;">
                     <a href="{{ request()->fullUrlWithQuery(['tab'=>'posts']) }}" class="button-style-5 fs13">
-                        <span class="@if($tab=='posts') dark-blue @endif">Posts</span>
+                        <span class="@if($tab=='posts') dark-blue @endif">Posts ({{ $statistics['posts'] }})</span>
                     </a>
                     <a href="{{ request()->fullUrlWithQuery(['tab'=>'comments']) }}" class="button-style-5 fs13">
-                        <span class="@if($tab=='comments') dark-blue @endif">Comments</span>
+                        <span class="@if($tab=='comments') dark-blue @endif">Comments ({{ $statistics['comments'] }})</span>
                     </a>
                     <a href="{{ request()->fullUrlWithQuery(['tab'=>'bans']) }}" class="button-style-5 fs13">
-                        <span class="@if($tab=='bans') dark-blue @endif">Bans</span>
+                        <span class="@if($tab=='bans') dark-blue @endif">Bans ({{ $statistics['bans'] }})</span>
                     </a>
                 </div>
 
