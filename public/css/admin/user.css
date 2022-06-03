@@ -31,3 +31,21 @@
 .column-section {
     width: 50%;
 }
+
+.resources-box {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.post-component {
+    padding: 8px;
+    border: 1px solid gainsboro;
+    border-radius: 3px;
+}
+
+.post-component .title {
+    text-decoration: none;
+    color: #191a1b;
+    font-weight: bold;
+}

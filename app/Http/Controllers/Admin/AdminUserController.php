@@ -16,6 +16,8 @@ class AdminUserController extends Controller
         $ban = null;
         $banned = false;
         $banreasons = collect([]);
+        $tab = 'posts';
+        $resources = collect([]);
         if($request->has('user')) {
             $user = User::withoutGlobalScopes()->where('username', $request->user)->first();
             if($user) {
@@ -23,6 +25,19 @@ class AdminUserController extends Controller
                 $banned = $user->is_banned();
                 $ban = $user->bans()->orderBy('created_at', 'desc')->first();
                 $banreasons = BanReason::all();
+                
+                if($request->has('tab')) {
+                    $tab = $request->validate(['tab'=>[Rule::in(['posts','comments','bans'])]])['tab'];
+                }
+
+                switch($tab) {
+                    case 'comments':
+                        $resources = $user->comments()->withoutGlobalScopes()->paginate(12);
+                        break;
+                    default:
+                        $resources = $user->posts()->with(['categories'])->withoutGlobalScopes()->paginate(12);
+                        break;
+                }
             }
         }
         
@@ -31,7 +46,9 @@ class AdminUserController extends Controller
             ->with(compact('banned'))
             ->with(compact('ban'))
             ->with(compact('banreasons'))
-            ->with(compact('highrole'));
+            ->with(compact('highrole'))
+            ->with(compact('tab'))
+            ->with(compact('resources'));
     }
 
     public function ban(Request $request) {

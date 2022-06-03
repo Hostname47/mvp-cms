@@ -114,14 +114,83 @@
         <div class="column-sections-box">
             <div class="column-section">
                 <!-- User activities -->
-                <div>
-                    <h2 class="dark">Activities</h2>
+                <h2 class="dark">Activities</h2>
+                <div class="align-center mb4" style="gap: 6px;">
+                    <a href="{{ request()->fullUrlWithQuery(['tab'=>'posts']) }}" class="button-style-5 fs13">
+                        <span class="@if($tab=='posts') dark-blue @endif">Posts</span>
+                    </a>
+                    <a href="{{ request()->fullUrlWithQuery(['tab'=>'comments']) }}" class="button-style-5 fs13">
+                        <span class="@if($tab=='comments') dark-blue @endif">Comments</span>
+                    </a>
+                    <a href="{{ request()->fullUrlWithQuery(['tab'=>'bans']) }}" class="button-style-5 fs13">
+                        <span class="@if($tab=='bans') dark-blue @endif">Bans</span>
+                    </a>
+                </div>
+
+                <div class="typical-section-style">
+                    @switch($tab)
+                        @case('posts')
+                            <div class="align-center mb8">
+                                <svg class="size16 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M130,17.11h97.27c11.82,0,15.64,3.73,15.64,15.34q0,75.07,0,150.16c0,11.39-3.78,15.13-15.22,15.13-2.64,0-5.3.12-7.93-.06a11.11,11.11,0,0,1-10.53-9.38c-.81-5.69,2-11,7.45-12.38,3.28-.84,3.52-2.36,3.51-5.06-.07-27.15-.11-54.29,0-81.43,0-3.68-1-4.69-4.68-4.68q-85.63.16-171.29,0c-3.32,0-4.52.68-4.5,4.33q.26,41,0,81.95c0,3.72,1.3,4.53,4.56,4.25a45.59,45.59,0,0,1,7.39.06,11.06,11.06,0,0,1,10.58,11c0,5.62-4.18,10.89-9.91,11.17-8.43.4-16.92.36-25.36,0-5.16-.23-8.82-4.31-9.68-9.66a33,33,0,0,1-.24-5.27q0-75.08,0-150.16c0-11.61,3.81-15.34,15.63-15.34Zm22.49,45.22c16.56,0,33.13,0,49.7,0,5.79,0,13.59,2,16.83-.89,3.67-3.31.59-11.25,1.19-17.13.4-3.92-1.21-4.54-4.73-4.51-19.21.17-38.42.08-57.63.08-22.73,0-45.47.11-68.21-.1-4,0-5.27,1-4.92,5a75.62,75.62,0,0,1,0,12.68c-.32,3.89.78,5,4.85,5C110.54,62.21,131.51,62.33,152.49,62.33ZM62.3,51.13c0-11.26,0-11.26-11.45-11.26h-.53c-10.47,0-10.47,0-10.47,10.71,0,11.75,0,11.75,11.49,11.75C62.3,62.33,62.3,62.33,62.3,51.13ZM102,118.66c25.79.3,18.21-2.79,36.49,15.23,18.05,17.8,35.89,35.83,53.8,53.79,7.34,7.35,7.3,12.82-.13,20.26q-14.94,15-29.91,29.87c-6.86,6.81-12.62,6.78-19.5-.09-21.3-21.28-42.53-42.64-63.92-63.84a16.11,16.11,0,0,1-5.24-12.62c.23-9.86,0-19.73.09-29.59.07-8.71,4.24-12.85,13-13C91.81,118.59,96.92,118.66,102,118.66ZM96.16,151c.74,2.85-1.53,6.66,1.41,9.6,17.66,17.71,35.39,35.36,53,53.11,1.69,1.69,2.59,1.48,4.12-.12,4.12-4.34,8.24-8.72,12.73-12.67,2.95-2.59,2.36-4-.16-6.49-15.68-15.46-31.4-30.89-46.63-46.79-4.56-4.76-9.1-6.73-15.59-6.35C96.18,141.8,96.16,141.41,96.16,151Z"></path></svg>
+                                <h4 class="dark no-margin fs16">Posts</h4>
+                            </div>
+                            <div class="mt4">
+                                <div class="resources-box">
+                                    @foreach($resources as $post)
+                                    <div class="post-component">
+                                        <a href="{{ $post->link }}" target="_blank" class="title">{{ $post->title }}</a>
+                                        <div class="align-center mt2">
+                                            <span class="dark fs11">status : <strong class="{{ $post->scolor }}">{{ $post->status }}</strong></span>
+                                            <span class="light-gray mx8 fs10">〡</span>
+                                            <a href="{{ route('edit.post', ['post'=>$post->id]) }}" target="_blank" class="no-underline fs11 dark-blue">manage</a>
+                                        </div>
+                                    </div>
+                                    @endforeach
+
+                                    @if(!$resources->count())
+                                    <div class="typical-section-style align-center mt4">
+                                        <svg class="size13 mr8" style="min-width: 13px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                                        <span class="fs13">This user does not have any post.</span>
+                                    </div>
+                                    @endif
+                                    <div class="flex">
+                                        <div class="move-to-right">
+                                            {{ $resources->appends(request()->query())->onEachSide(0)->links() }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @break
+                    @endswitch
                 </div>
             </div>
             <div class="column-section">
                 <!-- Account settings -->
                 <div>
                     <h2 class="dark">Account settings</h2>
+                    <!-- user informations -->
+                    <div class="typical-section-style mb8">
+                        <div class="align-center">
+                            <svg class="size13 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M448,0H64A64.08,64.08,0,0,0,0,64V448a64.08,64.08,0,0,0,64,64H448a64.07,64.07,0,0,0,64-64V64A64.08,64.08,0,0,0,448,0Zm21.33,448A21.35,21.35,0,0,1,448,469.33H64A21.34,21.34,0,0,1,42.67,448V64A21.36,21.36,0,0,1,64,42.67H448A21.36,21.36,0,0,1,469.33,64ZM147.63,119.89a22.19,22.19,0,0,0-4.48-7c-1.07-.85-2.14-1.7-3.2-2.56a16.41,16.41,0,0,0-3.84-1.92,13.77,13.77,0,0,0-3.84-1.28,20.49,20.49,0,0,0-12.38,1.28,24.8,24.8,0,0,0-7,4.48,22.19,22.19,0,0,0-4.48,7,20.19,20.19,0,0,0,0,16.22,22.19,22.19,0,0,0,4.48,7A22.44,22.44,0,0,0,128,149.33a32.71,32.71,0,0,0,4.27-.42,13.77,13.77,0,0,0,3.84-1.28,16.41,16.41,0,0,0,3.84-1.92c1.06-.86,2.13-1.71,3.2-2.56A22.44,22.44,0,0,0,149.33,128,21.38,21.38,0,0,0,147.63,119.89ZM384,106.67H213.33a21.33,21.33,0,0,0,0,42.66H384a21.33,21.33,0,0,0,0-42.66ZM148.91,251.73a13.77,13.77,0,0,0-1.28-3.84,16.41,16.41,0,0,0-1.92-3.84c-.86-1.06-1.71-2.13-2.56-3.2a24.8,24.8,0,0,0-7-4.48,21.38,21.38,0,0,0-16.22,0,24.8,24.8,0,0,0-7,4.48c-.85,1.07-1.7,2.14-2.56,3.2a16.41,16.41,0,0,0-1.92,3.84,13.77,13.77,0,0,0-1.28,3.84,32.71,32.71,0,0,0-.42,4.27A21.1,21.1,0,0,0,128,277.33,21.12,21.12,0,0,0,149.34,256,34.67,34.67,0,0,0,148.91,251.73ZM384,234.67H213.33a21.33,21.33,0,0,0,0,42.66H384a21.33,21.33,0,0,0,0-42.66ZM147.63,375.89a20.66,20.66,0,0,0-27.74-11.52,24.8,24.8,0,0,0-7,4.48,24.8,24.8,0,0,0-4.48,7,21.38,21.38,0,0,0-1.7,8.11,21.33,21.33,0,1,0,42.66,0A17.9,17.9,0,0,0,147.63,375.89ZM384,362.67H213.33a21.33,21.33,0,0,0,0,42.66H384a21.33,21.33,0,0,0,0-42.66Z"></path></svg>
+                            <h3 class="no-margin dark">User informations</h3>
+                        </div>
+
+                        <div class="mt8 fs13 dark">
+                            <p class="bold my8"><span class="dark-blue">Fullname</span> : {{ $user->fullname }}</p>
+                            <p class="my8"><span class="dark-blue bold">Username</span> : {{ $user->username }}</p>
+                            <p class="my8"><span class="dark-blue bold">Email</span> : {{ $user->email }}</p>
+                            <p class="my8"><span class="dark-blue bold">Joined</span> : {{ $user->join_date }}</p>
+                            <div class="align-center flex-wrap" style="gap: 6px;">
+                                <span class="no-wrap bold dark-blue" style="margin-top: -2px;">Roles :</span>
+                                @foreach($user->roles as $role)
+                                <span class="button-style-4 fs11 no-wrap bold">{{ $role->title }}</span>
+                                @endforeach
+                                @if(!$user->roles->count())
+                                <span class="light-gray italic ml8">normal user</span>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
                     <!-- ban - unban user section -->
                     <div id="ban-box">
                         @if($user->status == 'deleted')
@@ -131,7 +200,7 @@
                                 the next section (account deletion section)
                             -->
                             <div class="typical-section-style align-center my12">
-                                <svg class="size13 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                                <svg class="size13 mr8" style="min-width: 13px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
                                 <span class="fs13">This account has been deleted permanently either by its owner or by an admin.</span>
                             </div>
                         @elseif($banned)
