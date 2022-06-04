@@ -11,6 +11,23 @@
                     <div class="full-dimensions full-center my8">
                         <svg class="size13 mr8" style="min-width: 13px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
                         <span class="fs13 light-gray">Comment is not available. (It could be deleted or purged by admins)</span>
+
+                    </div>
+                    @if($report->type == 'moderator-intervention')
+                    <div class="typical-section-style full-center flex-column mb8">
+                        <span class="bold fs12">report body</span>
+                        <div class="dark fs12 lh15 my4">{{ $report->body }}</div>
+                    </div>
+                    @endif
+                    <div class="full-center">
+                        <span class="red fs12 pointer align-center delete-report">
+                            <svg class="spinner size11 none mr4 red" fill="none" viewBox="0 0 16 16">
+                                <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                            </svg>
+                            <span class="unselectable">delete report</span>
+                            <input type="hidden" class="report-id" value="{{ $report->id }}" autocomplete="off">
+                        </span>
                     </div>
                 @else
                     <div>
@@ -45,8 +62,20 @@
                             </div>
                         </div>
                         <div class="dark fs13 lh15 mt4"><span class="black bold">comment</span> : {{ $resource->content }}</div>
+                        @if($report->type == 'moderator-intervention')
+                        <div class="typical-section-style dark fs12 lh15 my4"><span class="bold">report body</span> : {{ $report->body }}</div>
+                        @endif
                         <div class="align-center">
-                            <a href="{{ route('admin.comments.manage', ['comment'=>$resource->id]) }}" target="_blank" class="fs11 dark-blue no-underline">manage</a>
+                            <a href="{{ route('admin.comments.manage', ['comment'=>$resource->id]) }}" target="_blank" class="fs11 dark-blue no-underline unselectable">manage</a>
+                            <span class="mx4 light-gray fs10">〡</span>
+                            <span class="red fs11 pointer align-center delete-report">
+                                <svg class="spinner size10 none mr4 red" fill="none" viewBox="0 0 16 16">
+                                    <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                    <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                </svg>
+                                <span class="unselectable">delete report</span>
+                                <input type="hidden" class="report-id" value="{{ $report->id }}" autocomplete="off">
+                            </span>
                         </div>
                     </div>
                 @endif

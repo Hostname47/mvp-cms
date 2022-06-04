@@ -19,6 +19,7 @@ class ReportTest extends TestCase
         $permissions = [
             'access-admin-section' => Permission::factory()->create(['title'=>'aas', 'slug'=>'access-admin-section']),
             'review-report' => Permission::factory()->create(['title'=>'rr', 'slug'=>'review-report']),
+            'delete-report' => Permission::factory()->create(['title'=>'dr', 'slug'=>'delete-report']),
         ];
 
         $user = $this->authuser = User::factory()->create();
@@ -26,6 +27,7 @@ class ReportTest extends TestCase
 
         $user->attach_permission('access-admin-section');
         $user->attach_permission('review-report');
+        $user->attach_permission('delete-report');
     }
 
     /** @test */
@@ -155,18 +157,46 @@ class ReportTest extends TestCase
     }
 
     /** @test */
-    public function review_posts_requires_permission() {
+    public function review_reports_requires_permission() {
         $commenter = User::factory()->create();
         $post = Post::factory()->create();
         $comment = Comment::create(['content'=>'hello world','user_id'=>$commenter->id,'post_id'=>$post->id]);
         
         $this->post('/reports', ['reportable_id'=>$comment->id,'reportable_type'=>'comment','type'=>'spam']);
-        
+
         $this->authuser->detach_permission('review-report');
         $report = Report::first();
         $this->post('/admin/reports/review', [
             'reports'=>[$report->id],
             'state'=>1
+        ])->assertForbidden();
+    }
+
+    /** @test */
+    public function delete_reports() {
+        $commenter = User::factory()->create();
+        $post = Post::factory()->create();
+        $comment = Comment::create(['content'=>'hello world','user_id'=>$commenter->id,'post_id'=>$post->id]);
+        $this->post('/reports', ['reportable_id'=>$comment->id,'reportable_type'=>'comment','type'=>'spam']);
+
+        $this->assertCount(1, Report::all());
+        $this->delete('/admin/reports', [
+            'reports'=>[Report::first()->id]
+        ]);
+        $this->assertCount(0, Report::all());
+    }
+    
+    /** @test */
+    public function delete_reports_requires_permission() {
+        $commenter = User::factory()->create();
+        $post = Post::factory()->create();
+        $comment = Comment::create(['content'=>'hello world','user_id'=>$commenter->id,'post_id'=>$post->id]);
+        $this->post('/reports', ['reportable_id'=>$comment->id,'reportable_type'=>'comment','type'=>'spam']);
+
+        $this->authuser->detach_permission('delete-report');
+        
+        $this->delete('/admin/reports', [
+            'reports'=>[Report::first()->id]
         ])->assertForbidden();
     }
 }

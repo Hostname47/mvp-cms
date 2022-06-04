@@ -81,4 +81,17 @@ class ReportController extends Controller
 
         \DB::statement("UPDATE reports SET reviewed=$state WHERE id IN ($reports)");
     }
+
+    public function delete(Request $request) {
+        $this->authorize('delete', [Report::class]);
+
+        $data = $request->validate([
+            'reports'=>'required',
+            'reports.*'=>'exists:reports,id',
+        ]);
+
+        $reports = implode(',', $data['reports']);
+
+        \DB::statement("DELETE FROM reports WHERE id IN ($reports)");
+    }
 }

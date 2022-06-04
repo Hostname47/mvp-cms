@@ -64,4 +64,12 @@ class ReportPolicy
         
         return true;
     }
+
+    public function delete(User $user) {
+        if(!$user->has_permission('delete-report')) {
+            return $this->deny("Unauthorized action due to lack of permissions.");
+        }
+        
+        return true;
+    }
 }

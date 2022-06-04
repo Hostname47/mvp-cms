@@ -62,6 +62,7 @@ Route::middleware(['able-to-access-admin-section'])->group(function() {
 
     Route::get('/admin/reports', [ReportController::class, 'manage'])->name('admin.reports');
     Route::post('/admin/reports/review', [ReportController::class, 'review']);
+    Route::delete('/admin/reports', [ReportController::class, 'delete']);
 
     Route::get('/admin/users', [AdminUserController::class, 'manage'])->name('admin.users.management');
     Route::post('/admin/users/ban', [AdminUserController::class, 'ban']);
