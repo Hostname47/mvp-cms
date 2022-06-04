@@ -12,11 +12,30 @@
                         <div class="align-center space-between">
                             <div class="meta fs11">reported : {{ $resource->date }}</div>
                             <div>
-                                @if($report->reviewed)
-                                    unrevew report
-                                @else
-                                    mark report as reviewed
-                                @endif
+                                <div class="button-style-5 review-report review-button @if($report->reviewed) none @endif">
+                                    <div class="relative size11 mr6">
+                                        <svg class="size11 flex icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M433.73,49.92,178.23,305.37,78.91,206.08.82,284.17,178.23,461.56,511.82,128Z"/></svg>
+                                        <svg class="spinner size11 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
+                                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                            <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                        </svg>
+                                    </div>
+                                    <span class="fs12">mark as reviewed</span>
+                                    <input type="hidden" class="report-id" value="{{ $report->id }}" autocomplete="off">
+                                    <input type="hidden" class="status" value="1" autocomplete="off">
+                                </div>
+                                <div class="button-style-5 review-report unreview-button @if(!$report->reviewed) none @endif">
+                                    <div class="relative size11 mr6">
+                                        <svg class="size11 flex icon" fill="#2ca82c" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M433.73,49.92,178.23,305.37,78.91,206.08.82,284.17,178.23,461.56,511.82,128Z"/></svg>
+                                        <svg class="spinner size11 opacity0 absolute green" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
+                                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                            <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                        </svg>
+                                    </div>
+                                    <span class="fs12 green">report reviewed</span>
+                                    <input type="hidden" class="report-id" value="{{ $report->id }}" autocomplete="off">
+                                    <input type="hidden" class="status" value="0" autocomplete="off">
+                                </div>
                             </div>
                         </div>
                         <div class="dark fs13 lh15 mt8"><span class="black bold">comment</span> : {{ $resource->content }}</div>
