@@ -61,7 +61,7 @@ class ReportController extends Controller
      * Admin section
      */
     public function manage(Request $request) {
-        $reports = Report::with(['report_user'])->paginate(12);
+        $reports = Report::with(['report_user'])->orderBy('created_at', 'desc')->paginate(12);
 
         return view('admin.reports.manage')
             ->with(compact('reports'));

@@ -33,11 +33,49 @@
         </div>
     </div>
     <div class="admin-page-content-box">
-        <p class="dark my12 fs13">The following resources got reports from community for guidelines and rules violation.</p>
+        <p class="dark my12 fs13">The following resources got reports from community for guidelines and rules violations.</p>
+        <div class="flex space-between mb4">
+            <div class="relative">
+                <div class="button-with-suboptions typical-button-style white-bs align-center">
+                    <span class="unselectable fs12">Bulk Actions</span>
+                    <svg class="size7 ml8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"></path></svg>
+                </div>
+                <div class="suboptions-container typical-suboptions-container width-max-content">
+                    <div class="suboption-style-2 align-center mb2 review-reports-bulk">
+                        <svg class="spinner size12 mr6 none" fill="none" viewBox="0 0 16 16">
+                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                            <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                        </svg>
+                        <span>Mark as reviewed</span>
+                        <input type="hidden" class="state" autocomplete="off" value="1">
+                    </div>
+                    <div class="suboption-style-2 align-center mb2 review-reports-bulk">
+                        <svg class="spinner size12 mr6 none" fill="none" viewBox="0 0 16 16">
+                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                            <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                        </svg>
+                        <span>Mark as Unreviewed</span>
+                        <input type="hidden" class="state" autocomplete="off" value="0">
+                    </div>
+                    <div class="suboption-style-2 align-center delete-report bulk">
+                        <svg class="spinner size12 mr6 none" fill="none" viewBox="0 0 16 16">
+                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                            <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                        </svg>
+                        <span class="red">Delete</span>
+                        <input type="hidden" class="action" autocomplete="off" value="trash">
+                    </div>
+                </div>
+            </div>
+            {{ $reports->appends(request()->query())->onEachSide(0)->links() }}
+        </div>
         @include('partials.session-messages')
         <table id="reports-box">
             <thead>
                 <tr>
+                    <th class="report-bulk-selection-column">
+                        <input type="checkbox" id="bulk-select-all-reports" autocomplete="off">
+                    </th>
                     <th class="resource-reported-column">Resource Reported</th>
                     <th class="resource-type-column">Resource type</th>
                     <th class="report-type-column">Report Type</th>

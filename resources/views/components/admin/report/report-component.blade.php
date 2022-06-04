@@ -1,4 +1,9 @@
-<tr>
+<tr class="report-component">
+    <td class="report-bulk-selection-column">
+        <label for="report-selection-input-{{ $report->id }}" class="report-selection-label">
+            <input type="checkbox" id="report-selection-input-{{ $report->id }}" class="report-selection-input" value="{{ $report->id }}" autocomplete="off">
+        </label>
+    </td>
     <td class="resource-reported-column">
         @switch($report->resource_type)
             @case('Comment')
@@ -10,7 +15,8 @@
                 @else
                     <div>
                         <div class="align-center space-between">
-                            <div class="meta fs11">reported : {{ $resource->date }}</div>
+                            <div class="meta fs11">reported : {{ $report->date_humans }} 〡 {{ $report->date }}</div>
+                            <!-- mark as review/unreview -->
                             <div>
                                 <div class="button-style-5 review-report review-button @if($report->reviewed) none @endif">
                                     <div class="relative size11 mr6">
@@ -20,7 +26,7 @@
                                             <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
                                         </svg>
                                     </div>
-                                    <span class="fs12">mark as reviewed</span>
+                                    <span class="fs12 dark">mark as reviewed</span>
                                     <input type="hidden" class="report-id" value="{{ $report->id }}" autocomplete="off">
                                     <input type="hidden" class="status" value="1" autocomplete="off">
                                 </div>
@@ -38,7 +44,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="dark fs13 lh15 mt8"><span class="black bold">comment</span> : {{ $resource->content }}</div>
+                        <div class="dark fs13 lh15 mt4"><span class="black bold">comment</span> : {{ $resource->content }}</div>
                         <div class="align-center">
                             <a href="{{ route('admin.comments.manage', ['comment'=>$resource->id]) }}" target="_blank" class="fs11 dark-blue no-underline">manage</a>
                         </div>
@@ -55,7 +61,7 @@
             <img src="{{ $report->report_user->avatar(100) }}" class="size36 mr8" alt="">
             <div>
                 <p class="no-margin bold">{{ $report->report_user->fullname }}</p>
-                <p class="no-margin mt4 fs12">{{ $report->report_user->username }}</p>
+                <p class="no-margin mt2 fs12">{{ $report->report_user->username }}</p>
             </div>
         </a>
         @else

@@ -8,6 +8,10 @@
     color: rgb(25, 27, 29);
 }
 
+.report-bulk-selection-column {
+    vertical-align: top;
+}
+
 .resource-reported-column {
     width: 60%;
 }

@@ -18,7 +18,11 @@ class Report extends Model
     }
 
     public function getDateAttribute() {
-        return (new Carbon($this->created_at))->isoFormat("D-M-YYYY - H:mm A");
+        return (new Carbon($this->created_at))->isoFormat("D-MM-YYYY - H:mm A");
+    }
+
+    public function getDateHumansAttribute() {
+        return (new Carbon($this->created_at))->diffForHumans();
     }
 
     public function getHtypeAttribute() {
