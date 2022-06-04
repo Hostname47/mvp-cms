@@ -1,0 +1,29 @@
+#reports-box {
+    width: 100%;
+}
+
+#reports-box th {
+    white-space: nowrap;
+    font-size: 12px;
+    color: rgb(25, 27, 29);
+}
+
+.resource-reported-column {
+    width: 60%;
+}
+
+.resource-type-column {
+    width: 10%;
+    font-size: 13px;
+}
+
+.report-type-column {
+    width: 10%;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 1.5;
+}
+
+.reporter-column {
+    width: 20%;
+}

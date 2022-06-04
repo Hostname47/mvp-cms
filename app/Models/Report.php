@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
+use App\Models\{User,Comment};
 use Carbon\Carbon;
 
 class Report extends Model
@@ -23,5 +23,17 @@ class Report extends Model
 
     public function getHtypeAttribute() {
         return ucfirst(str_replace('-', ' ', $this->type));
+    }
+
+    public function getResourceTypeAttribute() {
+        $type = $this->reportable_type;
+        return substr($type, strrpos($type, '\\') + 1);
+    }
+
+    public function getResourceAttribute() {
+        switch($this->reportable_type) {
+            case 'App\Models\Comment':
+                return Comment::withoutGlobalScopes()->find($this->reportable_id);
+        }
     }
 }

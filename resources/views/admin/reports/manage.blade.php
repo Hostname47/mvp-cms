@@ -33,8 +33,43 @@
         </div>
     </div>
     <div class="admin-page-content-box">
+        <p class="dark my12 fs13">The following resources got reports from community for guidelines and rules violation.</p>
         @include('partials.session-messages')
-        
+        <div class="flex">
+            <div class="move-to-right">
+                {{ $reports->onEachSide(0)->links() }}
+            </div>
+        </div>
+        <table id="reports-box">
+            <thead>
+                <tr>
+                    <th class="resource-reported-column">Resource Reported</th>
+                    <th class="resource-type-column">Resource type</th>
+                    <th class="report-type-column">Report Type</th>
+                    <th class="reporter-column">Reported by</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($reports as $report)
+                    <x-admin.report.report-component :report="$report" />
+                @endforeach
+                @if(!$reports->count())
+                    <tr>
+                        <td colspan="5" class="full-height">
+                            <div class="full-dimensions full-center my8">
+                                <svg class="size13 mr8" style="min-width: 13px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                                <span class="fs13">There's no reports for the moment.</span>
+                            </div>
+                        </td>
+                    </tr>
+                @endif
+            </tbody>
+            <div class="flex">
+                <div class="move-to-right">
+                    {{ $reports->appends(request()->query())->onEachSide(0)->links() }}
+                </div>
+            </div>
+        </table>
     </div>
 </main>
 @endsection
