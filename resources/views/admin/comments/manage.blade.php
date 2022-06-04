@@ -58,7 +58,7 @@
                 <div class="commenter-box flex">
                     <img src="{{ $commenter->avatar(100) }}" class="avatar" alt="">
                     <div>
-                        <span class="block bold">{{ $commenter->fullname }} - <a href="" class="blue bold no-underline">manage</a></span>
+                        <span class="block bold">{{ $commenter->fullname }} - <a href="{{ route('admin.users.management', ['user'=>$commenter->username]) }}" class="blue bold no-underline">manage</a></span>
                         <span class="block fs13">{{ $commenter->username }}</span>
                     </div>
                 </div>

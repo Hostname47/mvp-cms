@@ -56,4 +56,12 @@ class ReportPolicy
 
         return true;
     }
+
+    public function review(User $user) {
+        if(!$user->has_permission('review-report')) {
+            return $this->deny("Unauthorized action due to lack of permissions.");
+        }
+        
+        return true;
+    }
 }

@@ -35,11 +35,6 @@
     <div class="admin-page-content-box">
         <p class="dark my12 fs13">The following resources got reports from community for guidelines and rules violation.</p>
         @include('partials.session-messages')
-        <div class="flex">
-            <div class="move-to-right">
-                {{ $reports->onEachSide(0)->links() }}
-            </div>
-        </div>
         <table id="reports-box">
             <thead>
                 <tr>
@@ -64,12 +59,10 @@
                     </tr>
                 @endif
             </tbody>
-            <div class="flex">
-                <div class="move-to-right">
-                    {{ $reports->appends(request()->query())->onEachSide(0)->links() }}
-                </div>
-            </div>
         </table>
+        <div class="full-center my12">
+            {{ $reports->appends(request()->query())->onEachSide(0)->links() }}
+        </div>
     </div>
 </main>
 @endsection

@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Models\{User,Post,Comment,Report,Category};
+use App\Models\{User,Post,Comment,Report,Category,Permission};
 
 class ReportTest extends TestCase
 {
@@ -16,8 +16,16 @@ class ReportTest extends TestCase
     public function setUp():void {
         parent::setUp();
         
-        $this->authuser = $authuser = User::factory()->create();
-        $this->actingAs($authuser);
+        $permissions = [
+            'access-admin-section' => Permission::factory()->create(['title'=>'aas', 'slug'=>'access-admin-section']),
+            'review-report' => Permission::factory()->create(['title'=>'rr', 'slug'=>'review-report']),
+        ];
+
+        $user = $this->authuser = User::factory()->create();
+        $this->actingAs($user);
+
+        $user->attach_permission('access-admin-section');
+        $user->attach_permission('review-report');
     }
 
     /** @test */
@@ -118,5 +126,47 @@ class ReportTest extends TestCase
         $this->post('/reports', 
             ['reportable_id'=>$comment->id,'reportable_type'=>'comment','type'=>'spam'])
             ->assertForbidden();
+    }
+
+    /**
+     * Admin section
+     */
+
+    /** @test */
+    public function review_reports() {
+        $commenter = User::factory()->create();
+        $post = Post::factory()->create();
+        $comment = Comment::create(['content'=>'hello world','user_id'=>$commenter->id,'post_id'=>$post->id]);
+
+        $this->post('/reports', ['reportable_id'=>$comment->id,'reportable_type'=>'comment','type'=>'spam']);
+
+        $report = Report::first();
+        $this->assertFalse((bool)$report->reviewed);
+        $this->post('/admin/reports/review', [
+            'reports'=>[$report->id],
+            'state'=>1 // true : reviewed, false : not reviewed
+        ]);
+        $this->assertTrue((bool)$report->refresh()->reviewed);
+        $this->post('/admin/reports/review', [
+            'reports'=>[$report->id],
+            'state'=>0
+        ]);
+        $this->assertFalse((bool)$report->refresh()->reviewed);
+    }
+
+    /** @test */
+    public function review_posts_requires_permission() {
+        $commenter = User::factory()->create();
+        $post = Post::factory()->create();
+        $comment = Comment::create(['content'=>'hello world','user_id'=>$commenter->id,'post_id'=>$post->id]);
+        
+        $this->post('/reports', ['reportable_id'=>$comment->id,'reportable_type'=>'comment','type'=>'spam']);
+        
+        $this->authuser->detach_permission('review-report');
+        $report = Report::first();
+        $this->post('/admin/reports/review', [
+            'reports'=>[$report->id],
+            'state'=>1
+        ])->assertForbidden();
     }
 }

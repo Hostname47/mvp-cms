@@ -66,4 +66,19 @@ class ReportController extends Controller
         return view('admin.reports.manage')
             ->with(compact('reports'));
     }
+
+    public function review(Request $request) {
+        $this->authorize('review', [Report::class]);
+
+        $data = $request->validate([
+            'reports'=>'required',
+            'reports.*'=>'exists:reports,id',
+            'state'=>'required|boolean'
+        ]);
+
+        $reports = implode(',', $data['reports']);
+        $state = (int)$data['state'];
+
+        \DB::statement("UPDATE reports SET reviewed=$state WHERE id IN ($reports)");
+    }
 }
