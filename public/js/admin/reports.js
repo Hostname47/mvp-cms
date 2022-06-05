@@ -130,13 +130,11 @@ $('.review-reports-bulk').on('click', function() {
         },
         success: function() {
             if(state == 1) {
-                console.log('hide unreview show review');
                 $(components).each(function() {
                     $(this).find('.review-button').addClass('none');
                     $(this).find('.unreview-button').removeClass('none');
                 });
             } else {
-                console.log('hide review show unreview');
                 $(components).each(function() {
                     $(this).find('.review-button').removeClass('none');
                     $(this).find('.unreview-button').addClass('none');
@@ -161,4 +159,68 @@ $('.review-reports-bulk').on('click', function() {
             spinner.removeClass('inf-rotate');
         }
     });
+});
+
+let delete_reports_bulk_lock = true;
+$('.delete-reports-bulk').on('click', function() {
+    if(!$('.report-selection-input:checked').length) {
+        print_top_message('You need to select at least one report to perform any bulk action', 'error');
+        return;
+    }
+
+    if(!delete_reports_bulk_lock) return;
+    delete_reports_bulk_lock = false;
+
+    let button = $(this);
+    let spinner = button.find('.spinner');
+
+    let reports = [];
+    let components = []
+    $('.report-selection-input:checked').each(function() {
+        reports.push($(this).val());
+
+        let component = $(this);
+        while(!component.hasClass('report-component')) component = component.parent();
+        components.push(component);
+    });
+
+    button.attr('style', 'cursor: default;');
+    spinner.removeClass('none');
+    spinner.addClass('inf-rotate');
+
+    $.ajax({
+        type: 'delete',
+        url: '/admin/reports',
+        data: {
+            reports: reports,
+        },
+        success: function() {
+            $(components).each(function() { $(this).remove(); });
+            if(!$('.report-component').length) $('#no-reports-row').removeClass('none');
+            left_bottom_notification('Selected reports deleted successfully.');
+            $('body').trigger('click');
+        },
+        error: function(response) {
+            let errorObject = JSON.parse(response.responseText);
+            let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+            if(errorObject.errors) {
+                let errors = errorObject.errors;
+                error = errors[Object.keys(errors)[0]][0];
+            }
+            print_top_message(error, 'error');
+        },
+        complete: function() {
+            delete_reports_bulk_lock = true;
+            button.attr('style', '');
+            spinner.addClass('none');
+            spinner.removeClass('inf-rotate');
+        }
+    });
+});
+
+$('#bulk-select-all-reports').on('change', function() {
+    if($(this).is(':checked'))
+        $('.report-selection-input').prop('checked', true);
+    else
+        $('.report-selection-input').prop('checked', false);
 });

@@ -58,7 +58,7 @@
                         <input type="hidden" class="state" autocomplete="off" value="0">
                     </div>
                     <div class="suboption-style-2 align-center delete-reports-bulk">
-                        <svg class="spinner size12 mr6 none" fill="none" viewBox="0 0 16 16">
+                        <svg class="spinner size12 mr6 red none" fill="none" viewBox="0 0 16 16">
                             <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
                             <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
                         </svg>
@@ -86,16 +86,14 @@
                 @foreach($reports as $report)
                     <x-admin.report.report-component :report="$report" />
                 @endforeach
-                @if(!$reports->count())
-                    <tr>
-                        <td colspan="5" class="full-height">
-                            <div class="full-dimensions full-center my8">
-                                <svg class="size13 mr8" style="min-width: 13px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
-                                <span class="fs13">There's no reports for the moment.</span>
-                            </div>
-                        </td>
-                    </tr>
-                @endif
+                <tr id="no-reports-row" class="@if($reports->count()) none @endif">
+                    <td colspan="5" class="full-height">
+                        <div class="full-dimensions full-center my8">
+                            <svg class="size13 mr8" style="min-width: 13px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                            <span class="fs13">There's no reports for the moment.</span>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
         <div class="full-center my12">
