@@ -67,4 +67,11 @@ class ContactController extends Controller
         ContactMessage::create($data);
         \Session::flash('message', __('Your message has been sent successfully') . ' !');
     }
+
+    /**
+     * Admin section
+     */
+    public function manage(Request $request) {
+        return view('admin.contact.manage');
+    }
 }
