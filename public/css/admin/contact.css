@@ -1,0 +1,17 @@
+#messages-box {
+    width: 100%;
+}
+
+#messages-box th {
+    white-space: nowrap;
+    font-size: 12px;
+    color: rgb(25, 27, 29);
+}
+
+.message-bulk-selection-column {
+    vertical-align: top;
+}
+
+.message-column {
+    width: 100%;
+}

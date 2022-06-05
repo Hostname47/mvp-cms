@@ -16,8 +16,14 @@ class ContactMessageTest extends TestCase
     public function setUp():void {
         parent::setUp();
         
-        $this->authuser = $authuser = User::factory()->create();
-        $this->actingAs($authuser);
+        $permissions = [
+            'access-admin-section' => Permission::factory()->create(['title'=>'aas', 'slug'=>'access-admin-section']),
+        ];
+
+        $user = $this->authuser = User::factory()->create();
+        $this->actingAs($user);
+
+        $user->attach_permission('access-admin-section');
     }
 
     /** @test */
@@ -98,4 +104,11 @@ class ContactMessageTest extends TestCase
     //         'message'=>'hello darkness'
     //     ])->assertForbidden();
     // }
+
+    /**
+     * Admin section
+     */
+
+     /** @test */
+     
 }

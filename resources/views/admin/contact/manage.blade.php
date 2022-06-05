@@ -34,7 +34,96 @@
     </div>
     <div class="admin-page-content-box">
         @include('partials.session-messages')
+        <p class="no-margin mb8 dark">The following messages has been received from users in <strong>contact us</strong> page</p>
+        <table id="messages-box">
+            <thead>
+                <tr>
+                    <th class="message-bulk-selection-column">
+                        <input type="checkbox" id="bulk-select-all-messages" autocomplete="off">
+                    </th>
+                    <th class="message-column">Message</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($messages as $message)
+                <tr class="message-component">
+                    <td class="message-bulk-selection-column">
+                        <input type="checkbox" class="message-selection-input" value="{{ $message->id }}" autocomplete="off">
+                    </td>
+                    <td class="message-column">
+                        <div class="align-center">
+                            @if($message->user)
+                            <img src="{{ $message->user->avatar(100) }}" class="size36 br4 mr6" alt="">
+                            <div class="dark">
+                                <a href="{{ route('admin.users.management', ['user'=>$message->user->username]) }}" target="_blank" class="no-underline dark bold">{{ $message->user->fullname }}</a>
+                                <p class="no-margin fs12 mt2">{{ $message->user->username }}</p>
+                            </div>
+                            @else
+                            <img src="{{ \App\Models\User::defaultavatar(100) }}" class="size34 br4 mr6" alt="">
+                            <div class="dark">
+                                <p class="no-margin no-underline light-gray bold">guest user</p>
+                            </div>
+                            @endif
+                        </div>
 
+                        <p class="fs11 dark my8">sumbitted <span title="{{ $message->date }}">{{ $message->date_humans }}</span></p>
+                        <div class="typical-section-style">
+                            <div class="content"><span class="bold">message :</span> {{ $message->message }}</div>
+                        </div>
+                        <div class="align-center mt8">
+                            <!-- mark as reviewed/unreviewed -->
+                            <div>
+                                <div class="align-center pointer review-message review-button">
+                                    <div class="relative size11 mr6">
+                                        <svg class="size11 flex icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M433.73,49.92,178.23,305.37,78.91,206.08.82,284.17,178.23,461.56,511.82,128Z"/></svg>
+                                        <svg class="spinner size11 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
+                                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                            <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                        </svg>
+                                    </div>
+                                    <span class="fs12 dark">mark as reviewed</span>
+                                    <input type="hidden" class="message-id" value="{{ $message->id }}" autocomplete="off">
+                                    <input type="hidden" class="status" value="1" autocomplete="off">
+                                </div>
+                                <div class="align-center pointer review-message unreview-button none">
+                                    <div class="relative size11 mr6">
+                                        <svg class="size11 flex icon" fill="#2ca82c" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M433.73,49.92,178.23,305.37,78.91,206.08.82,284.17,178.23,461.56,511.82,128Z"/></svg>
+                                        <svg class="spinner size11 opacity0 absolute green" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
+                                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                            <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                        </svg>
+                                    </div>
+                                    <span class="fs12 green">message reviewed</span>
+                                    <input type="hidden" class="message-id" value="{{ $message->id }}" autocomplete="off">
+                                    <input type="hidden" class="status" value="0" autocomplete="off">
+                                </div>
+                            </div>
+                            <span class="fs11 mx8 dark unselectable">〡</span>
+                            <span class="fs12 red pointer align-center trash-post-button">
+                                <svg class="spinner size12 mr4 none" fill="none" viewBox="0 0 16 16">
+                                    <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                    <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                </svg>
+                                <span>delete message</span>
+                                <input type="hidden" class="message-id" value="{{ $message->id }}" autocomplete="off">
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                @endforeach
+                <tr id="no-messages-row" class="@if($messages->count()) none @endif">
+                    <td colspan="5" class="full-height">
+                        <div class="full-dimensions full-center my8">
+                            <svg class="size13 mr8" style="min-width: 13px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                            <span class="fs13">There's no messages for the moment.</span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="full-center my12">
+            {{ $messages->appends(request()->query())->onEachSide(0)->links() }}
+        </div>
     </div>
 </main>
 @endsection

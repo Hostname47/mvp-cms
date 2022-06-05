@@ -72,6 +72,8 @@ class ContactController extends Controller
      * Admin section
      */
     public function manage(Request $request) {
-        return view('admin.contact.manage');
+        $messages = ContactMessage::with(['user'])->orderBy('created_at', 'desc')->paginate(12);
+        return view('admin.contact.manage')
+            ->with(compact('messages'));
     }
 }
