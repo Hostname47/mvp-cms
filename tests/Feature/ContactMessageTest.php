@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Models\{User,ContactMessage};
+use App\Models\{User,ContactMessage,Permission};
 
 class ContactMessageTest extends TestCase
 {
@@ -18,12 +18,14 @@ class ContactMessageTest extends TestCase
         
         $permissions = [
             'access-admin-section' => Permission::factory()->create(['title'=>'aas', 'slug'=>'access-admin-section']),
+            'read-contact-message' => Permission::factory()->create(['title'=>'rcm', 'slug'=>'read-contact-message']),
         ];
 
         $user = $this->authuser = User::factory()->create();
         $this->actingAs($user);
 
         $user->attach_permission('access-admin-section');
+        $user->attach_permission('read-contact-message');
     }
 
     /** @test */
@@ -109,6 +111,33 @@ class ContactMessageTest extends TestCase
      * Admin section
      */
 
-     /** @test */
-     
+    /** @test */
+    public function review_message() {
+        $user = User::factory()->create();
+        $message = ContactMessage::factory()->create(['user_id'=>$user->id]);
+
+        $this->assertFalse((bool)$message->refresh()->read);
+        $this->post('/admin/contact-messages/read', [
+            'messages'=>[$message->id],
+            'read'=>1
+        ]);
+        $this->assertTrue((bool)$message->refresh()->read);
+        $this->post('/admin/contact-messages/read', [
+            'messages'=>[$message->id],
+            'read'=>0
+        ]);
+        $this->assertFalse((bool)$message->refresh()->reviewed);
+    }
+    
+    /** @test */
+    public function review_message_requires_permission() {
+        $user = User::factory()->create();
+        $message = ContactMessage::factory()->create(['user_id'=>$user->id]);
+
+        $this->authuser->detach_permission('read-contact-message');
+        $this->post('/admin/contact-messages/read', [
+            'messages'=>[$message->id],
+            'read'=>1
+        ])->assertForbidden();
+    }
 }

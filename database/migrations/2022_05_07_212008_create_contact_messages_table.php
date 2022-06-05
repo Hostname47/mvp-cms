@@ -23,6 +23,7 @@ class CreateContactMessagesTable extends Migration
             $table->longText('message');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
+            $table->boolean('read')->default(0);
         });
     }
 

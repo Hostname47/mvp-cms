@@ -76,4 +76,19 @@ class ContactController extends Controller
         return view('admin.contact.manage')
             ->with(compact('messages'));
     }
+
+    public function read(Request $request) {
+        $this->authorize('read', [ContactMessage::class]);
+
+        $data = $request->validate([
+            'messages'=>'required',
+            'messages.*'=>'exists:contact_messages,id',
+            'read'=>'required|boolean'
+        ]);
+
+        $messages = implode(',', $data['messages']);
+        $read = (int)$data['read'];
+
+        \DB::statement("UPDATE contact_messages SET `read`=$read WHERE id IN ($messages)");
+    }
 }
