@@ -42,4 +42,21 @@ class FaqController extends Controller
             ->with(compact('live_faqs'))
             ->with(compact('unverified_faqs'));
     }
+
+    public function update_priorities(Request $request) {
+        $data = $request->validate([
+            'faqs'=>'required',
+            'faqs.*'=>'exists:faqs,id',
+            'priorities'=>'required',
+            'priorities.*'=>'numeric',
+        ]);
+
+        $this->authorize('update_priorities', [Faq::class, $data]);
+        
+        $i = 0;
+        foreach($data['faqs'] as $id) {
+            Faq::find($id)->update(['priority'=>$data['priorities'][$i]]);
+            $i++;
+        }
+    }
 }

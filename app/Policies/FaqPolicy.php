@@ -20,4 +20,16 @@ class FaqPolicy
 
         return true;
     }
+
+    public function update_priorities(User $user, $data) {
+        if(!$user->has_permission('update-faq-priority')) {
+            return $this->deny("Unauthorized action due to lack of permissions.");
+        }
+        
+        if(count($data['faqs']) != count($data['priorities'])) {
+            return $this->deny("Number of priorities should be the same as number of priorities values");
+        }
+
+        return true;
+    }
 }

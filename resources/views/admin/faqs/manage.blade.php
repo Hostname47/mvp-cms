@@ -79,24 +79,29 @@
         </div>
 
         <!-- Unverified faqs -->
-        <div class="faqs-wrapper">
-            <h3 class="fs16 bold blue mb4">2. Unverified FAQs (<span class="faqs-count">{{ $unverified_faqs->total() }}</span>)</h3>
-            <p class="dark my8">The following faqs are unverified (not accessible by users in faqs page) faqs that are received from users in faqs page.</p>
-            <div id="unverified-faqs-container">
-                @foreach($unverified_faqs as $faq)
-                <x-admin.faqs.faq :faq="$faq"/>
-                @endforeach
-
-                @if(!$unverified_faqs->count())
-                <div class="full-center">
-                    <svg class="size14 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
-                    <p class="dark bold my4 fs12">There's no received faqs for the moment.</p>
-                </div>
-                @endif
+        <div class="faqs-wrapper toggle-box">
+            <div class="align-center pointer toggle-button my12">
+                <h3 class="fs16 bold blue no-margin">2. Unverified FAQs (<span class="faqs-count">{{ $unverified_faqs->total() }}</span>)</h3>
+                <svg class="toggle-arrow size8 ml8" fill="#2ca0ff" style="min-width: 8px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02"><path d="M13.4,1.43l9.35,11a4,4,0,0,1,0,5.18l-9.35,11a4,4,0,1,1-6.1-5.18L14.46,15,7.3,6.61a4,4,0,0,1,6.1-5.18Z"></path></svg>
             </div>
-
-            <div class="full-center my12">
-                {{ $unverified_faqs->appends(request()->query())->onEachSide(0)->links() }}
+            <div class="toggle-container none">
+                <p class="dark my8">The following faqs are unverified (not accessible by users in faqs page) faqs that are received from users in faqs page.</p>
+                <div id="unverified-faqs-container">
+                    @foreach($unverified_faqs as $faq)
+                    <x-admin.faqs.faq :faq="$faq"/>
+                    @endforeach
+    
+                    @if(!$unverified_faqs->count())
+                    <div class="full-center">
+                        <svg class="size14 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                        <p class="dark bold my4 fs12">There's no received faqs for the moment.</p>
+                    </div>
+                    @endif
+                </div>
+    
+                <div class="full-center my12">
+                    {{ $unverified_faqs->appends(request()->query())->onEachSide(0)->links() }}
+                </div>
             </div>
         </div>
     </div>

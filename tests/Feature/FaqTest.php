@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use Illuminate\Support\Str;
-use App\Models\{Faq,User};
+use App\Models\{Faq,User,Permission};
 
 class FaqTest extends TestCase
 {
@@ -17,8 +17,16 @@ class FaqTest extends TestCase
     public function setUp():void {
         parent::setUp();
         
-        $this->authuser = $authuser = User::factory()->create();
-        $this->actingAs($authuser);
+        $permissions = [
+            'access-admin-section' => Permission::factory()->create(['title'=>'aas', 'slug'=>'access-admin-section']),
+            'update-faq-priority' => Permission::factory()->create(['title'=>'ufp', 'slug'=>'update-faq-priority']),
+        ];
+
+        $user = $this->authuser = User::factory()->create();
+        $this->actingAs($user);
+
+        $user->attach_permission('access-admin-section');
+        $user->attach_permission('update-faq-priority');
     }
 
     /** @test */
@@ -49,5 +57,23 @@ class FaqTest extends TestCase
         $faqs = Faq::factory(6)->create(['user_id'=>$user->id]);
         $this->post('/faqs', ['question'=>'hello darkness ?', 'description'=>'hola amigos'])
             ->assertForbidden(); // User faqs per day limit reached
+    }
+
+    /** Admin section */
+
+    /** @test */
+    public function update_faqs_priorities() {
+        $this->withoutExceptionHandling();
+        $faq0 = Faq::factory()->create(['user_id'=>$this->authuser->id, 'priority'=>1]);
+        $faq1 = Faq::factory()->create(['user_id'=>$this->authuser->id, 'priority'=>2]);
+
+        $this->assertEquals(1, $faq0->priority);
+        $this->assertEquals(2, $faq1->priority);
+        $this->post('/admin/faqs/priorities', [
+            'faqs'=>[$faq0->id, $faq1->id],
+            'priorities'=>[2, 1],
+        ]);
+        $this->assertEquals(2, $faq0->refresh()->priority);
+        $this->assertEquals(1, $faq1->refresh()->priority);
     }
 }
