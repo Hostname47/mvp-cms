@@ -35,11 +35,42 @@
     <div class="admin-page-content-box">
         @include('partials.session-messages')
         <p class="no-margin mb8 dark">The following messages has been received from users in <strong>contact us</strong> page</p>
+        <div class="relative flex mb8">
+            <div class="button-with-suboptions typical-button-style white-bs align-center">
+                <span class="unselectable fs12">Bulk Actions</span>
+                <svg class="size7 ml8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292.36 292.36"><path d="M286.93,69.38A17.52,17.52,0,0,0,274.09,64H18.27A17.56,17.56,0,0,0,5.42,69.38a17.93,17.93,0,0,0,0,25.69L133.33,223a17.92,17.92,0,0,0,25.7,0L286.93,95.07a17.91,17.91,0,0,0,0-25.69Z"></path></svg>
+            </div>
+            <div class="suboptions-container typical-suboptions-container width-max-content">
+                <div class="suboption-style-2 align-center mb2 read-contact-messages-bulk">
+                    <svg class="spinner size12 mr6 none" fill="none" viewBox="0 0 16 16">
+                        <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                        <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                    </svg>
+                    <span>Mark as read</span>
+                    <input type="hidden" class="read" autocomplete="off" value="1">
+                </div>
+                <div class="suboption-style-2 align-center mb2 read-contact-messages-bulk">
+                    <svg class="spinner size12 mr6 none" fill="none" viewBox="0 0 16 16">
+                        <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                        <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                    </svg>
+                    <span>Mark as unread</span>
+                    <input type="hidden" class="read" autocomplete="off" value="0">
+                </div>
+                <div class="suboption-style-2 align-center delete-contact-messages-bulk">
+                    <svg class="spinner size12 mr6 red none" fill="none" viewBox="0 0 16 16">
+                        <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                        <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                    </svg>
+                    <span class="red">Delete</span>
+                </div>
+            </div>
+        </div>
         <table id="messages-box">
             <thead>
                 <tr>
                     <th class="message-bulk-selection-column">
-                        <input type="checkbox" id="bulk-select-all-messages" autocomplete="off">
+                        <input type="checkbox" id="bulk-select-all-contact-messages" autocomplete="off">
                     </th>
                     <th class="message-column">Message</th>
                 </tr>
@@ -48,7 +79,7 @@
                 @foreach($messages as $message)
                 <tr class="contact-message-component">
                     <td class="message-bulk-selection-column">
-                        <input type="checkbox" class="message-selection-input" value="{{ $message->id }}" autocomplete="off">
+                        <input type="checkbox" class="contact-message-selection-input" value="{{ $message->id }}" autocomplete="off">
                     </td>
                     <td class="message-column">
                         <div class="align-center">
@@ -111,11 +142,11 @@
                     </td>
                 </tr>
                 @endforeach
-                <tr id="no-messages-row" class="@if($messages->count()) none @endif">
-                    <td colspan="5" class="full-height">
+                <tr id="no-contact-messages-row" class="@if($messages->count()) none @endif">
+                    <td colspan="2" class="full-height">
                         <div class="full-dimensions full-center my8">
                             <svg class="size13 mr8" style="min-width: 13px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
-                            <span class="fs13">There's no messages for the moment.</span>
+                            <span class="fs13">There's no contact messages for the moment. Either refresh the page or wait for new messages.</span>
                         </div>
                     </td>
                 </tr>
