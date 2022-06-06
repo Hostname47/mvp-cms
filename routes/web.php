@@ -102,6 +102,8 @@ Route::middleware(['able-to-access-admin-section'])->group(function() {
     Route::get('/admin/contact-messages', [ContactController::class, 'manage'])->name('admin.contact.management');
     Route::post('/admin/contact-messages/read', [ContactController::class, 'read']);
     Route::delete('/admin/contact-messages', [ContactController::class, 'delete']);
+
+    Route::get('/admin/faqs', [FaqController::class, 'manage'])->name('admin.faqs.management');
 });
 
 Route::get('/login/{provider}', [OAuthController::class, 'redirectToProvider']);

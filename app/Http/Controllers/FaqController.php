@@ -30,4 +30,11 @@ class FaqController extends Controller
         Faq::create($data);
         \Session::flash('message', __('Your question has been sent successfully'));
     }
+
+    /**
+     * Admin section
+     */
+    public function manage(Request $request) {
+        return view('admin.faqs.manage');
+    }
 }
