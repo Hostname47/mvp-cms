@@ -73,29 +73,29 @@
                         <div class="align-center mt8">
                             <!-- mark as reviewed/unreviewed -->
                             <div>
-                                <div class="align-center pointer review-message review-button">
-                                    <div class="relative size11 mr6">
-                                        <svg class="size11 flex icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M433.73,49.92,178.23,305.37,78.91,206.08.82,284.17,178.23,461.56,511.82,128Z"/></svg>
-                                        <svg class="spinner size11 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
+                                <div class="button-style-5 read-message read-button @if($message->read) none @endif">
+                                    <div class="relative size10 mr6">
+                                        <svg class="size10 flex icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M433.73,49.92,178.23,305.37,78.91,206.08.82,284.17,178.23,461.56,511.82,128Z"/></svg>
+                                        <svg class="spinner size10 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
                                             <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
                                             <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
                                         </svg>
                                     </div>
-                                    <span class="fs12 dark">mark as reviewed</span>
+                                    <span class="fs12 dark">mark as read</span>
                                     <input type="hidden" class="message-id" value="{{ $message->id }}" autocomplete="off">
-                                    <input type="hidden" class="status" value="1" autocomplete="off">
+                                    <input type="hidden" class="read" value="1" autocomplete="off">
                                 </div>
-                                <div class="align-center pointer review-message unreview-button none">
-                                    <div class="relative size11 mr6">
-                                        <svg class="size11 flex icon" fill="#2ca82c" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M433.73,49.92,178.23,305.37,78.91,206.08.82,284.17,178.23,461.56,511.82,128Z"/></svg>
-                                        <svg class="spinner size11 opacity0 absolute green" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
+                                <div class="button-style-5 read-message unread-button @if(!$message->read) none @endif">
+                                    <div class="relative size10 mr6">
+                                        <svg class="size10 flex icon" fill="#2ca82c" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M433.73,49.92,178.23,305.37,78.91,206.08.82,284.17,178.23,461.56,511.82,128Z"/></svg>
+                                        <svg class="spinner size10 opacity0 absolute green" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
                                             <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
                                             <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
                                         </svg>
                                     </div>
-                                    <span class="fs12 green">message reviewed</span>
+                                    <span class="fs12 green">message read</span>
                                     <input type="hidden" class="message-id" value="{{ $message->id }}" autocomplete="off">
-                                    <input type="hidden" class="status" value="0" autocomplete="off">
+                                    <input type="hidden" class="read" value="0" autocomplete="off">
                                 </div>
                             </div>
                             <span class="fs11 mx8 dark unselectable">〡</span>
