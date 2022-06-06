@@ -12,7 +12,7 @@ class FaqController extends Controller
          * We check for live attribute because when normal user submit a question the default value of live column is 0
          * and so it is not shown directly to FAQs page until an admin review it
          */
-        $faqs = Faq::where('status', 1)->orderBy('priority')->paginate(8);
+        $faqs = Faq::where('live', 1)->orderBy('priority')->paginate(8);
         return view('faqs')
             ->with(compact('faqs'));
     }
@@ -35,6 +35,11 @@ class FaqController extends Controller
      * Admin section
      */
     public function manage(Request $request) {
-        return view('admin.faqs.manage');
+        $live_faqs = Faq::with(['user'])->where('live', 1)->orderBy('priority')->get();
+        $unverified_faqs = Faq::with(['user'])->where('live', 0)->orderBy('created_at', 'desc')->paginate(12);
+        
+        return view('admin.faqs.manage')
+            ->with(compact('live_faqs'))
+            ->with(compact('unverified_faqs'));
     }
 }
