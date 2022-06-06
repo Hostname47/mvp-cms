@@ -91,4 +91,17 @@ class ContactController extends Controller
 
         \DB::statement("UPDATE contact_messages SET `read`=$read WHERE id IN ($messages)");
     }
+
+    public function delete(Request $request) {
+        $this->authorize('delete', [ContactMessage::class]);
+
+        $data = $request->validate([
+            'messages'=>'required',
+            'messages.*'=>'exists:contact_messages,id',
+        ]);
+
+        $messages = implode(',', $data['messages']);
+
+        \DB::statement("DELETE FROM contact_messages WHERE id IN ($messages)");
+    }
 }

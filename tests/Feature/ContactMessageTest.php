@@ -19,6 +19,7 @@ class ContactMessageTest extends TestCase
         $permissions = [
             'access-admin-section' => Permission::factory()->create(['title'=>'aas', 'slug'=>'access-admin-section']),
             'read-contact-message' => Permission::factory()->create(['title'=>'rcm', 'slug'=>'read-contact-message']),
+            'delete-contact-message' => Permission::factory()->create(['title'=>'dcm', 'slug'=>'delete-contact-message']),
         ];
 
         $user = $this->authuser = User::factory()->create();
@@ -26,6 +27,7 @@ class ContactMessageTest extends TestCase
 
         $user->attach_permission('access-admin-section');
         $user->attach_permission('read-contact-message');
+        $user->attach_permission('delete-contact-message');
     }
 
     /** @test */
@@ -112,7 +114,7 @@ class ContactMessageTest extends TestCase
      */
 
     /** @test */
-    public function review_message() {
+    public function review_a_contact_message() {
         $user = User::factory()->create();
         $message = ContactMessage::factory()->create(['user_id'=>$user->id]);
 
@@ -130,7 +132,7 @@ class ContactMessageTest extends TestCase
     }
     
     /** @test */
-    public function review_message_requires_permission() {
+    public function review_a_contact_message_requires_permission() {
         $user = User::factory()->create();
         $message = ContactMessage::factory()->create(['user_id'=>$user->id]);
 
@@ -138,6 +140,29 @@ class ContactMessageTest extends TestCase
         $this->post('/admin/contact-messages/read', [
             'messages'=>[$message->id],
             'read'=>1
+        ])->assertForbidden();
+    }
+
+    /** @test */
+    public function delete_a_contact_message() {
+        $user = User::factory()->create();
+        $message = ContactMessage::factory()->create(['user_id'=>$user->id]);
+
+        $this->assertCount(1, ContactMessage::all());
+        $this->delete('/admin/contact-messages', [
+            'messages'=>[$message->id],
+        ]);
+        $this->assertCount(0, ContactMessage::all());
+    }
+
+    /** @test */
+    public function delete_a_contact_message_requires_permission() {
+        $user = User::factory()->create();
+        $message = ContactMessage::factory()->create(['user_id'=>$user->id]);
+
+        $this->authuser->detach_permission('delete-contact-message');
+        $this->delete('/admin/contact-messages', [
+            'messages'=>[$message->id],
         ])->assertForbidden();
     }
 }

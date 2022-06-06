@@ -46,7 +46,7 @@
             </thead>
             <tbody>
                 @foreach($messages as $message)
-                <tr class="message-component">
+                <tr class="contact-message-component">
                     <td class="message-bulk-selection-column">
                         <input type="checkbox" class="message-selection-input" value="{{ $message->id }}" autocomplete="off">
                     </td>
@@ -73,7 +73,7 @@
                         <div class="align-center mt8">
                             <!-- mark as reviewed/unreviewed -->
                             <div>
-                                <div class="button-style-5 read-message read-button @if($message->read) none @endif">
+                                <div class="button-style-5 read-contact-message read-button @if($message->read) none @endif">
                                     <div class="relative size10 mr6">
                                         <svg class="size10 flex icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M433.73,49.92,178.23,305.37,78.91,206.08.82,284.17,178.23,461.56,511.82,128Z"/></svg>
                                         <svg class="spinner size10 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
@@ -85,7 +85,7 @@
                                     <input type="hidden" class="message-id" value="{{ $message->id }}" autocomplete="off">
                                     <input type="hidden" class="read" value="1" autocomplete="off">
                                 </div>
-                                <div class="button-style-5 read-message unread-button @if(!$message->read) none @endif">
+                                <div class="button-style-5 read-contact-message unread-button @if(!$message->read) none @endif">
                                     <div class="relative size10 mr6">
                                         <svg class="size10 flex icon" fill="#2ca82c" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M433.73,49.92,178.23,305.37,78.91,206.08.82,284.17,178.23,461.56,511.82,128Z"/></svg>
                                         <svg class="spinner size10 opacity0 absolute green" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
@@ -99,8 +99,8 @@
                                 </div>
                             </div>
                             <span class="fs11 mx8 dark unselectable">〡</span>
-                            <span class="fs12 red pointer align-center trash-post-button">
-                                <svg class="spinner size12 mr4 none" fill="none" viewBox="0 0 16 16">
+                            <span class="fs12 red pointer align-center delete-contact-message">
+                                <svg class="spinner size10 mr4 none" fill="none" viewBox="0 0 16 16">
                                     <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
                                     <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
                                 </svg>

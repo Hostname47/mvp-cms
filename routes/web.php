@@ -99,8 +99,9 @@ Route::middleware(['able-to-access-admin-section'])->group(function() {
     Route::patch('/admin/tags', [TagController::class, 'update']);
     Route::delete('/admin/tags', [TagController::class, 'delete']);
 
-    Route::get('/admin/contact', [ContactController::class, 'manage'])->name('admin.contact.management');
+    Route::get('/admin/contact-messages', [ContactController::class, 'manage'])->name('admin.contact.management');
     Route::post('/admin/contact-messages/read', [ContactController::class, 'read']);
+    Route::delete('/admin/contact-messages', [ContactController::class, 'delete']);
 });
 
 Route::get('/login/{provider}', [OAuthController::class, 'redirectToProvider']);

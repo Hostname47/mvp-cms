@@ -16,4 +16,12 @@ class ContactPolicy
         
         return true;
     }
+
+    public function delete(User $user) {
+        if(!$user->has_permission('delete-contact-message')) {
+            return $this->deny("Unauthorized action due to lack of permissions.");
+        }
+        
+        return true;
+    }
 }
