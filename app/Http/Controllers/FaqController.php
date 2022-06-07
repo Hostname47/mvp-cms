@@ -57,6 +57,19 @@ class FaqController extends Controller
             ->with(compact('faqs'));
     }
 
+    public function admin_store(Request $request) {
+        $this->authorize('admin_store', [Faq::class]);
+        
+        $data = $request->validate([
+            'question'=>'required|max:2000',
+            'answer'=>'required|max:6000'
+        ]);
+        $data['user_id'] = auth()->user()->id;
+
+        Faq::create($data);
+        \Session::flash('message', __('Faq has been created successfully. The created faq is stored as unverified for more verifications before making it live.'));
+    }
+
     public function update_priorities(Request $request) {
         $data = $request->validate([
             'faqs'=>'required',

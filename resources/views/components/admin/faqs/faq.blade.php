@@ -27,7 +27,7 @@
                     <!-- make faq live or unverified -->
                     @if($faq->live == 1)
                     <div class="suboption-style-1 align-start mb2 change-faq-state">
-                        <input type="hidden" class="state" value="0" autocomplete="off"> <!-- change state of faq to idle (unverified faqs) -->
+                        <input type="hidden" class="state" value="0" autocomplete="off"> <!-- change state of faq to unverified -->
                         <div class="relative size14 mr4" style="min-width: 14px;">
                             <svg class="flex size14 icon-above-spinner" xmlns="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M509.38,154.25c-7,14.45-19,24.74-30,35.79Q355.7,313.75,232,437.42c-22.66,22.66-43.61,22.66-66.28,0Q102.36,374.07,39,310.7c-20.49-20.51-20.54-42.45-.21-62.84q13-13.1,26.14-26.15c19-18.94,41.6-19,60.84,0,22.23,22,44.46,44,66.25,66.49,5.28,5.45,7.9,5.91,13.58.19q99.87-100.58,200.3-200.58,32-32,64.27.13c6.05,6,11.87,12.28,18.14,18.06,9.06,8.34,16.86,17.47,21.05,29.26ZM196.82,420c6.06-.22,8-3.47,10.35-5.85q62.7-62.6,125.32-125.28Q401.17,220.2,470,151.63c6.28-6.22,6.37-10.36-.09-16.15-8-7.17-15.27-15.1-22.87-22.68-8.86-8.84-9.37-8.85-18-.18L215.2,326.36c-12.57,12.56-20.15,12.58-32.65.11-26.61-26.55-53.34-53-79.67-79.8-5.89-6-9.85-5.93-15.4.16-8.08,8.86-16.71,17.24-25.43,25.48-5,4.7-5.24,8.4-.24,13.39q65.49,65.16,130.72,130.6C194.31,418.08,196,420.05,196.82,420ZM10.81,52.54c-3.33,4.07-2.16,9.85,1.8,13.94,5,5.14,10.12,10.16,15.19,15.23,11.9,11.9,23.77,23.84,35.74,35.68,1.84,1.81,1.85,2.86,0,4.69q-24.63,24.44-49.11,49c-7.24,7.25-7.22,13,.09,20.3l7.15,7.14c6.23,6.2,12.51,6.24,18.69.07C56.8,182.2,73.28,165.8,89.59,149.24c2.38-2.41,3.58-2.28,5.87,0,16.17,16.39,32.5,32.64,48.77,48.92,6.68,6.69,12.8,6.78,19.36.07,4.57-4.67,9.92-8.67,12.76-14.86l.24-1.52c-.65-4.93-3.43-8.26-6.62-11.43-16.16-16.08-32.21-32.25-48.4-48.29-1.94-1.92-1.89-3,0-4.89,15.8-15.66,31.49-31.44,47.24-47.15,3.3-3.29,6.65-6.5,7.91-11.39l-.26-1.9a50,50,0,0,0-21.15-21.11l-1.74-.23c-4.6,1.1-7.72,4.07-10.81,7.18C126,59.51,109.2,76.25,92.51,93.13,75.82,76.24,59,59.5,42.24,42.67c-2.9-2.92-5.86-5.68-10-7l-2.41.06C21.47,39.11,16.16,46,10.81,52.54Z"/></svg>
                             <svg class="spinner size14 opacity0 absolute" fill="none" viewBox="0 0 16 16">
@@ -36,8 +36,8 @@
                             </svg>
                         </div>
                         <div>
-                            <span class="fs12 bold dark unselectable block">Make it Idle</span>
-                            <p class="fs11 dark no-margin">Hide faq from users in faqs page, and move it to unverified faqs section</p>
+                            <span class="fs12 bold dark unselectable block">Hide faq</span>
+                            <p class="fs11 dark no-margin">Hide faq and mark it as unverified</p>
                         </div>
                     </div>
                     @else
@@ -52,7 +52,7 @@
                         </div>
                         <div>
                             <span class="fs12 bold dark unselectable">Make it <span class="green">Live</span></span>
-                            <p class="fs11 dark no-margin">Once you review and handle i18n of this faq, you can make it public by clicking here</p>
+                            <p class="fs11 dark no-margin">Verify faq to make it live. (don't forget to handle its i18n)</p>
                         </div>
                     </div>
                     @endif

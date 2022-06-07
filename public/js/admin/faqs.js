@@ -216,7 +216,6 @@ $('.open-faq-delete-container').on('click', function(event) {
 	disable_page_scroll();
 });
 
-
 let delete_faq_lock = true;
 $('#delete-faq-button').on('click', function() {
 	if(!delete_faq_lock) return;
@@ -266,4 +265,49 @@ $('#delete-faq-button').on('click', function() {
 			button.removeClass('red-bs-disabled');
 		}
 	});
+});
+
+let update_faq_state_lock = true;
+$('.change-faq-state').on('click', function() {
+	if(!update_faq_state_lock) return;
+	update_faq_state_lock = false;
+
+	let component = $(this);
+	while(!component.hasClass('faq-component')) component = component.parent();
+
+	let button = $(this);
+	let spinner = button.find('.spinner');
+	let buttonicon = button.find('.icon-above-spinner');
+	let faq_id = component.find('.faq-id').val();
+
+	spinner.addClass('inf-rotate');
+	spinner.removeClass('opacity0');
+	buttonicon.addClass('none');
+
+	$.ajax({
+		type: 'patch',
+		url: '/admin/faqs',
+		data: {
+			faq_id: faq_id,
+			live: button.find('.state').val()
+		},
+		success: function(response) {
+			left_bottom_notification('faq status has been changed');
+			location.reload();
+		},
+		error: function(response) {
+			let errorObject = JSON.parse(response.responseText);
+			let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+			if(errorObject.errors) {
+				let errors = errorObject.errors;
+				error = errors[Object.keys(errors)[0]][0];
+			}
+			print_top_message(error, 'error');
+
+			update_faq_state_lock = true;
+			spinner.removeClass('inf-rotate');
+			spinner.addClass('opacity0');
+			buttonicon.removeClass('none');
+		},
+	})
 });

@@ -19,6 +19,7 @@ class FaqTest extends TestCase
         
         $permissions = [
             'access-admin-section' => Permission::factory()->create(['title'=>'aas', 'slug'=>'access-admin-section']),
+            'create-faq' => Permission::factory()->create(['title'=>'cf', 'slug'=>'create-faq']),
             'update-faq-priority' => Permission::factory()->create(['title'=>'ufp', 'slug'=>'update-faq-priority']),
             'update-faq' => Permission::factory()->create(['title'=>'uf', 'slug'=>'update-faq']),
             'delete-faq' => Permission::factory()->create(['title'=>'df', 'slug'=>'delete-faq']),
@@ -28,6 +29,7 @@ class FaqTest extends TestCase
         $this->actingAs($user);
 
         $user->attach_permission('access-admin-section');
+        $user->attach_permission('create-faq');
         $user->attach_permission('update-faq-priority');
         $user->attach_permission('update-faq');
         $user->attach_permission('delete-faq');
@@ -64,6 +66,19 @@ class FaqTest extends TestCase
     }
 
     /** Admin section */
+
+    /** @test */
+    public function create_faq() {
+        $this->assertCount(0, Faq::all());
+        $this->post('/admin/faqs', ['question'=>'hello darkness ?', 'answer'=>'hola amigos']);
+        $this->assertCount(1, Faq::all());
+    }
+
+    /** @test */
+    public function create_faq_require_permission() {
+        $this->authuser->detach_permission('create-faq');
+        $this->post('/admin/faqs', ['question'=>'hello darkness ?', 'answer'=>'hola amigos'])->assertForbidden();
+    }
 
     /** @test */
     public function update_faqs_priorities() {

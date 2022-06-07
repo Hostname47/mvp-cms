@@ -33,6 +33,14 @@ class FaqPolicy
         return true;
     }
 
+    public function admin_store(User $user) {
+        if(!$user->has_permission('create-faq')) {
+            return $this->deny("Unauthorized action due to lack of permissions.");
+        }
+
+        return true;
+    }
+
     public function update(User $user) {
         if(!$user->has_permission('update-faq')) {
             return $this->deny("Unauthorized action due to lack of permissions.");
