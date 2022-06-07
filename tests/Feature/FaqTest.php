@@ -21,6 +21,7 @@ class FaqTest extends TestCase
             'access-admin-section' => Permission::factory()->create(['title'=>'aas', 'slug'=>'access-admin-section']),
             'update-faq-priority' => Permission::factory()->create(['title'=>'ufp', 'slug'=>'update-faq-priority']),
             'update-faq' => Permission::factory()->create(['title'=>'uf', 'slug'=>'update-faq']),
+            'delete-faq' => Permission::factory()->create(['title'=>'df', 'slug'=>'delete-faq']),
         ];
 
         $user = $this->authuser = User::factory()->create();
@@ -29,6 +30,7 @@ class FaqTest extends TestCase
         $user->attach_permission('access-admin-section');
         $user->attach_permission('update-faq-priority');
         $user->attach_permission('update-faq');
+        $user->attach_permission('delete-faq');
     }
 
     /** @test */
@@ -110,5 +112,22 @@ class FaqTest extends TestCase
         $this->authuser->detach_permission('update-faq');
         $this->patch('/admin/faqs', ['faq_id'=>$faq->id, 'question'=>'q2', 'answer'=>'a2'])
             ->assertForbidden();
+    }
+
+    /** @test */
+    public function delete_faq() {
+        $faq = Faq::factory()->create(['question'=>'q1', 'answer'=>'a1', 'user_id'=>$this->authuser->id]);
+
+        $this->assertCount(1, Faq::all());
+        $this->delete('/admin/faqs', ['faq_id'=>$faq->id]);
+        $this->assertCount(0, Faq::all());
+    }
+
+    /** @test */
+    public function delete_faq_requires_permission() {
+        $faq = Faq::factory()->create(['question'=>'q1', 'answer'=>'a1', 'user_id'=>$this->authuser->id]);
+
+        $this->authuser->detach_permission('delete-faq');
+        $this->delete('/admin/faqs', ['faq_id'=>$faq->id])->assertForbidden();
     }
 }

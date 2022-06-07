@@ -87,4 +87,11 @@ class FaqController extends Controller
         
         $faq->update($data);
     }
+
+    public function delete(Request $request) {
+        $this->authorize('delete', [Faq::class]);
+        $id = $request->validate(['faq_id'=>'required|exists:faqs,id'])['faq_id'];
+        
+        Faq::find($id)->delete();
+    }
 }

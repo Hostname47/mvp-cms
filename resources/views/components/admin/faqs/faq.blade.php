@@ -12,7 +12,12 @@
                 @if($faq->live == 0)
                 <p class="no-margin fs11 lh15 mt4 answer-text"><strong class="no-wrap">Description :</strong> {{ ($faq->description) ? $faq->description : '--' }}</p>
                 @endif
+
+                @if($faq->user)
                 <p class="no-margin bold fs11 mt2">asked by : <a href="{{ route('admin.users.management', ['user'=>$faq->user->username]) }}" target="_blank" class="blue no-underline fs13">{{ $faq->user->username }}</a></p>
+                @else
+                <p class="no-margin bold fs11 mt2">asked by : <span class="light-gray italic">fibonashi user</span></p>
+                @endif
             </div>
         </div>
         <div class="move-to-right align-center height-max-content">

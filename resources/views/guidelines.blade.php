@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Fibonashi - Privacy Policy')
+@section('title', 'Fibonashi - Guidelines')
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/left-panel.css') }}">

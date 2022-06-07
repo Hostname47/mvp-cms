@@ -200,3 +200,67 @@ $('.update-faq').on('click', function() {
 		}
 	})
 });
+
+$('.open-faq-delete-container').on('click', function(event) {
+	let component = $(this);
+	while(!component.hasClass('faq-component')) component = component.parent();
+
+	$(this).parent().css('display', 'none');
+
+	let viewer = $('#faq-delete-viewer');
+	viewer.find('.faq-id').val(component.find('.faq-id').val());
+	viewer.find('.question-text').text(component.find('.question-text').text());
+	viewer.find('.answer-text').text(component.find('.answer-text').text());
+
+	viewer.removeClass('none');
+	disable_page_scroll();
+});
+
+
+let delete_faq_lock = true;
+$('#delete-faq-button').on('click', function() {
+	if(!delete_faq_lock) return;
+	delete_faq_lock = false;
+
+	let viewer = $('#faq-delete-viewer');
+	let button = $(this);
+	let spinner = button.find('.spinner');
+	let buttonicon = button.find('.icon-above-spinner');
+	let faq_id = button.find('.faq-id').val();
+
+	spinner.addClass('inf-rotate');
+	spinner.removeClass('opacity0');
+	buttonicon.addClass('none');
+	button.addClass('red-bs-disabled');
+
+	$.ajax({
+		type: 'delete',
+		url: '/admin/faqs',
+		data: {
+			faq_id: faq_id,
+		},
+		success: function() {
+			viewer.find('.close-global-viewer').trigger('click');
+			$('#faq-' + faq_id + '-box').remove();
+			$('.faqs-count').text(parseInt($('.faqs-count').first().text()) - 1);
+			
+			left_bottom_notification('faq has been deleted successfully');
+		},
+		error: function(response) {
+			let errorObject = JSON.parse(response.responseText);
+			let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+			if(errorObject.errors) {
+				let errors = errorObject.errors;
+				error = errors[Object.keys(errors)[0]][0];
+			}
+			print_top_message(error, 'error');
+		},
+		complete: function() {
+			delete_faq_lock = true;
+			spinner.removeClass('inf-rotate');
+			spinner.addClass('opacity0');
+			buttonicon.removeClass('none');
+			button.removeClass('red-bs-disabled');
+		}
+	});
+});
