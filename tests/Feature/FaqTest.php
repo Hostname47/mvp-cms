@@ -20,6 +20,7 @@ class FaqTest extends TestCase
         $permissions = [
             'access-admin-section' => Permission::factory()->create(['title'=>'aas', 'slug'=>'access-admin-section']),
             'update-faq-priority' => Permission::factory()->create(['title'=>'ufp', 'slug'=>'update-faq-priority']),
+            'update-faq' => Permission::factory()->create(['title'=>'uf', 'slug'=>'update-faq']),
         ];
 
         $user = $this->authuser = User::factory()->create();
@@ -27,6 +28,7 @@ class FaqTest extends TestCase
 
         $user->attach_permission('access-admin-section');
         $user->attach_permission('update-faq-priority');
+        $user->attach_permission('update-faq');
     }
 
     /** @test */
@@ -63,7 +65,6 @@ class FaqTest extends TestCase
 
     /** @test */
     public function update_faqs_priorities() {
-        $this->withoutExceptionHandling();
         $faq0 = Faq::factory()->create(['user_id'=>$this->authuser->id, 'priority'=>1]);
         $faq1 = Faq::factory()->create(['user_id'=>$this->authuser->id, 'priority'=>2]);
 
@@ -75,5 +76,39 @@ class FaqTest extends TestCase
         ]);
         $this->assertEquals(2, $faq0->refresh()->priority);
         $this->assertEquals(1, $faq1->refresh()->priority);
+    }
+
+    /** @test */
+    public function update_faqs_priorities_requires_permission() {
+        $faq0 = Faq::factory()->create(['user_id'=>$this->authuser->id, 'priority'=>1]);
+        $faq1 = Faq::factory()->create(['user_id'=>$this->authuser->id, 'priority'=>2]);
+
+        $this->authuser->detach_permission('update-faq-priority');
+        $this->post('/admin/faqs/priorities', [
+            'faqs'=>[$faq0->id, $faq1->id],
+            'priorities'=>[2, 1],
+        ])->assertForbidden();
+    }
+
+    /** @test */
+    public function update_faq() {
+        $faq = Faq::factory()->create(['question'=>'q1', 'answer'=>'a1', 'user_id'=>$this->authuser->id]);
+
+        $this->assertTrue($faq->question=='q1' && $faq->answer=='a1');
+        $this->patch('/admin/faqs', [
+            'faq_id'=>$faq->id,
+            'question'=>'q2',
+            'answer'=>'a2',
+        ]);
+        $this->assertTrue($faq->refresh()->question=='q2' && $faq->answer=='a2');
+    }
+
+    /** @test */
+    public function update_faq_requires_permission() {
+        $faq = Faq::factory()->create(['question'=>'q1', 'answer'=>'a1', 'user_id'=>$this->authuser->id]);
+
+        $this->authuser->detach_permission('update-faq');
+        $this->patch('/admin/faqs', ['faq_id'=>$faq->id, 'question'=>'q2', 'answer'=>'a2'])
+            ->assertForbidden();
     }
 }

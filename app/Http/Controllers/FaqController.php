@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Models\Faq;
 
 class FaqController extends Controller
@@ -34,6 +35,7 @@ class FaqController extends Controller
     /**
      * Admin section
      */
+
     public function manage(Request $request) {
         $live_faqs = Faq::with(['user'])->where('live', 1)->orderBy('priority')->get();
         $unverified_faqs = Faq::with(['user'])->where('live', 0)->orderBy('created_at', 'desc')->paginate(12);
@@ -58,5 +60,31 @@ class FaqController extends Controller
             Faq::find($id)->update(['priority'=>$data['priorities'][$i]]);
             $i++;
         }
+
+        \Session::flash('message', 'Faqs priorities updated successfully.');
+    }
+
+    public function update(Request $request) {
+        $data = $request->validate([
+            'faq_id'=>'required|exists:faqs,id',
+            'question'=>'sometimes|min:1|max:2000',
+            'answer'=>'sometimes|min:1|max:20000',
+            'live'=>['sometimes', Rule::in([0, 1])]
+        ]);
+
+        $this->authorize('update', [Faq::class]);
+
+        $faq = Faq::find($data['faq_id']);
+        unset($data['faq_id']);
+        
+        if(isset($data['live'])) {
+            if($data['live']==1) {
+                $data['description'] = null;
+                \Session::flash('message', 'FAQ <span class="blue">"' . $faq->questionslice . '"</span> is live now.');
+            } else
+                \Session::flash('message', 'FAQ <span class="blue">"' . $faq->questionslice . '"</span> is idle now and hidden from users in faqs page.');
+        }
+        
+        $faq->update($data);
     }
 }

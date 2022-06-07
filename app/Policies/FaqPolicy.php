@@ -32,4 +32,12 @@ class FaqPolicy
 
         return true;
     }
+
+    public function update(User $user) {
+        if(!$user->has_permission('update-faq')) {
+            return $this->deny("Unauthorized action due to lack of permissions.");
+        }
+
+        return true;
+    }
 }

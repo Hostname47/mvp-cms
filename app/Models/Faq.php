@@ -19,4 +19,8 @@ class Faq extends Model
     public function scopeToday($builder){
         return $builder->where('created_at', '>', today());
     }
+    
+    public function getQuestionsliceAttribute() {
+        return strlen($this->question) > 20 ? substr($this->question, 0, 20) . '..' : $this->question;
+    }
 }

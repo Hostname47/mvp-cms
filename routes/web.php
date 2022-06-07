@@ -105,6 +105,7 @@ Route::middleware(['able-to-access-admin-section'])->group(function() {
 
     Route::get('/admin/faqs', [FaqController::class, 'manage'])->name('admin.faqs.management');
     Route::post('/admin/faqs/priorities', [FaqController::class, 'update_priorities']);
+    Route::patch('/admin/faqs', [FaqController::class, 'update']);
 });
 
 Route::get('/login/{provider}', [OAuthController::class, 'redirectToProvider']);

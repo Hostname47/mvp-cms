@@ -2,13 +2,13 @@
     <input type="hidden" class="faq-id" value="{{ $faq->id }}" autocomplete="off">
     <div class="faq-content-container flex">
         <svg class="size15 mr8 mt2" style="min-width: 16px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,8C119,8,8,119.08,8,256S119,504,256,504,504,393,504,256,393,8,256,8Zm0,448A200,200,0,1,1,456,256,199.88,199.88,0,0,1,256,456ZM363.24,200.8c0,67.05-72.42,68.08-72.42,92.86V300a12,12,0,0,1-12,12H233.18a12,12,0,0,1-12-12v-8.66c0-35.74,27.1-50,47.58-61.51,17.56-9.85,28.32-16.55,28.32-29.58,0-17.25-22-28.7-39.78-28.7-23.19,0-33.9,11-49,30a12,12,0,0,1-16.66,2.13l-27.83-21.1a12,12,0,0,1-2.64-16.37C184.85,131.49,214.94,112,261.79,112,310.86,112,363.24,150.3,363.24,200.8ZM298,368a42,42,0,1,1-42-42A42,42,0,0,1,298,368Z"></path></svg>
-        <div class="toggle-box mt2">
+        <div class="toggle-box" style="margin-top: 1px;">
             <div class="toggle-button pointer flex">
-                <p class="no-margin fs12 bold question-text">{{ $faq->question }}</p>
+                <p class="no-margin fs13 bold question-text">{{ $faq->question }}</p>
                 <svg class="toggle-arrow size7 mx8 mt4" style="min-width: 7px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02"><path d="M13.4,1.43l9.35,11a4,4,0,0,1,0,5.18l-9.35,11a4,4,0,1,1-6.1-5.18L14.46,15,7.3,6.61a4,4,0,0,1,6.1-5.18Z"/></svg>
             </div>
             <div class="toggle-container none">
-                <p class="no-margin fs12 lh15 mt4 answer-text">{!! $faq->answer !!}</p>
+                <p class="no-margin fs14 lh15 mt4 answer-text">{!! $faq->answer !!}</p>
                 @if($faq->live == 0)
                 <p class="no-margin fs11 lh15 mt4 answer-text"><strong class="no-wrap">Description :</strong> {{ ($faq->description) ? $faq->description : '--' }}</p>
                 @endif
