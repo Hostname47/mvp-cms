@@ -4,7 +4,7 @@
         <svg class="size15 mr8 mt2" style="min-width: 16px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,8C119,8,8,119.08,8,256S119,504,256,504,504,393,504,256,393,8,256,8Zm0,448A200,200,0,1,1,456,256,199.88,199.88,0,0,1,256,456ZM363.24,200.8c0,67.05-72.42,68.08-72.42,92.86V300a12,12,0,0,1-12,12H233.18a12,12,0,0,1-12-12v-8.66c0-35.74,27.1-50,47.58-61.51,17.56-9.85,28.32-16.55,28.32-29.58,0-17.25-22-28.7-39.78-28.7-23.19,0-33.9,11-49,30a12,12,0,0,1-16.66,2.13l-27.83-21.1a12,12,0,0,1-2.64-16.37C184.85,131.49,214.94,112,261.79,112,310.86,112,363.24,150.3,363.24,200.8ZM298,368a42,42,0,1,1-42-42A42,42,0,0,1,298,368Z"></path></svg>
         <div class="toggle-box" style="margin-top: 1px;">
             <div class="toggle-button pointer flex">
-                <p class="no-margin fs13 bold question-text">{{ $faq->question }}</p>
+                <p class="no-margin fs13 bold unselectable question-text">{{ $faq->question }}</p>
                 <svg class="toggle-arrow size7 mx8 mt4" style="min-width: 7px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02"><path d="M13.4,1.43l9.35,11a4,4,0,0,1,0,5.18l-9.35,11a4,4,0,1,1-6.1-5.18L14.46,15,7.3,6.61a4,4,0,0,1,6.1-5.18Z"/></svg>
             </div>
             <div class="toggle-container none">
@@ -72,14 +72,10 @@
         <input type="hidden" class="original-faq-question" value="{{ $faq->question }}" autocomplete="off">
         <input type="hidden" class="original-faq-answer" value="{{ $faq->answer }}" autocomplete="off">
 
-        <div class="mb8 error-container white-background align-center relative none" style="padding: 6px 10px">
-            <svg class="size12 mr4" style="min-width: 14px; margin-top: 1px" fill="rgb(228, 48, 48)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M501.61,384.6,320.54,51.26a75.09,75.09,0,0,0-129.12,0c-.1.18-.19.36-.29.53L10.66,384.08a75.06,75.06,0,0,0,64.55,113.4H435.75c27.35,0,52.74-14.18,66.27-38S515.26,407.57,501.61,384.6ZM226,167.15a30,30,0,0,1,60.06,0V287.27a30,30,0,0,1-60.06,0V167.15Zm30,270.27a45,45,0,1,1,45-45A45.1,45.1,0,0,1,256,437.42Z"/></svg>
-            <span class="error fs12 bold no-margin thread-edit-error"></span>
-
-            <div class="open-revoke-role-dialog x-close-container-style close-parent" style="top: 4px; right: 8px">
-                <span class="x-close unselectable">✖</span>
-                <input type="hidden" class="uid" value="2" autocomplete="off">
-            </div>
+        <div class="informative-message-container align-center error-container none relative mb8">
+            <div class="informative-message-container-left-stripe imcls-red"></div>
+            <div class="no-margin fs13 error"></div>
+            <div class="close-parent close-informative-message-style">✖</div>
         </div>
         
         <label for="{{ 'faq-' . $faq->id }}" class="fs12 bold dark flex mb2">Question</label>
@@ -89,7 +85,7 @@
         <textarea id="{{ 'faqa-' . $faq->id }}" class="styled-input faq-answer faq-answer-input" placeholder="Answer to question here" autocomplete="off">{{ $faq->answer }}</textarea>
 
         <div class="align-center mt8">
-            <div class="typical-button-style align-center mr8 update-faq">
+            <div class="typical-button-style dark-bs align-center mr8 update-faq">
                 <div class="relative size14 mr4">
                     <svg class="size13 icon-above-spinner mr4" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M256.26,58.1V233.76c-2,2.05-2.07,5-3.36,7.35-4.44,8.28-11.79,12.56-20.32,15.35H26.32c-.6-1.55-2.21-1.23-3.33-1.66C11,250.24,3.67,240.05,3.66,227.25Q3.57,130.14,3.66,33c0-16.47,12.58-29.12,29-29.15q81.1-.15,162.2,0c10,0,19.47,2.82,26.63,9.82C235,26.9,251.24,38.17,256.26,58.1ZM129.61,214.25a47.35,47.35,0,1,0,.67-94.69c-25.81-.36-47.55,21.09-47.7,47.07A47.3,47.3,0,0,0,129.61,214.25ZM108.72,35.4c-17.93,0-35.85,0-53.77,0-6.23,0-9,2.8-9.12,9-.09,7.9-.07,15.79,0,23.68.06,6.73,2.81,9.47,9.72,9.48q53.27.06,106.55,0c7.08,0,9.94-2.85,10-9.84.08-7.39.06-14.79,0-22.19S169.35,35.42,162,35.41Q135.35,35.38,108.72,35.4Z"/><path d="M232.58,256.46c8.53-2.79,15.88-7.07,20.32-15.35,1.29-2.4,1.38-5.3,3.36-7.35,0,6.74-.11,13.49.07,20.23.05,2.13-.41,2.58-2.53,2.53C246.73,256.35,239.65,256.46,232.58,256.46Z"/></svg>
                     <svg class="spinner size14 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
@@ -100,7 +96,7 @@
                 <div class="btn-text fs12 bold">Save changes</div>
                 <input type="hidden" class="faq-id" value="{{ $faq->id }}" autocomplete="off">
             </div>
-            <div class="pointer bblack bold fs12 discard-faq-update">cancel</div>
+            <div class="pointer dark bold fs12 discard-faq-update">cancel</div>
         </div>
     </div>
 </div>
