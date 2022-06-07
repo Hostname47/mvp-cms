@@ -5,7 +5,7 @@
     border-radius: 4px;
 }
 
-#live-faqs-container, #unverified-faqs-container {
+.faqs-box {
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -15,12 +15,7 @@
     border-radius: 4px;
 }
 
-#live-faqs-container {
-    max-height: 400px;
-    overflow-y: auto;
-}
-
-#unverified-faqs-container {
+.pagination-section {
     margin-bottom: 160px;
 }
 

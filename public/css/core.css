@@ -1112,6 +1112,28 @@ textarea {
     background-color: #f7f7f7;
 }
 
+.button-style-6 {
+    padding: 8px 14px;
+    border-radius: 16px;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.button-style-6:hover {
+    background-color: #f3f4f5;
+}
+
+.bs6-selected {
+    background-color: #d8ebf7 !important;
+    padding: 8px 14px;
+    border-radius: 16px;
+    color: #202020 !important;
+}
+
+.bs6-selected:hover {
+    background-color: #bcd5e4 !important;
+}
+
 #basic-bottom-left-notification-container {
     position: fixed;
     display: flex;

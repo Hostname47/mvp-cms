@@ -37,12 +37,24 @@ class FaqController extends Controller
      */
 
     public function manage(Request $request) {
-        $live_faqs = Faq::with(['user'])->where('live', 1)->orderBy('priority')->get();
-        $unverified_faqs = Faq::with(['user'])->where('live', 0)->orderBy('created_at', 'desc')->paginate(12);
+        $faqs = collect([]);
+        $tab = 'live';
+        if($request->has('tab')) {
+            $tab = $request->validate(['tab'=>Rule::in(['live','unverified'])])['tab'];
+        }
+
+        switch($tab) {
+            case 'live':
+                $faqs = Faq::with(['user'])->where('live', 1)->orderBy('priority')->paginate(16);
+                break;
+            case 'unverified':
+                $faqs = Faq::with(['user'])->where('live', 0)->orderBy('created_at', 'desc')->paginate(16);
+                break;
+        }
         
         return view('admin.faqs.manage')
-            ->with(compact('live_faqs'))
-            ->with(compact('unverified_faqs'));
+            ->with(compact('tab'))
+            ->with(compact('faqs'));
     }
 
     public function update_priorities(Request $request) {

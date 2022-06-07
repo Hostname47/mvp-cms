@@ -8,7 +8,7 @@
                 <svg class="toggle-arrow size7 mx8 mt4" style="min-width: 7px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02"><path d="M13.4,1.43l9.35,11a4,4,0,0,1,0,5.18l-9.35,11a4,4,0,1,1-6.1-5.18L14.46,15,7.3,6.61a4,4,0,0,1,6.1-5.18Z"/></svg>
             </div>
             <div class="toggle-container none">
-                <p class="no-margin fs14 lh15 mt4 answer-text">{!! $faq->answer !!}</p>
+                <p class="fs14 lh15 my8 answer-text">{!! $faq->answer !!}</p>
                 @if($faq->live == 0)
                 <p class="no-margin fs11 lh15 mt4 answer-text"><strong class="no-wrap">Description :</strong> {{ ($faq->description) ? $faq->description : '--' }}</p>
                 @endif

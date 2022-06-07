@@ -1,7 +1,7 @@
 $('#sort-faqs-components-by-priority').on('click', function() {
 	// First check if admin enter an invalide priority value by mistake (character or empty string)
 	let invalid_priority = false;
-	$('#live-faqs-container .faq-component .faq-priority').each(function() {
+	$('.faq-component .faq-priority').each(function() {
 		if(!parseInt($(this).val())) {
 			invalid_priority = true;
 			return false;
@@ -9,16 +9,16 @@ $('#sort-faqs-components-by-priority').on('click', function() {
 	});
 
 	if(invalid_priority) {
-		display_top_informer_message('A priority value of one of live faqs is invalid. (priority should be a number)');
+		display_top_informer_message('A priority value of one of faqs is invalid. (priority should be a number)');
 		return;
 	}
 
 	// Reorder options after votes based on number of votes (using bubble sort)
-	let faqs = $('#live-faqs-container .faq-component');
+	let faqs = $('.faq-component');
 	let count = faqs.length;
 	let i, j;
 	for (i = 0; i < count-1; i++) {
-		faqs = $('#live-faqs-container .faq-component');
+		faqs = $('.faq-component');
 		// (count-i-1) because last i elements will be in the right place
 		for (j = 0; j < count-i-1; j++) {
 			let faqa = $(faqs[j]);
@@ -28,7 +28,7 @@ $('#sort-faqs-components-by-priority').on('click', function() {
 
 			if(va > vb) {
 				faqa.insertAfter(faqb);
-				faqs = $('#live-faqs-container .faq-component');
+				faqs = $('.faq-component');
 			}
 		}
 	}
@@ -37,7 +37,7 @@ $('#sort-faqs-components-by-priority').on('click', function() {
 let update_faqs_priorities_lock = true;
 $('#update-faqs-priorities').on('click', function() {
 	let invalid_priority = false;
-	$('#live-faqs-container .faq-component .faq-priority').each(function() {
+	$('.faq-component .faq-priority').each(function() {
 		if(!parseInt($(this).val())) {
 			invalid_priority = true;
 			return false;
@@ -45,11 +45,11 @@ $('#update-faqs-priorities').on('click', function() {
 	});
 
 	if(invalid_priority) {
-		print_top_message('A priority value of one of live faqs is invalid. (priority should be a number)', 'error');
+		print_top_message('A priority value of one of faqs is invalid. (priority should be a number)', 'error');
 		return;
 	}
 
-    if(!$('#live-faqs-container .faq-component .faq-priority').length) {
+    if(!$('.faq-component .faq-priority').length) {
         print_top_message('You need at least one faq to update its priority.', 'error');
 		return;
     }
@@ -63,7 +63,7 @@ $('#update-faqs-priorities').on('click', function() {
 
 	let faqs=[];
 	let priorities=[];
-	$('#live-faqs-container .faq-component').each(function() {
+	$('.faq-component').each(function() {
 		faqs.push($(this).find('.faq-id').val());
 		priorities.push($(this).find('.faq-priority').val());
 	});
@@ -244,6 +244,9 @@ $('#delete-faq-button').on('click', function() {
 			$('#faq-' + faq_id + '-box').remove();
 			$('.faqs-count').text(parseInt($('.faqs-count').first().text()) - 1);
 			
+			if(!$('.faq-component').length) {
+				$('.no-faqs-available').removeClass('none');
+			}
 			left_bottom_notification('faq has been deleted successfully');
 		},
 		error: function(response) {

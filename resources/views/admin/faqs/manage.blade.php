@@ -79,12 +79,16 @@
     </div>
     <div class="admin-page-content-box">
         @include('partials.session-messages')
-        <h2 class="no-margin fs18 dark">Frequently asked questions management</h2>
+        <div class="align-center my12" style="gap: 12px;">
+            <a href="?tab=live" class="button-style-6 dark @if($tab=='live') bs6-selected @endif">{{ __('Live faqs') }}</a>
+            <a href="?tab=unverified" class="button-style-6 dark @if($tab=='unverified') bs6-selected @endif">{{ __('Unverified faqs') }}</a>
+        </div>
         <p class="dark lh15 my8">The following faqs section includes faqs defined by admins as well as received faqs from users. Also we have two parts : the first one includes the faqs that are live (accessible in faqs page), and the second part is the unverified faqs either defined by admins or submitted by users.</p>
 
-        <!-- Live faqs -->
-        <div class="faqs-wrapper">
-            <h3 class="fs16 bold blue mb4">1. Live FAQs (<span class="faqs-count">{{ $live_faqs->count() }}</span>)</h3>
+        @switch($tab)
+            @case('live')
+            <!-- Live faqs -->
+            <h3 class="fs18 bold dark mt8 mb4">Live FAQs (<span class="faqs-count">{{ $faqs->total() }}</span>)</h3>
             <p class="dark my8">The following faqs are live (accessible by users in faqs page). You can change their priority to decide which comes first.</p>
             <div class="my8 typical-section-style flex">
                 <svg class="size14 mr8" style="min-width: 14px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
@@ -109,44 +113,42 @@
                     </div>
                 </div>
             </div>
-            <div id="live-faqs-container" class="typical-section-style">
-                @foreach($live_faqs as $faq)
+            <div class="faqs-box">
+                @foreach($faqs as $faq)
                 <x-admin.faqs.faq :faq="$faq" />
                 @endforeach
 
-                <div class="no-faqs-available full-center @if($live_faqs->count()) none @endif">
+                <div class="no-faqs-available full-center @if($faqs->count()) none @endif">
                     <svg class="size14 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
                     <p class="dark bold my4 fs12">No faqs found. Change pagination page or create new faqs.</p>
                 </div>
-            </div>
-        </div>
 
-        <!-- Unverified faqs -->
-        <div class="faqs-wrapper toggle-box">
-            <div class="align-center pointer toggle-button my12">
-                <h3 class="fs16 bold blue no-margin">2. Unverified FAQs (<span class="faqs-count">{{ $unverified_faqs->total() }}</span>)</h3>
-                <svg class="toggle-arrow size8 ml8" fill="#2ca0ff" style="min-width: 8px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02"><path d="M13.4,1.43l9.35,11a4,4,0,0,1,0,5.18l-9.35,11a4,4,0,1,1-6.1-5.18L14.46,15,7.3,6.61a4,4,0,0,1,6.1-5.18Z"></path></svg>
             </div>
-            <div class="toggle-container none">
-                <p class="dark my8">The following faqs are unverified (not accessible by users in faqs page) faqs that are received from users in faqs page.</p>
-                <div id="unverified-faqs-container">
-                    @foreach($unverified_faqs as $faq)
-                    <x-admin.faqs.faq :faq="$faq"/>
-                    @endforeach
-    
-                    @if(!$unverified_faqs->count())
-                    <div class="full-center">
-                        <svg class="size14 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
-                        <p class="dark bold my4 fs12">There's no received faqs for the moment.</p>
-                    </div>
-                    @endif
-                </div>
-    
-                <div class="full-center my12">
-                    {{ $unverified_faqs->appends(request()->query())->onEachSide(0)->links() }}
-                </div>
+            <div class="full-center pagination-section" style="margin-top: 12px;">
+                {{ $faqs->appends(request()->query())->onEachSide(0)->links() }}
             </div>
-        </div>
+            @break
+            @case('unverified')
+            <!-- Unverified faqs -->
+            <h3 class="fs18 bold dark no-margin">Unverified FAQs (<span class="faqs-count">{{ $faqs->total() }}</span>)</h3>
+            <p class="dark my8">The following faqs are unverified (not accessible by users in faqs page) faqs that are received from users in faqs page.</p>
+            <div class="faqs-box">
+                @foreach($faqs as $faq)
+                <x-admin.faqs.faq :faq="$faq"/>
+                @endforeach
+
+                <div class="no-faqs-available full-center @if($faqs->count()) none @endif">
+                    <svg class="size14 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                    <p class="dark bold my4 fs12">No faqs found. Change pagination page or create new faqs.</p>
+                </div>
+
+            </div>
+            <div class="full-center pagination-section" style="margin-top: 12px;">
+                {{ $faqs->appends(request()->query())->onEachSide(0)->links() }}
+            </div>
+            @break
+        @endswitch
+
     </div>
 </main>
 @endsection
