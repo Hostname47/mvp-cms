@@ -1130,10 +1130,6 @@ textarea {
     color: #202020 !important;
 }
 
-.bs6-selected:hover {
-    background-color: #bcd5e4 !important;
-}
-
 #basic-bottom-left-notification-container {
     position: fixed;
     display: flex;

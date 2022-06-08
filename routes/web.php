@@ -7,7 +7,7 @@ use App\Http\Controllers\{IndexController, AdminController, PostController, Cate
     NewsletterController, CommentController, ClapController, ReportController, SearchController,
     AuthorRequestController, ContactController, FaqController, UserController, ActivitiesController, 
     AuthorController};
-use App\Http\Controllers\Admin\{AdminSearchController, AdminCommentController, AdminUserController};
+use App\Http\Controllers\Admin\{AdminSearchController, AdminCommentController, AdminUserController, AdminAuthorController};
 use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Middleware\AccountStatus;
 
@@ -98,6 +98,8 @@ Route::middleware(['able-to-access-admin-section'])->group(function() {
     Route::get('/admin/tags/data', [TagController::class, 'data']);
     Route::patch('/admin/tags', [TagController::class, 'update']);
     Route::delete('/admin/tags', [TagController::class, 'delete']);
+
+    Route::get('/admin/authors', [AdminAuthorController::class, 'overview'])->name('admin.author.overview');
 
     Route::get('/admin/contact-messages', [ContactController::class, 'manage'])->name('admin.contact.management');
     Route::post('/admin/contact-messages/read', [ContactController::class, 'read']);
