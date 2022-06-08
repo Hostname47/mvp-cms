@@ -16,6 +16,56 @@
 
 @section('content')
 <main class="flex flex-column">
+    <!-- create faq viewer -->
+    <div id="create-faq-viewer" class="global-viewer full-center none">
+        <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
+        <div class="global-viewer-content-box viewer-box-style-1" style="width: 600px;">
+            <div class="align-center space-between light-gray-border-bottom" style="padding: 14px;">
+                <div class="align-center">
+                    <svg class="size14 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M156.22,3.31c3.07,2.55,4.08,5.71,4.06,9.78-.17,27.07,0,54.14-.18,81.21,0,3.57.69,4.66,4.49,4.63,27.24-.19,54.47-.11,81.71-.1,7.36,0,9.39,2,9.4,9.25q0,21.4,0,42.82c0,7-2.1,9.06-9.09,9.06-27.24,0-54.48.09-81.71-.09-3.85,0-4.83.95-4.8,4.81.17,27.07.1,54.14.09,81.21,0,7.65-1.94,9.59-9.56,9.6q-21.4,0-42.82,0c-6.62,0-8.75-2.19-8.75-8.91,0-27.4-.1-54.8.09-82.2,0-3.8-1.06-4.51-4.62-4.49-27.08.16-54.15,0-81.22.18-4.07,0-7.23-1-9.78-4.06V102.8c2.55-3.08,5.72-4.08,9.79-4.06,27.09.17,54.18,0,81.27.18,3.68,0,4.58-.87,4.55-4.56-.17-27.09,0-54.18-.18-81.27,0-4.06,1-7.23,4.06-9.78Z"/></svg>
+                    <span class="fs20 bold dark">{{ __('Create a new FAQ') }}</span>
+                </div>
+                <div class="pointer fs20 close-global-viewer unselectable">✖</div>
+            </div>
+            <div style="padding: 14px;">
+                <p class="no-margin dark mb8 fs13">Create an faq by writing the question and its answer. The faq created will be classified under unverified faqs for further modifications.</p>
+                <div class="simple-line-separator my4"></div>
+                <div>
+                    <!-- error container -->
+                    <div id="create-faq-error-container" class="informative-message-container align-center relative my8 none">
+                        <div class="informative-message-container-left-stripe imcls-red"></div>
+                        <p class="no-margin fs13 red bold error"></p>
+                        <div class="close-parent close-informative-message-style">✖</div>
+                    </div>
+                    <div class="mb8 input-wrapper">
+                        <label for="create-faq-question-input" class="align-center mb4 bold dark">{{ __('Question') }}</label>
+                        <input type="text" autocomplete="off" class="styled-input full-width title" id="create-faq-question-input" placeholder="Faq question" style="padding: 8px 10px">
+                    </div>
+                    <div class="mb8 input-wrapper">
+                        <label for="create-faq-answer-input" class="align-center mb4 bold dark">{{ __('Answer') }}</label>
+                        <textarea id="create-faq-answer-input" class="styled-input no-textarea-x-resize fs14"
+                            style="margin: 0; padding: 8px; min-height: 110px; max-height: 200px;"
+                            maxlength="6000"
+                            spellcheck="false"
+                            autocomplete="off"
+                            placeholder="Faq answer"></textarea>
+                    </div>
+                </div>
+                <div class="flex" style="margin-top: 12px">
+                    <div id="create-faq-button" class="typical-button-style green-bs align-center">
+                        <div class="relative size14 mr4">
+                            <svg class="size12 icon" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M156.22,3.31c3.07,2.55,4.08,5.71,4.06,9.78-.17,27.07,0,54.14-.18,81.21,0,3.57.69,4.66,4.49,4.63,27.24-.19,54.47-.11,81.71-.1,7.36,0,9.39,2,9.4,9.25q0,21.4,0,42.82c0,7-2.1,9.06-9.09,9.06-27.24,0-54.48.09-81.71-.09-3.85,0-4.83.95-4.8,4.81.17,27.07.1,54.14.09,81.21,0,7.65-1.94,9.59-9.56,9.6q-21.4,0-42.82,0c-6.62,0-8.75-2.19-8.75-8.91,0-27.4-.1-54.8.09-82.2,0-3.8-1.06-4.51-4.62-4.49-27.08.16-54.15,0-81.22.18-4.07,0-7.23-1-9.78-4.06V102.8c2.55-3.08,5.72-4.08,9.79-4.06,27.09.17,54.18,0,81.27.18,3.68,0,4.58-.87,4.55-4.56-.17-27.09,0-54.18-.18-81.27,0-4.06,1-7.23,4.06-9.78Z"/></svg>
+                            <svg class="spinner size14 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
+                                <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                            </svg>
+                        </div>
+                        <span class="bold unselectable">Create faq</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- delete faq viewer -->
     <div id="faq-delete-viewer" class="global-viewer full-center none">
         <div class="viewer-box-style-1">
@@ -79,10 +129,11 @@
     </div>
     <div class="admin-page-content-box">
         @include('partials.session-messages')
+        <!-- tabs -->
         <div class="align-center my12" style="gap: 12px;">
             <a href="?tab=live" class="button-style-6 dark @if($tab=='live') bs6-selected @endif">{{ __('Live faqs') }}</a>
             <a href="?tab=unverified" class="button-style-6 dark @if($tab=='unverified') bs6-selected @endif">{{ __('Unverified faqs') }}</a>
-            <div class="typical-button-style green-bs align-center mr8 move-to-right open-create-faq-viewer">
+            <div id="open-create-faq-viewer" class="typical-button-style green-bs align-center mr8 move-to-right">
                 <svg class="size10 mr6" fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M4.41,104.24c2.53-3,5.67-4,9.7-4,26.83.17,53.67,0,80.5.17,3.53,0,4.61-.67,4.58-4.44-.18-27-.1-54-.09-81,0-7.29,2-9.31,9.16-9.32q21.22,0,42.45,0c6.91,0,9,2.09,9,9,0,27,.09,54-.09,81,0,3.82.94,4.79,4.76,4.76,26.83-.17,53.67-.1,80.5-.09,7.58,0,9.5,1.92,9.51,9.47q0,21.23,0,42.45c0,6.55-2.17,8.66-8.83,8.67-27.16,0-54.32.09-81.47-.09-3.77,0-4.47,1-4.45,4.58.15,26.83,0,53.66.17,80.49,0,4-1,7.17-4,9.7H103c-3-2.53-4-5.67-4-9.7.16-26.85,0-53.7.18-80.55,0-3.65-.87-4.54-4.52-4.52-26.85.18-53.7,0-80.55.18-4,0-7.18-1-9.71-4Z"></path></svg>
                 <div class="fs12 bold">Create FAQ</div>
             </div>

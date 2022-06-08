@@ -68,6 +68,8 @@ class FaqController extends Controller
 
         Faq::create($data);
         \Session::flash('message', __('Faq has been created successfully. The created faq is stored as unverified for more verifications before making it live.'));
+
+        return route('admin.faqs.management', ['tab'=>'unverified']);
     }
 
     public function update_priorities(Request $request) {

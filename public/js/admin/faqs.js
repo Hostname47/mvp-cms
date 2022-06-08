@@ -1,3 +1,69 @@
+$('#open-create-faq-viewer').on('click', function() {
+	$('#create-faq-viewer').removeClass('none');
+	disable_page_scroll();
+});
+
+let create_faq_lock = true;
+$('#create-faq-button').on('click', function() {
+	let error_container = $('#create-faq-error-container');
+	let question = $('#create-faq-question-input').val().trim();
+	let answer = $('#create-faq-answer-input').val().trim();
+
+	if(question == '') {
+		error_container.find('.error').text('Question field is required');
+		error_container.removeClass('none');
+		return;
+	}
+
+	if(answer == '') {
+		error_container.find('.error').text('Answer field is required');
+		error_container.removeClass('none');
+		return;
+	}
+
+	error_container.addClass('none');
+
+	if(!create_faq_lock) return;
+	create_faq_lock = false;
+
+	let button = $(this);
+	let buttonicon = button.find('.icon');
+	let spinner = button.find('.spinner');
+
+	spinner.addClass('inf-rotate');
+	spinner.removeClass('opacity0');
+	buttonicon.addClass('none');
+	button.addClass('green-bs-disabled');
+
+	$.ajax({
+		type: 'post',
+		url: '/admin/faqs',
+		data: {
+			question: question,
+			answer: answer
+		},
+		success: function(response) {
+			window.location.href = response;
+		},
+		error: function(response) {
+			create_faq_lock = true;
+
+			let errorObject = JSON.parse(response.responseText);
+			let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+			if(errorObject.errors) {
+				let errors = errorObject.errors;
+				error = errors[Object.keys(errors)[0]][0];
+			}
+			print_top_message(error, 'error');
+
+			spinner.removeClass('inf-rotate');
+			spinner.addClass('opacity0');
+			buttonicon.removeClass('none');
+			button.removeClass('green-bs-disabled');
+		}
+	})
+});
+
 $('#sort-faqs-components-by-priority').on('click', function() {
 	// First check if admin enter an invalide priority value by mistake (character or empty string)
 	let invalid_priority = false;
