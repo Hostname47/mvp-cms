@@ -28,21 +28,25 @@
     background-color: white;
 }
 
-.author-request-component .categories-box {
+.author-request-categories-box {
     margin-top: 12px;
 }
 
-.author-request-component .categories-container {
+.author-request-categories-container {
     display: flex;
     flex-direction: column;
     gap: 6px;
 }
 
-.author-request-component .message {
+.author-request-message {
     color: black;
     font-size: 15px;
     line-height: 1.5;
     height: 240px;
     max-height: 240px;
     resize: vertical;
+}
+
+#author-request-review-loading-box {
+    height: 200px;
 }

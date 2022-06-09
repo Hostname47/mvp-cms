@@ -101,6 +101,7 @@ Route::middleware(['able-to-access-admin-section'])->group(function() {
 
     Route::get('/admin/authors', [AdminAuthorController::class, 'overview'])->name('admin.author.overview');
     Route::get('/admin/authors/requests', [AdminAuthorController::class, 'requests'])->name('admin.author.requests');
+    Route::get('/admin/authors/requests/review-viewer', [AdminAuthorController::class, 'review_viewer']);
 
     Route::get('/admin/contact-messages', [ContactController::class, 'manage'])->name('admin.contact.management');
     Route::post('/admin/contact-messages/read', [ContactController::class, 'read']);
