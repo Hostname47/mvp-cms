@@ -1,0 +1,38 @@
+#overview-sections-box {
+    display: flex;
+    gap: 12px;
+}
+
+#overview-sections-box .section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 50%;
+    padding: 16px 12px;
+    border: 1px solid gainsboro;
+    border-radius: 3px;
+    background-color: white;
+}
+
+.author-requests-box {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.author-request-component {
+    padding: 12px;
+    border: 1px solid gainsboro;
+    border-radius: 3px;
+}
+
+.author-request-component .categories-box {
+    margin-top: 12px;
+}
+
+.author-request-component .categories-container {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}

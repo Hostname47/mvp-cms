@@ -13,6 +13,10 @@ class AuthorRequest extends Model
 
     protected $guarded = [];
 
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+
     public function categories($get='titles') {
         switch($get) {
             case 'titles':
