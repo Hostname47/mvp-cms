@@ -25,6 +25,7 @@
     padding: 12px;
     border: 1px solid gainsboro;
     border-radius: 3px;
+    background-color: white;
 }
 
 .author-request-component .categories-box {
@@ -35,4 +36,13 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
+}
+
+.author-request-component .message {
+    color: black;
+    font-size: 15px;
+    line-height: 1.5;
+    height: 240px;
+    max-height: 240px;
+    resize: vertical;
 }

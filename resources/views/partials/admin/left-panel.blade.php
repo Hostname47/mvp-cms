@@ -97,6 +97,10 @@
                     <svg class="size10 mr8" fill="@if(isset($subpage) && $subpage == 'admin.author.overview') #2ca0ff @else #fff @endif" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M250.29,9.76V250.24H9.71V9.76ZM116,116.17V36.55H36.37v79.62Zm27.87-.09h79.62V36.48H143.83ZM36.3,223.56h79.76V144.14H36.3Zm107.43-.05h79.75V144.13H143.73Z"/></svg>
                     <span style="color: @if(isset($subpage) && $subpage == 'admin.author.overview') #2ca0ff @endif">Overview</span>
                 </a>
+                <a href="{{ route('admin.author.requests') }}" class="admin-sidebar-sub-button align-center @if(isset($subpage) && $subpage == 'admin.author.requests') blue @endif">
+                    <svg class="size10 mr8" fill="@if(isset($subpage) && $subpage == 'admin.author.requests') #2ca0ff @else #fff @endif" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M250.29,9.76V250.24H9.71V9.76ZM116,116.17V36.55H36.37v79.62Zm27.87-.09h79.62V36.48H143.83ZM36.3,223.56h79.76V144.14H36.3Zm107.43-.05h79.75V144.13H143.73Z"/></svg>
+                    <span style="color: @if(isset($subpage) && $subpage == 'admin.author.requests') #2ca0ff @endif">Author requests</span>
+                </a>
             </div>
         </div>
         <!-- users -->

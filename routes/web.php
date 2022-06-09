@@ -100,6 +100,7 @@ Route::middleware(['able-to-access-admin-section'])->group(function() {
     Route::delete('/admin/tags', [TagController::class, 'delete']);
 
     Route::get('/admin/authors', [AdminAuthorController::class, 'overview'])->name('admin.author.overview');
+    Route::get('/admin/authors/requests', [AdminAuthorController::class, 'requests'])->name('admin.author.requests');
 
     Route::get('/admin/contact-messages', [ContactController::class, 'manage'])->name('admin.contact.management');
     Route::post('/admin/contact-messages/read', [ContactController::class, 'read']);
