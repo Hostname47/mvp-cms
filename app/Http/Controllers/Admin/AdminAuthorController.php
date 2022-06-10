@@ -19,7 +19,7 @@ class AdminAuthorController extends Controller
     }
 
     public function requests(Request $request) {
-        $requests = AuthorRequest::whereHas('user')->with(['user'])->orderBy('created_at', 'desc')->paginate(4);
+        $requests = AuthorRequest::whereHas('user')->with(['user'])->orderBy('created_at', 'desc')->paginate(6);
 
         return view('admin.author.requests')
             ->with(compact('requests'));
@@ -32,5 +32,19 @@ class AdminAuthorController extends Controller
         $viewer = (new ReviewViewer($author_request));
         $viewer = $viewer->render(get_object_vars($viewer))->render();
         return $viewer;
+    }
+
+    public function accept(Request $request) {
+        $author_request = $request->validate(['request'=>'required|exists:author_requests,id'])['request'];
+        $author_request = AuthorRequest::find($author_request);
+        $user = $author_request->user;
+
+        $this->authorize('accept', [AuthorRequest::class, $user, $author_request]);
+
+        $user->update(['elected_author'=>1]);
+        $author_request->update(['status'=>1]);
+        $user->attach_permission('author-create-post');
+
+        \Session::flash('message', 'Author request accepted successfully.');
     }
 }

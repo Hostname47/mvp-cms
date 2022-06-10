@@ -22,4 +22,16 @@ class AuthorRequestPolicy
 
         return true;
     }
+
+    public function accept(User $user, $u, $request) {
+        if(!$user->has_permission('accept-author-request')) {
+            return $this->deny("Unauthorized action due to lack of permissions.");
+        }
+
+        if(is_null($u)) {
+            return $this->deny("Author request user is not available.");
+        }
+
+        return true;
+    }
 }
