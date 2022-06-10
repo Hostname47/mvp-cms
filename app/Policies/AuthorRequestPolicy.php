@@ -34,4 +34,12 @@ class AuthorRequestPolicy
 
         return true;
     }
+
+    public function refuse(User $user) {
+        if(!$user->has_permission('refuse-author-request')) {
+            return $this->deny("Unauthorized action due to lack of permissions.");
+        }
+
+        return true;
+    }
 }

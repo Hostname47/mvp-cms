@@ -19,6 +19,7 @@ class AuthorRequestTest extends TestCase
         $permissions = [
             'access-admin-section' => Permission::factory()->create(['title'=>'aas', 'slug'=>'access-admin-section']),
             'accept-author-request' => Permission::factory()->create(['title'=>'aar', 'slug'=>'accept-author-request']),
+            'refuse-author-request' => Permission::factory()->create(['title'=>'rar', 'slug'=>'refuse-author-request']),
             'author-create-post' => Permission::factory()->create(['title'=>'acp', 'slug'=>'author-create-post']),
         ];
 
@@ -27,6 +28,7 @@ class AuthorRequestTest extends TestCase
 
         $user->attach_permission('access-admin-section');
         $user->attach_permission('accept-author-request');
+        $user->attach_permission('refuse-author-request');
     }
 
     /** @test */
@@ -144,6 +146,44 @@ class AuthorRequestTest extends TestCase
         $this->authuser->detach_permission('accept-author-request');
 
         $this->post('/admin/author/requests/accept', ['request'=>AuthorRequest::first()->id])
+            ->assertForbidden();
+    }
+
+    /** @test */
+    public function refuse_author_request() {
+        $this->withoutExceptionHandling();
+        $user = User::factory()->create();
+        $technology = Category::create(['title'=>'tech','title_meta'=>'tech','slug'=>'tech','description'=>'tech']);
+        // Send a request
+        $this->actingAs($user);
+        $this->post('/author-request', [
+            'categories'=>[$technology->id],
+            'message'=>'I want to become a writer at fibonashi :)',
+        ]);
+
+        $this->actingAs($this->authuser);
+        $request = AuthorRequest::first();
+
+        $this->assertEquals(0, $request->status);
+        $this->post('/admin/author/requests/refuse', ['request'=>$request->id]);
+        $this->assertEquals(-1, $request->refresh()->status);
+    }
+
+    /** @test */
+    public function refuse_author_request_requires_permission() {
+        $user = User::factory()->create();
+        $technology = Category::create(['title'=>'tech','title_meta'=>'tech','slug'=>'tech','description'=>'tech']);
+        // Send a request
+        $this->actingAs($user);
+        $this->post('/author-request', [
+            'categories'=>[$technology->id],
+            'message'=>'I want to become a writer at fibonashi :)',
+        ]);
+
+        $this->actingAs($this->authuser);
+        $request = AuthorRequest::first();
+        $this->authuser->detach_permission('refuse-author-request');
+        $this->post('/admin/author/requests/refuse', ['request'=>$request->id])
             ->assertForbidden();
     }
 }

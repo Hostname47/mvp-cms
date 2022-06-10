@@ -47,4 +47,15 @@ class AdminAuthorController extends Controller
 
         \Session::flash('message', 'Author request accepted successfully.');
     }
+
+    public function refuse(Request $request) {
+        $author_request = $request->validate(['request'=>'required|exists:author_requests,id'])['request'];
+        $author_request = AuthorRequest::find($author_request);
+
+        $this->authorize('refuse', [AuthorRequest::class]);
+
+        $author_request->update(['status'=>-1]);
+
+        \Session::flash('message', 'Author request refused successfully.');
+    }
 }

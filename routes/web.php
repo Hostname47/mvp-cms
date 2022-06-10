@@ -103,6 +103,7 @@ Route::middleware(['able-to-access-admin-section'])->group(function() {
     Route::get('/admin/author/requests', [AdminAuthorController::class, 'requests'])->name('admin.author.requests');
     Route::get('/admin/author/requests/review-viewer', [AdminAuthorController::class, 'review_viewer']);
     Route::post('/admin/author/requests/accept', [AdminAuthorController::class, 'accept']);
+    Route::post('/admin/author/requests/refuse', [AdminAuthorController::class, 'refuse']);
 
     Route::get('/admin/contact-messages', [ContactController::class, 'manage'])->name('admin.contact.management');
     Route::post('/admin/contact-messages/read', [ContactController::class, 'read']);
