@@ -42,7 +42,7 @@ class AdminAuthorController extends Controller
         $this->authorize('accept', [AuthorRequest::class, $user, $author_request]);
 
         $user->update(['elected_author'=>1]);
-        $author_request->update(['status'=>1]);
+        $author_request->update(['status'=>1, 'approved_by'=>auth()->user()->id]);
         $user->attach_permission('author-create-post');
 
         \Session::flash('message', 'Author request accepted successfully.');
