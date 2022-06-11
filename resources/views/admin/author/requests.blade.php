@@ -84,20 +84,22 @@
                         @endif
                     </div>
                 </div>
-
+                
+                <p class="fs13 dark my8"><span class="bold">Request status :</span> {{ $request->hstatus['status'] }}</p>
+                <p class="fs13 dark my8" title="{{ $request->date }}"><span class="bold">Submitted :</span> {{ $request->date_humans }}</p>
                 <div class="author-request-categories-box toggle-box">
-                    <div class="align-center pointer mb8 toggle-button">
-                        <p class="no-margin dark bold">Categories</p>
+                    <div class="align-center pointer my8 width-max-content toggle-button">
+                        <p class="no-margin dark bold fs13">Categories</p>
                         <svg class="toggle-arrow size7 ml8 mt2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02"><path d="M13.4,1.43l9.35,11a4,4,0,0,1,0,5.18l-9.35,11a4,4,0,1,1-6.1-5.18L14.46,15,7.3,6.61a4,4,0,0,1,6.1-5.18Z"></path></svg>
                     </div>
                     <div class="author-request-categories-container toggle-container none">
                         @foreach($request->categories('titles') as $category)
-                        <div class="fs12 bold dark">• {{ $category }}</div>
+                        <div class="fs12 dark">• {{ $category }}</div>
                         @endforeach
                     </div>
                 </div>
                 <div class="message-box">
-                    <p class="dark bold dark">Message :</p>
+                    <p class="dark fs13 my8 bold dark">Message :</p>
                     <textarea class="styled-input author-request-message" disabled>{{ $request->message }}</textarea>
                 </div>
             </div>

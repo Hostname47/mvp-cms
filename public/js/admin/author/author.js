@@ -102,9 +102,90 @@ function handle_accept_request() {
 }
 
 function handle_refuse_request() {
+	$('#refuse-request').on('click', function() {
+		if(!author_request_action_lock) return;
+		author_request_action_lock = false;
 
+		let button = $(this);
+		let buttonicon = button.find('.icon');
+		let spinner = button.find('.spinner');
+		let request = button.find('.request-id').val();
+
+		button.addClass('red-bs-disabled');
+		spinner.addClass('inf-rotate');
+		spinner.removeClass('opacity0');
+		buttonicon.addClass('none');
+
+		$.ajax({
+			type: 'post',
+			url: '/admin/author/requests/refuse',
+			data: {
+				request: request
+			},
+			success: function() {
+				location.reload();
+			},
+			error: function(response) {
+				$('#review-request-viewer .close-global-viewer').trigger('click');
+				last_author_request_to_review = null;
+				
+				let errorObject = JSON.parse(response.responseText);
+				let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+				if(errorObject.errors) {
+					let errors = errorObject.errors;
+					error = errors[Object.keys(errors)[0]][0];
+				}
+				print_top_message(error, 'error');
+
+                author_request_action_lock = true;
+				button.removeClass('red-bs-disabled');
+				spinner.removeClass('inf-rotate');
+				spinner.addClass('opacity0');
+				buttonicon.removeClass('none');
+			}
+		})
+	});
 }
 
 function handle_delete_request() {
-	
+	$('#delete-request').on('click', function() {
+		if(!author_request_action_lock) return;
+		author_request_action_lock = false;
+
+		let button = $(this);
+		let spinner = button.find('.spinner');
+		let request = button.find('.request-id').val();
+
+		button.addClass('default-cursor');
+		spinner.addClass('inf-rotate');
+		spinner.removeClass('none');
+
+		$.ajax({
+			type: 'delete',
+			url: '/admin/author/requests',
+			data: {
+				request: request
+			},
+			success: function() {
+				location.reload();
+			},
+			error: function(response) {
+				$('#review-request-viewer .close-global-viewer').trigger('click');
+				last_author_request_to_review = null;
+				
+				let errorObject = JSON.parse(response.responseText);
+				let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+				if(errorObject.errors) {
+					let errors = errorObject.errors;
+					error = errors[Object.keys(errors)[0]][0];
+				}
+				print_top_message(error, 'error');
+
+                author_request_action_lock = true;
+				button.removeClass('default-cursor');
+				spinner.removeClass('inf-rotate');
+				spinner.addClass('none');
+			}
+		})
+	});
 }

@@ -28,8 +28,32 @@ class AuthorRequest extends Model
         }
     }
 
+    public function getHstatusAttribute() {
+        switch($this->status) {
+            case -1:
+                return [
+                    'status'=>'Refused',
+                    'color'=>'red'
+                ];
+            case 0:
+                return [
+                    'status'=>'Under review',
+                    'color'=>'red'
+                ];
+            case 1:
+                return [
+                    'status'=>'Accepted',
+                    'color'=>'green'
+                ];
+        }
+    }
+
     public function getDateAttribute() {
         return (new Carbon($this->created_at))->isoFormat("dddd D MMM YYYY - H:mm A");
+    }
+
+    public function getDateHumansAttribute() {
+        return (new Carbon($this->created_at))->diffForHumans();
     }
 
     public function getUpdateDateAttribute() {
