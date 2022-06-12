@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Models\{AuthorRequest, Post, User};
 use App\View\Components\Admin\Author\Viewers\ReviewViewer;
 use App\Helpers\Search;
@@ -31,7 +32,10 @@ class AdminAuthorController extends Controller
     public function author_management(Request $request) {
         $author = null;
         $authors = collect([]);
+        $tab = 'all';
         $k = null;
+        $posts = collect([]);
+        $statistics = [];
 
         if($request->has('author')) {
             $author = User::where('username', $request->get('author'))->first();
@@ -44,11 +48,47 @@ class AdminAuthorController extends Controller
             } else {
                 $authors = User::with('author_requests')->where('elected_author', 1)->paginate(10);
             }
+        } else {
+            $statistics = [
+                'all' => $author->posts()->withoutGlobalScopes()->count(),
+                'published' => $author->posts()->withoutGlobalScopes()->where('status', 'published')->count(),
+                'awaiting-review' => $author->posts()->withoutGlobalScopes()->where('status', 'awaiting-review')->count(),
+                'draft' => $author->posts()->withoutGlobalScopes()->where('status', 'draft')->count(),
+                'deleted' => $author->posts()->withoutGlobalScopes()->whereNotNull('deleted_at')->count(),
+            ];
+
+            if($request->has('tab')) {
+                $tab = $request->validate(['tab'=>['sometimes', Rule::in(['all','published','awaiting-review','draft', 'deleted'])]])['tab'];
+            }
+            
+            $posts = $author->posts()->withoutGlobalScopes()->with(['thumbnail','categories','tags']);
+            switch($tab) {
+                case 'all':
+                    // for all, we don't have to append any condition
+                    break;
+                case 'published':
+                    $posts = $posts->where('status', 'published');
+                    break;
+                case 'awaiting-review':
+                    $posts = $posts->where('status', 'awaiting-review');
+                    break;
+                case 'draft':
+                    $posts = $posts->where('status', 'draft');
+                    break;
+                case 'deleted':
+                    $posts = $posts->whereNotNull('deleted_at');
+                    break;
+            }
+
+            $posts = $posts->paginate(10);
         }
 
         return view('admin.author.manage')
             ->with(compact('author'))
             ->with(compact('authors'))
+            ->with(compact('tab'))
+            ->with(compact('statistics'))
+            ->with(compact('posts'))
             ->with(compact('k'));
     }
 

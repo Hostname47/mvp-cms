@@ -285,6 +285,11 @@ input.disabled {
     width: 60px;
 }
 
+.size84 {
+    height: 84px;
+    width: 84px;
+}
+
 .size28 {
     width: 28px;
     height: 28px;

@@ -10,6 +10,7 @@ h2 {
 }
 
 .post-component {
+    background-color: white;
     padding: 10px;
     border: 1px solid gainsboro;
     border-radius: 3px;

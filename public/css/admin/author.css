@@ -68,3 +68,23 @@
 .elected-author-component .meta {
     display: flex;
 }
+
+#author-meta-box {
+    background-color: white;
+    border: 1px solid #d0dae1;
+    padding: 12px;
+    margin: 8px 0;
+}
+
+#author-meta-box .meta {
+    font-size: 12px;
+    color: #50565a;
+    letter-spacing: 0.6px;
+    margin-top: 4px;
+}
+
+#author-posts-box {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
