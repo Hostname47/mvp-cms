@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\{Role,RoleUser,Comment,Clap,Report,ContactMessage,Faq,SavedPost,Ban};
+use App\Models\{Role,RoleUser,Comment,Clap,Report,ContactMessage,Faq,SavedPost,Ban,AuthorRequest};
 use Carbon\Carbon;
 
 class User extends Authenticatable
@@ -51,6 +51,10 @@ class User extends Authenticatable
 
     public function posts() {
         return $this->hasMany(Post::class);
+    }
+
+    public function author_requests() {
+        return $this->hasMany(AuthorRequest::class);
     }
 
     public function contact_messages() {
@@ -131,6 +135,19 @@ class User extends Authenticatable
 
     public function getJoinDateAttribute() {
         return (new Carbon($this->created_at))->isoFormat("dddd D MMM YYYY");
+    }
+
+    public function author_since($type="format") {
+        $ar = $this->author_requests->where('status', 1)->first();
+
+        if($ar) {
+            switch($type) {
+                case 'format':
+                    return (new Carbon($ar->updated_at))->isoFormat("D-MM-YYYY - H:mm A");
+                case 'humans':
+                    return (new Carbon($ar->updated_at))->diffForHumans();
+            }
+        }
     }
 
     public function getScolorAttribute() {

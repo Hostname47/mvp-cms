@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\{AuthorRequest, Post, User};
 use App\View\Components\Admin\Author\Viewers\ReviewViewer;
+use App\Helpers\Search;
+use Purifier;
 
 class AdminAuthorController extends Controller
 {
@@ -29,18 +31,25 @@ class AdminAuthorController extends Controller
     public function author_management(Request $request) {
         $author = null;
         $authors = collect([]);
+        $k = null;
 
         if($request->has('author')) {
             $author = User::where('username', $request->get('author'))->first();
         }
 
         if(is_null($author)) {
-            $authors = User::where('elected_author', 1)->paginate(10);
+            if($request->has('k')) {
+                $k = Purifier::clean($request->get('k'));
+                $authors = Search::search(User::with('author_requests')->where('elected_author', 1), $k, ['username','firstname','lastname'], ['like','like','like'])->paginate(10);
+            } else {
+                $authors = User::with('author_requests')->where('elected_author', 1)->paginate(10);
+            }
         }
 
         return view('admin.author.manage')
             ->with(compact('author'))
-            ->with(compact('authors'));
+            ->with(compact('authors'))
+            ->with(compact('k'));
     }
 
     public function review_viewer(Request $request) {

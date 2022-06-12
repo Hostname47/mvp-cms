@@ -36,13 +36,26 @@
         @if($author)
 
         @else
-            <h2 class="no-margin fs18 dark">Authors</h2>
-            <div class="align-end space-between">
-                <p class="lh15 dark my4">Elected authors with permission to create posts.</p>
+        <div class="align-end space-between mb8">
                 <div>
-                    search
+                    <h2 class="no-margin fs18 dark">Authors</h2>
+                    <p class="lh15 dark my4">Elected authors with permission to create posts.</p>
+                </div>
+                <div>
+                    <label class="flex mb4 fs12 dark" for="author-search-input">Search for an author (by username or firstname, or lastname)</label>
+                    <form action="" class="align-center relative">
+                        <svg class="search-icon-style-1" fill="#5b5b5b" enable-background="new 0 0 515.558 515.558" viewBox="0 0 515.558 515.558" xmlns="http://www.w3.org/2000/svg"><path d="m378.344 332.78c25.37-34.645 40.545-77.2 40.545-123.333 0-115.484-93.961-209.445-209.445-209.445s-209.444 93.961-209.444 209.445 93.961 209.445 209.445 209.445c46.133 0 88.692-15.177 123.337-40.547l137.212 137.212 45.564-45.564c0-.001-137.214-137.213-137.214-137.213zm-168.899 21.667c-79.958 0-145-65.042-145-145s65.042-145 145-145 145 65.042 145 145-65.043 145-145 145z"></path></svg>
+                        <input type="text" id="author-search-input" required name="k" class="search-input-style-1" style="width: 300px" placeholder="Search for an author" @if($k) value="{{ $k }}" @endif>
+                        <button class="search-button-style-1">
+                            <span>Search</span>
+                        </button>
+                    </form>
                 </div>
             </div>
+
+            @if($k)
+            <h2 class="dark my12 fs16">Authors search results for : "<span class="blue">{{ $k }}</span>"</h2>
+            @endif
 
             <div id="elected-authors-box">
                 @foreach($authors as $author)
@@ -56,7 +69,8 @@
                     </div>
                     <div>
                         <p class="my8 dark bold">Details</p>
-                        <p class="dark my8">Number of posts : <span class="bold">0</span></p>
+                        <p class="dark fs13 my8">Author since : <span class="bold">{{ $author->author_since('format') }}</span></p>
+                        <p class="dark fs13 my8">Number of posts : <span class="bold">{{ $author->posts()->withoutGlobalScopes()->count() }}</span></p>
                     </div>
                 </div>
                 @endforeach
@@ -65,7 +79,11 @@
             @if(!$authors->count())
             <div class="typical-section-style full-center">
                 <svg class="size14 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                @if($k)
+                <p class="dark bold my4 fs12">We cannot find any author that match your search query.</p>
+                @else
                 <p class="dark bold my4 fs12">There is no elected author exists yet.</p>
+                @endif
             </div>
             @endif
             <div class="full-center my12">
