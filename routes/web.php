@@ -100,11 +100,12 @@ Route::middleware(['able-to-access-admin-section'])->group(function() {
     Route::delete('/admin/tags', [TagController::class, 'delete']);
 
     Route::get('/admin/author', [AdminAuthorController::class, 'overview'])->name('admin.author.overview');
+    Route::get('/admin/author/management', [AdminAuthorController::class, 'author_management'])->name('admin.author.management');
     Route::get('/admin/author/requests', [AdminAuthorController::class, 'requests'])->name('admin.author.requests');
     Route::get('/admin/author/requests/review-viewer', [AdminAuthorController::class, 'review_viewer']);
-    Route::post('/admin/author/requests/accept', [AdminAuthorController::class, 'accept']);
-    Route::post('/admin/author/requests/refuse', [AdminAuthorController::class, 'refuse']);
-    Route::delete('/admin/author/requests', [AdminAuthorController::class, 'delete']);
+    Route::post('/admin/author/requests/accept', [AdminAuthorController::class, 'accept_author_request']);
+    Route::post('/admin/author/requests/refuse', [AdminAuthorController::class, 'refuse_author_request']);
+    Route::delete('/admin/author/requests', [AdminAuthorController::class, 'delete_author_request']);
 
     Route::get('/admin/contact-messages', [ContactController::class, 'manage'])->name('admin.contact.management');
     Route::post('/admin/contact-messages/read', [ContactController::class, 'read']);

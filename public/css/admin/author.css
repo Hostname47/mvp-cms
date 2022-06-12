@@ -6,9 +6,9 @@
 #overview-sections-box .section {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     flex-direction: column;
-    width: 50%;
+    width: 33%;
     padding: 16px 12px;
     border: 1px solid gainsboro;
     border-radius: 3px;
@@ -45,4 +45,26 @@
 
 #author-request-review-loading-box {
     height: 200px;
+}
+
+.request-author-meta {
+    display: flex;
+    margin-bottom: 12px;
+}
+
+#elected-authors-box {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.elected-author-component {
+    padding: 12px;
+    background-color: white;
+    border: 1px solid #d0dae1;
+    border-radius: 3px;
+}
+
+.elected-author-component .meta {
+    display: flex;
 }

@@ -88,18 +88,18 @@ class AuthorRequestTest extends TestCase
     }
 
     /** @test */
-    public function users_with_author_role_could_not_sent_request_again() {
-        $user = $this->authuser;
-        $this->actingAs($user);
-        $tecnology = Category::create(['title'=>'tech','title_meta'=>'tech','slug'=>'tech','description'=>'tech']);
-        $author = Role::create(['title'=>'author','slug'=>'author','description'=>'--']);
-        $user->roles()->attach($author->id);
+    // public function users_with_author_role_could_not_sent_request_again() {
+    //     $user = $this->authuser;
+    //     $this->actingAs($user);
+    //     $tecnology = Category::create(['title'=>'tech','title_meta'=>'tech','slug'=>'tech','description'=>'tech']);
+    //     $author = Role::create(['title'=>'author','slug'=>'author','description'=>'--']);
+    //     $user->roles()->attach($author->id);
 
-        $this->post('/author-request', [
-            'categories'=>[$tecnology->id],
-            'message'=>'I want to become a writer at fibonashi :)',
-        ])->assertForbidden();
-    }
+    //     $this->post('/author-request', [
+    //         'categories'=>[$tecnology->id],
+    //         'message'=>'I want to become a writer at fibonashi :)',
+    //     ])->assertForbidden();
+    // }
 
     /**
      * Admin section

@@ -29,7 +29,7 @@ $('.open-manage-author-request-viewer').on('click', function() {
 				content_block.find('.toggle-box').each(function() { handle_toggling($(this)); });
 				handle_accept_request();
 				handle_refuse_request();
-				handle_delete_request();
+				handle_delete_request($('#delete-request'));
 				last_author_request_to_review = request;
 			},
 			error: function(response) {
@@ -147,8 +147,10 @@ function handle_refuse_request() {
 	});
 }
 
-function handle_delete_request() {
-	$('#delete-request').on('click', function() {
+$('.delete-request').each(function() { handle_delete_request($(this)); });
+
+function handle_delete_request(button) {
+	button.on('click', function() {
 		if(!author_request_action_lock) return;
 		author_request_action_lock = false;
 

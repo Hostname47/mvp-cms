@@ -9,7 +9,7 @@
             <p class="no-margin fs13 red bold error"></p>
             <div class="close-parent close-informative-message-style">✖</div>
         </div>
-        <div class="align-center">
+        <div class="request-author-meta">
             <img src="{{ $request->user->avatar(100) }}" class="size36 br4 mr6" alt="">
             <div class="dark">
                 <a href="{{ route('admin.users.management', ['user'=>$request->user->username]) }}" target="_blank" class="no-underline dark bold">{{ $request->user->fullname }}</a>
@@ -18,18 +18,20 @@
         </div>
         <div class="author-request-categories-box toggle-box">
             <div class="align-center pointer mb8 toggle-button">
-                <p class="no-margin dark bold">Categories</p>
+                <p class="no-margin dark bold fs13">Categories</p>
                 <svg class="toggle-arrow size7 ml8 mt2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02"><path d="M13.4,1.43l9.35,11a4,4,0,0,1,0,5.18l-9.35,11a4,4,0,1,1-6.1-5.18L14.46,15,7.3,6.61a4,4,0,0,1,6.1-5.18Z"></path></svg>
             </div>
             <div class="author-request-categories-container toggle-container none">
                 @foreach($request->categories('titles') as $category)
-                <div class="fs12 bold dark">• {{ $category }}</div>
+                <div class="fs12 dark">• {{ $category }}</div>
                 @endforeach
             </div>
         </div>
-        <div class="message-box">
-            <p class="dark bold dark">Message :</p>
-            <textarea class="styled-input author-request-message" disabled>{{ $request->message }}</textarea>
+        <div class="message-box my12">
+            <p class="dark bold dark no-margin mb4 fs13">Message :</p>
+            <div class="dark my8 lh15 typical-section-style">
+                {{ $request->message }}
+            </div>
         </div>
     </div>
     <div class="align-center" style="margin-top: 12px; gap: 8px;">

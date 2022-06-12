@@ -38,7 +38,7 @@ class AuthorRequest extends Model
             case 0:
                 return [
                     'status'=>'Under review',
-                    'color'=>'red'
+                    'color'=>'dark'
                 ];
             case 1:
                 return [

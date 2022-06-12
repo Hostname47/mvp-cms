@@ -15,10 +15,10 @@ class AuthorRequestPolicy
             return $this->deny(__('You have already sent an author request before'));
         }
 
-        if($user->has_role('author')) {
-            /** log unauthorized action */
-            return $this->deny(__('Author role already acquired'));
-        }
+        // if($user->has_role('author')) {
+        //     /** log unauthorized action */
+        //     return $this->deny(__('Author role already acquired'));
+        // }
 
         return true;
     }
