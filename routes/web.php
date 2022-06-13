@@ -106,6 +106,7 @@ Route::middleware(['able-to-access-admin-section'])->group(function() {
     Route::post('/admin/author/requests/accept', [AdminAuthorController::class, 'accept_author_request']);
     Route::post('/admin/author/requests/refuse', [AdminAuthorController::class, 'refuse_author_request']);
     Route::delete('/admin/author/requests', [AdminAuthorController::class, 'delete_author_request']);
+    Route::post('/admin/author/revoke', [AdminAuthorController::class, 'revoke']);
 
     Route::get('/admin/contact-messages', [ContactController::class, 'manage'])->name('admin.contact.management');
     Route::post('/admin/contact-messages/read', [ContactController::class, 'read']);

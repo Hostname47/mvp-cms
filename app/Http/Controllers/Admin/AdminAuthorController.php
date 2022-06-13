@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\Models\{AuthorRequest, Post, User};
+use App\Models\{AuthorRequest, Post, User, Role};
 use App\View\Components\Admin\Author\Viewers\ReviewViewer;
 use App\Helpers\Search;
 use Purifier;
@@ -110,7 +110,11 @@ class AdminAuthorController extends Controller
 
         $user->update(['elected_author'=>1]);
         $author_request->update(['status'=>1, 'approved_by'=>auth()->user()->id]);
-        $user->attach_permission('author-create-post');
+        /**
+         * the accepted user will take contributed author role which allows him
+         * to create posts through create post permission
+         */
+        $user->grant_role('contributor-author');
 
         \Session::flash('message', 'Author request accepted successfully.');
     }
@@ -135,5 +139,20 @@ class AdminAuthorController extends Controller
         $author_request->delete();
 
         \Session::flash('message', 'Author request has been deleted successfully.');
+    }
+
+    public function revoke(Request $request) {
+        $this->authorize('revoke', [Role::class]);
+        $author = $request->validate(['user'=>'required|exists:users,id'])['user'];
+        $author = User::withoutGlobalScopes()->find($author);
+        $author->update(['elected_author'=>0]);
+        $author->author_requests()->delete();
+        /**
+         * the accepted user will take contributed author role which allows him
+         * to create posts through create post permission
+         */
+        $author->revoke_role('contributor-author');
+
+        \Session::flash('message', 'Author request accepted successfully.');
     }
 }

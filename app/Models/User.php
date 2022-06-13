@@ -173,6 +173,25 @@ class User extends Authenticatable
         $this->permissions()->detach($permission->id);
     }
 
+    public function grant_role($slug) {
+        $role = Role::where('slug', $slug)->first();
+        if(is_null($role)) return 0;
+        $permissions = $role->permissions()->pluck('id')->toArray();
+
+        $this->permissions()->syncWithoutDetaching($permissions);
+        $role->users()->syncWithPivotValues($this->id, ['giver_id'=>auth()->user()->id], false);
+    }
+
+    public function revoke_role($slug) {
+        $role = Role::where('slug', $slug)->first();
+        if(is_null($role)) return 0;
+
+        $permissions = $role->permissions()->pluck('id')->toArray();
+        // Detach role permissions from user first, then we revoke the role
+        $this->permissions()->detach($permissions);
+        $role->users()->detach($this->id);
+    }
+
     public function is_banned() {
         switch($this->status) {
             case 'banned':

@@ -22,7 +22,11 @@ class AuthorTest extends TestCase
             'refuse-author-request' => Permission::factory()->create(['title'=>'rar', 'slug'=>'refuse-author-request']),
             'delete-author-request' => Permission::factory()->create(['title'=>'dar', 'slug'=>'delete-author-request']),
             'author-create-post' => Permission::factory()->create(['title'=>'acp', 'slug'=>'author-create-post']),
+            'revoke-role' => Permission::factory()->create(['title'=>'rr', 'slug'=>'revoke-role']),
         ];
+
+        $contributor_author = Role::create(['title'=>'Contributor author','slug'=>'contributor-author','description'=>'Contributor author']);
+        $contributor_author->permissions()->attach($permissions['author-create-post']->id);
 
         $user = $this->authuser = User::factory()->create();
         $this->actingAs($user);
@@ -30,6 +34,7 @@ class AuthorTest extends TestCase
         $user->attach_permission('accept-author-request');
         $user->attach_permission('refuse-author-request');
         $user->attach_permission('delete-author-request');
+        $user->attach_permission('revoke-role');
     }
 
     /** @test */
@@ -48,6 +53,7 @@ class AuthorTest extends TestCase
 
         $this->assertEquals(0, $user->elected_author);
         $this->assertFalse($user->has_permission('author-create-post'));
+        $this->assertFalse($user->has_role('contributor-author'));
         $this->assertEquals(0, $request->status);
 
         $this->post('/admin/author/requests/accept', ['request'=>$request->id]);
@@ -57,6 +63,7 @@ class AuthorTest extends TestCase
 
         $this->assertEquals(1, $user->elected_author);
         $this->assertTrue($user->has_permission('author-create-post'));
+        $this->assertTrue($user->has_role('contributor-author'));
         $this->assertEquals(1, $request->status);
     }
 
@@ -148,6 +155,52 @@ class AuthorTest extends TestCase
         $this->authuser->detach_permission('delete-author-request');
 
         $this->delete('/admin/author/requests', ['request'=>AuthorRequest::first()->id])
+            ->assertForbidden();
+    }
+
+    /** @test */
+    public function revoke_contributor_author_role_from_a_contributor_author() {
+        $user = User::factory()->create();
+        $technology = Category::create(['title'=>'tech','title_meta'=>'tech','slug'=>'tech','description'=>'tech']);
+        // Send a request
+        $this->actingAs($user);
+        $this->post('/author-request', [
+            'categories'=>[$technology->id],
+            'message'=>'I want to become a writer at fibonashi :)',
+        ]);
+
+        $this->actingAs($this->authuser);
+        $request = AuthorRequest::first();
+
+        $this->post('/admin/author/requests/accept', ['request'=>$request->id]);
+
+        $user->refresh();
+        $this->assertTrue($user->has_role('contributor-author'));
+        $this->assertEquals(1, $user->elected_author);
+        $this->assertCount(1, AuthorRequest::all());
+        $this->post('/admin/author/revoke', ['user'=>$user->id]);
+        $user->refresh();
+        $this->assertFalse($user->has_role('contributor-author'));
+        $this->assertEquals(0, $user->elected_author);
+        $this->assertCount(0, AuthorRequest::all());
+    }
+
+    /** @test */
+    public function revoke_contributor_author_role_requires_permission() {
+        $user = User::factory()->create();
+        $technology = Category::create(['title'=>'tech','title_meta'=>'tech','slug'=>'tech','description'=>'tech']);
+        // Send a request
+        $this->actingAs($user);
+        $this->post('/author-request', [
+            'categories'=>[$technology->id],
+            'message'=>'I want to become a writer at fibonashi :)',
+        ]);
+        $this->actingAs($this->authuser);
+        $request = AuthorRequest::first();
+        $this->post('/admin/author/requests/accept', ['request'=>$request->id]);
+
+        $this->authuser->detach_permission('revoke-role');
+        $this->post('/admin/author/revoke', ['user'=>$user->id])
             ->assertForbidden();
     }
 }
