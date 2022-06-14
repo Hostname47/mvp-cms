@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Models\{User,AuthorRequest,Category,Role,Permission};
+use App\Models\{User,AuthorRequest,Category,Role,Permission,Post};
 
 class AuthorTest extends TestCase
 {
@@ -23,6 +23,7 @@ class AuthorTest extends TestCase
             'delete-author-request' => Permission::factory()->create(['title'=>'dar', 'slug'=>'delete-author-request']),
             'author-create-post' => Permission::factory()->create(['title'=>'acp', 'slug'=>'author-create-post']),
             'revoke-role' => Permission::factory()->create(['title'=>'rr', 'slug'=>'revoke-role']),
+            'create-post' => Permission::factory()->create(['title'=>'cp', 'slug'=>'create-post']),
         ];
 
         $contributor_author = Role::create(['title'=>'Contributor author','slug'=>'contributor-author','description'=>'Contributor author']);
@@ -35,6 +36,7 @@ class AuthorTest extends TestCase
         $user->attach_permission('refuse-author-request');
         $user->attach_permission('delete-author-request');
         $user->attach_permission('revoke-role');
+        $user->attach_permission('create-post');
     }
 
     /** @test */
@@ -202,5 +204,30 @@ class AuthorTest extends TestCase
         $this->authuser->detach_permission('revoke-role');
         $this->post('/admin/author/revoke', ['user'=>$user->id])
             ->assertForbidden();
+    }
+
+    /** @test */
+    public function revoke_contributor_author_role_and_delete_posts() {
+        $user = User::factory()->create();
+        $technology = Category::create(['title'=>'tech','title_meta'=>'tech','slug'=>'tech','description'=>'tech']);
+        $uncategorized = Category::factory()->create(['title'=>'Uncategorized','slug'=>'uncategorized','status'=>'live']);
+        // Send a request
+        $this->actingAs($user);
+        $this->post('/author-request', [
+            'categories'=>[$technology->id],
+            'message'=>'I want to become a writer at fibonashi :)',
+        ]);
+
+        $this->actingAs($this->authuser);
+        $request = AuthorRequest::first();
+
+        $this->post('/admin/author/requests/accept', ['request'=>$request->id]);
+
+        $post = Post::factory()->create(['title'=>'foo','title_meta'=>'foo','slug'=>'foo','summary'=>'foo','content'=>'foo','user_id'=>$user->id]);
+        $post->categories()->attach($uncategorized->id);
+
+        $this->assertCount(1, Post::all());
+        $this->post('/admin/author/revoke', ['user'=>$user->id, 'author_resources_action'=>'delete']);
+        $this->assertCount(0, Post::all());
     }
 }

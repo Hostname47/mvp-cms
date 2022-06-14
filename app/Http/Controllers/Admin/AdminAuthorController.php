@@ -143,8 +143,12 @@ class AdminAuthorController extends Controller
 
     public function revoke(Request $request) {
         $this->authorize('revoke', [Role::class]);
-        $author = $request->validate(['user'=>'required|exists:users,id'])['user'];
-        $author = User::withoutGlobalScopes()->find($author);
+        $data = $request->validate([
+            'user'=>'required|exists:users,id',
+            'author_resources_action'=>['sometimes', Rule::in(['delete', 'keep'])]
+        ]);
+
+        $author = User::withoutGlobalScopes()->find($data['user']);
         $author->update(['elected_author'=>0]);
         $author->author_requests()->delete();
         /**
@@ -152,7 +156,21 @@ class AdminAuthorController extends Controller
          * to create posts through create post permission
          */
         $author->revoke_role('contributor-author');
+        /**
+         * Here we need to decide whether to keep or delete author resources after
+         * revoking contributor author role from him
+         */
+        if(isset($data['author_resources_action'])) {
+            switch($data['author_resources_action']) {
+                case 'keep':
+                    break;
+                case 'delete':
+                    $author->posts()->withoutGlobalScopes()->forceDelete();
+                    break;
+            }
+        }
 
-        \Session::flash('message', 'Author request accepted successfully.');
+        \Session::flash('message', 'Contributor author role has been revoked from <strong>' . $author->username . '</strong> successfully.');
+        return route('admin.author.management');
     }
 }

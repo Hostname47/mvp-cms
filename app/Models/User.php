@@ -211,4 +211,8 @@ class User extends Authenticatable
 
         return false;
     }
+
+    public function is_author() {
+        return $this->elected_author && $this->has_role('contributor-author');
+    }
 }

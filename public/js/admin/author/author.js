@@ -191,3 +191,73 @@ function handle_delete_request(button) {
 		})
 	});
 }
+
+$('.open-mailto-in-new-tab').on('click', function(event) {
+	event.preventDefault();
+
+	window.open($(this).attr('href'),'_newtab');
+});
+
+$('#open-revoke-author-role-viewer').on('click', function() {
+	$('#revoke-contributor-author-role-viewer').removeClass('none');
+	disable_page_scroll();
+});
+
+$('#revoke-author-role-confirm-input').on('input', function() {
+    let confirmation_input = $(this);
+    let confirmation_value = $('#revoke-author-role-confirm-value').val();
+	let button = $('#revoke-contributor-author-role');
+    
+    revoke_author_role_confirmed = false;
+    if(confirmation_input.val() == confirmation_value) {
+        button.removeClass('red-bs-disabled');
+        revoke_author_role_confirmed = true;
+    } else {
+		button.addClass('red-bs-disabled');
+		revoke_author_role_confirmed = false;
+    }
+});
+
+let revoke_author_role_confirmed = false;
+let revoke_author_role_lock = true;
+$('#revoke-contributor-author-role').on('click', function() {
+    if(!revoke_author_role_lock || !revoke_author_role_confirmed) return;
+	revoke_author_role_lock = false;
+
+	let button = $(this);
+	let buttonicon = button.find('.icon');
+	let spinner = button.find('.spinner');
+
+	button.addClass('red-bs-disabled');
+	spinner.addClass('inf-rotate');
+	buttonicon.addClass('none');
+	spinner.removeClass('opacity0');
+
+	$.ajax({
+		type: 'post',
+		url: '/admin/author/revoke',
+		data: {
+			user: $('#author-id').val(),
+			author_resources_action: $('.author-resources-after-role-revoke:checked').val()
+		},
+		success: function(response) {
+			window.location.href = response;
+		},
+		error: function(response) {
+			spinner.addClass('opacity0');
+            spinner.removeClass('inf-rotate');
+            buttonicon.removeClass('none');
+            button.removeClass('red-bs-disabled');
+
+			let errorObject = JSON.parse(response.responseText);
+			let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+			if(errorObject.errors) {
+				let errors = errorObject.errors;
+				error = errors[Object.keys(errors)[0]][0];
+			}
+			print_top_message(error, 'error');
+
+			revoke_author_role_lock = true;
+		}
+	});
+});
