@@ -21,7 +21,7 @@ class CreateAuthorRequestsTable extends Migration
             $table->longText('message');
             $table->boolean('status')->default(0);
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('approved_by')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('approved_by')->references('id')->on('users')->onDelete('set null');
             $table->timestamps();
         });
     }

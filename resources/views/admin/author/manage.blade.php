@@ -35,11 +35,80 @@
         @include('partials.session-messages')
 
         @if($author)
+            <!-- revoke role viewer -->
+            <div id="revoke-contributor-author-role-viewer" class="global-viewer full-center">
+                <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
+                <div class="global-viewer-content-box viewer-box-style-1" style="width: 600px;">
+                    <div class="align-center space-between light-gray-border-bottom" style="padding: 14px;">
+                        <div class="align-center">
+                            <svg class="size18 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M167.69,256.92c-4.4-51.22,37.26-92.87,89-89,0,28.5-.05,57,.09,85.51,0,3-.6,3.55-3.55,3.54C224.71,256.86,196.2,256.92,167.69,256.92ZM19.86,3.86c-16.27,0-16.31.05-16.31,16.07q0,94.91,0,189.79c0,7.15,2.26,9.84,8.61,9.85,38.23.05,76.47,0,114.7.08,2.56,0,3.43-.63,3.3-3.27a77.64,77.64,0,0,1,1.45-19.65c8.29-39.74,41.06-66.4,81.87-66.2,5.11,0,6-1.32,6-6.12-.22-36.58-.11-73.15-.12-109.73,0-8.73-2.06-10.81-10.65-10.81H19.86Zm49.8,76.56c-4.07-4.07-4-4.72.84-9.54s5.56-5,9.55-1C90.24,80,100.39,90.26,111.43,101.34c0-5.58,0-10,0-14.31,0-3.5,1.63-5.17,5.14-5,1.64,0,3.29,0,4.94,0,3.26-.07,4.84,1.45,4.82,4.76,0,10.7.07,21.4-.06,32.1-.05,5-2.7,7.64-7.66,7.71-10.7.15-21.41,0-32.11.07-3.27,0-4.87-1.54-4.8-4.82,0-1.48.07-3,0-4.44-.24-3.94,1.48-5.8,5.52-5.66,4.21.14,8.44,0,13.87,0C89.94,100.65,79.78,90.55,69.66,80.42Z"></path></svg>
+                            <span class="fs20 bold dark">Revoke contributor author role</span>
+                        </div>
+                        <div class="pointer fs20 close-global-viewer unselectable">✖</div>
+                    </div>
+                    <div class="viewer-content y-auto-overflow" style="padding: 14px; max-height: 450px;">
+                        <p class="dark lh15 no-margin">Revoke contributor author role from this user if he is not suitable for this role.</p>
+                        <h2 class="dark no-margin fs15 my8">Author :</h2>
+                        <div class="author-meta-box">
+                            <div class="flex">
+                                <img src="{{ $author->avatar(100) }}" class="size60 br4 pointer open-image-on-image-viewer" style="margin-right: 12px;">
+                                <div class="dark">
+                                    <p class="no-margin dark bold">{{ $author->fullname }}</p>
+                                    <p class="no-margin fs12 mt2">{{ $author->username }}</p>
+                                    <div class="simple-line-separator my4" style="width: 80px;"></div>
+                                    <p class=" fs12 my4">Author since : <span>{{ $author->author_since() }}</span></p>
+                                    <p class=" fs12 my4">Email : <a href="mailto:{{ $author->email }}" target="_blank" rel="noopener noreferrer" class="no-underline dark-blue">{{ $author->email }}</a></p>
+                                </div>
+                            </div>
+                        </div>
+                        <h2 class="dark no-margin fs15 my8">Author posts :</h2>
+                        <p class="dark my8">Please specify whether to delete author posts after revoking role, or keep them.</p>
+
+                        <label class="typical-section-style flex pointer mb8">
+                            <input type="radio" name="author-posts-after-role-revoke" checked="checked" autocomplete="off" class="height-max-content mr6" style="margin-top: 1px;">
+                            <div class="dark">
+                                <p class="bold no-margin mb4">Delete posts</p>
+                                <p class="fs13 no-margin">Delete all posts relevant to that author after revoking the role.</p>
+                            </div>
+                        </label>
+                        <label class="typical-section-style flex pointer">
+                            <input type="radio" name="author-posts-after-role-revoke" class="height-max-content mr6" autocomplete="off" style="margin-top: 1px;">
+                            <div class="dark">
+                                <p class="bold no-margin mb4">Keep posts</p>
+                                <p class="fs13 no-margin">Keep author posts fter revoking the role.</p>
+                            </div>
+                        </label>
+
+                        <div class="my12">
+                            <h2 class="no-margin fs15 bold dark">Confirmation</h2>
+                            <p class="no-margin my4 dark">Please type <strong>{{ auth()->user()->username }}::revoke-author-from::{{ $author->username }}</strong> to confirm.</p>
+                            <div>
+                                <input type="text" autocomplete="off" class="full-width styled-input" id="revoke-author-role-confirm-input" style="padding: 8px 10px" placeholder="Revoke authore role confirmation">
+                                <input type="hidden" id="revoke-author-role-confirm-value" autocomplete="off" value="{{ auth()->user()->username }}::revoke-author-from::{{ $author->username }}">
+                            </div>
+                        </div>
+
+                        <div class="flex" style="margin-top: 12px">
+                            <div id="revoke-contributor-author-role" class="typical-button-style red-bs align-center">
+                                <div class="relative size14 mr4">
+                                    <svg class="size12 icon" fill="white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M167.69,256.92c-4.4-51.22,37.26-92.87,89-89,0,28.5-.05,57,.09,85.51,0,3-.6,3.55-3.55,3.54C224.71,256.86,196.2,256.92,167.69,256.92ZM19.86,3.86c-16.27,0-16.31.05-16.31,16.07q0,94.91,0,189.79c0,7.15,2.26,9.84,8.61,9.85,38.23.05,76.47,0,114.7.08,2.56,0,3.43-.63,3.3-3.27a77.64,77.64,0,0,1,1.45-19.65c8.29-39.74,41.06-66.4,81.87-66.2,5.11,0,6-1.32,6-6.12-.22-36.58-.11-73.15-.12-109.73,0-8.73-2.06-10.81-10.65-10.81H19.86Zm49.8,76.56c-4.07-4.07-4-4.72.84-9.54s5.56-5,9.55-1C90.24,80,100.39,90.26,111.43,101.34c0-5.58,0-10,0-14.31,0-3.5,1.63-5.17,5.14-5,1.64,0,3.29,0,4.94,0,3.26-.07,4.84,1.45,4.82,4.76,0,10.7.07,21.4-.06,32.1-.05,5-2.7,7.64-7.66,7.71-10.7.15-21.41,0-32.11.07-3.27,0-4.87-1.54-4.8-4.82,0-1.48.07-3,0-4.44-.24-3.94,1.48-5.8,5.52-5.66,4.21.14,8.44,0,13.87,0C89.94,100.65,79.78,90.55,69.66,80.42Z"></path></svg>
+                                    <svg class="spinner size14 opacity0 absolute" style="top: 0; left: 0" fill="none" viewBox="0 0 16 16">
+                                        <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                                        <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                                    </svg>
+                                </div>
+                                <span class="bold fs13">Revoke</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- manage a specific author -->
             <h2 class="no-margin fs18 dark">Manage Author - {{ '@' . $author->username }}</h2>
             <p class="lh15 dark my4">Manage author posts, permissions and activities.</p>
             
-            <div id="author-meta-box">
+            <div class="author-meta-box">
                 <div class="flex">
                     <img src="{{ $author->avatar(100) }}" class="size60 br4 pointer open-image-on-image-viewer" style="margin-right: 12px;">
                     <div class="dark">
@@ -48,9 +117,17 @@
                         <div class="simple-line-separator my4" style="width: 80px;"></div>
                         <p class=" fs12 my4">Author since : <span>{{ $author->author_since() }}</span></p>
                     </div>
+                    <div class="align-center height-max-content move-to-right button-style-4">
+                        <svg class="size14 mr6" fill="#d23a3a" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M167.69,256.92c-4.4-51.22,37.26-92.87,89-89,0,28.5-.05,57,.09,85.51,0,3-.6,3.55-3.55,3.54C224.71,256.86,196.2,256.92,167.69,256.92ZM19.86,3.86c-16.27,0-16.31.05-16.31,16.07q0,94.91,0,189.79c0,7.15,2.26,9.84,8.61,9.85,38.23.05,76.47,0,114.7.08,2.56,0,3.43-.63,3.3-3.27a77.64,77.64,0,0,1,1.45-19.65c8.29-39.74,41.06-66.4,81.87-66.2,5.11,0,6-1.32,6-6.12-.22-36.58-.11-73.15-.12-109.73,0-8.73-2.06-10.81-10.65-10.81H19.86Zm49.8,76.56c-4.07-4.07-4-4.72.84-9.54s5.56-5,9.55-1C90.24,80,100.39,90.26,111.43,101.34c0-5.58,0-10,0-14.31,0-3.5,1.63-5.17,5.14-5,1.64,0,3.29,0,4.94,0,3.26-.07,4.84,1.45,4.82,4.76,0,10.7.07,21.4-.06,32.1-.05,5-2.7,7.64-7.66,7.71-10.7.15-21.41,0-32.11.07-3.27,0-4.87-1.54-4.8-4.82,0-1.48.07-3,0-4.44-.24-3.94,1.48-5.8,5.52-5.66,4.21.14,8.44,0,13.87,0C89.94,100.65,79.78,90.55,69.66,80.42Z"></path></svg>
+                        <span class="red fs13 bold" style="margin-top: -2px;">revoke author role</span>
+                    </div>
                 </div>
             </div>
 
+            <div class="align-center my12">
+                <svg class="size16" style="margin-right: 6px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M357.51,334.33l28.28-28.27a7.1,7.1,0,0,1,12.11,5V439.58A42.43,42.43,0,0,1,355.48,482H44.42A42.43,42.43,0,0,1,2,439.58V128.52A42.43,42.43,0,0,1,44.42,86.1H286.11a7.12,7.12,0,0,1,5,12.11l-28.28,28.28a7,7,0,0,1-5,2H44.42V439.58H355.48V339.28A7,7,0,0,1,357.51,334.33ZM495.9,156,263.84,388.06,184,396.9a36.5,36.5,0,0,1-40.29-40.3l8.83-79.88L384.55,44.66a51.58,51.58,0,0,1,73.09,0l38.17,38.17A51.76,51.76,0,0,1,495.9,156Zm-87.31,27.31L357.25,132,193.06,296.25,186.6,354l57.71-6.45Zm57.26-70.43L427.68,74.7a9.23,9.23,0,0,0-13.08,0L387.29,102l51.35,51.34,27.3-27.3A9.41,9.41,0,0,0,465.85,112.88Z"></path></svg>
+                <h2 class="dark fs18 no-margin">Author posts :</h2>
+            </div>
             <div class="align-center my12">
                 <a href="{{ route('admin.author.management', ['author'=>$author->username, 'tab'=>'all']) }}" class="button-style-5 fs13 @if($tab=='all') blue @endif">{{ __('All') }} ({{ $statistics['all'] }})</a>
                 <span class="fs10 unselectable">〡</span>

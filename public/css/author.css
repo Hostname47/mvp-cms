@@ -1,7 +1,3 @@
-h2 {
-    margin-bottom: 6px;
-}
-
 #posts-box {
     display: flex;
     flex-direction: column;
