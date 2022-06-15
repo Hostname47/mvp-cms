@@ -1,0 +1,29 @@
+.card-section {
+    background-color: rgba(231, 231, 232, 0.16);
+    border: 1px solid #d7d7d7;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.section-card-title {
+    display: block;
+    color: rgb(51, 51, 51);
+    font-weight: bold;
+    text-align: center;
+    font-size: 12px;
+    max-width: 100px;
+    margin-bottom: 6px;
+}
+
+.dashboard-statistics-records-box {
+    display: flex;
+    gap: 24px;
+}
+
+.dashboard-statistics-record {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 8px;
+}

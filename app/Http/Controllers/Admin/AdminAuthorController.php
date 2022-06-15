@@ -16,7 +16,7 @@ class AdminAuthorController extends Controller
         $statistics = [
             'requests'=>AuthorRequest::where('status', '<>', 1)->count(),
             'authors'=>User::where('elected_author', 1)->count(),
-            'posts'=>Post::withoutGlobalScopes()->where('status', 'author-post-awaiting-review')->count(),
+            'under-review-posts'=>Post::withoutGlobalScopes()->where('status', 'awaiting-review')->count(),
         ];
         return view('admin.author.overview')
             ->with(compact('statistics'));
