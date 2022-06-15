@@ -12,15 +12,20 @@ class AuthorRequestController extends Controller
 {
     public function index(Request $request) {
         $categories = Category::tree()->get()->toTree();
-        $status = 'fresher';
-        $application = null;
+        $application = auth()->user() ? AuthorRequest::where('user_id', auth()->user()->id)->first() : null;
+        $status = 'not-yet';
 
-        if(auth()->user()) {
-            if($application = AuthorRequest::where('user_id', auth()->user()->id)->first()) {
-                if($application->status)
-                    $status = 'applied-status-approved';
-                else
-                    $status = 'applied-status-not-yet';
+        if($application) {
+            switch($application->status) {
+                case -1:
+                    $status = 'refused';
+                    break;
+                case 0:
+                    $status = 'under-review';
+                    break;
+                case 1:
+                    $status = 'approved';
+                    break;
             }
         }
 

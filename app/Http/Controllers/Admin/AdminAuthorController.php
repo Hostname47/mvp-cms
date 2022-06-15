@@ -38,7 +38,21 @@ class AdminAuthorController extends Controller
         $statistics = [];
 
         if($request->has('author')) {
-            $author = User::where('username', $request->get('author'))->first();
+            $username = Purifier::clean($request->get('author'));
+            $author = User::where('username', $username)->first();
+
+            if(is_null($author) || !$author->is_author()) {
+                if($author)
+                    \Session::flash('error', 'This user is not an elected author');
+                else
+                    \Session::flash('error', 'Author not found with that username : ' . $username);
+
+                /**
+                 * In that case, either user not found, or the user exists but
+                 * he is not an author
+                 */
+                $author = null;
+            }
         }
 
         if(is_null($author)) {
@@ -160,15 +174,15 @@ class AdminAuthorController extends Controller
          * Here we need to decide whether to keep or delete author resources after
          * revoking contributor author role from him
          */
-        if(isset($data['author_resources_action'])) {
-            switch($data['author_resources_action']) {
-                case 'keep':
-                    break;
-                case 'delete':
-                    $author->posts()->withoutGlobalScopes()->forceDelete();
-                    break;
-            }
-        }
+        // if(isset($data['author_resources_action'])) {
+        //     switch($data['author_resources_action']) {
+        //         case 'keep':
+        //             break;
+        //         case 'delete':
+        //             $author->posts()->withoutGlobalScopes()->forceDelete();
+        //             break;
+        //     }
+        // }
 
         \Session::flash('message', 'Contributor author role has been revoked from <strong>' . $author->username . '</strong> successfully.');
         return route('admin.author.management');
