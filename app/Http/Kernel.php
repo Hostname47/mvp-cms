@@ -68,6 +68,7 @@ class Kernel extends HttpKernel
         'is-admin' => \App\Http\Middleware\IsAdmin::class,
         'able-to-access-admin-section' => \App\Http\Middleware\AbleToAccessAdminSection::class,
         'elected-author' => \App\Http\Middleware\IsElectedAuthor::class,
+        'visit-log' => \App\Http\Middleware\VisitMiddleware::class,
     ];
 
     /**

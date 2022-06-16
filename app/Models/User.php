@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\{Role,RoleUser,Comment,Clap,Report,ContactMessage,Faq,SavedPost,Ban,AuthorRequest};
+use App\Models\{Role,RoleUser,Comment,Clap,Report,ContactMessage,Faq,SavedPost,Ban,AuthorRequest,Visit};
 use Carbon\Carbon;
 
 class User extends Authenticatable
@@ -67,6 +67,10 @@ class User extends Authenticatable
 
     public function bans() {
         return $this->hasMany(Ban::class);
+    }
+
+    public function visits() {
+        return $this->hasMany(Visit::class, 'visitor_id');
     }
 
     public function posts_saved() {

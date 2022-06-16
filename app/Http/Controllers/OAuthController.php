@@ -61,6 +61,8 @@ class OAuthController extends Controller
             File::makeDirectory($path.'/usermedia/avatars/originals', 0777, true, true);
             File::makeDirectory($path.'/usermedia/avatars/segments', 0777, true, true);
             File::makeDirectory($path.'/usermedia/avatars/trash', 0777, true, true);
+
+            \Session::flash('message', __('Your account is created successfully.'));
         }
 
         Auth::login($user, true);

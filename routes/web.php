@@ -161,30 +161,12 @@ Route::middleware(['client.scopes', 'account.status'])->group(function() {
     Route::get('/search/advanced', [SearchController::class, 'advanced'])->name('search.advanced');
     Route::get('/search/advanced/results', [SearchController::class, 'advanced_results'])->name('search.advanced.results');
 
-    Route::get('/search/authors', [SearchController::class, 'authors'])->name('search.authors');
     Route::get('/search/authors/fetch', [SearchController::class, 'fetch_authors']);
 
-    Route::get('/tags', [TagController::class, 'index'])->name('tags');
-    Route::get('/tags/{tag:slug}', [TagController::class, 'view'])->name('tag.view');
-
-    Route::get('/', [IndexController::class, 'index'])->name('root.slash');
-    Route::get('/home', [IndexController::class, 'index'])->name('home');
-    Route::get('/discover', [IndexController::class, 'discover'])->name('discover');
-    Route::view('/privacy', 'privacy')->name('privacy');
-    Route::view('/guidelines', 'guidelines')->name('guidelines');
-    Route::view('/credits', 'credits')->name('credits');
-    
-    Route::get('/users/{user:username}/profile', [UserController::class, 'profile'])->name('user.profile');
-
-    Route::get('/faqs', [FaqController::class, 'index'])->name('faqs');
     Route::post('/faqs', [FaqController::class, 'store']);
 
-    Route::get('/author-request', [AuthorRequestController::class, 'index'])->name('author-request');
     Route::post('/author-request', [AuthorRequestController::class, 'request']);
-    
-    Route::view('/about', 'about')->name('about');
 
-    Route::get('/contact', [ContactController::class, 'contact'])->name('contact');
     Route::post('/contact', [ContactController::class, 'store']);
     
     Route::get('/comments/fetch', [CommentController::class, 'fetch']);
@@ -193,7 +175,24 @@ Route::middleware(['client.scopes', 'account.status'])->group(function() {
     Route::get('/newsletter/subscribe/viewer', [NewsletterController::class, 'newsletter_subscribe_viewer']);
     Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe']);
     
-    Route::get('/{category:slug}/{post:slug}/v', [PostController::class, 'view'])->name('view.post');
     Route::get('/posts/fetch', [PostController::class, 'fetch']);
     Route::post('/posts/unlock', [PostController::class, 'unlock'])->middleware(['throttle:10-per-minute']);
+
+    Route::middleware(['visit-log'])->group(function() {
+        Route::get('/search/authors', [SearchController::class, 'authors'])->name('search.authors');
+        Route::get('/tags', [TagController::class, 'index'])->name('tags');
+        Route::get('/tags/{tag:slug}', [TagController::class, 'view'])->name('tag.view');
+        Route::get('/', [IndexController::class, 'index'])->name('root.slash');
+        Route::get('/home', [IndexController::class, 'index'])->name('home');
+        Route::get('/discover', [IndexController::class, 'discover'])->name('discover');
+        Route::view('/privacy', 'privacy')->name('privacy');
+        Route::view('/guidelines', 'guidelines')->name('guidelines');
+        Route::view('/credits', 'credits')->name('credits');
+        Route::get('/users/{user:username}/profile', [UserController::class, 'profile'])->name('user.profile');
+        Route::get('/faqs', [FaqController::class, 'index'])->name('faqs');
+        Route::get('/author-request', [AuthorRequestController::class, 'index'])->name('author-request');
+        Route::view('/about', 'about')->name('about');
+        Route::get('/contact', [ContactController::class, 'contact'])->name('contact');
+        Route::get('/{category:slug}/{post:slug}/v', [PostController::class, 'view'])->name('view.post');
+    });    
 });

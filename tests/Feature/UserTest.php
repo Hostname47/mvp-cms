@@ -21,7 +21,6 @@ class UserTest extends TestCase
     use DatabaseTransactions;
 
     public $authuser;
-    public $socialite_handled;
 
     public function setUp():void {
         parent::setUp();
