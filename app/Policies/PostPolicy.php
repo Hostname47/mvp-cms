@@ -27,6 +27,9 @@ class PostPolicy
 
     public function update_status(User $user) {
         if(!$user->has_permission('change-post-status')) {
+            $user->log_authbreak([
+                'action'=>'Try to change post status without permission',
+            ]);
             return $this->deny("Unauthorized action due to lack of permissions.");
         }
 

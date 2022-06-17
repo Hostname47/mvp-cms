@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\{Role,RoleUser,Comment,Clap,Report,ContactMessage,Faq,SavedPost,Ban,AuthorRequest,Visit};
+use App\Models\{Role,RoleUser,Comment,Clap,Report,ContactMessage,Faq,SavedPost,Ban,AuthorRequest,Visit,AuthorizationBreak};
 use Carbon\Carbon;
 
 class User extends Authenticatable
@@ -71,6 +71,10 @@ class User extends Authenticatable
 
     public function visits() {
         return $this->hasMany(Visit::class, 'visitor_id');
+    }
+
+    public function authorization_breaks() {
+        return $this->hasMany(AuthorizationBreak::class);
     }
 
     public function posts_saved() {
@@ -218,5 +222,12 @@ class User extends Authenticatable
 
     public function is_author() {
         return $this->elected_author && $this->has_role('contributor-author');
+    }
+
+    public function log_authbreak($data=[]) {
+        $authbreak = new AuthorizationBreak;
+        $authbreak->user_id = $this->id;
+        $authbreak->data = empty($data) ? null : json_encode($data);
+        $authbreak->save();
     }
 }
