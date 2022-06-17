@@ -77,6 +77,8 @@ Route::middleware(['able-to-access-admin-section'])->group(function() {
     Route::delete('/admin/media', [MediaController::class, 'delete_media']);
 
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/admin/dashboard/statistics', [AdminController::class, 'statistics']);
+
     Route::get('/admin/posts', [AdminPostController::class, 'all'])->name('admin.all.posts');
     Route::get('/admin/posts/create', [AdminPostController::class, 'create'])->name('create.new.post');
     Route::post('/admin/posts', [AdminPostController::class, 'store']);

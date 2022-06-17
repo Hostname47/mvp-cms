@@ -174,15 +174,15 @@ class AdminAuthorController extends Controller
          * Here we need to decide whether to keep or delete author resources after
          * revoking contributor author role from him
          */
-        // if(isset($data['author_resources_action'])) {
-        //     switch($data['author_resources_action']) {
-        //         case 'keep':
-        //             break;
-        //         case 'delete':
-        //             $author->posts()->withoutGlobalScopes()->forceDelete();
-        //             break;
-        //     }
-        // }
+        if(isset($data['author_resources_action'])) {
+            switch($data['author_resources_action']) {
+                case 'keep':
+                    break;
+                case 'delete':
+                    $author->posts()->withoutGlobalScopes()->forceDelete();
+                    break;
+            }
+        }
 
         \Session::flash('message', 'Contributor author role has been revoked from <strong>' . $author->username . '</strong> successfully.');
         return route('admin.author.management');

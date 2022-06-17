@@ -27,3 +27,8 @@
     flex-direction: column;
     gap: 8px;
 }
+
+.dsf-selected {
+    cursor: default;
+    background-color: #f4f4f4;
+}
