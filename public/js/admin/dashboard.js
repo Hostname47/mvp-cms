@@ -75,7 +75,6 @@ $('#open-newsignups-viewer').on('click', function() {
 		let no_signups_found = $('#signups-not-found-box');
 		let fetch = $('#signups-fetch-more-button');
 		let loading = viewer.find('.loading-box');
-		let spinner = viewer.find('.loading-spinner');
 
 		content.html('');
 		fetch.addClass('none');
@@ -88,7 +87,7 @@ $('#open-newsignups-viewer').on('click', function() {
 			data: {
 				filter: $('#dashboard-statistics-filter').val(),
 				skip: 0,
-				take: 12
+				take: 8
 			},
             success: function(response) {
                 signups_viewer_opened = true;
@@ -105,6 +104,15 @@ $('#open-newsignups-viewer').on('click', function() {
 
                 loading.addClass('none');
             },
+			error: function() {
+				let errorObject = JSON.parse(response.responseText);
+				let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+				if(errorObject.errors) {
+					let errors = errorObject.errors;
+					error = errors[Object.keys(errors)[0]][0];
+				}
+				print_top_message(error, 'error');
+			},
             complete: function() {
 				open_signups_viewer_lock = true;
             }
@@ -113,4 +121,48 @@ $('#open-newsignups-viewer').on('click', function() {
 
 	viewer.removeClass('none');
 	disable_page_scroll();
+});
+
+let fetch_more_signups_lock = true;
+$('#signups-fetch-more-button').on('click', function() {
+	if(!fetch_more_signups_lock) return;
+	fetch_more_signups_lock = false;
+
+	let content = $('#new-signups-box');
+	let button = $(this);
+	let spinner = button.find('.spinner');
+
+	spinner.removeClass('none');
+	spinner.addClass('inf-rotate');
+
+	$.ajax({
+		url: '/admin/sign-ups',
+		data: {
+			filter: $('#dashboard-statistics-filter').val(),
+			skip: content.find('.signup-user-component').length,
+			take: 8
+		},
+		success: function(response) {
+			content.append(response.users);
+
+			if(response.hasmore)
+				button.removeClass('none');
+			else
+				button.addClass('none');
+		},
+		error: function() {
+			let errorObject = JSON.parse(response.responseText);
+			let error = (errorObject.message) ? errorObject.message : (errorObject.error) ? errorObject.error : '';
+			if(errorObject.errors) {
+				let errors = errorObject.errors;
+				error = errors[Object.keys(errors)[0]][0];
+			}
+			print_top_message(error, 'error');
+		},
+		complete: function() {
+			fetch_more_signups_lock = true;
+			spinner.addClass('none');
+			spinner.removeClass('inf-rotate');
+		}
+	});
 });

@@ -89,8 +89,8 @@ class AdminController extends Controller
                 /** we don't have to add any condition */
                 break;
         }
-        $users = $users->skip($data['skip'])->take($data['take']+1)->get();
-        
+        $users = $users->orderBy('created_at', 'desc')->skip($data['skip'])->take($data['take']+1)->get();
+
         $hasmore = $users->count() > $data['take'];
         $users = $users->take($data['take']);
         $payload = "";
