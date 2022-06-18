@@ -31,6 +31,43 @@
     <div class="admin-page-content-box">
         @include('partials.session-messages')
         
+        <!-- new signups viewer -->
+        <div id="new-signups-viewer" class="global-viewer full-center none">
+            <div class="close-button-style-1 close-global-viewer unselectable">✖</div>
+            <div class="viewer-box-style-1" style="margin-top: -26px; width: 400px;">
+                <div class="full-center light-gray-border-bottom relative border-box" style="padding: 14px;">
+                    <div class="align-center">
+                        <svg class="size16 mr6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M3.56,208.74c2.19-2.66,1.75-6.06,2.5-9.12,8.33-33.47,28-57.51,59.42-71.91.6-.27,1.16-.62,2.14-1.16l-3.43-3.85a58,58,0,0,1-7.9-66c11.25-21,35.61-33.52,58.42-30,25,3.84,44.33,21.88,49.21,45.9,7.2,35.44-19.74,68.66-56.12,69.21C68,142.44,35.06,169.14,28,206.19c-.7,3.71-.29,4.6,3.65,4.57,24.61-.18,49.23-.12,73.84-.07,7.46,0,12.31,4.4,12.51,11s-4.32,11.56-11.15,11.76c-7.22.22-14.44.09-21.66.09-22.15,0-44.31-.21-66.45.13-7,.1-12-2-15.2-8.19ZM72.41,84.82A34.39,34.39,0,0,0,106.94,119c18.82-.12,34.4-15.92,34.18-34.65a34.36,34.36,0,1,0-68.71.46Z" style="fill:#020202"></path><path d="M168.47,187.81c-5.09,0-10.18.14-15.26,0-7.13-.23-11.8-4.67-12-11.09-.2-6.7,4.34-11.64,11.67-11.85,10.17-.3,20.35-.2,30.51-.05,2.83.05,3.56-.83,3.52-3.57-.16-9.68-.11-19.36,0-29,0-8,4.57-13.11,11.49-13.13s11.37,5,11.45,13.08c.09,9.68.11,19.36,0,29-.05,2.77.78,3.66,3.58,3.62,9.84-.15,19.69-.21,29.53,0,9.67.2,15.42,8.21,11.76,16.14-2.34,5.07-6.64,6.93-12,6.91-9.68,0-19.36.12-29-.07-3-.06-3.91.79-3.85,3.83.19,9.51.13,19,.05,28.55-.06,8.49-4.48,13.47-11.65,13.35-6.93-.11-11.25-5.15-11.29-13.3-.05-9.35-.16-18.71.07-28.05.08-3.31-.57-4.67-4.21-4.4C178,188.08,173.22,187.82,168.47,187.81Z" style="fill:#040404"></path></svg>
+                        <span class="fs16 bold forum-color flex align-center mt2">New registered users</span>
+                    </div>
+                    <div class="pointer fs20 close-global-viewer unselectable absolute" style="right: 16px">✖</div>
+                </div>
+                <div class="relative full-dimensions y-auto-overflow border-box" style="padding: 12px; max-height: 360px;">
+                    <div id="new-signups-box">
+
+                    </div>
+                    <div id="signups-fetch-more-button" class="full-center pointer my12 blue none">
+                        <svg class="loading-spinner none size12 mr6" fill="none" viewBox="0 0 16 16">
+                            <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                            <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                        </svg>
+                        <span class="fs13">load more</span>
+                    </div>
+                    <div id="signups-not-found-box" class="typical-section-style full-center flex-column none">
+                        <svg class="size20 my8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                        <p class="bold dark text-center fs13 lh15 mt4">No sign ups found. Change dashboard statistics date filter to get signups for earlier dates.</p>
+                    </div>
+                </div>
+                <div class="loading-box flex-column full-center" style="min-height: 120px; margin-top: -20px;">
+                    <svg class="loading-spinner size28" fill="none" viewBox="0 0 16 16">
+                        <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
+                        <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+                    </svg>
+                    <span class="forum-color fs11 mt8">{{ __('please wait') }}..</span>
+                </div>
+            </div>
+        </div>
+
         <div class="card-section full-width relative">
             <div class="align-center dark" style="margin-bottom: 10px">
                 <div class="align-center">
@@ -38,6 +75,7 @@
                     <span class="bold">Statistics</span>
                 </div>
                 <!-- date filter -->
+                <input type="hidden" id="dashboard-statistics-filter" value="today" autocomplete="off">
                 <div class="relative" style="margin-left: 10px">
                     <div class="align-center pointer button-with-suboptions">
                         <p class="no-margin mr4 fs11">Date filter: <span class="bold fs12" id="dashboard-statistics-filter-selection-name">Today</span></p>
@@ -97,7 +135,7 @@
                         <div class="dashboard-statistics-record">
                             <svg class="size28" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M2.27,248V31.14c3.12-6.17,8.38-8,14.92-7.72,6.74.24,13.51-.29,20.22.16,5.86.39,10.24-.44,12.52-6.79,1.27-3.54,4.62-5.89,7.59-8.27,3.87-3.09,8.69-4.1,13.06-6.1H81.47c7.87,2.52,16.34,5.35,19.88,13.07,3.73,8.14,9.39,8.68,16.49,8a6.19,6.19,0,0,1,1.49,0c7.1,1,12.38-.2,16-7.85S147.18,5.27,154.73,2.42h10.89c10,2.78,18.57,7.57,23.1,17.38,1.47,3.19,3.3,3.76,6.39,3.73,15.35-.13,30.69-.07,46-.06,10.91,0,14.56,3.64,14.56,14.44q0,101.75,0,203.47c0,11.06-3.46,14.55-14.43,14.55q-112.35,0-224.69.08C10,256,5.1,254.14,2.27,248Zm127-150.53c-33.81,0-67.62.07-101.43-.09-3.69,0-4.64.85-4.63,4.59q.23,64.09,0,128.19c0,4.14,1.36,4.78,5,4.78q100.7-.15,201.38,0c4.18,0,5.14-1.14,5.12-5.2q-.23-63.6,0-127.2c0-4-.8-5.22-5-5.19C196.24,97.57,162.76,97.48,129.28,97.48Zm-.43-21c33.82,0,67.63,0,101.44.07,3.4,0,4.58-.79,4.46-4.35-.27-7.75-.29-15.52,0-23.26.14-3.71-1.31-4.29-4.55-4.23-11.05.17-22.1.23-33.15,0-4.3-.1-7.57.17-9.06,5.12-.67,2.21-2.65,4.15-4.32,5.94a30.47,30.47,0,0,1-22.37,10,10.44,10.44,0,0,1-11-9.74c-.44-5.46,3.14-9.78,9.08-11,1.3-.26,2.59-.52,3.86-.85a9.56,9.56,0,0,0,7.46-7.63A9.75,9.75,0,0,0,167.07,26c-6.13-4.9-14.58-1.78-16.49,6.06-2.71,11.12-4.72,12.7-16.23,12.7-7.92,0-15.84.15-23.75-.07-3.17-.09-4.86.74-6.41,3.77C98.65,59.29,89.46,65,77.31,65.68,71,66,66.22,61.75,65.74,55.92c-.44-5.25,3.38-9.74,9.22-11a26.6,26.6,0,0,0,6.11-1.72A10.13,10.13,0,0,0,86.3,31.52a10.82,10.82,0,0,0-10.16-7.94c-5,0-9,3.52-10.28,9C63.5,42.92,61.27,44.72,50.79,44.73c-7.75,0-15.51.19-23.25-.08-3.6-.13-4.42,1.12-4.31,4.48.24,7.41.33,14.86,0,22.26-.21,4.19,1.11,5.17,5.19,5.14C61.88,76.37,95.37,76.44,128.85,76.44Zm46.38,53.75c-5.3-2.31-10-.46-14.09,5.64-10.34,15.45-20.78,30.83-30.83,46.47-2.58,4-3.88,3.7-6.8.52-5.57-6.06-11.53-11.77-17.42-17.53-5.53-5.4-11.64-5.8-16.19-1.26-4.39,4.4-4,10.83,1.3,16.15q14.6,14.77,29.36,29.37c6.15,6.07,13.11,5.49,17.88-1.62,13.58-20.21,27-40.5,40.52-60.78,1.46-2.2,2.74-4.5,2.65-6.17C181.51,135.28,179.41,132,175.23,130.19Z" style="fill:#010101"/></svg>
                             <span class="flex section-card-title bold">VISITORS</span>
-                            <span id="open-visitors-viewer" class="flex fs20 bold blue unselectable pointer dashboard-visitors-count">{{ $statistics['visitors'] }}</span>
+                            <span id="open-visitors-viewer" class="flex fs20 bold unselectable dashboard-visitors-count">{{ $statistics['visitors'] }}</span>
                         </div>
                         <div class="dashboard-statistics-record">
                             <svg class="size28" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M3.56,208.74c2.19-2.66,1.75-6.06,2.5-9.12,8.33-33.47,28-57.51,59.42-71.91.6-.27,1.16-.62,2.14-1.16l-3.43-3.85a58,58,0,0,1-7.9-66c11.25-21,35.61-33.52,58.42-30,25,3.84,44.33,21.88,49.21,45.9,7.2,35.44-19.74,68.66-56.12,69.21C68,142.44,35.06,169.14,28,206.19c-.7,3.71-.29,4.6,3.65,4.57,24.61-.18,49.23-.12,73.84-.07,7.46,0,12.31,4.4,12.51,11s-4.32,11.56-11.15,11.76c-7.22.22-14.44.09-21.66.09-22.15,0-44.31-.21-66.45.13-7,.1-12-2-15.2-8.19ZM72.41,84.82A34.39,34.39,0,0,0,106.94,119c18.82-.12,34.4-15.92,34.18-34.65a34.36,34.36,0,1,0-68.71.46Z" style="fill:#020202"/><path d="M168.47,187.81c-5.09,0-10.18.14-15.26,0-7.13-.23-11.8-4.67-12-11.09-.2-6.7,4.34-11.64,11.67-11.85,10.17-.3,20.35-.2,30.51-.05,2.83.05,3.56-.83,3.52-3.57-.16-9.68-.11-19.36,0-29,0-8,4.57-13.11,11.49-13.13s11.37,5,11.45,13.08c.09,9.68.11,19.36,0,29-.05,2.77.78,3.66,3.58,3.62,9.84-.15,19.69-.21,29.53,0,9.67.2,15.42,8.21,11.76,16.14-2.34,5.07-6.64,6.93-12,6.91-9.68,0-19.36.12-29-.07-3-.06-3.91.79-3.85,3.83.19,9.51.13,19,.05,28.55-.06,8.49-4.48,13.47-11.65,13.35-6.93-.11-11.25-5.15-11.29-13.3-.05-9.35-.16-18.71.07-28.05.08-3.31-.57-4.67-4.21-4.4C178,188.08,173.22,187.82,168.47,187.81Z" style="fill:#040404"/></svg>

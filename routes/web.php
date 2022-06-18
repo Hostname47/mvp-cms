@@ -49,7 +49,7 @@ Route::middleware(['able-to-access-admin-section'])->group(function() {
     Route::post('/admin/comments/untrash', [AdminCommentController::class, 'untrash']);
     Route::post('/admin/comments/restore', [AdminCommentController::class, 'restore']);
     Route::post('/admin/comments/destroy', [AdminCommentController::class, 'destroy']);
-
+    // Categories
     Route::get('/admin/categories', [CategoryController::class, 'manage'])->name('admin.categories.management');
     Route::get('/admin/categories/hierarchy/select-one-category-viewer', [CategoryController::class, 'get_select_one_category_viewer']);
     Route::get('/admin/categories/hierarchy/subcategories/one-level-subcategories', [CategoryController::class, 'get_one_level_hierarchy_subcategories']);
@@ -59,7 +59,7 @@ Route::middleware(['able-to-access-admin-section'])->group(function() {
     Route::patch('/admin/category/status', [CategoryController::class, 'update_status']);
     Route::get('/admin/categories/manage', [CategoryController::class, 'manage'])->name('category.manage');
     Route::delete('/admin/categories', [CategoryController::class, 'delete']);
-
+    // Reports
     Route::get('/admin/reports', [ReportController::class, 'manage'])->name('admin.reports');
     Route::post('/admin/reports/review', [ReportController::class, 'review']);
     Route::delete('/admin/reports', [ReportController::class, 'delete']);
@@ -78,6 +78,7 @@ Route::middleware(['able-to-access-admin-section'])->group(function() {
 
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/admin/dashboard/statistics', [AdminController::class, 'statistics']);
+    Route::get('/admin/sign-ups', [AdminController::class, 'signups']);
 
     Route::get('/admin/posts', [AdminPostController::class, 'all'])->name('admin.all.posts');
     Route::get('/admin/posts/create', [AdminPostController::class, 'create'])->name('create.new.post');

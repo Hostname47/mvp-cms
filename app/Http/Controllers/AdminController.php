@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\Visit;
+use Illuminate\Validation\Rule;
+use App\Models\{User,Visit};
 use Carbon\Carbon;
+use App\View\Components\Admin\User\SignupUser;
 
 class AdminController extends Controller
 {
@@ -61,6 +63,48 @@ class AdminController extends Controller
             'reports' => DB::select("SELECT COUNT(*) as total FROM reports WHERE $condition")[0]->total,
             'unauthorized-actions' => DB::select("SELECT COUNT(*) as total FROM authorization_breaks WHERE $condition")[0]->total,
             'newsletter-subscribers' => DB::select("SELECT COUNT(*) as total FROM subscribers WHERE $condition")[0]->total,
+        ];
+    }
+
+    public function signups(Request $request) {
+        $data = $request->validate([
+            'filter'=>['required', Rule::in(['today','this-week','this-month','lifetime'])],
+            'skip'=>'required|numeric',
+            'take'=>'required|numeric',
+        ]);
+
+        $users = User::withoutGlobalScopes();
+
+        switch($data['filter']) {
+            case 'today':
+                $users = $users->whereDate('created_at', Carbon::today());
+                break;
+            case 'this-week':
+                $users = $users->where('created_at', '>=', Carbon::now()->startOfWeek());
+                break;
+            case 'this-month':
+                $users = $users->whereRaw("MONTH(created_at) = " . date('m'));
+                break;
+            case 'lifetime':
+                /** we don't have to add any condition */
+                break;
+        }
+        $users = $users->skip($data['skip'])->take($data['take']+1)->get();
+        
+        $hasmore = $users->count() > $data['take'];
+        $users = $users->take($data['take']);
+        $payload = "";
+
+        foreach($users as $user) {
+            $user_component = (new SignupUser($user));
+            $user_component = $user_component->render(get_object_vars($user_component))->render();
+            $payload .= $user_component;
+        }
+
+        return [
+            'users'=>$payload,
+            'hasmore'=>$hasmore,
+            'count'=>$users->count()
         ];
     }
 }

@@ -17,8 +17,9 @@ $('.dashboard-statistics-filter').on('click', function(event) {
 	$.ajax({
 		url: '/admin/dashboard/statistics?filter=' + filter,
 		success: function(response) {
-			// Set new filter name as selected
+			// Set new filter name as selected (along with global filter value to use for fetching sign-ups)
 			$('#dashboard-statistics-filter-selection-name').text(button.find('.filter-name').val());
+			$('#dashboard-statistics-filter').val(button.find('.filter').val());
 			// Remove selected style from previous filter and gize it to the selected filter
             $('.dashboard-statistics-filter').removeClass('dsf-selected');
 			button.addClass('dsf-selected');
@@ -41,6 +42,8 @@ $('.dashboard-statistics-filter').on('click', function(event) {
 			$('.dashboard-reports-count').text(statistics['reports']);
 			$('.dashboard-unauthorized-actions-count').text(statistics['unauthorized-actions']);
 			$('.dashboard-newsletter-count').text(statistics['newsletter-subscribers']);
+			// The following line force sign ups viewer to fetch users again because the filter is changed
+			signups_viewer_opened = false;
 		},
 		error: function(response) {
             let errorObject = JSON.parse(response.responseText);
@@ -58,4 +61,56 @@ $('.dashboard-statistics-filter').on('click', function(event) {
 			button.attr('style', '');
 		}
 	})
+});
+
+let open_signups_viewer_lock = true;
+let signups_viewer_opened = false;
+$('#open-newsignups-viewer').on('click', function() {
+	let viewer = $('#new-signups-viewer');
+	if(!signups_viewer_opened) {
+		if(!open_signups_viewer_lock) return;
+		open_signups_viewer_lock = false;
+
+		let content = $('#new-signups-box');
+		let no_signups_found = $('#signups-not-found-box');
+		let fetch = $('#signups-fetch-more-button');
+		let loading = viewer.find('.loading-box');
+		let spinner = viewer.find('.loading-spinner');
+
+		content.html('');
+		fetch.addClass('none');
+		no_signups_found.addClass('none');
+		loading.removeClass('none');
+        loading.find('.loading-spinner').addClass('inf-rotate');
+
+        $.ajax({
+            url: '/admin/sign-ups',
+			data: {
+				filter: $('#dashboard-statistics-filter').val(),
+				skip: 0,
+				take: 12
+			},
+            success: function(response) {
+                signups_viewer_opened = true;
+
+                content.html(response.users);
+
+				if(response.hasmore)
+					fetch.removeClass('none');
+				else
+					fetch.addClass('none');
+
+				if(!response.count)
+					no_signups_found.removeClass('none');
+
+                loading.addClass('none');
+            },
+            complete: function() {
+				open_signups_viewer_lock = true;
+            }
+        });
+	}
+
+	viewer.removeClass('none');
+	disable_page_scroll();
 });

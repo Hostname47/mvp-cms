@@ -32,3 +32,17 @@
     cursor: default;
     background-color: #f4f4f4;
 }
+
+#new-signups-box {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.signup-user-component {
+    display: flex;
+    gap: 10px;
+    padding: 6px;
+    border: 1px solid #d7dbdf;
+    border-radius: 3px;
+}
