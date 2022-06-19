@@ -68,21 +68,25 @@
     border-radius: 3px;
 }
 
-#contact-messages-box {
+#contact-messages-box, #faqs-box {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 4px;
 }
 
-.contact-message-box {
+.contact-message-box, .faq-box {
     padding: 8px;
     border: 1px solid #cad1db;
     border-radius: 3px;
 }
 
 .contact-message-box .content {
-    padding: 4px 0;
-    margin-top: 4px;
+    margin-top: 6px;
     font-size: 13px;
     line-height: 1.4;
+}
+
+.faq-box .content {
+    margin-top: 4px;
+    font-weight: bold;
 }

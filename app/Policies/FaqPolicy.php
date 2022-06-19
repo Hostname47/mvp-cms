@@ -9,7 +9,7 @@ class FaqPolicy
 {
     use HandlesAuthorization;
 
-    const MAX_DAILY_FAQS = 6;
+    const MAX_DAILY_FAQS = 4;
 
     public function store(User $user)
     {

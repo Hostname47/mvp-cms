@@ -230,6 +230,50 @@
                 </div>
             </div>
             <div class="dashboard-column">
+                <!-- faqs -->
+                <div class="dashboard-section">
+                    <div class="align-center space-between">
+                        <div class="align-center">
+                            <svg class="size16 mr6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><path d="M172,197.68H26c-.18-.8-.89-.74-1.47-.91-11-3.28-18.21-10.39-21.3-21.53-.13-.5-.23-1-.8-1.13V26.62c1.27-.76,1-2.2,1.42-3.32A29.25,29.25,0,0,1,31.39,3.11q68.41-.12,136.83,0a29,29,0,0,1,28.84,28.81q.19,68.4,0,136.8c0,11.76-6,20.32-16.32,25.9C178,196.13,174.82,196.4,172,197.68ZM99.58,178.1q33.08,0,66.15,0c8.69,0,11.83-3.17,11.84-12q0-65.76,0-131.51c0-8.79-3.16-12-11.84-12q-66,0-131.91,0c-8.7,0-11.85,3.19-11.85,12q0,65.76,0,131.52c0,8.79,3.15,12,11.84,12Q66.69,178.12,99.58,178.1Zm7.85-61c3.14-.87,5.22-2.92,5.21-6.17,0-2.74,1.41-3.54,3.56-4.47,11.86-5.17,19.24-14,20-27.14A35,35,0,0,0,110.7,43.61C93.47,38.71,75.17,45.29,67.23,60c-6.88,12.7-5.68,17.26,8.94,21.75,6,1.84,9.24,0,11.55-5.9,2.82-7.2,6-9.23,13.77-8.87,5.59.26,8.42,2.22,9.76,6.75,1.64,5.5.36,9.44-4.09,12.66-2.5,1.82-5.43,2.62-8.26,3.71-6.13,2.34-10,6.46-11,13.25-1.6,10.93,1.42,14.65,12.34,14.54A26.08,26.08,0,0,0,107.43,117.1ZM85.35,144.17c0,.76,0,1.52,0,2.27.2,8.27,3,11.28,11.32,12.1a36,36,0,0,0,9.45-.38,8.54,8.54,0,0,0,7.5-7,31.91,31.91,0,0,0,.44-10.93c-.73-7.14-3.78-10-11-10.42a51.5,51.5,0,0,0-8,.17c-6.13.57-9,3.51-9.66,9.63a43.13,43.13,0,0,0,0,4.55Z"></path></svg>
+                            <h2 class="no-margin dark fs15">FAQs - ({{ \App\Models\Faq::unverified_count() }} unverified)</h2>
+                        </div>
+                        <a href="{{ route('admin.faqs.management', ['tab'=>'unverified']) }}" class="blue bold no-underline">See all</a>
+                    </div>
+                    <p class="my8 dark">FAQs submitted by users in faqs page</p>
+
+                    @if($faqs->count())
+                    <div id="faqs-box">
+                        @foreach($faqs as $faq)
+                        <div class="faq-box">
+                            <div class="flex">
+                                <!-- faqs could be without an attached user (e.g. when the user is deleted) -->
+                                @if($faq->user)
+                                <img src="{{ $faq->user->avatar(36) }}" class="rounded size32 user-avatar mr8" alt="">
+                                @else
+                                <img src="{{ \App\Models\User::defaultavatar(36) }}" class="rounded size32 user-avatar mr8" alt="">
+                                @endif
+                                <div>
+                                    @if($faq->user)
+                                    <p class="fs13 bold dark no-margin">{{ $faq->user->fullname }}</p>
+                                    @else
+                                    <p class="fs13 bold dark no-margin italic">unavailable user</p>
+                                    @endif
+                                    <p class="fs12 light-gray no-margin" title="{{ $faq->date }}">submitted : {{ $faq->date_humans }}</p>
+                                    <div class="content">
+                                        {{ $faq->question }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                    @else
+                    <div class="typical-section-style full-center flex-column mt8">
+                        <svg class="size16 my8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                        <p class="bold dark text-center fs13 lh15 mt4">No submitted FAQs at this moment.</p>
+                    </div>
+                    @endif
+                </div>
                 <!-- contact messages -->
                 <div class="dashboard-section">
                     <div class="align-center space-between">
@@ -257,7 +301,7 @@
                             <div class="flex">
                                 <img src="{{ \App\Models\User::defaultavatar(36) }}" class="rounded size32 user-avatar mr8" alt="">
                                 <div>
-                                    <p class="fs13 bold dark no-margin italic">Fibonashi guest</p>
+                                    <p class="fs13 bold dark no-margin italic">guest</p>
                                     <p class="fs12 light-gray no-margin" title="{{ $message->date }}">submitted : {{ $message->date_humans }}</p>
                                 </div>
                             </div>
@@ -271,15 +315,12 @@
                         @endforeach
                     </div>
                     @else
-                        @if(!$messages->count())
-                        <div class="typical-section-style full-center flex-column my12">
-                            <svg class="size16 my8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
-                            <p class="bold dark text-center fs13 lh15 mt4">No contact messages found at this moment.</p>
-                        </div>
-                        @endif
+                    <div class="typical-section-style full-center flex-column mt8">
+                        <svg class="size16 my8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                        <p class="bold dark text-center fs13 lh15 mt4">No contact messages found at this moment.</p>
+                    </div>
                     @endif
                 </div>
-
             </div>
         </div>
     </div>
