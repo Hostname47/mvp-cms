@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
+use App\Models\{User,ContactMessage};
 use Carbon\Carbon;
 
 class ContactMessage extends Model
@@ -27,5 +27,14 @@ class ContactMessage extends Model
 
     public function getDateAttribute() {
         return (new Carbon($this->created_at))->isoFormat("dddd D MMM YYYY - H:mm A");
+    }
+
+    public function slice($length) {
+        $message = $this->message;
+        return strlen($message) <= $length ? $message : substr($message, 0, $length) . '..';
+    }
+
+    public static function unread_messages_count() {
+        return ContactMessage::where('read', 0)->count();
     }
 }

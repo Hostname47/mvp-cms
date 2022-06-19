@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
-use App\Models\{User,Visit};
+use App\Models\{User,Visit,ContactMessage};
 use Carbon\Carbon;
 use App\View\Components\Admin\User\SignupUser;
 
@@ -13,8 +13,10 @@ class AdminController extends Controller
 {
     public function dashboard() {
         $statistics = $this->stats('today');
+        $messages = ContactMessage::with(['user'])->latest()->take(6)->get();
 
         return view('admin.dashboard')
+            ->with(compact('messages'))
             ->with(compact('statistics'));
     }
 

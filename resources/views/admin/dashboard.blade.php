@@ -219,5 +219,68 @@
                 </div>
             </div>
         </div>
+
+        <div id="dashboard-columns-box">
+            <div class="dashboard-column">
+                <div class="dashboard-section">
+
+                </div>
+                <div class="dashboard-section">
+
+                </div>
+            </div>
+            <div class="dashboard-column">
+                <!-- contact messages -->
+                <div class="dashboard-section">
+                    <div class="align-center space-between">
+                        <div class="align-center">
+                            <svg class="size16 mr6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><path d="M39.24,33.2c-6.6.76-13.23.18-19.85.34-3.07.07-6.15,0-9.22,0C9,33.52,7.63,34,7,32.6s.68-2.12,1.46-2.93c2.56-2.63,5-5.36,7.78-7.78,1.81-1.6,1.42-2.48-.13-3.89-2.85-2.6-5.51-5.42-8.26-8.15C7.19,9.21,6.55,8.58,7,7.55c.31-.81,1-.88,1.72-.88q14.58,0,29.16,0a8.6,8.6,0,0,1,1.41.22ZM11.66,30.3H34.34c-2.55-2.44-4.6-4.3-6.52-6.29-1.18-1.22-2.14-2.41-3.64-.39a1.28,1.28,0,0,1-2.08.23c-1.89-2.52-3-.67-4.32.6C16,26.23,14.08,28,11.66,30.3ZM33.55,9.92H12.24c3.44,3.45,6.59,6.58,9.7,9.73.62.64,1.09,1,1.88.18C27,16.58,30.14,13.38,33.55,9.92ZM36,27.84V11.51c-2.61,2.76-4.67,5-6.82,7.19C28.4,19.5,27.94,20,29,21,31.37,23.2,33.61,25.49,36,27.84ZM4.55,21.58a12.17,12.17,0,0,0,1.48,0c.8-.1,1.59-.31,1.68-1.32.07-.77-.21-1.47-1-1.5-1.81-.07-3.74-.81-5.34.62A1.06,1.06,0,0,0,1.49,21a2.81,2.81,0,0,0,1.3.59,10.33,10.33,0,0,0,1.76,0Zm5-7.27c0-2.05-2-1.26-3.31-1.4a8.74,8.74,0,0,0-1.77,0A1.42,1.42,0,0,0,3,14.49a1.38,1.38,0,0,0,1.32,1.35c.59.06,1.19,0,2.13,0C7.4,15.63,9.58,16.65,9.52,14.31ZM6.25,27.2a13,13,0,0,0,2.07,0,1.34,1.34,0,0,0,1.25-1.67C9.27,24,8,24.16,7,24.26c-1.37.13-3.13-.76-3.9,1.14-.36.88.27,1.55,1.12,1.75a9.42,9.42,0,0,0,2.06,0Z"></path></svg>
+                            <h2 class="no-margin dark fs15">Contact messages - ({{ \App\Models\ContactMessage::unread_messages_count() }} unread)</h2>
+                        </div>
+                        <a href="{{ route('admin.contact.management') }}" class="blue bold no-underline">See all</a>
+                    </div>
+                    <p class="my8 dark">Contact messages received from users in contact us page</p>
+
+                    @if($messages->count())
+                    <div id="contact-messages-box">
+                        @foreach($messages as $message)
+                        <div class="contact-message-box">
+                            @if($message->user)
+                            <div class="flex">
+                                <img src="{{ $message->user->avatar(36) }}" class="rounded size32 user-avatar mr8" alt="">
+                                <div>
+                                    <p class="fs13 bold dark no-margin">{{ $message->user->fullname }}</p>
+                                    <p class="fs12 light-gray no-margin" title="{{ $message->date }}">submitted : {{ $message->date_humans }}</p>
+                                </div>
+                            </div>
+                            @else
+                            <div class="flex">
+                                <img src="{{ \App\Models\User::defaultavatar(36) }}" class="rounded size32 user-avatar mr8" alt="">
+                                <div>
+                                    <p class="fs13 bold dark no-margin italic">Fibonashi guest</p>
+                                    <p class="fs12 light-gray no-margin" title="{{ $message->date }}">submitted : {{ $message->date_humans }}</p>
+                                </div>
+                            </div>
+                            @endif
+
+                            <div class="content">
+                                <span class="bold black">Message :</span>
+                                {{ $message->slice(180) }}
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                    @else
+                        @if(!$messages->count())
+                        <div class="typical-section-style full-center flex-column my12">
+                            <svg class="size16 my8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                            <p class="bold dark text-center fs13 lh15 mt4">No contact messages found at this moment.</p>
+                        </div>
+                        @endif
+                    @endif
+                </div>
+
+            </div>
+        </div>
     </div>
 @endsection

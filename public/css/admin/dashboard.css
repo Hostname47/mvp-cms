@@ -3,6 +3,7 @@
     border: 1px solid #d7d7d7;
     padding: 10px;
     border-radius: 4px;
+    margin-bottom: 12px;
 }
 
 .section-card-title {
@@ -45,4 +46,43 @@
     padding: 6px;
     border: 1px solid #d7dbdf;
     border-radius: 3px;
+}
+
+#dashboard-columns-box {
+    width: 100%;
+    display: flex;
+    gap: 12px;
+}
+
+.dashboard-column {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 50%;
+}
+
+.dashboard-section {
+    padding: 10px;
+    background-color: white;
+    border: 1px solid rgb(213, 217, 219);
+    border-radius: 3px;
+}
+
+#contact-messages-box {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.contact-message-box {
+    padding: 8px;
+    border: 1px solid #cad1db;
+    border-radius: 3px;
+}
+
+.contact-message-box .content {
+    padding: 4px 0;
+    margin-top: 4px;
+    font-size: 13px;
+    line-height: 1.4;
 }
