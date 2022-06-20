@@ -14,7 +14,7 @@ class AuthorRequest extends Model
     protected $guarded = [];
 
     public function user() {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->withoutGlobalScopes();
     }
 
     public function categories($get='titles') {

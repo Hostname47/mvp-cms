@@ -68,13 +68,13 @@
     border-radius: 3px;
 }
 
-#contact-messages-box, #faqs-box {
+#contact-messages-box, #faqs-box, #author-requests-box {
     display: flex;
     flex-direction: column;
     gap: 4px;
 }
 
-.contact-message-box, .faq-box {
+.contact-message-box, .faq-box, .author-request-box {
     padding: 8px;
     border: 1px solid #cad1db;
     border-radius: 3px;
@@ -89,4 +89,20 @@
 .faq-box .content {
     margin-top: 4px;
     font-weight: bold;
+}
+
+.section-toggle-button {
+    display: flex;
+    margin-left: 4px;
+    padding: 4px;
+    border-radius: 2px;
+    background-color: #dce4ec;
+    border: 1px solid #c0ccd9;
+    cursor: pointer;
+}
+.section-toggle-button .toggle-arrow {
+    width: 7px;
+    height: 7px;
+    fill: #4f5660;
+    transition: all 0.2s ease;
 }
