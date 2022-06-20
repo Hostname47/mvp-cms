@@ -226,7 +226,7 @@
                 <div class="dashboard-section">
                     <div class="align-center space-between">
                         <div class="align-center">
-                            <svg class="size16 mr6" fill="#2777b9" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M57.44,255.15q.08-23.37.15-46.72c0-12.28,2.72-15.17,15.37-15.81-4-9.44-8-18.74-11.93-28C57.4,156.14,54.1,147.49,50,139.28c-4-7.88-2.37-13.67,3.57-20a332.26,332.26,0,0,0,56.94-81.89,224,224,0,0,0,9.46-22.84c2.09-5.82,5.7-8.68,10.42-8.7s8.48,3,10.51,8.63c14,39.1,37.23,72.37,64.58,103.08,1.3,1.46,2.57,2.94,4,4.3,4.39,4.31,4.84,9.11,2.42,14.65-7.55,17.35-14.95,34.76-22.39,52.15-.51,1.17-1,2.36-1.42,3.52,1.06,1,2.23.54,3.27.59,7.86.34,11.69,4.15,11.85,12.28.16,7.79,0,15.58.05,23.36.07,8.91.23,17.81.36,26.72H182.11c0-12.48,0-25,.21-37.42.07-3.42-.92-4.31-4.31-4.28-19.6.16-39.21.08-58.81.08q-18.48,0-36.95,0c-2,0-3.87-.28-3.79,2.8.32,12.94-.44,25.89.41,38.83Zm73-210.93c-3.34,6.44-6.11,12.06-9.14,17.53-13.54,24.5-30.12,46.83-48.68,67.74-1.66,1.87-2.89,3.32-1.59,6.26,8,18,15.7,36.18,23.42,54.32.88,2.07,2,2.87,4.28,2.8,6-.17,12-.19,18,0,2.63.08,3.24-.78,3.2-3.29-.15-8.59-.21-17.19,0-25.78.08-3.05-.95-4.54-3.63-5.88-10.42-5.2-16.07-14-16.87-25.41-1.15-16.36,9.75-29.67,26.22-32.77,14-2.64,29.38,6.67,34.05,20.66,5.06,15.14-1.4,30.66-16,38-1.95,1-3,1.88-3,4.27q.19,13.62,0,27.25c0,2.42.74,3,3,3,5.84-.15,11.68-.22,17.51,0,2.88.12,4.19-.88,5.29-3.5q11.2-26.58,22.8-53c1.24-2.83.93-4.55-1.1-6.75A372,372,0,0,1,159.77,94,325.54,325.54,0,0,1,130.47,44.22Zm-.22,96.57a10.3,10.3,0,0,0,.48-20.59,10.3,10.3,0,1,0-.48,20.59Z"></path></svg>
+                            <svg class="size16 mr6" fill="#2777b9" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260"><path d="M130,17.11h97.27c11.82,0,15.64,3.73,15.64,15.34q0,75.07,0,150.16c0,11.39-3.78,15.13-15.22,15.13-2.64,0-5.3.12-7.93-.06a11.11,11.11,0,0,1-10.53-9.38c-.81-5.69,2-11,7.45-12.38,3.28-.84,3.52-2.36,3.51-5.06-.07-27.15-.11-54.29,0-81.43,0-3.68-1-4.69-4.68-4.68q-85.63.16-171.29,0c-3.32,0-4.52.68-4.5,4.33q.26,41,0,81.95c0,3.72,1.3,4.53,4.56,4.25a45.59,45.59,0,0,1,7.39.06,11.06,11.06,0,0,1,10.58,11c0,5.62-4.18,10.89-9.91,11.17-8.43.4-16.92.36-25.36,0-5.16-.23-8.82-4.31-9.68-9.66a33,33,0,0,1-.24-5.27q0-75.08,0-150.16c0-11.61,3.81-15.34,15.63-15.34Zm22.49,45.22c16.56,0,33.13,0,49.7,0,5.79,0,13.59,2,16.83-.89,3.67-3.31.59-11.25,1.19-17.13.4-3.92-1.21-4.54-4.73-4.51-19.21.17-38.42.08-57.63.08-22.73,0-45.47.11-68.21-.1-4,0-5.27,1-4.92,5a75.62,75.62,0,0,1,0,12.68c-.32,3.89.78,5,4.85,5C110.54,62.21,131.51,62.33,152.49,62.33ZM62.3,51.13c0-11.26,0-11.26-11.45-11.26h-.53c-10.47,0-10.47,0-10.47,10.71,0,11.75,0,11.75,11.49,11.75C62.3,62.33,62.3,62.33,62.3,51.13ZM102,118.66c25.79.3,18.21-2.79,36.49,15.23,18.05,17.8,35.89,35.83,53.8,53.79,7.34,7.35,7.3,12.82-.13,20.26q-14.94,15-29.91,29.87c-6.86,6.81-12.62,6.78-19.5-.09-21.3-21.28-42.53-42.64-63.92-63.84a16.11,16.11,0,0,1-5.24-12.62c.23-9.86,0-19.73.09-29.59.07-8.71,4.24-12.85,13-13C91.81,118.59,96.92,118.66,102,118.66ZM96.16,151c.74,2.85-1.53,6.66,1.41,9.6,17.66,17.71,35.39,35.36,53,53.11,1.69,1.69,2.59,1.48,4.12-.12,4.12-4.34,8.24-8.72,12.73-12.67,2.95-2.59,2.36-4-.16-6.49-15.68-15.46-31.4-30.89-46.63-46.79-4.56-4.76-9.1-6.73-15.59-6.35C96.18,141.8,96.16,141.41,96.16,151Z"></path></svg>
                             <h2 class="no-margin dark-blue fs15">Recently pubished posts</h2>
                         </div>
                         <a href="{{ route('admin.all.posts') }}" class="blue bold no-underline">All posts</a>
@@ -234,9 +234,9 @@
                     <p class="my8 dark">Posts published recently by admins and authors</p>
 
                     @if($posts->count())
-                    <div id="author-requests-box">
+                    <div id="posts-box">
                         @foreach($posts as $post)
-                        <div class="author-request-box">
+                        <div class="post-box">
                             <a href="{{ route('edit.post', ['post'=>$post->id]) }}" class="fs14 bold dark no-underline">{{ $post->title(120) }}</a>
                             <p class="fs12 light-gray no-margin" title="{{ $post->publish_date }}">published : {{ $post->publish_date_humans }}</p>
                         </div>
@@ -249,8 +249,52 @@
                     </div>
                     @endif
                 </div>
+                <!-- Recent comments -->
                 <div class="dashboard-section">
+                    <div class="align-center space-between">
+                        <div class="align-center">
+                            <svg class="size16 mr6" fill="#2777b9" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M221.09,253a23,23,0,1,1-23.27,23A23.13,23.13,0,0,1,221.09,253Zm93.09,0a23,23,0,1,1-23.27,23A23.12,23.12,0,0,1,314.18,253Zm93.09,0A23,23,0,1,1,384,276,23.13,23.13,0,0,1,407.27,253Zm62.84-137.94h-51.2V42.9c0-23.62-19.38-42.76-43.29-42.76H43.29C19.38.14,0,19.28,0,42.9V302.23C0,325.85,19.38,345,43.29,345h73.07v50.58c.13,22.81,18.81,41.26,41.89,41.39H332.33l16.76,52.18a32.66,32.66,0,0,0,26.07,23H381A32.4,32.4,0,0,0,408.9,496.5L431,437h39.1c23.08-.13,41.76-18.58,41.89-41.39V156.47C511.87,133.67,493.19,115.21,470.11,115.09ZM46.55,299V46.12H372.36v69H158.25c-23.08.12-41.76,18.58-41.89,41.38V299Zm418.9,92H397.5l-15.83,46-15.82-46H162.91V161.07H465.45Z"></path></svg>
+                            <h2 class="no-margin dark-blue fs15">Recent comments</h2>
+                        </div>
+                        <a href="{{ route('admin.comments.dashboard') }}" class="blue bold no-underline">See all</a>
+                    </div>
+                    <p class="my8 dark">Recent comments submitted by users</p>
 
+                    @if($comments->count())
+                    <div id="comments-box">
+                        @foreach($comments as $comment)
+                        <div class="comment-box">
+                            <div class="flex">
+                                <img src="{{ $comment->user->avatar(36) }}" class="rounded size32 user-avatar mr8" alt="">
+                                <div>
+                                    <p class="fs13 bold dark no-margin">{{ $comment->user->fullname }}</p>
+                                    <p class="fs11 light-gray no-margin" title="{{ $comment->date }}">commented : {{ $comment->date_humans }}</p>
+                                </div>
+                            </div>
+                            <div class="mt8">
+                                <a href="{{ route('admin.comments.manage', ['comment'=>$comment->id]) }}" class="dark-blue bold no-underline">{{ $comment->content(220) }}</a>
+                                <div class="fs11 light-gray">
+                                    <span class="no-wrap">{{ __('commented') }} :</span>
+                                    <span title="{{ $comment->date }}">{{ $comment->date_humans }}</span>
+                                </div>
+                                <div class="flex ml4 mt4">
+                                    <svg class="size14 mr6" style="min-width: 14px;" fill="#d2d2d2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 284.93 284.93"><polygon points="281.33 281.49 281.33 246.99 38.25 246.99 38.25 4.75 3.75 4.75 3.75 281.5 38.25 281.5 38.25 281.49 281.33 281.49"></polygon></svg>
+                                    @if($comment->post)
+                                    <a href="{{ $comment->link }}" class="dark mt2 fs12 no-underline"><strong class="mr4 no-wrap">Post :</strong>{{ $comment->post->html_title }}</a>
+                                    @else
+                                    <span class="meta bold"><em>{{ __('Parent post cannot be reached') }} !</em></span>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                    @else
+                    <div class="typical-section-style full-center flex-column mt8">
+                        <svg class="size16 my8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                        <p class="bold dark text-center fs13 lh15 mt4">No comments found at the moment.</p>
+                    </div>
+                    @endif
                 </div>
             </div>
             <div class="dashboard-column">
@@ -288,52 +332,47 @@
                     @endif
                 </div>
                 <!-- faqs -->
-                <div class="dashboard-section toggle-box">
+                <div class="dashboard-section">
                     <div class="align-center space-between">
                         <div class="align-center">
                             <svg class="size16 mr6" fill="#2777b9" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><path d="M172,197.68H26c-.18-.8-.89-.74-1.47-.91-11-3.28-18.21-10.39-21.3-21.53-.13-.5-.23-1-.8-1.13V26.62c1.27-.76,1-2.2,1.42-3.32A29.25,29.25,0,0,1,31.39,3.11q68.41-.12,136.83,0a29,29,0,0,1,28.84,28.81q.19,68.4,0,136.8c0,11.76-6,20.32-16.32,25.9C178,196.13,174.82,196.4,172,197.68ZM99.58,178.1q33.08,0,66.15,0c8.69,0,11.83-3.17,11.84-12q0-65.76,0-131.51c0-8.79-3.16-12-11.84-12q-66,0-131.91,0c-8.7,0-11.85,3.19-11.85,12q0,65.76,0,131.52c0,8.79,3.15,12,11.84,12Q66.69,178.12,99.58,178.1Zm7.85-61c3.14-.87,5.22-2.92,5.21-6.17,0-2.74,1.41-3.54,3.56-4.47,11.86-5.17,19.24-14,20-27.14A35,35,0,0,0,110.7,43.61C93.47,38.71,75.17,45.29,67.23,60c-6.88,12.7-5.68,17.26,8.94,21.75,6,1.84,9.24,0,11.55-5.9,2.82-7.2,6-9.23,13.77-8.87,5.59.26,8.42,2.22,9.76,6.75,1.64,5.5.36,9.44-4.09,12.66-2.5,1.82-5.43,2.62-8.26,3.71-6.13,2.34-10,6.46-11,13.25-1.6,10.93,1.42,14.65,12.34,14.54A26.08,26.08,0,0,0,107.43,117.1ZM85.35,144.17c0,.76,0,1.52,0,2.27.2,8.27,3,11.28,11.32,12.1a36,36,0,0,0,9.45-.38,8.54,8.54,0,0,0,7.5-7,31.91,31.91,0,0,0,.44-10.93c-.73-7.14-3.78-10-11-10.42a51.5,51.5,0,0,0-8,.17c-6.13.57-9,3.51-9.66,9.63a43.13,43.13,0,0,0,0,4.55Z"></path></svg>
                             <h2 class="no-margin dark-blue fs15">FAQs - {{ $faqs->total() }} unverified</h2>
-                            <div class="toggle-button section-toggle-button">
-                                <svg class="toggle-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30.02 30.02"><path d="M13.4,1.43l9.35,11a4,4,0,0,1,0,5.18l-9.35,11a4,4,0,1,1-6.1-5.18L14.46,15,7.3,6.61a4,4,0,0,1,6.1-5.18Z"></path></svg>
-                            </div>
                         </div>
                         <a href="{{ route('admin.faqs.management', ['tab'=>'unverified']) }}" class="blue bold no-underline">See all</a>
                     </div>
                     <p class="my8 dark">FAQs submitted by users in faqs page</p>
-                    <div class="toggle-container none">
-                        @if($faqs->count())
-                        <div id="faqs-box">
-                            @foreach($faqs as $faq)
-                            <div class="faq-box">
-                                <div class="flex">
-                                    <!-- faqs could be without an attached user (e.g. when the user is deleted) -->
+                    @if($faqs->count())
+                    <div id="faqs-box">
+                        @foreach($faqs as $faq)
+                        <div class="faq-box">
+                            <div class="flex">
+                                <!-- faqs could be without an attached user (e.g. when the user is deleted) -->
+                                @if($faq->user)
+                                <img src="{{ $faq->user->avatar(36) }}" class="rounded size32 user-avatar mr8" alt="">
+                                @else
+                                <img src="{{ \App\Models\User::defaultavatar(36) }}" class="rounded size32 user-avatar mr8" alt="">
+                                @endif
+                                <div>
                                     @if($faq->user)
-                                    <img src="{{ $faq->user->avatar(36) }}" class="rounded size32 user-avatar mr8" alt="">
+                                    <p class="fs13 bold dark no-margin">{{ $faq->user->fullname }}</p>
                                     @else
-                                    <img src="{{ \App\Models\User::defaultavatar(36) }}" class="rounded size32 user-avatar mr8" alt="">
+                                    <p class="fs13 bold dark no-margin italic">unavailable user</p>
                                     @endif
-                                    <div>
-                                        @if($faq->user)
-                                        <p class="fs13 bold dark no-margin">{{ $faq->user->fullname }}</p>
-                                        @else
-                                        <p class="fs13 bold dark no-margin italic">unavailable user</p>
-                                        @endif
-                                        <p class="fs12 light-gray no-margin" title="{{ $faq->date }}">submitted : {{ $faq->date_humans }}</p>
-                                        <div class="content">
-                                            {{ $faq->question }}
-                                        </div>
+                                    <p class="fs12 light-gray no-margin" title="{{ $faq->date }}">submitted : {{ $faq->date_humans }}</p>
+                                    <div class="content">
+                                        {{ $faq->question }}
                                     </div>
                                 </div>
                             </div>
-                            @endforeach
                         </div>
-                        @else
-                        <div class="typical-section-style full-center flex-column mt8">
-                            <svg class="size16 my8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
-                            <p class="bold dark text-center fs13 lh15 mt4">No submitted FAQs at this moment.</p>
-                        </div>
-                        @endif
+                        @endforeach
                     </div>
+                    @else
+                    <div class="typical-section-style full-center flex-column mt8">
+                        <svg class="size16 my8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
+                        <p class="bold dark text-center fs13 lh15 mt4">No submitted FAQs at this moment.</p>
+                    </div>
+                    @endif
                 </div>
                 <!-- contact messages -->
                 <div class="dashboard-section toggle-box">

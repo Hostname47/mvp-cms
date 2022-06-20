@@ -16,11 +16,11 @@ class Comment extends Model
     protected $guarded = [];
 
     public function user() {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->withoutGlobalScopes();
     }
 
     public function post() {
-        return $this->belongsTo(Post::class);
+        return $this->belongsTo(Post::class)->withoutGlobalScopes();
     }
 
     public function replies() {
@@ -67,6 +67,9 @@ class Comment extends Model
         return (new Carbon($this->created_at))->isoFormat("dddd D MMM YYYY - H:mm A");
     }
 
+    public function content($length) {
+        return (strlen($this->content) > $length) ? substr($this->content, 0, $length) . '..' : $this->content;
+    }
     
     public function getScolorAttribute() {
         switch($this->status) {

@@ -54,56 +54,6 @@
                 <p class="dark my8 text-center">Review posts that are under review submitted by authors</p>
             </div>
         </div>
-        <div class="full-center flex-column my12">
-            <div class="full-center flex-column" style='margin: 30px 0 300px 0;'>
-                <h2 class="no-margin fs18 dark">Manage an author</h2>
-                <p class="dark my8">Search for an author to manage its posts and permissions</p>
-                <div style="margin-top: 12px; width: 460px;">
-                    <div class="relative">
-                        <svg class="absolute size14" fill="#5b5b5b" style="top: 13px; left: 13px;" enable-background="new 0 0 515.558 515.558" viewBox="0 0 515.558 515.558" xmlns="http://www.w3.org/2000/svg"><path d="m378.344 332.78c25.37-34.645 40.545-77.2 40.545-123.333 0-115.484-93.961-209.445-209.445-209.445s-209.444 93.961-209.444 209.445 93.961 209.445 209.445 209.445c46.133 0 88.692-15.177 123.337-40.547l137.212 137.212 45.564-45.564c0-.001-137.214-137.213-137.214-137.213zm-168.899 21.667c-79.958 0-145-65.042-145-145s65.042-145 145-145 145 65.042 145 145-65.043 145-145 145z"></path></svg>
-                        <input type="text" class="search-input-style full-width border-box" id="author-search-input" autocomplete="off" placeholder="Search for an author to manage">
-                        <div class="search-button-style" id="search-for-author-button">
-                            <svg class="size14 mr4" fill="#5b5b5b" enable-background="new 0 0 515.558 515.558" viewBox="0 0 515.558 515.558" xmlns="http://www.w3.org/2000/svg"><path d="m378.344 332.78c25.37-34.645 40.545-77.2 40.545-123.333 0-115.484-93.961-209.445-209.445-209.445s-209.444 93.961-209.444 209.445 93.961 209.445 209.445 209.445c46.133 0 88.692-15.177 123.337-40.547l137.212 137.212 45.564-45.564c0-.001-137.214-137.213-137.214-137.213zm-168.899 21.667c-79.958 0-145-65.042-145-145s65.042-145 145-145 145 65.042 145 145-65.043 145-145 145z"></path></svg>
-                            <span class="bold dark fs12">search</span>
-                        </div>
-                    </div>
-                    <div class="relative">
-                        <div id="author-search-result-box" class="search-result-box full-width scrolly none">
-                            <input type="hidden" id="author-to-manage-k" autocomplete="off">
-                            <div class="results-container none">
-                                
-                            </div>
-                            <a href="" class="search-entity search-entity-factory none">
-                                <img src="" class="size36 rounded mr8 avatar" alt="" style="border: 3px solid #9f9f9f;">
-                                <div>
-                                    <div class="bold fs15 dark fullname">Mouad Nassri</div>
-                                    <div class="fs13 dark username">hostname47</div>
-                                </div>
-                            </a>
-                            <div id="author-search-fetch-more-results" class="full-center my12 none" style='height: 32px;'>
-                                <svg class="spinner size20" fill="none" viewBox="0 0 16 16">
-                                    <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
-                                    <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
-                                </svg>
-                            </div>
-                            <!-- loading -->
-                            <div class="search-loading full-center flex-column none" style="height: 86px">
-                                <svg class="spinner size24 black" fill="none" viewBox="0 0 16 16">
-                                    <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-opacity="0.25" stroke-width="2" vector-effect="non-scaling-stroke"></circle>
-                                    <path d="M15 8a7.002 7.002 0 00-7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
-                                </svg>
-                                <span class="fs12 dark fs11 bold" style="margin-top: 5px;">searching</span>
-                            </div>
-                            <!-- no results found -->
-                            <div class="no-results-found-box full-center none" style="height: 58px">
-                                <svg class="size14 mr8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256,0C114.5,0,0,114.51,0,256S114.51,512,256,512,512,397.49,512,256,397.49,0,256,0Zm0,472A216,216,0,1,1,472,256,215.88,215.88,0,0,1,256,472Zm0-257.67a20,20,0,0,0-20,20V363.12a20,20,0,0,0,40,0V234.33A20,20,0,0,0,256,214.33Zm0-78.49a27,27,0,1,1-27,27A27,27,0,0,1,256,135.84Z"/></svg>
-                                <p class="fs13 gray no-margin bold">Author not found with your search query</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </main>
 @endsection
