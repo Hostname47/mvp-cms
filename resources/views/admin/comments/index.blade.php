@@ -232,6 +232,7 @@
                         </td>
                         <!-- in response to -->
                         <td class="comments-table-in-response-to-column">
+                            @if($comment->post)
                             <div class="comment-post-box">
                                 <p class="fs11 no-margin mb4 dark bold">Post :<span class="light-gray ml4 default-weight">({{ $comment->post->comments_count }} comments)</span></p>
                                 <a href="{{ route('edit.post', ['post'=>$comment->post->id]) }}" class="title">{{ $comment->post->html_title }}</a>
@@ -240,10 +241,13 @@
                                     <span class="fs12">view post</span>
                                 </a>
                             </div>
+                            @else
+                            <em class="fs12 light-gray">parent post is not available</em>
+                            @endif
                         </td>
                         <!-- Date -->
                         <td class="comments-table-date-column">
-                            <a href="{{ $comment->post->link }}" class="fs12 no-underline dark-blue">{{ $comment->at }}</a>
+                            <a href="{{ ($comment->post) ? $comment->post->link : '#' }}" class="fs12 no-underline dark-blue">{{ $comment->at }}</a>
                         </td>
                     </tr>
                     @endforeach
